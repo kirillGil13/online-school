@@ -1,0 +1,10 @@
+@import "/src/UI/assets/scss/const/const.scss";
+input[type="search"]{
+    padding-left: 40px;
+    border: 1px solid $input_border;
+    border-radius: 8px;
+    &::placeholder{
+        font-size: 14px;
+        color: $label;
+    }
+}
