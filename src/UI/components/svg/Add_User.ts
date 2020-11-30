@@ -3,7 +3,7 @@
 // @ts-ignore
 import icon from 'vue-svgicon'
 icon.register({
-  'Add User': {
+  'Add_User': {
     width: 20,
     height: 19,
     viewBox: '0 0 20 19',

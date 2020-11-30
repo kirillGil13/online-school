@@ -3,7 +3,8 @@
         <avatar
             :imageSourse="userInfo.avatar"
             :imageClass="'account-badge__avatar'"
-            :size="{ height: 48, width: 48 }"
+            :height="48"
+            :width="48"
             :star="true"
         />
         <div class="account-badge__account-info">

@@ -24,7 +24,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { IFakeUserInfo, IMainMenu } from '@/entity/environment';
+import { IFakeUserInfo } from '@/entity/environment';
+import { IMainMenu } from '@/entity/menu/menu.types';
 import MenuComponent from './MenuComponent.vue';
 import AccountBadge from './AccountBadge.vue';
 import variables from '@/UI/assets/scss/variables/_variables.scss';

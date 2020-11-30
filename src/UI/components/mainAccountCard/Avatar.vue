@@ -2,7 +2,7 @@
     <div class="avatar-wrapper">
         <img
             class="avatar"
-            :style="{ height: `${size.height}px`, width: `${size.width}px` }"
+            :style="{ height: `${height}px`, width: `${width}px` }"
             :src="imageSourse"
             alt="Avatar"
         />
@@ -14,14 +14,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-interface Size {
-    height: number;
-    width: number;
-}
 @Component
 export default class Avatar extends Vue {
     @Prop({ required: true }) readonly imageSourse!: string;
-    @Prop({ required: true }) readonly size!: Size;
+    @Prop({ required: true }) readonly height!: number;
+    @Prop({ required: true }) readonly width!: number;
     @Prop({ required: false, default: false }) readonly star!: boolean;
 }
 </script>

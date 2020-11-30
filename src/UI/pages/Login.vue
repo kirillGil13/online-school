@@ -9,7 +9,8 @@ import { IUserModule } from '@/store/modules/users/users.types';
 import { Component, Model, Vue } from 'vue-property-decorator';
 import Form from '../components/common/Form.vue';
 import MainAccountCard from '../components/mainAccountCard/MainAccountCard.vue';
-import { IMainMenu, IFakeUserInfo } from '@/entity/environment';
+import { IFakeUserInfo } from '@/entity/environment';
+import { IMainMenu } from '@/entity/menu/menu.types';
 //import user from '@/store/modules/users';
 
 @Component({
@@ -47,7 +48,7 @@ export default class Login extends Vue {
         },
         {
             title: 'Кандидаты',
-            iconName: 'Add User',
+            iconName: 'Add_User',
             path: '/'
         },
         {
