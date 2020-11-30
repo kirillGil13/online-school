@@ -1,15 +1,16 @@
-@import "./const/const.scss";
-@import "./fonts/Manrope/manrope.scss";
-@import "./fonts/Ubuntu/ubuntu.scss";
-@import "./common/button.scss";
-@import "./common/link.scss";
-@import "./common/search.scss";
-@import "./common/user.scss";
-@import "./common/form/form-button.scss";
-@import "./common/form/form.scss";
-@import "./common/form/input.scss";
+@import './const/const.scss';
+@import './fonts/Manrope/manrope.scss';
+@import './fonts/Ubuntu/ubuntu.scss';
+@import './common/button.scss';
+@import './common/link.scss';
+@import './common/search.scss';
+@import './common/user.scss';
+@import './common/form/form-button.scss';
+@import './common/form/form.scss';
+@import './common/form/input.scss';
 
-html, body{
+html,
+body {
     width: 100%;
     height: 100%;
     color: $black;
@@ -20,12 +21,12 @@ html, body{
     line-height: 160%;
     font-size: 14px;
 }
-header{
+header {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 290px;
-    .header-main{
+    .header-main {
         width: 100%;
         padding: 24px;
         background: $white;
@@ -35,53 +36,93 @@ header{
         border-radius: 12px;
     }
 }
-h1, h2, h3, h4{
-    margin: 0;
-}
-h1, h2{
-    font-size: 24px;
-}
-h1{
-    text-align: center;
-    text-transform: uppercase;
-}
-h3{
-    font-size: 18px;
-}
-span{
-    text-align: center;
-    color: $link;
-    width: 60%;
-    margin-top: 20px;
-    margin-bottom: 12px;
-}
-ul{
-    width: 100%;
-    padding: 0;
-    list-style: none;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    color: $link;
-}
-.mr-10{
+
+// вот это я вообще не понял, зачем отдельные элементы сразу кастомить?
+// h1,
+// h2,
+// h3,
+// h4 {
+//     margin: 0;
+// }
+// h1,
+// h2 {
+//     font-size: 24px;
+// }
+// h1 {
+//     text-align: center;
+//     text-transform: uppercase;
+// }
+// h3 {
+//     font-size: 18px;
+// }
+// span {
+//     text-align: center;
+//     //   color: $link;
+//     width: 60%;
+//     margin-top: 20px;
+//     margin-bottom: 12px;
+// }
+// ul {
+//     width: 100%;
+//     padding: 0;
+//     list-style: none;
+//     font-style: normal;
+//     font-weight: normal;
+//     font-size: 16px;
+//     color: $link;
+// }
+.mr-10 {
     margin-right: 10px;
 }
-.ml-mr-3{
+.ml-mr-3 {
     margin: 0 3px 0 3px;
 }
-.ml-8{
+.ml-8 {
     margin-left: 8px;
 }
-.ml-12{
+.ml-12 {
     margin-left: 12px;
 }
-.mt-45{
+.mt-45 {
     margin-top: 45px;
 }
-.mt-12{
+.mt-12 {
     margin-top: 12px;
 }
-.mt-30{
+.mt-30 {
     margin-top: 32px;
 }
+
+/* recommended css code for vue-svgicon */
+.svg-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    color: inherit;
+    vertical-align: middle;
+    fill: none;
+    stroke: currentColor;
+}
+
+.svg-fill {
+    fill: currentColor;
+    stroke: none;
+}
+
+.svg-up {
+    /* default */
+    transform: rotate(0deg);
+}
+
+.svg-right {
+    transform: rotate(90deg);
+}
+
+.svg-down {
+    transform: rotate(180deg);
+}
+
+.svg-left {
+    transform: rotate(-90deg);
+}
+/* recommended css code for vue-svgicon */
