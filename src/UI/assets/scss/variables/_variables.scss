@@ -1,0 +1,17 @@
+$white: #ffffff;
+$blue: #426df6;
+$label: #818c99;
+$input_border: rgba(87, 81, 183, 0.12);
+$light_blue: rgba(66, 109, 246, 0.12);
+$blue_gradient: linear-gradient(180deg, #4f79ff 0%, #2150e7 100%);
+$link: #5f739c;
+$green: #27ae60;
+$light: rgba(87, 81, 183, 0.12);
+
+// The :export directive is the magic sauce for webpack
+// https://mattferderer.com/use-sass-variables-in-typescript-and-javascript
+:export {
+    menuBg: $white;
+    menuText: $link;
+    menuActiveText: $blue;
+}

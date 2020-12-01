@@ -1,0 +1,10 @@
+/* tslint:disable */
+import './Add_User'
+import './Calendar'
+import './Chat'
+import './Copy'
+import './Education'
+import './Folder'
+import './Home'
+import './Star'
+import './Users'

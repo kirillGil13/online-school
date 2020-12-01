@@ -8,3 +8,10 @@ export interface IUser {
 export interface RootState {
     version: string;
 }
+
+export interface IFakeUserInfo {
+    name: string,
+    surname: string,
+    login: string,
+    avatar: string
+}
