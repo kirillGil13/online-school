@@ -5,6 +5,6 @@ export interface IUser {
     image?: string,
     token: string,
 }
-export interface RootState {
-    version: string;
+export type UserResponseType = {
+    user: IUser
 }

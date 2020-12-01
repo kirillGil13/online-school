@@ -6,6 +6,3 @@ export interface IUserModule {
     token: string,
 
 }
-export type UserResponseType = {
-    user: IUserModule
-}

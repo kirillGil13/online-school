@@ -1,7 +1,8 @@
 import { ILoginForm } from '@/form/login/loginForm.types';
-import { IUserModule, UserResponseType } from '@/store/modules/users/users.types';
+import { IUserModule} from '@/store/modules/users/users.types';
 import { IAuthService } from './auth.types';
 import axios from 'axios';
+import { UserResponseType } from '@/entity/user/user.types';
 
 export class AuthService implements IAuthService {
     
