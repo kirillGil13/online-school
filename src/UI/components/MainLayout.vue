@@ -1,6 +1,6 @@
 <template>
   <div class="mainLayout">
-    <div class="main-container row">
+    <!--<div class="main-container row">
       <header>
         <div class="header-main">
           <h1>ONELINKS.com</h1>
@@ -291,7 +291,7 @@
         </div>
       </header>
       <router-view />
-    </div>
+    </div>-->
   </div>
 </template>
 <script lang="ts">

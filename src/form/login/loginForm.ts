@@ -1,9 +1,8 @@
 import { digit, maxLength, minLength, required, startsWith } from '@rxweb/reactive-forms';
-import { ILoginForm } from "./loginForm.types";
+import { ILoginForm, LoginRequestType } from "./loginForm.types";
 
 export class LoginForm implements ILoginForm {
 
-    isSecondStep = false;
     countryCode = '+7';
 
     @required()
@@ -12,4 +11,14 @@ export class LoginForm implements ILoginForm {
     @minLength({value: 10})
     @maxLength({value: 10})
     phone!: string;
+
+    get fullPhone(): string {
+        return this.countryCode + this.phone;
+    }
+
+    get request(): LoginRequestType {
+        return {
+            phone: this.fullPhone
+        }
+    }
 }
