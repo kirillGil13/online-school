@@ -2,6 +2,7 @@
     <div class="login_page">
         <Form />
         <main-account-card :userInfo="fakeUserInfo" :menuData="testData" />
+        <banner :bannerType="'inviteBanner'" />
     </div>
 </template>
 <script lang="ts">
@@ -11,12 +12,14 @@ import Form from '../components/common/Form.vue';
 import MainAccountCard from '../components/mainAccountCard/MainAccountCard.vue';
 import { IFakeUserInfo } from '@/entity/environment';
 import { IMainMenu } from '@/entity/menu/menu.types';
+import Banner from '../components/common/Banner.vue';
 //import user from '@/store/modules/users';
 
 @Component({
     components: {
         Form,
-        MainAccountCard
+        MainAccountCard,
+        Banner
     }
 })
 export default class Login extends Vue {

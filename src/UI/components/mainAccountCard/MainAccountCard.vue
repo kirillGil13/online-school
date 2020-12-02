@@ -54,6 +54,7 @@ export default class extends Vue {
     display: flex;
     align-items: center;
     flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
     &__main-menu {
         // border-radius: 16px;
         // overflow: hidden;
