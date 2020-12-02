@@ -9,6 +9,6 @@ export class AuthService implements IAuthService {
         const response = await axios.post('', {
             user
         })
-        return (response.data as UserResponseType).user
+        return response.data as UserResponseType
     }
 }
