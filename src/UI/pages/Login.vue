@@ -1,71 +1,48 @@
 <template>
-    <div class="login_page">
-        <Form />
-        <main-account-card :userInfo="fakeUserInfo" :menuData="testData" />
-    </div>
+  <div class="content center">
+    <LoginFormVue v-if="!isSecondStep" :form="loginForm" @submit="sendPhone" />
+    <CodeFormVue v-if="isSecondStep" :form="codeForm" @submit="sendCode" :phone="phone" />
+  </div>
 </template>
 <script lang="ts">
-import { IUserModule } from '@/store/modules/users/users.types';
-import { Component, Model, Vue } from 'vue-property-decorator';
-import Form from '../components/common/Form.vue';
-import MainAccountCard from '../components/mainAccountCard/MainAccountCard.vue';
-import { IFakeUserInfo } from '@/entity/environment';
-import { IMainMenu } from '@/entity/menu/menu.types';
-//import user from '@/store/modules/users';
+import { Component, Vue } from "vue-property-decorator";
+import LoginFormVue from "../components/common/LoginForm.vue";
+import CodeFormVue from "../components/common/CodeForm.vue";
+import { LoginForm } from "@/form/login/loginForm";
+import { IFormGroup, RxFormBuilder } from "@rxweb/reactive-forms";
+import { CodeForm } from "@/form/code/codeForm";
+import { ICodeData, ILoginData } from "@/form/form";
 
 @Component({
-    components: {
-        Form,
-        MainAccountCard
-    }
+  components: {
+    LoginFormVue,
+    CodeFormVue,
+  },
 })
 export default class Login extends Vue {
-    private testData: IMainMenu[] = [
-        {
-            title: 'Главная',
-            iconName: 'Home',
-            path: '/'
-        },
-        {
-            title: 'Обучение',
-            iconName: 'Education',
-            path: '/'
-        },
-        {
-            title: 'Материалы',
-            iconName: 'Folder',
-            path: '/'
-        },
-        {
-            title: 'События',
-            iconName: 'Calendar',
-            path: '/'
-        },
-        {
-            title: 'Чат',
-            iconName: 'Chat',
-            path: '/'
-        },
-        {
-            title: 'Кандидаты',
-            iconName: 'Add_User',
-            path: '/'
-        },
-        {
-            title: 'Партнеры',
-            iconName: 'Users',
-            path: '/'
-        }
-    ];
-    private fakeUserInfo: IFakeUserInfo = {
-        name: 'Денис',
-        surname: 'Денисов',
-        login: 'denis_loh',
-        avatar:
-            'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'
-    };
-    get user(): IUserModule {
-        return this.user as IUserModule;
-    }
+  loginForm!: IFormGroup<LoginForm>;
+  codeForm!: IFormGroup<CodeForm>;
+  formBuilder: RxFormBuilder = new RxFormBuilder();
+  phone = "";
+  code = "";
+  isSecondStep = false;
+
+  constructor() {
+    super();
+    this.loginForm = this.formBuilder.formGroup(
+      LoginForm
+    ) as IFormGroup<LoginForm>;
+    this.codeForm = this.formBuilder.formGroup(
+      CodeForm
+    ) as IFormGroup<CodeForm>;
+  }
+  sendPhone(data: ILoginData) {
+    this.phone = data.phone;
+    this.isSecondStep = data.isSecondStep;
+  }
+  sendCode(data: ICodeData) {
+    this.code = data.code;
+  }
 }
 </script>
+

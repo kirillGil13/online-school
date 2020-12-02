@@ -5,8 +5,7 @@ import Login from "../UI/pages/Login.vue"
 
 Vue.use(Router);
 
-export default new Router({
-    routes: [
+  const routes = [
         {
             path: '/', name: 'login', component: Login
         },
@@ -16,4 +15,9 @@ export default new Router({
             ]
         }
     ]
+Vue.router = new Router({
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
+export const router = Vue.router;

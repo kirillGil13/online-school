@@ -3,12 +3,13 @@ import App from "./UI/App.vue";
 import Element from 'element-ui'
 import '@/UI/assets/scss/common/element-variables.scss'
 import SvgIcon from 'vue-svgicon'
-import router from "./router/router";
+import {router} from "./router/router";
 import store from "./store";
 import "@/UI/assets/scss/main.scss";
 import '@/UI/components/svg'
 
 Vue.config.productionTip = false;
+import "@/plugins";
 
 Vue.use(Element)
 

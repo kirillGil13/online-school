@@ -87,10 +87,37 @@ header {
     margin-top: 45px;
 }
 .mt-12 {
+}
+.mt-12 {
     margin-top: 12px;
 }
 .mt-30 {
     margin-top: 32px;
+}
+.mb-36 {
+    margin-bottom: 36px;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+}
+.col {
+    display: flex;
+    flex-direction: column;
+}
+.center {
+    align-items: center;
+    justify-content: center;
+}
+.content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.container,
+#app {
+    width: 100%;
+    height: 100%;
 }
 
 /* recommended css code for vue-svgicon */

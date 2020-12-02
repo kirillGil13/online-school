@@ -1,12 +1,7 @@
-import { IForm, ValidationError } from './form.types';
-
-export abstract class Form implements IForm {
-
-    errors: Array<ValidationError> = [];
-
-    abstract validate(): boolean;
-
-    getErrors(): Array<ValidationError> {
-        return this.errors;
-    }
+export interface ILoginData {
+    phone: string;
+    isSecondStep: boolean;
+}
+export interface ICodeData {
+    code: string;
 }

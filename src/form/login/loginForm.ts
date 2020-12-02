@@ -1,31 +1,15 @@
-import { Watch, Vue } from 'vue-property-decorator';
-import { Form } from "../form";
-import { ValidationError } from "../form.types";
+import { digit, maxLength, minLength, required, startsWith } from '@rxweb/reactive-forms';
 import { ILoginForm } from "./loginForm.types";
 
-export class LoginForm extends Form implements ILoginForm {
-    phone = '+7';
-    name = 'phone';
-    isPhoneTouched = false;
-    label = 'Номер телефона';
-    check = false;
+export class LoginForm implements ILoginForm {
 
-    validate(): boolean {
-        this.isPhoneValid;
-        return this.errors.length === 0;
-    }
-     
-    get isPhoneValid(): boolean{
-        this.check = /^((\+7|7|8)+([0-9]){10})$/.test(this.phone) && this.phone.length == 12;
-        if(this.check == false && !this.errors.find(item => item.key === 'phone')){
-            this.errors.push({key: 'phone', message: 'Введите корректный номер телефона'});
-        }
-        return this.check;
-    }
-    get isPhoneError(): boolean{
-        return !this.isPhoneValid && this.isPhoneTouched
-    }
-    getErrorMessages(key: string): Array<string>{
-        return this.errors.filter(item => item.key === key).map(item => item.message);
-    }
+    isSecondStep = false;
+    countryCode = '+7';
+
+    @required()
+    @startsWith({value:'9'})
+    @digit()
+    @minLength({value: 10})
+    @maxLength({value: 10})
+    phone!: string;
 }

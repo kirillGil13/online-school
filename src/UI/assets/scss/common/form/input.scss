@@ -5,16 +5,34 @@ input{
     border-radius: 5px;
     color: $dark;
     font-size: 14px;
-    width: 95%;
+    width: 98%;
     height: 46px;
-    padding-left: 16px;
     &::placeholder{
         color: $dark;
     }
+    text-indent: 32px;
 }
 label{
     text-align: left;
     width: 95%;
     font-size: 14px;
     color: $label;
+}
+.error-label{
+    color: rgba(255, 0, 0, 0.63);
+    font-size: 14px;
+    margin-top: 5px;
+}
+.input-value{
+    color: $dark;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 30px;
+    top: 0;
+    left: 0;
 }
