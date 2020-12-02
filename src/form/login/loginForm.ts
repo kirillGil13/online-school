@@ -1,15 +1,22 @@
-import { maxLength, minLength, pattern, required } from '@rxweb/reactive-forms';
-import { Form } from "../form";
+import { digit, maxLength, minLength, required, startsWith } from '@rxweb/reactive-forms';
 import { ILoginForm } from "./loginForm.types";
 
-export class LoginForm extends Form implements ILoginForm {
-    //@pattern({expression: {pincode: / (^\+?[\d\W-/]{4,16}$)/}, message: 'fsgdfgdfg'})
-    @required({message: 'Это поле обязательно'})
-    phone = "+7";
+export class LoginForm implements ILoginForm {
 
-    isPhoneTouched = false;
-    getValidators(){
-        return this.phone;
+    private _phone = '';
+    countryCode = '+7';
+    btnText = 'Продолжить';
+
+    get phone(): string{
+        return this._phone;
     }
 
+    @required()
+    @startsWith({value:'9'})
+    @digit()
+    @minLength({value: 10})
+    @maxLength({value: 10})
+    set phone(value: string){
+        this._phone = value;
+    }
 }

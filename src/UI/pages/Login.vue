@@ -1,10 +1,9 @@
 <template>
-  <div class="login_page">
+  <div class="content center">
     <Form />
   </div>
 </template>
 <script lang="ts">
-import { IUserModule } from '@/store/modules/users/users.types';
 import { Component, Model, Vue } from "vue-property-decorator";
 import Form from "../components/common/Form.vue";
 //import user from '@/store/modules/users';
@@ -15,8 +14,8 @@ import Form from "../components/common/Form.vue";
   },
 })
 export default class Login extends Vue {
-  get user(): IUserModule {
-      return this.user as IUserModule;
+  get user(): any {
+      return this.user as any;
   }
 }
 </script>

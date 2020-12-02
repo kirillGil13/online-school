@@ -1,4 +1,4 @@
-import {Action, getModule, Module, VuexModule} from "vuex-module-decorators";
+import {Action, getModule, Module, MutationAction, VuexModule} from "vuex-module-decorators";
 import Vue from 'vue';
 import store from '@/Store';
 import {ILoginForm} from "@/form/login/loginForm.types";
@@ -12,6 +12,11 @@ import User from '@/entity/user/user';
     dynamic: true,
 })
 class AuthModule extends VuexModule {
+
+    get user(): IUser {
+        return new User(Vue.auth.user())
+    }
+    
 
     @Action
     async fetch() {

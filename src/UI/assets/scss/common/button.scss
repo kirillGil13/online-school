@@ -1,0 +1,17 @@
+@import "/src/UI/assets/scss/const/const.scss";
+
+button{
+    font-size: 14px;
+    background: $blue;
+    border-radius: 12px;
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: 16px 24px;
+    border: 1px solid $blue;
+    margin-top: 16px;
+}
+button:disabled {
+    text-align: center;
+    background-color: $disabled;
+    border-color: $disabled;
+}
