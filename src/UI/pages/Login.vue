@@ -1,17 +1,16 @@
 <template>
   <div class="content center">
-    <LoginFormVue v-if="!isSecondStep" :form="loginForm" @submit="sendPhone" />
-    <CodeFormVue v-if="isSecondStep" :form="codeForm" @submit="sendCode" :phone="phone" />
+    <LoginFormVue v-if="!isSecondStep" :form="loginForm" v-on="$listeners" @submit="sendPhone"/>
+    <CodeFormVue v-if="isSecondStep" :form="codeForm" @click="sendCode" :phone="loginForm.modelInstance.fullPhone" />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import LoginFormVue from "../components/common/LoginForm.vue";
-import CodeFormVue from "../components/common/CodeForm.vue";
+import LoginFormVue from "../components/auth/LoginForm.vue";
+import CodeFormVue from "../components/auth/CodeForm.vue";
 import { LoginForm } from "@/form/login/loginForm";
 import { IFormGroup, RxFormBuilder } from "@rxweb/reactive-forms";
 import { CodeForm } from "@/form/code/codeForm";
-import { ICodeData, ILoginData } from "@/form/form";
 
 @Component({
   components: {
@@ -23,9 +22,8 @@ export default class Login extends Vue {
   loginForm!: IFormGroup<LoginForm>;
   codeForm!: IFormGroup<CodeForm>;
   formBuilder: RxFormBuilder = new RxFormBuilder();
-  phone = "";
-  code = "";
   isSecondStep = false;
+
 
   constructor() {
     super();
@@ -36,12 +34,14 @@ export default class Login extends Vue {
       CodeForm
     ) as IFormGroup<CodeForm>;
   }
-  sendPhone(data: ILoginData) {
-    this.phone = data.phone;
-    this.isSecondStep = data.isSecondStep;
+  async sendPhone(): Promise<void> {
+      // todo send server
+    console.log(this.loginForm.modelInstance)
+    this.isSecondStep = true;
   }
-  sendCode(data: ICodeData) {
-    this.code = data.code;
+  async sendCode(): Promise<void> {
+    // todo send server
+    this.$router.push({path: '/main'});
   }
 }
 </script>

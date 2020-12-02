@@ -2,5 +2,10 @@
 export interface ILoginForm{
     phone: string;
     countryCode: string;
-    isSecondStep: boolean
+    request: LoginRequestType;
+    fullPhone: string;
+}
+
+export type LoginRequestType = {
+    phone: string;
 }
