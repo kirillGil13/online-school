@@ -2,7 +2,12 @@
     <div class="login_page">
         <Form />
         <main-account-card :userInfo="fakeUserInfo" :menuData="testData" />
-        <banner :bannerType="'inviteBanner'" />
+        <banner
+            :bannerType="'qrcode'"
+            :qrcode="
+                'https://miro.medium.com/max/495/1*PNniLVIC_Hc7gNIxjvWPWg.png'
+            "
+        />
     </div>
 </template>
 <script lang="ts">
@@ -19,53 +24,53 @@ import Banner from '../components/common/Banner.vue';
     components: {
         Form,
         MainAccountCard,
-        Banner
-    }
+        Banner,
+    },
 })
 export default class Login extends Vue {
     private testData: IMainMenu[] = [
         {
             title: 'Главная',
             iconName: 'Home',
-            path: '/'
+            path: '/',
         },
         {
             title: 'Обучение',
             iconName: 'Education',
-            path: '/'
+            path: '/',
         },
         {
             title: 'Материалы',
             iconName: 'Folder',
-            path: '/'
+            path: '/',
         },
         {
             title: 'События',
             iconName: 'Calendar',
-            path: '/'
+            path: '/',
         },
         {
             title: 'Чат',
             iconName: 'Chat',
-            path: '/'
+            path: '/',
         },
         {
             title: 'Кандидаты',
             iconName: 'Add_User',
-            path: '/'
+            path: '/',
         },
         {
             title: 'Партнеры',
             iconName: 'Users',
-            path: '/'
-        }
+            path: '/',
+        },
     ];
     private fakeUserInfo: IFakeUserInfo = {
         name: 'Денис',
         surname: 'Денисов',
         login: 'denis_loh',
         avatar:
-            'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'
+            'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg',
     };
     get user(): IUserModule {
         return this.user as IUserModule;

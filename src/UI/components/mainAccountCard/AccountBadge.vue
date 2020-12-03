@@ -27,8 +27,8 @@ import { IFakeUserInfo } from '@/entity/environment';
 import Avatar from './Avatar.vue';
 @Component({
     components: {
-        Avatar
-    }
+        Avatar,
+    },
 })
 export default class AccountBadge extends Vue {
     @Prop({ required: true }) readonly userInfo!: IFakeUserInfo;
@@ -43,7 +43,7 @@ export default class AccountBadge extends Vue {
     align-items: center;
     border: 1px solid #f2f2f2;
     width: 100%;
-    border-radius: 12px;
+    border-radius: $main_border_radius;
     &__account-info {
         margin-left: 15px;
         display: flex;
@@ -51,7 +51,7 @@ export default class AccountBadge extends Vue {
         align-items: center;
     }
     &__login-wrapper {
-        color: #426df6;
+        color: $blue;
         background-color: #e8edfe;
         padding: 5px;
         border-radius: 6px;
@@ -63,7 +63,7 @@ export default class AccountBadge extends Vue {
     }
     &__copy-icon {
         margin-left: 10px;
-        color: #426df6;
+        color: $blue;
         height: 100% !important;
         width: 20px !important;
     }

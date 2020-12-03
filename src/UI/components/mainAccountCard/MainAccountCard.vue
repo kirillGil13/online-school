@@ -33,8 +33,8 @@ import variables from '@/UI/assets/scss/variables/_variables.scss';
     name: 'MainAccountCard',
     components: {
         MenuComponent,
-        AccountBadge
-    }
+        AccountBadge,
+    },
 })
 export default class extends Vue {
     @Prop({ required: true }) menuData!: IMainMenu[];
@@ -48,7 +48,7 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .account-info {
     max-width: 290px;
-    border-radius: 12px;
+    border-radius: $main_border_radius;
     padding: 20px;
     background-color: white;
     display: flex;
@@ -67,7 +67,7 @@ export default class extends Vue {
         border: none;
         .is-active {
             background-color: #e8edfe !important;
-            border-radius: 12px;
+            border-radius: $main_border_radius;
         }
     }
 }

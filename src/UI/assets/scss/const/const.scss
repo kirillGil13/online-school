@@ -1,27 +1,32 @@
-
-$background: #E5E5E5;
+$background: #e5e5e5;
 $black: #000000;
 $dark: #060516;
-$white: #FFFFFF;
-$blue: #426DF6;
-$label: #818C99;
+$white: #ffffff;
+$blue: #426df6;
+$label: #818c99;
+$secondary_text: #4f4f4f;
 $input_border: rgba(87, 81, 183, 0.12);
 $light_blue: rgba(66, 109, 246, 0.12);
-$blue_gradient: linear-gradient(180deg, #4F79FF 0%, #2150E7 100%);
-$link: #5F739C;
-$green: #27AE60;
+$blue_gradient: linear-gradient(180deg, #4f79ff 0%, #2150e7 100%);
+$link: #5f739c;
+$green: #27ae60;
 $light: rgba(87, 81, 183, 0.12);
-$super_light_green: linear-gradient(0deg, rgba(39, 174, 96, 0.08), rgba(39, 174, 96, 0.08)), #FFFFFF;
+$super_light_green: linear-gradient(
+        0deg,
+        rgba(39, 174, 96, 0.08),
+        rgba(39, 174, 96, 0.08)
+    ),
+    #ffffff;
 $light_green: rgba(39, 174, 96, 0.12);
-$green: #27AE60;
-$grey: #F2F2F2;
-$orange_gradient: linear-gradient(180deg, #F2CD4A 0%, #FF6D1B 100%);
+$green: #27ae60;
+$grey: #f2f2f2;
+$orange_gradient: linear-gradient(180deg, #f2cd4a 0%, #ff6d1b 100%);
 $main_font_size: 14px;
 $second_font_size: 12px;
+$main_border_radius: 12px;
 
 $font-family-base: 'Ubuntu';
 $font-family-head: 'Manrope';
 
 $DEV_MODE: $NODE_ENV == development;
 $MAX_INT32: 2147483647;
-
