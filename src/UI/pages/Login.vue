@@ -3,7 +3,7 @@
         <Form />
         <main-account-card :userInfo="fakeUserInfo" :menuData="testData" />
         <banner
-            :bannerType="'qrcode'"
+            :bannerType="bannerTypes.PRO_ACCOUNT_PROMO"
             :qrcode="
                 'https://miro.medium.com/max/495/1*PNniLVIC_Hc7gNIxjvWPWg.png'
             "
@@ -19,6 +19,7 @@ import { IFakeUserInfo } from '@/entity/environment';
 import { IMainMenu } from '@/entity/menu/menu.types';
 import Banner from '../components/common/Banner.vue';
 //import user from '@/store/modules/users';
+import { BannerTypeEnum } from '@/entity/common/baner.types';
 
 @Component({
     components: {
@@ -72,6 +73,9 @@ export default class Login extends Vue {
         avatar:
             'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg',
     };
+    private get bannerTypes() {
+        return BannerTypeEnum;
+    }
     get user(): IUserModule {
         return this.user as IUserModule;
     }
