@@ -25,7 +25,7 @@ export default class Avatar extends Vue {
 
 <style scoped lang="scss">
 .avatar {
-    border-radius: 12px;
+    border-radius: $main_border_radius;
 }
 .star {
     position: absolute;
@@ -35,8 +35,8 @@ export default class Avatar extends Vue {
     z-index: 1;
     bottom: 0;
     right: 0;
-    background-color: white;
-    color: #426df6;
+    background-color: $white;
+    color: $blue;
     border-radius: 50%;
     height: 16px;
     width: 16px;

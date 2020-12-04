@@ -6,6 +6,7 @@ $light_blue: rgba(66, 109, 246, 0.12);
 $blue_gradient: linear-gradient(180deg, #4f79ff 0%, #2150e7 100%);
 $link: #5f739c;
 $green: #27ae60;
+$light_green: #8ad2a9;
 $light: rgba(87, 81, 183, 0.12);
 
 // The :export directive is the magic sauce for webpack
@@ -14,4 +15,6 @@ $light: rgba(87, 81, 183, 0.12);
     menuBg: $white;
     menuText: $link;
     menuActiveText: $blue;
+    green: $green;
+    lightGreen: $light_green;
 }
