@@ -1,6 +1,18 @@
 <template>
-    <div class="login_page">
-        <Form />
+    <div class="content center">
+        <LoginFormVue
+            v-if="!isSecondStep"
+            :form="loginForm"
+            v-on="$listeners"
+            @submit="sendPhone"
+        />
+        <CodeFormVue
+            v-if="isSecondStep"
+            :form="codeForm"
+            @click="sendCode"
+            :phone="loginForm.modelInstance.fullPhone"
+        />
+
         <main-account-card :userInfo="fakeUserInfo" :menuData="testData" />
         <banner
             :bannerType="bannerTypes.PRO_ACCOUNT_PROMO"
@@ -11,9 +23,12 @@
     </div>
 </template>
 <script lang="ts">
-import { IUserModule } from '@/store/modules/users/users.types';
-import { Component, Model, Vue } from 'vue-property-decorator';
-import Form from '../components/common/Form.vue';
+import { Component, Vue } from 'vue-property-decorator';
+import LoginFormVue from '../components/auth/LoginForm.vue';
+import CodeFormVue from '../components/auth/CodeForm.vue';
+import { LoginForm } from '@/form/login/loginForm';
+import { IFormGroup, RxFormBuilder } from '@rxweb/reactive-forms';
+import { CodeForm } from '@/form/code/codeForm';
 import MainAccountCard from '../components/mainAccountCard/MainAccountCard.vue';
 import { IFakeUserInfo } from '@/entity/environment';
 import { IMainMenu } from '@/entity/menu/menu.types';
@@ -23,12 +38,37 @@ import { BannerTypeEnum } from '@/entity/common/baner.types';
 
 @Component({
     components: {
-        Form,
+        LoginFormVue,
+        CodeFormVue,
         MainAccountCard,
         Banner,
     },
 })
 export default class Login extends Vue {
+    loginForm!: IFormGroup<LoginForm>;
+    codeForm!: IFormGroup<CodeForm>;
+    formBuilder: RxFormBuilder = new RxFormBuilder();
+    isSecondStep = false;
+
+    constructor() {
+        super();
+        this.loginForm = this.formBuilder.formGroup(LoginForm) as IFormGroup<
+            LoginForm
+        >;
+        this.codeForm = this.formBuilder.formGroup(CodeForm) as IFormGroup<
+            CodeForm
+        >;
+    }
+    async sendPhone(): Promise<void> {
+        // todo send server
+        console.log(this.loginForm.modelInstance);
+        this.isSecondStep = true;
+    }
+    async sendCode(): Promise<void> {
+        // todo send server
+        this.$router.push({ path: '/main' });
+    }
+
     private testData: IMainMenu[] = [
         {
             title: 'Главная',
@@ -75,9 +115,6 @@ export default class Login extends Vue {
     };
     private get bannerTypes() {
         return BannerTypeEnum;
-    }
-    get user(): IUserModule {
-        return this.user as IUserModule;
     }
 }
 </script>
