@@ -11,7 +11,8 @@ Vue.use(Router);
         },
         {
             path: '/main', component: () => import("../UI/components/MainLayout.vue"), children: [
-                { path: '', name: 'main', component: () => import("../UI/pages/MainPage.vue") }
+                { path: '', name: 'main', component: () => import("../UI/pages/MainPage.vue") },
+                { path: '/training', name: 'training', component: () => import("../UI/pages/Training.vue") }
             ]
         }
     ]

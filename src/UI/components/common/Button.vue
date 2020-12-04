@@ -1,5 +1,5 @@
 <template>
-    <button :disabled="disabled" @click="$emit('submit')" class="form-button"><slot></slot></button>
+    <button :disabled="disabled" @click="$emit('submit')"><slot></slot></button>
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";

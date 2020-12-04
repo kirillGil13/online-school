@@ -5,7 +5,6 @@
 @import './common/link.scss';
 @import './common/search.scss';
 @import './common/user.scss';
-@import './common/form/form-button.scss';
 @import './common/form/form.scss';
 @import './common/form/input.scss';
 
@@ -14,8 +13,8 @@ body {
     width: 100%;
     height: 100%;
     color: $black;
-    background-color: $background;
     font-family: 'Ubuntu';
+    background-color: $background;
     padding: 0;
     margin: 0;
     line-height: 160%;
