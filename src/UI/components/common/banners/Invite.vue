@@ -27,13 +27,16 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import variables from '@/UI/assets/scss/variables/_variables.scss';
 @Component
 export default class InviteBanner extends Vue {
     get variables() {
         return variables;
+    }
+    private copyLink(): void {
+        this.$emit('copyLink');
     }
 }
 </script>

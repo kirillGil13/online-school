@@ -30,6 +30,9 @@ export default class PromoBanner extends Vue {
     get variables() {
         return variables;
     }
+    private subscribe(): void {
+        this.$router.push('link na subscribe');
+    }
 }
 </script>
 
