@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { IMainMenu } from '@/entity/environment';
+import { IMainMenu } from '@/entity/menu/menu.types';
 
 @Component
 export default class MenuComponent extends Vue {
