@@ -1,6 +1,5 @@
 import Vue from 'vue';
-import Vuex, { StoreOptions } from 'vuex';
-import { RootState } from '../entity/environment';
+import Vuex, { StoreOptions } from 'vuex'; 
 
 
 Vue.use(Vuex);

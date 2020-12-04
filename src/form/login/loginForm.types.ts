@@ -1,5 +1,11 @@
-import { IForm } from '../form.types';
 
-export interface ILoginForm extends IForm{
+export interface ILoginForm{
+    phone: string;
+    countryCode: string;
+    request: LoginRequestType;
+    fullPhone: string;
+}
+
+export type LoginRequestType = {
     phone: string;
 }
