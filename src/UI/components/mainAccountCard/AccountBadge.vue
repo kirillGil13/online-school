@@ -5,7 +5,7 @@
             :imageClass="'account-badge__avatar'"
             :height="48"
             :width="48"
-            :star="true"
+            :smallStar="true"
         />
         <div class="account-badge__account-info">
             <span>{{ `${userInfo.name} ${userInfo.surname}` }}</span>
@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { IFakeUserInfo } from '@/entity/environment';
-import Avatar from './Avatar.vue';
+import Avatar from '@/UI/components/common/Avatar.vue';
 @Component({
     components: {
         Avatar,
