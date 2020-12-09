@@ -13,7 +13,7 @@
       <span class="input-value">{{form.value.countryCode}}</span>
     </div>
     <div class="error-label" v-if="form.controls.phone.dirty">{{form.controls.phone.errorMessage}}</div>
-    <Button :disabled="!form.valid" v-on="$listeners">Продолжить</Button>
+    <Button class="full-width" :disabled="!form.valid" v-on="$listeners">Продолжить</Button>
   </form>
 </template>
 <script lang="ts">
@@ -29,6 +29,10 @@ import Button from "../common/Button.vue";
 })
 export default class LoginFormVue extends Vue {
     @Prop() readonly form!: IFormGroup<LoginForm>;
-    btnText = 'Продолжить';
 }
 </script>
+<style lang="scss">
+    .full-width { 
+        width: 100%;
+    }
+</style>
