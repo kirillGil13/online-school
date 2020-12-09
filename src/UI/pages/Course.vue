@@ -3,7 +3,7 @@
     <el-aside width="290px" height="585px"></el-aside>
     <el-container class="ml-36 container_b">
       <el-col>
-        <Header :course="true" title="Как стать Мастером Вовлечения"></Header>
+        <Header :isBordered="true" title="Как стать Мастером Вовлечения" :route="route"></Header>
         <el-col class="course">
           <el-col>
             <el-container class="course-container"></el-container>
@@ -24,7 +24,6 @@
                 class="desc"
               >At ornare ut tellus semper sem libero sit mauris. Dictum nulla faucibus vulputate duis. Nibh vel faucibus enim quis ut arcu, faucibus amet. Egestas morbi enim tellus nec placerat at duis. Quis dictumst auctor risus fermentum. Felis lacus ac tempor, urna, arcu orci. Imperdiet morbi at porttitor aliquam id eleifend auctor maecenas. Erat aenean diam justo, sed et tortor, et cras. Sed eu est porttitor augue. Curabitur in eleifend euismod molestie eget leo adipiscing. Fames aliquam tincidunt.</span>
             </el-col>
-
           </el-col>
         </el-col>
         <el-col class="lessons">
@@ -50,6 +49,7 @@ import Header from "../components/common/Header.vue";
 import Button from "../components/common/Button.vue";
 import { Component, Vue } from "vue-property-decorator";
 import { ICourseItem, ILessons } from "@/entity/courseItem/courseItem.type";
+import { HeaderRouteType } from "@/entity/common/header.types";
 
 @Component({
   components: {
@@ -57,7 +57,12 @@ import { ICourseItem, ILessons } from "@/entity/courseItem/courseItem.type";
     Button,
   },
 })
-export default class Course extends Vue {}
+export default class Course extends Vue {
+  route: HeaderRouteType = {
+    name: "training",
+    label: "Вернуться к списку курсов",
+  };
+}
 </script>
 <style lang="scss">
 .container_b {

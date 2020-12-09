@@ -1,8 +1,9 @@
 <template>
-  <el-row :class="['top_bar', course ? 'box-container' : '']">
+  <el-row :class="['top_bar', isBordered ? 'box-container' : '']">
     <el-col :span="16">
-      <router-link v-if="course" :to="{name: 'training'}">
-        <svg-icon name="Arrow_Left" class="svg-fill-none mr-14"></svg-icon>Вернуться к списку курсов
+      <router-link v-if="route" :to="{name: route.name}">
+        <svg-icon name="Arrow_Left" class="svg-fill-none mr-14"></svg-icon>
+        {{route.label}}
       </router-link>
       <h1 v-if="title">{{title}}</h1>
       <span v-if="description">{{description}}</span>
@@ -14,12 +15,14 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { HeaderRouteType } from "@/entity/common/header.types";
 
 @Component
-export default class Course extends Vue {
+export default class Header extends Vue {
   @Prop({ default: "" }) readonly title!: string;
   @Prop({ default: "" }) readonly description!: string;
-  @Prop({ required: true }) readonly course!: boolean;
+  @Prop({ default: "" }) readonly route!: HeaderRouteType;
+  @Prop({ default: false }) readonly isBordered!: boolean;
 }
 </script>
 <style lang="scss">
