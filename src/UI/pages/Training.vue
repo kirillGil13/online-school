@@ -5,7 +5,6 @@
             <input type="search" name="search" id="search">
         </div>
         <!--slider-->
-        
     </div>
 </template>
 <script lang="ts">
