@@ -5,12 +5,10 @@
         </el-col>
         <el-col :span="24" class="profile__main-content">
             <el-row>
-                <el-col :span="4">
-                    <div class="grid-content">
+                <el-col :span="3">
+                    <div class="profile__info">
                         <avatar
-                            :imageSourse="
-                                'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'
-                            "
+                            :imageSourse="'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'"
                             :mediumStar="true"
                             :height="143"
                             :width="143"
@@ -24,29 +22,38 @@
                         >
                     </div>
                 </el-col>
-                <el-col :span="20"
-                    ><div class="grid-content bg-purple-dark">
+                <el-col :span="21"
+                    ><div class="grid-content profile__detail-info">
                         <el-row>
-                            <el-col class="collol" :span="24">
-                                <div class="grid-conten bg-purple"></div>
-                            </el-col>
-                            <el-col class="collol" :span="24">
-                                <div class="grid-conten bg-purple"></div>
-                            </el-col>
-                            <el-col class="collol" :span="24">
-                                <div class="grid-conten bg-purple"></div>
-                            </el-col>
-                            <el-col class="collol" :span="24">
-                                <div class="grid-conten bg-purple"></div>
-                            </el-col>
-                            <el-col class="collol" :span="24">
-                                <div class="grid-conten bg-purple"></div>
-                            </el-col>
-                            <el-col class="collol" :span="24">
-                                <div class="grid-conten bg-purple"></div>
-                            </el-col>
-                            <el-col class="collol" :span="24">
-                                <div class="grid-conten bg-purple"></div>
+                            <el-col class="profile__col" :span="24">
+                                <el-tabs
+                                    v-model="activeName"
+                                    @tab-click="handleClick"
+                                >
+                                    <el-tab-pane label="Общие" name="common"
+                                        ><profile-main-info
+                                    /></el-tab-pane>
+                                    <el-tab-pane
+                                        label="Контактные данные"
+                                        name="contactData"
+                                        ><profile-contact-data
+                                    /></el-tab-pane>
+                                    <el-tab-pane
+                                        label="Безопасность"
+                                        name="security"
+                                        ><profile-security
+                                    /></el-tab-pane>
+                                    <el-tab-pane
+                                        label="Подписка"
+                                        name="subscribe"
+                                        ><profile-subscribe
+                                    /></el-tab-pane>
+                                    <el-tab-pane
+                                        label="Сменить аватар"
+                                        name="changeAvatar"
+                                        ><profile-avatar-change
+                                    /></el-tab-pane>
+                                </el-tabs>
                             </el-col>
                         </el-row>
                     </div>
@@ -61,14 +68,29 @@ import { Component, Vue } from 'vue-property-decorator';
 import Badge from '@/UI/components/common/Badge.vue';
 import Avatar from '@/UI/components/common/Avatar.vue';
 import Button from '@/UI/components/common/Button.vue';
+import ProfileAvatarChange from '@/UI/components/profile/AvatarChange.vue';
+import ProfileSubscribe from '@/UI/components/profile/Subscribe.vue';
+import ProfileSecurity from '@/UI/components/profile/Security.vue';
+import ProfileContactData from '@/UI/components/profile/ContactData.vue';
+import ProfileMainInfo from '@/UI/components/profile/MainInfo.vue';
 @Component({
     components: {
         Badge,
         Avatar,
         Button,
+        ProfileSecurity,
+        ProfileMainInfo,
+        ProfileContactData,
+        ProfileSubscribe,
+        ProfileAvatarChange,
     },
 })
-export default class Profile extends Vue {}
+export default class Profile extends Vue {
+    private activeName = 'common';
+    private handleClick(tab, event): void {
+        console.log(tab, event);
+    }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -83,14 +105,25 @@ export default class Profile extends Vue {}
     }
     &__singout-button {
         background-color: rgba(66, 109, 246, 0.12);
+        border-radius: $main_border_radius;
+        color: $blue;
+        width: 100%;
+    }
+    &__col {
+        padding: 10px;
+    }
+    &__info {
+        max-width: 144px;
+        min-height: 600px;
+    }
+    &__detail-info {
+        border-radius: $main_border_radius;
+        border: 1px solid #e8edfe;
     }
 }
 
 .bg-purple-dark {
     background: #99a9bf;
-}
-.bg-purple {
-    background: #d3dce6;
 }
 .bg-purple-light {
     background: #e5e9f2;
@@ -102,8 +135,5 @@ export default class Profile extends Vue {}
 }
 .grid-conten {
     min-height: 32px;
-}
-.collol {
-    padding: 10px;
 }
 </style>
