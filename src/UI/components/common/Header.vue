@@ -37,14 +37,9 @@ export default class Header extends Vue {
     text-decoration: none;
     color: #426df6;
   }
-}
-span {
+  span {
   color: #828282;
 }
-.box-container {
-  background: #ffffff;
-  border: 1px solid #f2f2f2;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border-radius: 12px;
 }
+
 </style>

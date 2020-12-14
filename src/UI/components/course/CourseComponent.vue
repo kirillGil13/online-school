@@ -14,7 +14,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import Rating from "../common/Rating.vue";
-import ProgressCircle from"../common/ProgressCircle.vue"
+import ProgressCircle from"../progress/ProgressCircle.vue"
 import CoursesListItem from "@/entity/courses/courses"
 
 @Component({

@@ -18,6 +18,6 @@ export type ITestingAnswersResponseType = {
 }
 
 export type ITestingRequestType = {
-    question_id: number;
-    answer_id: number;
+    questionId: number;
+    answerId: number;
 }
