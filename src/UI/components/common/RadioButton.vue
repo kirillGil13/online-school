@@ -3,8 +3,8 @@
     <div class="row">
       <input
         type="radio"
-        :value="value"
-        v-model="radioButtonId"
+        :value="id"
+        v-model="resultsAnswerIdChange"
         name="radioButton"
         :id="'radioButton' + id"
         ref="radio"
@@ -22,11 +22,12 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 export default class RadioButton extends Vue {
   @Prop({ default: "" }) readonly value!: string;
   @Prop({ required: true }) readonly id!: number;
-  set radioButtonId(id: number) {
+  @Prop({ default: null }) readonly resultsAnswerId!: number;
+  set resultsAnswerIdChange(id: number) {
       this.$emit('change', this.id);
   }
-  get radioButtonId() {
-      return this.id;
+  get resultsAnswerIdChange() {
+      return this.resultsAnswerId;
   }
 }
 </script>

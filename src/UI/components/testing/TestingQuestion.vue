@@ -8,6 +8,7 @@
         :id="answer.id"
         :value="answer.answerOption"
         v-on="$listeners"
+        :resultsAnswerId="resultsAnswerId"
       />
     </div>
   </div>
@@ -27,5 +28,6 @@ import { TestingFormRequestType } from "@/form/testing/testingForm.types";
 export default class TestingQuestion extends Vue {
   @Prop() readonly question!: Testing;
   @Prop({default: false}) readonly active!: boolean;
+  @Prop({default : null}) readonly resultsAnswerId!: number;
 }
 </script>

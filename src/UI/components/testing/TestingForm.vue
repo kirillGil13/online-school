@@ -8,9 +8,9 @@
         :active="step === (index + 1)"
         :question="question"
         @change="change"
+        :resultsAnswerId="form.results[index].answerId"
       />
       <el-col>
-        {{form.results}}
         <Button
           v-if="step < form.questions.length"
           :disabled="!form.valid(step)"
@@ -65,10 +65,6 @@ export default class TestingFormVue extends Vue {
 .question {
   font-size: 16px;
   color: #060516;
-  margin-bottom: 16px;
-}
-.el-divider--horizontal {
-  margin-top: 16px;
   margin-bottom: 16px;
 }
 

@@ -6,7 +6,7 @@
         <div :class="['dash', number === 1 ? 'active' : '']" :id="number" ref="dash"></div>
       </el-col>
     </div>
-    <el-divider></el-divider>
+    <el-divider class="divider"></el-divider>
   </el-col>
 </template>
 <script lang="ts">
@@ -54,5 +54,9 @@ export default class ProgressBar extends Vue {
   .dash {
     flex-grow: 1;
   }
+}
+.divider {
+  margin-top: 16px !important;
+  margin-bottom: 16px !important;
 }
 </style>
