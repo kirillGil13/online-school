@@ -1,8 +1,12 @@
+import { ITesting } from '@/entity/testing/testing.types';
+
 export interface ITestingForm {
-    question: string;
-    answer: string;
+    questions: ITesting[];
+    results: TestingFormRequestType[];
+    valid(step: number): boolean;
+    send(): void;
 }
-export type TestingRequestType = {
-    question: string;
-    answer: string;
+export type TestingFormRequestType = {
+    questionId: number;
+    answerId?: number | null;
 }

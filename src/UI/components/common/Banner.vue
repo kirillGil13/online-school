@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from "vue-property-decorator";
 import { BannerTypeEnum } from '@/entity/common/baner.types';
 import PromoBanner from './banners/Promo.vue';
 import QrCodeBanner from './banners/QrCode.vue';

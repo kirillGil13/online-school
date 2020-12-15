@@ -8,13 +8,13 @@
           <el-col>
             <el-container class="course-container"></el-container>
             <el-row class="course-video-row">
-              <span>
+              <span class="relation">
                 <svg-icon name="Finger" class="svg-wh"></svg-icon>Нравится
               </span>
-              <span>
+              <span class="relation">
                 <svg-icon name="Finger" class="svg-wh svg-down"></svg-icon>Не нравится
               </span>
-              <span>
+              <span class="relation">
                 <svg-icon name="Chosen" class="svg-wh"></svg-icon>В избранное
               </span>
             </el-row>
@@ -24,6 +24,7 @@
                 class="desc"
               >At ornare ut tellus semper sem libero sit mauris. Dictum nulla faucibus vulputate duis. Nibh vel faucibus enim quis ut arcu, faucibus amet. Egestas morbi enim tellus nec placerat at duis. Quis dictumst auctor risus fermentum. Felis lacus ac tempor, urna, arcu orci. Imperdiet morbi at porttitor aliquam id eleifend auctor maecenas. Erat aenean diam justo, sed et tortor, et cras. Sed eu est porttitor augue. Curabitur in eleifend euismod molestie eget leo adipiscing. Fames aliquam tincidunt.</span>
             </el-col>
+            <TestingComponent :form="testingForm" @send="send" :result="testingResult"/>
           </el-col>
         </el-col>
         <el-col class="lessons">
@@ -47,14 +48,20 @@
 <script lang="ts">
 import Header from "../components/common/Header.vue";
 import Button from "../components/common/Button.vue";
+import TestingComponent from "../components/testing/TestingComponent.vue";
 import { Component, Vue } from "vue-property-decorator";
 import { ICourseItem, ILessons } from "@/entity/courseItem/courseItem.type";
 import { HeaderRouteType } from "@/entity/common/header.types";
+import { TestingForm } from "@/form/testing/testingForm";
+import Testing from "@/entity/testing/testing";
+import { TestingResultResponseType } from "@/entity/testingResult/testingResult.types";
+import TestingResult from "@/entity/testingResult/testingResult";
 
 @Component({
   components: {
     Header,
     Button,
+    TestingComponent,
   },
 })
 export default class Course extends Vue {
@@ -62,6 +69,134 @@ export default class Course extends Vue {
     name: "training",
     label: "Вернуться к списку курсов",
   };
+  testingForm: TestingForm;
+  testingResult: TestingResult;
+  constructor() {
+    super();
+    this.testingForm = new TestingForm(this.questions);
+    this.testingResult = new TestingResult(this.questions, this.rightAnswers)
+  }
+  send() {
+    console.log(1);
+  }
+  //todo server connection
+  rightAnswers: TestingResultResponseType = {
+      totalRightAnswers: 4
+  };
+  questions: Testing[] = [
+    {
+      id: 0,
+      question: "Какой самый важный критерий в лидере?",
+      answers: [
+        {
+          id: 0,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 1,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 2,
+          answerOption: "Презентация продуктов",
+        },
+      ],
+    },
+    {
+      id: 1,
+      question: "Какой самый важный критерий в лидере?",
+      answers: [
+        {
+          id: 0,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 1,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 2,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 3,
+          answerOption: "Презентация продуктов",
+        },
+      ],
+    },
+    {
+      id: 2,
+      question: "Какой самый важный критерий в лидере?",
+      answers: [
+        {
+          id: 0,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 1,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 2,
+          answerOption: "Презентация продуктов",
+        },
+      ],
+    },
+    {
+      id: 3,
+      question: "Какой самый важный критерий в лидере?",
+      answers: [
+        {
+          id: 0,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 1,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 2,
+          answerOption: "Презентация продуктов",
+        },
+      ],
+    },
+    {
+      id: 4,
+      question: "Какой самый важный критерий в лидере?",
+      answers: [
+        {
+          id: 0,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 1,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 2,
+          answerOption: "Презентация продуктов",
+        },
+      ],
+    },
+    {
+      id: 5,
+      question: "Какой самый важный критерий в лидере?",
+      answers: [
+        {
+          id: 0,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 1,
+          answerOption: "Презентация продуктов",
+        },
+        {
+          id: 2,
+          answerOption: "Презентация продуктов",
+        },
+      ],
+    },
+  ];
 }
 </script>
 <style lang="scss">
@@ -90,7 +225,7 @@ export default class Course extends Vue {
   height: 36px !important;
   margin-right: 8px;
 }
-span {
+.relation {
   margin-right: 36px;
 }
 .lessons {
@@ -98,20 +233,6 @@ span {
 }
 .course-lessons-block {
   padding-bottom: 108%;
-}
-.box-container {
-  background: #ffffff;
-  border: 1px solid #f2f2f2;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border-radius: 12px;
-}
-.box-padding {
-  padding: 24px;
-}
-h5 {
-  margin-top: 0;
-  margin-bottom: 12px;
-  letter-spacing: 1px;
 }
 .desc {
   color: #818c99;
