@@ -21,7 +21,7 @@ import TestingResultComponent from "./TestingResultComponents/TestingResultCompo
   },
 })
 export default class TestingComponent extends Vue {
-    active = true;
+    active = false;
     @Prop() readonly form!: TestingForm;
     @Prop() readonly result!: TestingResult;
 }

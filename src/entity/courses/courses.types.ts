@@ -8,7 +8,7 @@ export interface ICoursesListItem {
     rating: number;
     progress: number;
 }
-export type CoursesListItemRequestType = {
+export type CoursesListItemResponseType = {
     id: number
     title: string;
     cover: string;

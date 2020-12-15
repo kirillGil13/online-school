@@ -23,9 +23,14 @@ export default class Timer extends Vue {
     }
   }
   startTimer() {
-    this.timer = setInterval(() => {
-      this.currentTimeTemp--;
+    this.timer = setTimeout(() => {
+        --this.currentTimeTemp;
+        this.startTimer();
     }, 1000);
+  }
+  changeTimer() {
+      this.currentTimeTemp--;
+      console.log(this.currentTimeTemp)
   }
   stopTimer() {
     clearTimeout(this.timer);
