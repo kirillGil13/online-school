@@ -19,6 +19,7 @@ export class TestingForm implements ITestingForm {
        else return false;
     }
     send() {
+        //todo send to server
         console.log(1);
     }
 }

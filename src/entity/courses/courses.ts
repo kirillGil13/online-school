@@ -1,4 +1,4 @@
-import { CoursesListItemRequestType, ICoursesListItem } from './courses.types';
+import { CoursesListItemResponseType, ICoursesListItem } from './courses.types';
 
 export default class CoursesListItem implements ICoursesListItem {
     id: number
@@ -9,7 +9,7 @@ export default class CoursesListItem implements ICoursesListItem {
     duration: number;
     rating: number;
 
-    constructor(data: CoursesListItemRequestType) {
+    constructor(data: CoursesListItemResponseType) {
         this.id = data.id;
         this.title = data.title;
         this.cover = data.cover;
