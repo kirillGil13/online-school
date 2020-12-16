@@ -1,5 +1,5 @@
 <template>
-    <div class="rating row center" :class="[backgroundOrange ? sliderRating : courseRating]">
+    <div class="rating row center" :class="[isMaster ? masterRating : courseRating]">
         <svg-icon name="Star"></svg-icon>
         <span>{{rating}}</span>
     </div>
@@ -7,11 +7,12 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
+@Component
 export default class Rating extends Vue {
     @Prop({default: 0}) readonly rating!: number;
-    @Prop({default: false}) readonly backgroundOrange!: boolean;
+    @Prop({default: false}) readonly isMaster!: boolean;
     courseRating = 'course-rating';
-    sliderRating = 'slider-rating';
+    masterRating = 'master-rating';
 }
 </script>
 <style lang="scss">
@@ -22,11 +23,13 @@ export default class Rating extends Vue {
     left: 8px;
     border-radius: 3px;
     color: #ffffff;
+    font-size: 12px;
+    line-height: 150%;
     &.course-rating {
         background: linear-gradient(180deg, #4F79FF 0%, #2150E7 100%);
         backdrop-filter: blur(4px);
     }
-    &.slider-rating {
+    &.master-rating {
         background: linear-gradient(180deg, #F2CD4A 0%, #FF6D1B 100%);
         backdrop-filter: blur(4px);
     }

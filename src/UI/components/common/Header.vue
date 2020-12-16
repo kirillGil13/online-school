@@ -1,7 +1,7 @@
 <template>
   <el-row :class="['top_bar', isBordered ? 'box-container' : '']">
     <el-col :span="16">
-      <router-link v-if="route" :to="{name: route.name}">
+      <router-link v-if="route" :to="{name: route.name}" class="link">
         <svg-icon name="Arrow_Left" class="svg-fill-none mr-14"></svg-icon>
         {{route.label}}
       </router-link>
@@ -29,9 +29,12 @@ export default class Header extends Vue {
 .top_bar {
   padding: 24px;
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
   h1 {
     margin-bottom: 0;
     margin-top: 6px;
+    font-size: 24px;
   }
   a {
     text-decoration: none;
@@ -39,6 +42,10 @@ export default class Header extends Vue {
   }
   span {
   color: #828282;
+}
+.link {
+    display: flex;
+    align-items: center;
 }
 }
 
