@@ -32,6 +32,7 @@
                                 >
                                     <el-tab-pane label="Общие" name="common"
                                         ><profile-main-info
+                                            :form="mainInfoForm"
                                     /></el-tab-pane>
                                     <el-tab-pane
                                         label="Контактные данные"
@@ -73,6 +74,8 @@ import ProfileSubscribe from '@/UI/components/profile/Subscribe.vue';
 import ProfileSecurity from '@/UI/components/profile/Security.vue';
 import ProfileContactData from '@/UI/components/profile/ContactData.vue';
 import ProfileMainInfo from '@/UI/components/profile/MainInfo.vue';
+import { IFormGroup, RxFormBuilder } from '@rxweb/reactive-forms';
+import { ProfileMainInfoForm } from '@/form/profile/profileMainInfoForm';
 @Component({
     components: {
         Badge,
@@ -86,6 +89,22 @@ import ProfileMainInfo from '@/UI/components/profile/MainInfo.vue';
     },
 })
 export default class Profile extends Vue {
+    mainInfoForm!: IFormGroup<ProfileMainInfoForm>;
+    formBuilder: RxFormBuilder = new RxFormBuilder();
+
+    constructor() {
+        super();
+        this.mainInfoForm = this.formBuilder.formGroup(
+            new ProfileMainInfoForm({
+                name: 'Денис',
+                surname: 'Денисов',
+                oneLinksId: 1,
+                referLink: 'www.loh.ru',
+                bio: 'dfdfdfdfdfdf',
+            })
+        ) as IFormGroup<ProfileMainInfoForm>;
+        console.log(this.mainInfoForm);
+    }
     private activeName = 'common';
     private handleClick(tab, event): void {
         console.log(tab, event);
