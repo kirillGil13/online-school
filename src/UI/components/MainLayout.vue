@@ -1,10 +1,7 @@
 <template>
   <div class="mainLayout">
-      <el-container>
           <el-aside>
-
           </el-aside>
-      </el-container>
       <router-view></router-view>
   </div>
 </template>
