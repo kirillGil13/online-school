@@ -38,8 +38,8 @@ import { SwiperOptions } from "swiper";
 export default class LessonsComponent extends Vue {
   @Prop() readonly leaders!: Leader[];
   pushTo(id: number) {
-    //this.$router.push({name: 'leader', params: {leader: id.toString()}});
-    console.log(typeof this.$refs.swiper.$swiper.params.slidesPerView)
+    this.$router.push({name: 'leader', params: {leader: id.toString()}});
+    
   }
   swiperComponentOption: SwiperOptions = {
     slidesPerView: 6,
