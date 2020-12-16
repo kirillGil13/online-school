@@ -10,7 +10,7 @@
     >
       <swiper-slide v-for="(leader, index) in leaders" :key="index">
         <div class="leader-photo" :style="{backgroundImage: 'url(' + leader.img + ')'}">
-          <Rating :rating="leader.rating" :isMaster="true" />
+          <Rating :rating="leader.rating" class="master-rating" />
         </div>
         <h4>{{leader.fullName}}</h4>
         <span class="desc">{{leader.master}}</span>
@@ -38,7 +38,8 @@ import { SwiperOptions } from "swiper";
 export default class LessonsComponent extends Vue {
   @Prop() readonly leaders!: Leader[];
   pushTo(id: number) {
-    this.$router.push({name: 'leader', params: {leader: id.toString()}});
+    //this.$router.push({name: 'leader', params: {leader: id.toString()}});
+    console.log(typeof this.$refs.swiper.$swiper.params.slidesPerView)
   }
   swiperComponentOption: SwiperOptions = {
     slidesPerView: 6,
@@ -53,6 +54,7 @@ export default class LessonsComponent extends Vue {
   next() {
     this.$refs.swiper.$swiper.slideNext();
     this.checkActive();
+    console.log(this.$refs.swiper.$swiper.activeIndex)
   }
   prev() {
     this.$refs.swiper.$swiper.slidePrev();
@@ -62,7 +64,7 @@ export default class LessonsComponent extends Vue {
     if (this.$refs.swiper.$swiper.activeIndex != 0) {
       this.$refs.swiper.$swiper.params.el.children[1].style.display = "flex";
     } else
-      this.$refs.swiper.$swiper.params.el.children[1].style.display = "none";
+     this.$refs.swiper.$swiper.params.el.children[1].style.display = "none";
   }
 }
 </script>
@@ -138,4 +140,11 @@ export default class LessonsComponent extends Vue {
     transform: rotate(180deg);
   }
 }
+.swiper-button-next {
+  display: flex;
+}
+.master-rating {
+    background: linear-gradient(180deg, #f2cd4a 0%, #ff6d1b 100%);
+    backdrop-filter: blur(4px);
+  }
 </style>
