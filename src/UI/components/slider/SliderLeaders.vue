@@ -29,7 +29,6 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import Rating from "../common/Rating.vue";
 import Leader from "@/entity/leader/leader";
 import { SwiperOptions } from "swiper";
-/* eslint-disable */
 @Component({
   components: {
     Rating,
@@ -52,15 +51,19 @@ export default class LessonsComponent extends Vue {
     },
   };
   next() {
+    // eslint-disable-next-line
     this.$refs.swiper.$swiper.slideNext();
     this.checkActive();
+    // eslint-disable-next-line
     console.log(this.$refs.swiper.$swiper.activeIndex)
   }
   prev() {
+      // eslint-disable-next-line
     this.$refs.swiper.$swiper.slidePrev();
     this.checkActive();
   }
   checkActive() {
+      // eslint-disable-next-line
     if (this.$refs.swiper.$swiper.activeIndex != 0) {
       this.$refs.swiper.$swiper.params.el.children[1].style.display = "flex";
     } else
