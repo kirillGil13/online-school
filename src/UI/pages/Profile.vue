@@ -5,13 +5,18 @@
         </el-col>
         <el-col :span="24" class="profile__main-content">
             <el-row>
-                <el-col :span="3">
-                    <div class="profile__info">
+                <el-col :span="windowSize.x > 1575 ? 3 : 24">
+                    <div
+                        :class="{
+                            'profile__info-full-size': windowSize.x > 1575,
+                            'profile__info-low-size': windowSize.x < 1575,
+                        }"
+                    >
                         <avatar
                             :imageSourse="'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'"
                             :mediumStar="true"
-                            :height="143"
-                            :width="143"
+                            :height="windowSize.x > 1575 ? 143 : 70"
+                            :width="windowSize.x > 1575 ? 143 : 70"
                         />
                         <Badge>
                             <template slot="title">dsfdswf</template>
@@ -22,7 +27,7 @@
                         >
                     </div>
                 </el-col>
-                <el-col :span="21"
+                <el-col :span="windowSize.x > 1575 ? 21 : 24"
                     ><div class="grid-content profile__detail-info">
                         <el-row>
                             <el-col class="profile__col" :span="24">
@@ -76,6 +81,7 @@ import ProfileContactData from '@/UI/components/profile/ContactData.vue';
 import ProfileMainInfo from '@/UI/components/profile/MainInfo.vue';
 import { IFormGroup, RxFormBuilder } from '@rxweb/reactive-forms';
 import { ProfileMainInfoForm } from '@/form/profile/profileMainInfoForm';
+import { IWindowSize } from '@/entity/environment';
 @Component({
     components: {
         Badge,
@@ -91,6 +97,11 @@ import { ProfileMainInfoForm } from '@/form/profile/profileMainInfoForm';
 export default class Profile extends Vue {
     mainInfoForm!: IFormGroup<ProfileMainInfoForm>;
     formBuilder: RxFormBuilder = new RxFormBuilder();
+    windowSize: IWindowSize = {
+        x: 0,
+        y: 0,
+    };
+    activeName = 'common';
 
     constructor() {
         super();
@@ -103,11 +114,19 @@ export default class Profile extends Vue {
                 bio: 'dfdfdfdfdfdf',
             })
         ) as IFormGroup<ProfileMainInfoForm>;
-        console.log(this.mainInfoForm);
     }
-    private activeName = 'common';
+    private onResize(): void {
+        this.windowSize = {
+            x: window.innerWidth,
+            y: window.innerHeight,
+        };
+    }
     private handleClick(tab, event): void {
         console.log(tab, event);
+    }
+    private mounted(): void {
+        this.onResize();
+        window.addEventListener('resize', this.onResize);
     }
 }
 </script>
@@ -126,14 +145,20 @@ export default class Profile extends Vue {
         background-color: rgba(66, 109, 246, 0.12);
         border-radius: $main_border_radius;
         color: $blue;
-        width: 100%;
+        width: 144px;
+        max-height: 50px;
     }
     &__col {
         padding: 10px;
     }
-    &__info {
+    &__info-full-size {
         max-width: 144px;
         min-height: 600px;
+    }
+    &__info-low-size {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     &__detail-info {
         border-radius: $main_border_radius;

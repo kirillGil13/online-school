@@ -18,6 +18,8 @@ export default class Profile extends Vue {}
 <style lang="scss">
 .badge {
     margin-top: 10px;
+    min-width: 100px;
+    max-height: 50px;
     margin-bottom: 15px;
     border-radius: $main_border_radius;
     border: 1px solid #e8edfe;

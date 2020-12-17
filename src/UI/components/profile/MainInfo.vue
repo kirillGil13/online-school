@@ -69,6 +69,9 @@
                 </template>
             </input-wrapper>
         </el-col>
+        <el-col class="profile__col" :span="24">
+            <Button :disabled="!form.valid" v-on="$listeners">Сохранить</Button>
+        </el-col>
     </el-row>
 </template>
 
@@ -77,6 +80,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { IFormGroup } from '@rxweb/reactive-forms';
 import { ProfileMainInfoForm } from '@/form/profile/profileMainInfoForm';
 import InputWrapper from '@/UI/components/common/InputWrapper.vue';
+
 @Component({
     components: {
         InputWrapper,
