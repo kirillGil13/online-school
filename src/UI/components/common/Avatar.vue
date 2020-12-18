@@ -7,16 +7,8 @@
                 :src="imageSourse"
                 alt="Avatar"
             />
-            <div
-                v-if="smallStar || mediumStar"
-                class="star"
-                :class="{ 'small-size': smallStar, 'medium-size': mediumStar }"
-            >
-                <svg-icon
-                    :height="smallStar ? '12' : mediumStar ? '20' : '8'"
-                    :width="smallStar ? '12' : mediumStar ? '20' : '8'"
-                    name="Star"
-                />
+            <div v-if="showStar" class="star" :class="starClass">
+                <svg-icon name="Star" />
             </div>
         </div>
     </div>
@@ -24,6 +16,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { AvatarSizeEnum } from '@/entity/common/avatar.types';
 @Component
 export default class Avatar extends Vue {
     @Prop({ required: true }) readonly imageSourse!: string;
@@ -31,6 +24,23 @@ export default class Avatar extends Vue {
     @Prop({ required: true }) readonly width!: number;
     @Prop({ required: false, default: false }) readonly smallStar!: boolean;
     @Prop({ required: false, default: false }) readonly mediumStar!: boolean;
+    @Prop({ required: false, default: AvatarSizeEnum.NONE })
+    readonly starSize!: AvatarSizeEnum;
+
+    get showStar(): boolean {
+        return this.starSize !== AvatarSizeEnum.NONE;
+    }
+
+    get starClass(): string {
+        switch (this.starSize) {
+            case AvatarSizeEnum.MEDIUM:
+                return 'medium-size';
+            case AvatarSizeEnum.SMALL:
+                return 'small-size';
+            default:
+                return '';
+        }
+    }
 }
 </script>
 
@@ -40,12 +50,20 @@ export default class Avatar extends Vue {
     width: 18px;
     bottom: 0;
     right: 0;
+    .svg-icon {
+        width: 12px !important;
+        height: 12px !important;
+    }
 }
 .medium-size {
     height: 32px;
     width: 32px;
     bottom: -5px;
     right: -5px;
+    .svg-icon {
+        width: 20px !important;
+        height: 20px !important;
+    }
 }
 .avatar {
     border-radius: $main_border_radius;

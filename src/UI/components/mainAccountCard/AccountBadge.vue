@@ -5,7 +5,7 @@
             :imageClass="'account-badge__avatar'"
             :height="48"
             :width="48"
-            :smallStar="true"
+            :starSize="AvatarSizeEnum.SMALL"
         />
         <div class="account-badge__account-info">
             <span>{{ `${userInfo.name} ${userInfo.surname}` }}</span>
@@ -25,6 +25,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { IFakeUserInfo } from '@/entity/environment';
 import Avatar from '@/UI/components/common/Avatar.vue';
+import { AvatarSizeEnum } from '@/entity/common/avatar.types';
 @Component({
     components: {
         Avatar,
@@ -32,6 +33,7 @@ import Avatar from '@/UI/components/common/Avatar.vue';
 })
 export default class AccountBadge extends Vue {
     @Prop({ required: true }) readonly userInfo!: IFakeUserInfo;
+    AvatarSizeEnum = AvatarSizeEnum;
 }
 </script>
 

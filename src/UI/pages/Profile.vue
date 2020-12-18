@@ -5,18 +5,20 @@
         </el-col>
         <el-col :span="24" class="profile__main-content">
             <el-row>
-                <el-col :span="windowSize.x > 1575 ? 3 : 24">
+                <el-col :span="windowSize.x > windowWideBreak ? 3 : 24">
                     <div
                         :class="{
-                            'profile__info-full-size': windowSize.x > 1575,
-                            'profile__info-low-size': windowSize.x < 1575,
+                            'profile__info-full-size':
+                                windowSize.x > windowWideBreak,
+                            'profile__info-low-size':
+                                windowSize.x < windowWideBreak,
                         }"
                     >
                         <avatar
                             :imageSourse="'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'"
-                            :mediumStar="true"
-                            :height="windowSize.x > 1575 ? 143 : 70"
-                            :width="windowSize.x > 1575 ? 143 : 70"
+                            :starSize="AvatarSizeEnum.MEDIUM"
+                            :height="windowSize.x > windowWideBreak ? 143 : 70"
+                            :width="windowSize.x > windowWideBreak ? 143 : 70"
                         />
                         <Badge>
                             <template slot="title">dsfdswf</template>
@@ -27,7 +29,7 @@
                         >
                     </div>
                 </el-col>
-                <el-col :span="windowSize.x > 1575 ? 21 : 24"
+                <el-col :span="windowSize.x > windowWideBreak ? 21 : 24"
                     ><div class="grid-content profile__detail-info">
                         <el-row>
                             <el-col class="profile__col" :span="24">
@@ -82,6 +84,7 @@ import ProfileMainInfo from '@/UI/components/profile/MainInfo.vue';
 import { IFormGroup, RxFormBuilder } from '@rxweb/reactive-forms';
 import { ProfileMainInfoForm } from '@/form/profile/profileMainInfoForm';
 import { IWindowSize } from '@/entity/environment';
+import { AvatarSizeEnum } from '@/entity/common/avatar.types';
 @Component({
     components: {
         Badge,
@@ -102,7 +105,7 @@ export default class Profile extends Vue {
         y: 0,
     };
     activeName = 'common';
-
+    AvatarSizeEnum = AvatarSizeEnum;
     constructor() {
         super();
         this.mainInfoForm = this.formBuilder.formGroup(
@@ -120,6 +123,9 @@ export default class Profile extends Vue {
             x: window.innerWidth,
             y: window.innerHeight,
         };
+    }
+    private get windowWideBreak(): number {
+        return 1575;
     }
     private handleClick(tab, event): void {
         console.log(tab, event);

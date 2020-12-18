@@ -1,26 +1,50 @@
-import Vue from "vue"
-import Router from "vue-router"
-import Login from "../UI/pages/Login.vue"
-
+import Vue from 'vue';
+import Router from 'vue-router';
+import Login from '../UI/pages/Login.vue';
 
 Vue.use(Router);
 
-  const routes = [
-        {
-            path: '/', name: 'login', component: Login
-        },
-        {
-            path: '/main', component: () => import("../UI/components/MainLayout.vue"), children: [
-                { path: '', name: 'main', component: () => import("../UI/pages/MainPage.vue") },
-                { path: '/training', name: 'training', component: () => import("../UI/pages/Training.vue") },
-                { path: '/training/:leader', name: 'leader', component: () => import("../UI/pages/Leader.vue") },
-                { path: '/training/:id/:lessonId', name: 'course', component: () => import("../UI/pages/Course.vue") },
-            ]
-        }
-    ]
+const routes = [
+    {
+        path: '/',
+        name: 'login',
+        component: Login,
+    },
+    {
+        path: '/main',
+        component: () => import('../UI/components/layouts/MainLayout.vue'),
+        children: [
+            {
+                path: '',
+                name: 'main',
+                component: () => import('../UI/pages/MainPage.vue'),
+            },
+            {
+                path: '/profile',
+                name: 'profile',
+                component: () => import('../UI/pages/Profile.vue'),
+            },
+            {
+                path: '/training',
+                name: 'training',
+                component: () => import('../UI/pages/Training.vue'),
+            },
+            {
+                path: '/training/:leader',
+                name: 'leader',
+                component: () => import('../UI/pages/Leader.vue'),
+            },
+            {
+                path: '/training/:id/:lessonId',
+                name: 'course',
+                component: () => import('../UI/pages/Course.vue'),
+            },
+        ],
+    },
+];
 Vue.router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes
-})
+    routes,
+});
 export const router = Vue.router;

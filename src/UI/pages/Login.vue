@@ -1,6 +1,6 @@
 <template>
     <div class="content center">
-        <!-- <LoginFormVue
+        <LoginFormVue
             v-if="!isSecondStep"
             :form="loginForm"
             v-on="$listeners"
@@ -11,8 +11,7 @@
             :form="codeForm"
             @submit="sendCode"
             :phone="loginForm.modelInstance.fullPhone"
-        /> -->
-        <profile />
+        />
     </div>
 </template>
 <script lang="ts">
@@ -39,12 +38,12 @@ export default class Login extends Vue {
 
     constructor() {
         super();
-        this.loginForm = this.formBuilder.formGroup(LoginForm) as IFormGroup<
+        this.loginForm = this.formBuilder.formGroup(
             LoginForm
-        >;
-        this.codeForm = this.formBuilder.formGroup(CodeForm) as IFormGroup<
+        ) as IFormGroup<LoginForm>;
+        this.codeForm = this.formBuilder.formGroup(
             CodeForm
-        >;
+        ) as IFormGroup<CodeForm>;
     }
     async sendPhone(): Promise<void> {
         // todo send server
