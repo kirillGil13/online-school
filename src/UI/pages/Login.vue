@@ -9,7 +9,7 @@
         <CodeFormVue
             v-if="isSecondStep"
             :form="codeForm"
-            @click="sendCode"
+            @submit="sendCode"
             :phone="loginForm.modelInstance.fullPhone"
         /> -->
         <profile />

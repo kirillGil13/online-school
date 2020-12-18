@@ -15,7 +15,6 @@ input{
 label{
     text-align: left;
     width: 95%;
-    font-size: 14px;
     color: $label;
 }
 .error-label{
@@ -35,4 +34,10 @@ label{
     width: 30px;
     top: 0;
     left: 0;
+}
+input[type="radio"] {
+    cursor: pointer;
+    height: 22px;
+    width: 22px;
+    margin: 0;
 }
