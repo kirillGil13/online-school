@@ -1,12 +1,12 @@
 <template>
-  <div class="course-block" @click="$emit('proceed')">
-        <div class="course-video-block" :style="{background: 'url('+course.cover+')'}">
+  <div class="course-block" @click="$emit('proceed', course.id)">
+        <div class="course-video-block" :style="{backgroundImage: 'url('+course.cover+')'}">
             <div class="course-info progress row center">
                 <ProgressCircle :progress="course.progress"/>
                 <div class="text">Прогресс: {{course.lessonPassed}} из {{course.totalLesson}}</div>
             </div>
             <Rating :rating="course.rating"/>
-            <div class="course-info duration">{{course.duration}}</div>
+            <div class="course-info duration">{{course.fullDuration()}}</div>
         </div>
         <div class="course-title">{{course.title}}</div>
   </div>
@@ -29,7 +29,13 @@ export default class CourseComponent extends Vue {
 </script>
 <style lang="scss">
 .course-block {
-    width: calc(100% / 3);
+    width: calc((100% / 3) - 24px);
+    margin-right: 24px;
+    margin-bottom: 28px;
+    cursor: pointer;
+    &:nth-child(3n + 3) {
+        margin-right: 0;
+    }
     .course-video-block {
         font-size: 12px;
         position: relative;
@@ -38,6 +44,8 @@ export default class CourseComponent extends Vue {
         background-repeat: no-repeat;
         border: 1px solid rgba(0, 0, 0, 0.08);
         border-radius: 12px;
+        background-blend-mode: multiply;
+        background-color: #C4C4C4;
         .course-info {
             position: absolute;
             padding: 0 4px 0 4px;
@@ -55,6 +63,7 @@ export default class CourseComponent extends Vue {
             } 
             .text {
                 margin-left: 4px;
+                text-transform: none;
             }
         }
     }

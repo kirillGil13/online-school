@@ -1,21 +1,29 @@
-import { ILeader, LeaderResponseType } from './leader.types';
+import { ILeader, ILeaderCourses, ILeaderUserInfo, LeaderResponseType } from './leader.types';
 
 export default class Leader implements ILeader {
     id: number;
-    name: string;
-    surname: string;
-    rating: number;
-    master: string;
-    img: string;
+    direction: string;
+    rating: string;
+    createdAt: string;
+    updatedAt: string;
+    userInfo: ILeaderUserInfo;
+    courses: ILeaderCourses[] = [];
+    balance: string;
+    totalCoursesViewsCount: number
     constructor(data: LeaderResponseType) {
         this.id = data.id;
-        this.name = data.name;
-        this.surname = data.surname;
+        this.direction = data.direction;
         this.rating = data.rating;
-        this.master = data.master;
-        this.img = data.img;
+        this.createdAt = data.createdAt;
+        this.updatedAt = data.updatedAt;
+        this.userInfo = data.userInfo;
+        for (let i = 0; i < data.courses.length; i++) {
+            this.courses.push(data.courses[i]);
+        }
+        this.balance = data.balance;
+        this.totalCoursesViewsCount = data.totalCoursesViewsCount;
     }
     get fullName() {
-        return this.name + ' ' + this.surname;
+        return this.userInfo.name + ' ' + this.userInfo.surname;
     }
 }

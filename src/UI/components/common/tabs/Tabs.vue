@@ -29,3 +29,58 @@ export default class Tabs extends Vue {
   }
 }
 </script>
+<style lang="scss">
+.tabs {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  height: 60px;
+  margin-top: 36px;
+  margin-bottom: 16px;
+  background: #ffffff;
+  border: 1px solid #f2f2f2;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  padding: 6px 16px 16px 16px;
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 0;
+    margin: 0;
+    li {
+      margin-right: 24px;
+      &:nth-last-child(1) {
+        margin-right: 0;
+      }
+      &.is-active {
+          a {
+              color: #426DF6;
+              &::after {
+                  width: 100%;
+              }
+          }
+      }
+      a {
+          font-size: 14px;
+          color: #5F739C;
+          position: relative;
+          &:hover {
+              color: #426DF6;
+          }
+        &::after {
+          content: "";
+          width: 0;
+          position: absolute;
+          height: 2px;
+          background-color: #426DF6;
+          left: 0;
+          bottom: -10px;
+        }
+      }
+    }
+  }
+}
+</style>

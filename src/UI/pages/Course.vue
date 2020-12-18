@@ -1,6 +1,5 @@
 <template>
   <el-container class="container_a">
-    <el-aside width="290px" height="585px"></el-aside>
     <el-container class="ml-36 container_b">
       <el-col>
         <Header :isBordered="true" title="Как стать Мастером Вовлечения" :route="route"></Header>
