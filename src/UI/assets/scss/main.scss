@@ -222,3 +222,8 @@ h5 {
         padding: 16px, 24px;
     }
 }
+.profile__col {
+    .el-tabs__nav-wrap::after {
+        width: 0px;
+    }
+}
