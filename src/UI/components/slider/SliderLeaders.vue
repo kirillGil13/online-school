@@ -9,11 +9,11 @@
       ref="swiper"
     >
       <swiper-slide v-for="(leader, index) in leaders" :key="index">
-        <div class="leader-photo" :style="{backgroundImage: 'url(' + leader.img + ')'}">
+        <div class="leader-photo" :style="{backgroundImage: 'url(' + leader.userInfo.avatar + ')'}">
           <Rating :rating="leader.rating" class="master-rating" />
         </div>
         <h4>{{leader.fullName}}</h4>
-        <span class="desc">{{leader.master}}</span>
+        <span class="desc">{{leader.direction}}</span>
       </swiper-slide>
       <div class="swiper-button-prev" @click="prev()" slot="button-prev">
         <svg-icon name="Slider_Arrow"></svg-icon>
@@ -54,8 +54,6 @@ export default class LessonsComponent extends Vue {
     // eslint-disable-next-line
     this.$refs.swiper.$swiper.slideNext();
     this.checkActive();
-    // eslint-disable-next-line
-    console.log(this.$refs.swiper.$swiper.activeIndex)
   }
   prev() {
       // eslint-disable-next-line

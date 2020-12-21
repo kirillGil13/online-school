@@ -7,6 +7,7 @@ export interface ICoursesListItem {
     duration: number;
     rating: number;
     progress: number;
+    fullDuration(): string;
 }
 export type CoursesListItemResponseType = {
     id: number
