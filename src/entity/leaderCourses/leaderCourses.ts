@@ -1,22 +1,21 @@
-import { CoursesListItemResponseType, ICoursesListItem } from './courses.types';
+import {ILeaderCourses, LeaderCoursesResponseType} from "@/entity/leaderCourses/leaderCourses.types";
 
-export default class CoursesListItem implements ICoursesListItem {
-    id: number
+export default class LeaderCourses implements ILeaderCourses {
+    id: number;
     title: string;
     cover: string;
     totalLesson: number;
     lessonPassed: number;
     duration: number;
     rating: number;
-
-    constructor(data: CoursesListItemResponseType) {
-        this.id = data.id;
-        this.title = data.title;
-        this.cover = data.cover;
-        this.totalLesson = data.totalLesson;
-        this.lessonPassed = data.lessonPassed;
-        this.duration = data.duration;
-        this.rating = data.rating;
+    constructor(course: LeaderCoursesResponseType) {
+        this.id = course.id;
+        this.title = course.title;
+        this.cover = course.cover;
+        this.totalLesson = course.totalLesson;
+        this.lessonPassed = course.lessonPassed;
+        this.duration = course.duration;
+        this.rating = course.rating;
     }
     get progress(): number {
         return ( this.lessonPassed / this.totalLesson ) * 100;

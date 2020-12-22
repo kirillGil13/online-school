@@ -1,19 +1,18 @@
 <template>
   <el-col class="slider-container">
     <swiper
-      @click-slide="pushTo"
-      class="swiper component"
-      :options="swiperComponentOption"
-      :auto-update="true"
-      :auto-destroy="true"
-      ref="swiper"
+        class="swiper component"
+        :options="swiperComponentOption"
+        ref="swiper"
     >
-      <swiper-slide v-for="(leader, index) in leaders" :key="index">
-        <div class="leader-photo" :style="{backgroundImage: 'url(' + leader.userInfo.avatar + ')'}">
-          <Rating :rating="leader.rating" class="master-rating" />
-        </div>
-        <h4>{{leader.fullName}}</h4>
-        <span class="desc">{{leader.direction}}</span>
+      <swiper-slide v-for="(leader, index) in leaders" :key="index" :id="index" >
+        <router-link :to="{name: 'leaderCourses', params: {id: leader.id}}" active-class="active_leader">
+          <div class="leader-photo" :style="{backgroundImage: 'url(' + leader.userInfo.avatar + ')'}">
+            <Rating :rating="leader.rating" class="master-rating"/>
+          </div>
+          <h4>{{ leader.fullName }}</h4>
+          <span class="desc">{{ leader.direction }}</span>
+        </router-link>
       </swiper-slide>
       <div class="swiper-button-prev" @click="prev()" slot="button-prev">
         <svg-icon name="Slider_Arrow"></svg-icon>
@@ -25,21 +24,20 @@
   </el-col>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import {Component, Prop, Vue} from "vue-property-decorator";
 import Rating from "../common/Rating.vue";
 import Leader from "@/entity/leader/leader";
-import { SwiperOptions } from "swiper";
+import {SwiperOptions} from "swiper";
+import {integer} from "vuelidate/lib/validators";
+
 @Component({
   components: {
     Rating,
   },
 })
-export default class LessonsComponent extends Vue {
+export default class SliderLeaders extends Vue {
   @Prop() readonly leaders!: Leader[];
-  pushTo(id: number) {
-    this.$router.push({name: 'leader', params: {leader: id.toString()}});
-    
-  }
+
   swiperComponentOption: SwiperOptions = {
     slidesPerView: 6,
     spaceBetween: 8,
@@ -49,24 +47,29 @@ export default class LessonsComponent extends Vue {
       nextEl: "swiper-button-next",
       prevEl: "swiper-button-prev",
     },
+    simulateTouch: false
   };
+
   next() {
     // eslint-disable-next-line
     this.$refs.swiper.$swiper.slideNext();
     this.checkActive();
   }
+
   prev() {
-      // eslint-disable-next-line
+    // eslint-disable-next-line
     this.$refs.swiper.$swiper.slidePrev();
     this.checkActive();
   }
+
   checkActive() {
-      // eslint-disable-next-line
+    // eslint-disable-next-line
     if (this.$refs.swiper.$swiper.activeIndex != 0) {
       this.$refs.swiper.$swiper.params.el.children[1].style.display = "flex";
     } else
-     this.$refs.swiper.$swiper.params.el.children[1].style.display = "none";
+      this.$refs.swiper.$swiper.params.el.children[1].style.display = "none";
   }
+
 }
 </script>
 <style lang="scss">
@@ -74,12 +77,15 @@ export default class LessonsComponent extends Vue {
   width: 90%;
   position: static;
 }
+
 .swiper-wrapper {
   position: static;
 }
+
 .slider-container {
   position: relative;
 }
+
 .swiper-slide {
   display: flex;
   align-items: center;
@@ -90,34 +96,53 @@ export default class LessonsComponent extends Vue {
   box-sizing: border-box;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
   border-radius: 12px;
-  padding-top: 16px;
-  padding-bottom: 16px;
   cursor: pointer;
-  .leader-photo {
-    width: 72px;
-    height: 72px;
-    position: relative;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    border-radius: 50%;
-    .rating {
-      left: 25%;
-      bottom: -10%;
+
+  a {
+    border-radius: 12px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .leader-photo {
+      width: 72px;
+      height: 72px;
+      position: relative;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      border-radius: 50%;
+
+      .rating {
+        left: 25%;
+        bottom: -10%;
+      }
+    }
+
+    h4 {
+      color: #060516;
+      font-size: 12px;
+      margin-top: 8px;
+      margin-bottom: 0;
+      line-height: 150%;
+    }
+
+    .desc {
+      color: #060516;
+      opacity: 0.6;
+      font-size: 12px;
+      line-height: 150%;
     }
   }
-  h4 {
-    font-size: 12px;
-    margin-top: 8px;
-    margin-bottom: 0;
-    line-height: 150%;
-  }
-  .desc {
-    color: #060516;
-    font-size: 12px;
-    line-height: 150%;
-  }
+
+
 }
+
 .swiper-button-prev,
 .swiper-button-next {
   $size: 2.4rem;
@@ -131,21 +156,30 @@ export default class LessonsComponent extends Vue {
     color: #ffffff;
     transform: rotate(180deg);
   }
+
   &::after {
     content: none;
   }
 }
+
 .swiper-button-prev {
   display: none;
+
   .svg-icon {
     transform: rotate(180deg);
   }
 }
+
 .swiper-button-next {
   display: flex;
 }
+
 .master-rating {
-    background: linear-gradient(180deg, #f2cd4a 0%, #ff6d1b 100%);
-    backdrop-filter: blur(4px);
-  }
+  background: linear-gradient(180deg, #f2cd4a 0%, #ff6d1b 100%);
+  backdrop-filter: blur(4px);
+}
+
+.active_leader {
+  border: 2px solid #426DF6;
+}
 </style>
