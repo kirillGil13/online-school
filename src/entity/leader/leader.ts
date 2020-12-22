@@ -1,4 +1,4 @@
-import {ILeader, ILeaderItemCourses, ILeaderItemUserInfo, LeaderResponseType} from './leader.types';
+import { ILeader, ILeaderCourses, ILeaderUserInfo, LeaderResponseType } from './leader.types';
 
 export default class Leader implements ILeader {
     id: number;
@@ -6,8 +6,8 @@ export default class Leader implements ILeader {
     rating: string;
     createdAt: string;
     updatedAt: string;
-    userInfo: ILeaderItemUserInfo;
-    courses: ILeaderItemCourses[] = [];
+    userInfo: ILeaderUserInfo;
+    courses: ILeaderCourses[] = [];
     balance: string;
     totalCoursesViewsCount: number
     constructor(data: LeaderResponseType) {

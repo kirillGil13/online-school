@@ -19,8 +19,6 @@ body {
     margin: 0;
     line-height: 160%;
     font-size: 14px;
-    display: flex;
-    justify-content: center;
 }
 header {
     display: flex;
@@ -149,7 +147,7 @@ h5 {
     display: flex;
     justify-content: center;
 }
-#app {
+.mainLayout {
     max-width: 1440px;
 }
 
