@@ -209,6 +209,9 @@ export default class Course extends Vue {
   .course-container {
     padding-top: 56.25%;
   }
+  .desc {
+     color: #818c99;
+  }
 }
 .course-container {
   background: #ffffff;
@@ -233,9 +236,7 @@ export default class Course extends Vue {
 .course-lessons-block {
   padding-bottom: 108%;
 }
-.desc {
-  color: #818c99;
-}
+
 .materials {
   margin-top: 68px;
 }

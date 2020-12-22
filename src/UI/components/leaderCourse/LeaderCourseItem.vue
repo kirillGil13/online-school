@@ -4,6 +4,10 @@
       <Rating :rating="course.rating"/>
       <div class="course-info duration">{{ course.fullDuration() }}</div>
     </div>
+    <el-row class="leader">
+      <div class="course-avatar" :style="{backgroundImage: 'url(' + leaderAvatar + ')'}"></div>
+      <span class="desc">{{leaderFullName}}</span>
+    </el-row>
     <div class="course-title">{{ course.title }}</div>
   </div>
 </template>
@@ -26,5 +30,28 @@ export default class LeaderCourseItem extends Vue {
 </script>
 
 <style lang="scss">
+.course-block {
+  .leader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 8px;
+    .course-avatar {
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background-size: cover;
+    }
+    .desc {
+      color: #060516;
+      opacity: 0.6;
+      font-size: 12px;
+      line-height: 150%;
+    }
+  }
+}
+
 
 </style>

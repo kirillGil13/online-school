@@ -7,7 +7,7 @@
         </Header>
         <h5>топ лидеры</h5>
         <SliderLeaders :leaders="leaders"/>
-        <LeaderCourseComponent :leader="leaders[$route.params.id]" :courses="coursesLeader"/>
+        <LeaderCourseComponent :leader="leaders[$route.params.id]" :courses="coursesLeader" @proceed="proceed"/>
       </el-col>
     </el-container>
   </el-container>
@@ -47,6 +47,9 @@ export default class LeaderCoursePage extends Vue {
   getCourses() {
     //по роуту определяем id каких данных загрузить
 
+  }
+  proceed(id: number) {
+    this.$router.push({path: `/training/${id}/0`});
   }
   leader: LeaderResponseType[] = [
     {
@@ -142,7 +145,7 @@ export default class LeaderCoursePage extends Vue {
       duration: 3850,
       rating: 10,
     }
-  ]
+  ];
 }
 </script>
 

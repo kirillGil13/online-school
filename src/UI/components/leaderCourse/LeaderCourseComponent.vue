@@ -2,7 +2,8 @@
   <el-col class="container_a">
     <h2>{{ leader.fullName }}: Индивидуальные курсы</h2>
     <div class="courses row">
-      <LeaderCourseItem v-for="(course, index) in courses" :key="index" :course="course" :leaderAvatar="leader.userInfo.avatar" :leaderFullName="leader.fullName"/>
+      <LeaderCourseItem v-for="(course, index) in courses" :key="index" :course="course"
+                        :leaderAvatar="leader.userInfo.avatar" :leaderFullName="leader.fullName" v-on="$listeners"/>
     </div>
   </el-col>
 </template>
@@ -23,4 +24,7 @@ export default class LeaderCourseComponent extends Vue {
 }
 </script>
 <style lang="scss">
+.courses {
+  flex-wrap: wrap;
+}
 </style>
