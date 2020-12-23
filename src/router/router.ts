@@ -30,9 +30,9 @@ const routes = [
                 component: () => import('../UI/pages/Training.vue'),
             },
             {
-                path: '/training/:leader',
-                name: 'leader',
-                component: () => import('../UI/pages/Leader.vue'),
+                path: '/training/:id',
+                name: 'leaderCourses',
+                component: () => import('../UI/pages/LeaderCoursePage.vue'),
             },
             {
                 path: '/training/:id/:lessonId',
