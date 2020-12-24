@@ -9,7 +9,7 @@
     </div>
     <el-divider></el-divider>
     <el-col>
-      <Button class="with_icon" @submit="$listeners">Пересмотреть урок</Button>
+      <Button class="with_icon" @submit="$emit('reviewLesson')">Пересмотреть урок</Button>
     </el-col>
   </el-col>
 </template>

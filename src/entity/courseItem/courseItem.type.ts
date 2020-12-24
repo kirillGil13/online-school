@@ -1,31 +1,22 @@
 export interface ICourseItem {
-    id: number;
-    title: string;
-    description: string;
-    isTestingRequire: boolean;
-    createdAt: string;
-    lessons: ILessons[];
+    lessons: ICourseLessons[];
     currentLessonId: number;
 }
-export interface ILessons {
-    id: number,
-    title: string,
-    lessonPassed: boolean,
-    available: boolean
+export interface ICourseLessons {
+    id: number;
+    title: string;
+    lessonPassed: boolean;
+    available: boolean;
+    type(): string;
 }
 
 export type CourseItemResponseType = {
-    id: number;
-    title: string;
-    description: string;
-    isTestingRequire: boolean;
-    createdAt: string;
-    lessons: LessonsResponseType[];
+    lessons: CourseLessonsResponseType[];
     currentLessonId: number;
 }
-export type LessonsResponseType = {
-    id: number,
-    title: string,
-    lessonPassed: boolean,
-    available: boolean
+export type CourseLessonsResponseType = {
+    id: number;
+    title: string;
+    lessonPassed: boolean;
+    available: boolean;
 }

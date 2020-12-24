@@ -1,8 +1,8 @@
 <template>
   <el-col>
-    <SuccessComponent :result="result" @submit="$listeners" v-if="buttonType === buttonTypes.SUCCESS"/>
-    <ProceedComponent :result="result" @submit="$listeners" v-if="buttonType === buttonTypes.PROCEED"/>
-    <FailComponent :result="result" @submit="$listeners" v-if="buttonType === buttonTypes.FAIL"/>
+    <SuccessComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.SUCCESS"/>
+    <ProceedComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.PROCEED"/>
+    <FailComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.FAIL"/>
   </el-col>
 </template>
 <script lang="ts">
