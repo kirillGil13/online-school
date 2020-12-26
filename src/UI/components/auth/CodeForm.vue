@@ -1,6 +1,6 @@
 <template>
-  <form class="form" @submit.prevent>
-    <h1 class="mb-36">ONELINKS.com</h1>
+  <form class="form code-form" @submit.prevent>
+    <h1 class="mb-36">ONELINKS.COM</h1>
     <span>Подтвердите номер телефона {{phone}} введите код из СМС</span>
     <label for="code">Код из СМС</label>
     <div class="text-container">
@@ -13,7 +13,7 @@
       />
     </div>
     <div class="error-label" v-if="form.controls.code.dirty">{{form.controls.code.errorMessage}}</div>
-    <Button :disabled="!form.valid" v-on="$listeners">Подтвердить</Button>
+    <Button :disabled="!form.valid" class="full-width" v-on="$listeners">Подтвердить</Button>
   </form>
 </template>
 <script lang="ts">
@@ -32,3 +32,17 @@ export default class CodeFormVue extends Vue {
     @Prop({default: ''}) readonly phone: string | undefined;
 }
 </script>
+<style lang="scss">
+.code-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  span {
+    color: #5F739C;
+    width: 60%;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+}
+</style>

@@ -51,7 +51,6 @@ export default class Lessons extends Vue {
     width: 100%;
     overflow: scroll;
     height: 80%;
-
     ul {
       padding: 0;
       list-style: none;

@@ -1,6 +1,6 @@
 <template>
   <form class="form" @submit.prevent>
-    <h1 class="mb-36">ONELINKS.com</h1>
+    <h1 class="mb-36">ONELINKS.COM</h1>
     <label for="phone">Номер телефона</label>
     <div class="text-container">
       <input
@@ -32,6 +32,11 @@ export default class LoginFormVue extends Vue {
 }
 </script>
 <style lang="scss">
+.form {
+  h1 {
+    text-align: center;
+  }
+}
     .full-width { 
         width: 100%;
     }

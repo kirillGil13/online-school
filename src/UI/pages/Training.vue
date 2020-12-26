@@ -2,7 +2,7 @@
   <el-container class="container_a">
     <el-container class="ml-36 container_b">
       <el-col>
-        <Header :isBordered="false" title="Обучение" class="top_bar_training">
+        <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
           <Search/>
         </Header>
         <h5>топ лидеры</h5>
@@ -213,8 +213,4 @@ export default class Training extends Vue {
 }
 </script>
 <style lang="scss">
-.top_bar_training {
-  padding-left: 0;
-  padding-right: 0;
-}
 </style>
