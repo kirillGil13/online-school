@@ -4,19 +4,19 @@ export interface ILeader {
     rating: string;
     createdAt: string;
     updatedAt: string;
-    userInfo: ILeaderItemUserInfo;
-    courses: ILeaderItemCourses[];
+    userInfo: ILeaderUserInfo;
+    courses: ILeaderCourses[];
     balance: string;
     totalCoursesViewsCount: number;
     fullName: string;
 }
-export interface ILeaderItemUserInfo {
+export interface ILeaderUserInfo {
     id: number;
     name: string;
     surname: string;
     avatar: string;
 }
-export interface ILeaderItemCourses {
+export interface ILeaderCourses {
     id: number;
     title: string;
     description: string;
@@ -29,18 +29,18 @@ export type LeaderResponseType = {
     rating: string;
     createdAt: string;
     updatedAt: string;
-    userInfo: LeaderItemUserInfoResponseType;
-    courses: LeaderItemCoursesResponseType[];
+    userInfo: LeaderUserInfoResponseType;
+    courses: LeaderCoursesResponseType[];
     balance: string;
     totalCoursesViewsCount: number;
 }
-export type LeaderItemUserInfoResponseType = {
+export type LeaderUserInfoResponseType = {
     id: number;
     name: string;
     surname: string;
-    avatar: string;
+    avatar: string
 }
-export type LeaderItemCoursesResponseType = {
+export type LeaderCoursesResponseType = {
     id: number;
     title: string;
     description: string;
