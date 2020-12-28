@@ -227,3 +227,55 @@ h5 {
         width: 0px;
     }
 }
+.course-block {
+    width: calc((100% / 3) - 24px);
+    margin-right: 24px;
+    margin-bottom: 28px;
+    cursor: pointer;
+    &:nth-child(3n + 3) {
+        margin-right: 0;
+    }
+    .course-video-block {
+        font-size: 12px;
+        position: relative;
+        height: 190px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        background-blend-mode: multiply;
+        background-color: #C4C4C4;
+        .course-info {
+            position: absolute;
+            padding: 0 4px 0 4px;
+            background: rgba(6, 5, 22, 0.6);
+            backdrop-filter: blur(4px);
+            border-radius: 3px;
+            color: #ffffff;
+            &.progress {
+                top: 12px;
+                left: 12px;
+            }
+            &.duration {
+                bottom: 8px;
+                right: 8px;
+            }
+            .text {
+                margin-left: 4px;
+                text-transform: none;
+            }
+        }
+    }
+    .course-title{
+        margin-top: 12px;
+    }
+}
+.svg-wh {
+    width: 36px !important;
+    height: 36px !important;
+    margin-right: 8px;
+}
+.top_bar_p_0 {
+    padding-left: 0;
+    padding-right: 0;
+}

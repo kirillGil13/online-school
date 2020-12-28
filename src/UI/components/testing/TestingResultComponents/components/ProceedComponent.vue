@@ -6,13 +6,13 @@
         <h3>К сожалению, вы не прошли тестирование.</h3>
         <span class="info">Ничего страшного - вы можете пройти повторно тест через</span>
         <Timer v-if="!showButton" :currentTime="5" @stop="stop"/>
-        <Button v-if="showButton" class="again" @submit="$listeners">Пройти тест повторно</Button>
+        <Button v-if="showButton" class="again" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
       </el-col>
     </div>
     <el-divider></el-divider>
     <el-col>
-      <Button class="with_icon" @submit="$listeners">Пересмотреть урок</Button>
-      <Button class="with_icon secondary" @submit="$listeners">Написать наставнику</Button>
+      <Button class="with_icon" @submit="$emit('reviewLesson')">Пересмотреть урок</Button>
+      <Button class="with_icon secondary" @submit="$emit('writeMaster')">Написать наставнику</Button>
     </el-col>
   </el-col>
 </template>

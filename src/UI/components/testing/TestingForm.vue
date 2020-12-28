@@ -32,7 +32,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Button from "../common/Button.vue";
 import ProgressBar from "../common/ProgressBar.vue";
 import TestingQuestion from "./TestingQuestion.vue";
-import { ITestingRequestType } from "@/entity/testing/testing.types";
+import { TestingRequestType } from "@/entity/testing/testing.types";
 
 @Component({
   components: {

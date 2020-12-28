@@ -1,5 +1,5 @@
 <template>
-  <el-row :class="['top_bar', isBordered ? 'box-container' : '']">
+  <el-row :class="['top_bar', isBordered ? 'box-container' : '']" ref="topBar">
     <el-col :span="16">
       <router-link v-if="route" :to="{name: route.name}" class="link">
         <svg-icon name="Arrow_Left" class="svg-fill-none mr-14"></svg-icon>
@@ -19,10 +19,16 @@ import { HeaderRouteType } from "@/entity/common/header.types";
 
 @Component
 export default class Header extends Vue {
-  @Prop({ default: "" }) readonly title!: string;
-  @Prop({ default: "" }) readonly description!: string;
-  @Prop({ default: "" }) readonly route!: HeaderRouteType;
-  @Prop({ default: false }) readonly isBordered!: boolean;
+  @Prop({default: ""}) readonly title!: string;
+  @Prop({default: ""}) readonly description!: string;
+  @Prop({default: ""}) readonly route!: HeaderRouteType;
+  @Prop({default: false}) readonly isBordered!: boolean;
+  @Prop({default: ""}) readonly hash!: string;
+  mounted() {
+    if (this.isBordered === false) {
+      this.$refs.topBar.$el.style.padding = '24px 0 24px 0';
+    }
+  }
 }
 </script>
 <style lang="scss">

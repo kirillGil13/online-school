@@ -97,7 +97,9 @@ export default class SliderLeaders extends Vue {
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
   border-radius: 12px;
   cursor: pointer;
-
+  &:nth-child(1) {
+    margin-left: 5px;
+  }
   a {
     border-radius: 12px;
     padding-top: 16px;

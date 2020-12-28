@@ -1,23 +1,23 @@
 export interface ITesting {
-    id: number,
-    question: string,
-    answers: ITestingAnswers[]
+    id: number;
+    question: string;
+    answers: ITestingAnswers[];
 }
 export interface ITestingAnswers {
-    id: number,
+    id: number;
     answerOption: string
 }
-export type ITestingResponseType = {
-    id: number,
-    question: string,
-    answers: ITestingAnswersResponseType[]
+export type TestingResponseType = {
+    id: number;
+    question: string;
+    answers: TestingAnswersResponseType[];
 }
-export type ITestingAnswersResponseType = {
-    id: number,
-    answerOption: string
+export type TestingAnswersResponseType = {
+    id: number;
+    answerOption: string;
 }
 
-export type ITestingRequestType = {
+export type TestingRequestType = {
     questionId: number;
     answerId: number;
 }

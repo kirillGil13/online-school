@@ -1,0 +1,57 @@
+<template>
+  <div class="course-block" @click="$emit('proceed', course.id)">
+    <div class="course-video-block" :style="{backgroundImage: 'url('+course.cover+')'}">
+      <Rating :rating="course.rating"/>
+      <div class="course-info duration">{{ course.fullDuration() }}</div>
+    </div>
+    <el-row class="leader">
+      <div class="course-avatar" :style="{backgroundImage: 'url(' + leaderAvatar + ')'}"></div>
+      <span class="desc">{{leaderFullName}}</span>
+    </el-row>
+    <div class="course-title">{{ course.title }}</div>
+  </div>
+</template>
+
+<script lang="ts">
+import {Component, Prop, Vue} from "vue-property-decorator";
+import LeaderCourses from "@/entity/leaderCourses/leaderCourses";
+import Rating from "@/UI/components/common/Rating.vue";
+
+@Component({
+  components: {
+    Rating
+  }
+})
+export default class LeaderCourseItem extends Vue {
+  @Prop() readonly leaderFullName!: string;
+  @Prop() readonly leaderAvatar!: string;
+  @Prop() readonly course!: LeaderCourses;
+}
+</script>
+
+<style lang="scss">
+.course-block {
+  .leader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 8px;
+    .course-avatar {
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background-size: cover;
+    }
+    .desc {
+      color: #060516;
+      opacity: 0.6;
+      font-size: 12px;
+      line-height: 150%;
+    }
+  }
+}
+
+
+</style>

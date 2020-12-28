@@ -1,8 +1,8 @@
 <template>
   <el-col class="box-container box-padding mt-16">
     <h5>Тестирование</h5>
-    <TestingFormVue :form="form" v-on="$listeners" v-show="active"/>
-    <TestingResultComponent v-show="!active" :result="result" :buttonType="result.result()"/>
+    <TestingFormVue :form="form" v-show="active"/>
+    <TestingResultComponent v-show="!active" v-on="$listeners" :result="result" :buttonType="result.result()"/>
   </el-col>
 </template>
 <script lang="ts">
