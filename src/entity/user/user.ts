@@ -31,6 +31,6 @@ export class User implements IUser {
     }
 
     get link(): string {
-        return 'https://partner.onellinks.com/' + this.login;
+        return 'https://partner.onelinks.com/' + this.login;
     }
 }
