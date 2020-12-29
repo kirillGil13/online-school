@@ -130,7 +130,7 @@ export default class Profile extends Vue {
     };
   }
 
-  private handleClick(tab, event): void {
+  private handleClick(tab: any, event: any): void {
     console.log(tab, event);
   }
 

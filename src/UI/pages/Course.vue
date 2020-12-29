@@ -74,14 +74,14 @@ import Lessons from '@/UI/components/lessons/Lessons.vue';
 })
 export default class Course extends Vue {
     questions: Testing[] = [];
-    course: CourseItem;
-    lesson: LessonItem;
+    course!: CourseItem;
+    lesson!: LessonItem;
     route: HeaderRouteType = {
         name: 'training',
         label: 'Вернуться к списку курсов',
     };
-    testingForm: TestingForm;
-    testingResult: TestingResult;
+    testingForm!: TestingForm;
+    testingResult!: TestingResult;
     rightAnswers: TestingResultResponseType = {
         totalRightAnswers: 5,
     };

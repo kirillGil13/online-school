@@ -6,7 +6,7 @@ import auth from '@websanova/vue-auth/src';
 //@ts-ignore
 import authBearer from './bearer';
 //@ts-ignore
-import axios from '@websanova/vue-auth/drivers/http/axios.1.x';
+import axios from '@websanova/vue-auth/drivers/http/axios.1.x' ;
 //@ts-ignore
 import router from '@websanova/vue-auth/drivers/router/vue-router.2.x';
 
@@ -44,5 +44,6 @@ Vue.use(auth, {
         enabled: true,
     },
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parseUserData: (data: Array<any>) => data,
 });

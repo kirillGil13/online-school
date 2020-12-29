@@ -1,6 +1,6 @@
 import { IUser, UserResponseType } from './user.types';
 
-export default class User implements IUser{
+export class User implements IUser{
     id: number;
     email: string;
     description: string;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Action, getModule, Module, VuexModule } from 'vuex-module-decorators';
 import Vue from 'vue';
 import store from '@/store';
@@ -26,6 +27,7 @@ class AuthModule extends VuexModule {
 
     @Action
     async load(): Promise<any> {
+        console.log('123');
         return await Vue.auth.load();
     }
     //

@@ -1,0 +1,16 @@
+stages:
+  - deploy
+
+
+deploy:
+  stage: deploy
+  script:
+    - cd /var/www/fin2fin.client
+    - git pull
+    - docker-compose up -d --build
+  only:
+    - master
+  tags:
+    - deploy
+
+

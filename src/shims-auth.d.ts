@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/interface-name-prefix */
-import { IAuth } from '@/plugins/Auth/auth.types';
+import { VueAuth } from '@websanova/vue-auth';
 
 declare module 'vue/types/vue' {
     interface VueConstructor {
-        auth: IAuth;
+        auth: VueAuth;
     }
 }
 declare module 'vue/types/vue' {
     interface Vue {
-        auth: IAuth;
+        auth: VueAuth;
     }
 }
 declare module 'vue/types/vue' {
     interface ComponentOptions<V extends Vue> {
-        auth: IAuth;
+        auth: VueAuth;
     }
 }

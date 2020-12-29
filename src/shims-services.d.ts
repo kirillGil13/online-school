@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/interface-name-prefix */
-import { IProvider } from '@/services/provider';
+import { IProvider } from '@/services/provider.types';
 
 declare module 'vue/types/options' {
     interface ComponentOptions<V extends Vue> {

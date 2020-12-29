@@ -7,17 +7,19 @@ Vue.use(Router);
 
 const routes = [
     {
-        path: '/',
+        path: '/auth/login',
         name: 'Login',
         component: Login,
+        meta: { auth: false },
     },
     {
-        path: '/main',
+        path: '/',
         component: () => import('../UI/components/layouts/MainLayout.vue'),
+        meta: { auth: true },
         children: [
             {
                 path: '/',
-                name: 'Profile',
+                name: 'Main',
                 component: () => import('../UI/pages/Profile.vue'),
             },
             {

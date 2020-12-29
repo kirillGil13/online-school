@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: fin2fin_client_nginx
+    build:
+      context: .
+      dockerfile: dockerfiles/nginx/Dockerfile
+    restart: always
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./var/log/nginx:/var/log/nginx/
+    ports:
+      - '8082:80'
+
+
+networks:
+  default:
+    external:
+      name: fin2fin_network
