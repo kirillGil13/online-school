@@ -1,9 +1,10 @@
-import '@/plugins/Http';
-import '@/plugins/Auth';
-import '@/plugins/Reactive-Forms';
-import '@/plugins/Svg';
-import '@/plugins/ProgressCircle';
-import '@/plugins/Slider';
-import '@/plugins/Vuelidate';
-import '@/plugins/Vuetify';
-
+export * from './Http';
+export * from './Auth';
+export * from './Reactive-Forms';
+export * from './Svg';
+export * from './ProgressCircle';
+export * from './Slider';
+export * from './Vuelidate';
+export * from './Vuetify';
+export * from './Services';
+export * from './Moment';

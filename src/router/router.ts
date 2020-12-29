@@ -39,7 +39,7 @@ const routes = [
             {
                 path: '/candidates',
                 name:'Candidates',
-                component: () => import('../UI/pages/Candidates.vue')
+                component: () => import('../UI/pages/candidates/Candidates.vue')
             },
             {
                 path: '/partners',
