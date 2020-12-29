@@ -23,7 +23,7 @@ import { RouterNameEnum } from '@/router/router.types';
     },
 })
 export default class Banner extends Vue {
-    bannerType: typeof BannerTypeEnum = BannerTypeEnum.PRO_ACCOUNT_PROMO;
+    bannerType: BannerTypeEnum = BannerTypeEnum.PRO_ACCOUNT_PROMO;
 
     created(): void {
         this.getBannerFromRoute(this.$route);

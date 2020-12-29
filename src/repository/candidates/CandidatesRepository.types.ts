@@ -1,5 +1,5 @@
 import { ICandidate } from '@/entity/candidates';
 
-export interface ICandidatesService {
+export interface ICandidatesRepository {
     fetchAll(): Promise<ICandidate[]>;
 }

@@ -1,5 +1,7 @@
-import { ICandidatesService } from '@/repository/candidates';
+import { ICandidatesRepository } from '@/repository/candidates';
+import { IPartnersRepository } from '@/repository/partners';
 
 export interface IProvider {
-    candidates: ICandidatesService;
+    candidates: ICandidatesRepository;
+    partners: IPartnersRepository;
 }

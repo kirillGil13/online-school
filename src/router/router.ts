@@ -45,7 +45,7 @@ const routes = [
             {
                 path: '/partners',
                 name: RouterNameEnum.Partners,
-                component: () => import('../UI/pages/Partners.vue')
+                component: () => import('../UI/pages/partners/Partners.vue')
             }
         ],
     },

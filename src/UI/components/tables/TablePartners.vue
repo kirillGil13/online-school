@@ -1,29 +1,31 @@
 <template>
-  <v-col class="table">
-    <div class="tr">
-      <v-col>Имя</v-col>
-      <v-col>Номер телефона</v-col>
-      <v-col>Партнеров</v-col>
-      <v-col>Подписка</v-col>
-      <v-col>Инфопакет</v-col>
-      <v-col>Дата регистрации</v-col>
-    </div>
-    <div class="tr tbody" v-for="(partner, index) in partners" :key="index">
-      <v-col><div class="avatar" :style="{backgroundImage: 'url('+partner.avatar+')'}"></div> {{ partner.name }}</v-col>
-      <v-col>{{ partner.phone }}</v-col>
-      <v-col>23</v-col>
-      <v-col>Оформлена</v-col>
-      <v-col>{{ candidate.createdAt }}</v-col>
-      <v-col>{{partner.infoPackageTitle}}</v-col>
-      <v-col>{{partner.startPartnerDate}}</v-col>
-    </div>
-  </v-col>
+    <v-col class="table">
+        <div class="tr">
+            <v-col>Имя</v-col>
+            <v-col>Номер телефона</v-col>
+            <v-col>Партнеров</v-col>
+            <v-col>Подписка</v-col>
+            <v-col>Инфопакет</v-col>
+            <v-col>Дата регистрации</v-col>
+        </div>
+        <div class="tr tbody" v-for="(partner, index) in partners" :key="index">
+            <v-col
+                ><div class="avatar" :style="{ backgroundImage: 'url(' + partner.avatar + ')' }"></div>
+                {{ partner.name }}</v-col
+            >
+            <v-col>{{ partner.phone }}</v-col>
+            <v-col>{{ partner.totalPartners }}</v-col>
+            <v-col>{{partner.subscribe ? 'Оформлена' : 'Не оформлена'}}</v-col>
+            <v-col>{{ partner.infoPackageTitle }}</v-col>
+            <v-col>{{ partner.startPartnerDate | moment('DD.MM, HH:mm') }}</v-col>
+        </div>
+    </v-col>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Button from '@/UI/components/common/Button.vue';
-import PartnersItem from '@/entity/partners/partners';
+import { IPartner } from '@/entity/partners';
 
 @Component({
     components: {
@@ -31,7 +33,7 @@ import PartnersItem from '@/entity/partners/partners';
     },
 })
 export default class TablePartners extends Vue {
-    @Prop() readonly partners!: PartnersItem[];
+    @Prop() readonly partners!: IPartner[];
 }
 </script>
 
