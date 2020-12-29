@@ -1,8 +1,8 @@
-import Api from '@/services/api';
-import { ICandidatesService } from '@/services/candidates';
+import Api from '@/repository/api';
+import { ICandidatesService } from '@/repository/candidates';
 import { Candidate, CandidateResponseType, ICandidate } from '@/entity/candidates';
 
-export class CandidatesService implements ICandidatesService {
+export class CandidatesRepository implements ICandidatesService {
     async fetchAll(): Promise<ICandidate[]> {
         const response = await Api.get('/user/candidates');
         const data = response.data as CandidateResponseType[];

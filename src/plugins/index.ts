@@ -6,5 +6,5 @@ export * from './ProgressCircle';
 export * from './Slider';
 export * from './Vuelidate';
 export * from './Vuetify';
-export * from './Services';
+export * from './Repository';
 export * from './Moment';

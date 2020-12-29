@@ -1,4 +1,4 @@
-import { ICandidatesService } from '@/services/candidates';
+import { ICandidatesService } from '@/repository/candidates';
 
 export interface IProvider {
     candidates: ICandidatesService;
