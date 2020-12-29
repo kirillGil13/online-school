@@ -10,22 +10,22 @@
     </el-col>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class ProgressBar extends Vue {
     @Prop({ default: 0 }) readonly amount!: number;
     @Prop({ default: 1 }) readonly step!: number;
-    @Watch('step')
-    onChangeFlag(val: number, oldVal: number): void {
-        if (val > oldVal) {
-            this.$refs.dash[val - 1].classList.add('active');
-        } else {
-            this.$refs.dash[val].classList.remove('active');
-        }
-    }
+    // @Watch('step')
+    // onChangeFlag(val: number, oldVal: number): void {
+    //     if (val > oldVal) {
+    //         this.$refs.dash[val - 1].classList.add('active');
+    //     } else {
+    //         this.$refs.dash[val].classList.remove('active');
+    //     }
+    // }
 }
-</script>
+</script> 
 <style lang="scss">
 .dash {
     content: '';

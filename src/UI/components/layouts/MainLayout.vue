@@ -36,7 +36,7 @@ export default class MainLayout extends Vue {
         avatar: 'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg',
     };
 
-    get bannerTypes(): BannerTypeEnum {
+    get bannerTypes(): typeof BannerTypeEnum {
         return BannerTypeEnum;
     }
 }

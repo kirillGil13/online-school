@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Vue from 'vue';
 import Router from 'vue-router';
-import Login from '../UI/pages/Login.vue';
 
 Vue.use(Router);
 
@@ -9,7 +8,7 @@ const routes = [
     {
         path: '/auth/login',
         name: 'Login',
-        component: Login,
+        component: () => import('../UI/pages/auth/Login.vue'),
         meta: { auth: false },
     },
     {

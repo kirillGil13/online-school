@@ -23,7 +23,7 @@ import FailComponent from './components/FailComponent.vue';
 export default class TestingResultComponent extends Vue {
     @Prop() readonly result!: TestingResult;
     @Prop() readonly buttonType!: string;
-    get buttonTypes(): TestingResultComponentsEnum {
+    get buttonTypes(): typeof TestingResultComponentsEnum {
         return TestingResultComponentsEnum;
     }
 }

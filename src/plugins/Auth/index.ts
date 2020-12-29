@@ -22,19 +22,13 @@ Vue.use(auth, {
     forbiddenRedirect: { path: '/403' },
     notFoundRedirect: { path: '/404' },
     // Http
-    registerData: {
-        url: 'users/register',
-        method: 'POST',
-        redirect: '/',
-        autoLogin: true,
-    },
     loginData: {
-        url: 'users/login',
+        url: 'users/auth',
         method: 'POST',
         redirect: '/',
     },
     refreshData: {
-        url: 'users/token/refresh',
+        url: 'users/info',
         method: 'POST',
         enabled: false,
         interval: 10,

@@ -16,7 +16,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Leader from '@/entity/leader/leader';
-import LeaderCourses from '@/entity/leaderCourses/leaderCourses';
+// import LeaderCourses from '@/entity/leaderCourses/leaderCourses';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 
 @Component({
@@ -26,7 +26,7 @@ import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue'
 })
 export default class LeaderCourseComponent extends Vue {
     @Prop() readonly leader!: Leader;
-    @Prop() readonly courses!: LeaderCourses[];
+    // @Prop() readonly courses!: LeaderCourses[];
 }
 </script>
 <style lang="scss">

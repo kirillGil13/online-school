@@ -7,11 +7,11 @@
                 </Header>
                 <h5>топ лидеры</h5>
                 <SliderLeaders :leaders="leaders" />
-                <LeaderCourseComponent
-                    :leader="leaders[$route.params.id]"
-                    :courses="coursesLeader"
-                    @proceed="proceed"
-                />
+<!--                <LeaderCourseComponent-->
+<!--                    :leader="leaders[$route.params.id]"-->
+<!--                    :courses="coursesLeader"-->
+<!--                    @proceed="proceed"-->
+<!--                />-->
             </el-col>
         </el-container>
     </el-container>
@@ -24,7 +24,7 @@ import SliderLeaders from '../components/slider/SliderLeaders.vue';
 import Search from '../components/common/Search.vue';
 import Leader from '@/entity/leader/leader';
 import { LeaderResponseType } from '@/entity/leader/leader.types';
-import LeaderCourseComponent from '@/UI/components/leaderCourse/LeaderCourseComponent.vue';
+// import LeaderCourseComponent from '@/UI/components/leaderCourse/LeaderCourseComponent.vue';
 // import {LeaderCoursesResponseType} from "@/entity/leaderCourses/leaderCourses.types";
 // import LeaderCourses from "@/entity/leaderCourses/leaderCourses";
 
@@ -33,7 +33,7 @@ import LeaderCourseComponent from '@/UI/components/leaderCourse/LeaderCourseComp
         SliderLeaders,
         Search,
         Header,
-        LeaderCourseComponent,
+        // LeaderCourseComponent,
     },
 })
 export default class LeaderCoursePage extends Vue {

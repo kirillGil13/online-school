@@ -23,8 +23,9 @@ import InviteBanner from './banners/Invite.vue';
 export default class Banner extends Vue {
     @Prop({ required: true }) bannerType!: string;
     @Prop({ required: false }) qrcode!: string;
-    get bannerTypes(): BannerTypeEnum {
+    get bannerTypes(): typeof BannerTypeEnum {
         return BannerTypeEnum;
     }
 }
 </script>
+MainLayout

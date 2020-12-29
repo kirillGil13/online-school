@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import LeaderCourses from '@/entity/leaderCourses/leaderCourses';
+// import LeaderCourses from '@/entity/leaderCourses/leaderCourses';
 import Rating from '@/UI/components/common/Rating.vue';
 
 @Component({
@@ -25,7 +25,7 @@ import Rating from '@/UI/components/common/Rating.vue';
 export default class LeaderCourseItem extends Vue {
     @Prop() readonly leaderFullName!: string;
     @Prop() readonly leaderAvatar!: string;
-    @Prop() readonly course!: LeaderCourses;
+    // @Prop() readonly course!: LeaderCourses;
 }
 </script>
 

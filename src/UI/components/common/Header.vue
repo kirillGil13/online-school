@@ -1,5 +1,5 @@
 <template>
-    <el-row :class="['top_bar', isBordered ? 'box-container' : '']" ref="topBar">
+    <el-row :class="['top_bar', isBordered ? 'box-container' : 'py-24']" ref="topBar">
         <el-col :span="16">
             <router-link v-if="route" :to="{ name: route.name }" class="link">
                 <svg-icon name="Arrow_Left" class="svg-fill-none mr-14"></svg-icon>
@@ -24,11 +24,6 @@ export default class Header extends Vue {
     @Prop({ default: '' }) readonly route!: HeaderRouteType;
     @Prop({ default: false }) readonly isBordered!: boolean;
     @Prop({ default: '' }) readonly hash!: string;
-    mounted(): void {
-        if (this.isBordered === false) {
-            this.$refs.topBar.$el.style.padding = '24px 0 24px 0';
-        }
-    }
 }
 </script>
 <style lang="scss">
@@ -52,6 +47,9 @@ export default class Header extends Vue {
     .link {
         display: flex;
         align-items: center;
+    }
+    &.py-24 {
+        padding: 24px 0;
     }
 }
 </style>

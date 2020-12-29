@@ -265,7 +265,7 @@ export default class Course extends Vue {
     }
 
     mounted(): void {
-        this.$refs.lessons.$el.style.height = this.$refs.courseVideo.$el.clientHeight + 1 + 'px';
+        // this.$refs.lessons.$el.style.height = this.$refs.courseVideo.$el.clientHeight + 1 + 'px';
     }
 
     //тест

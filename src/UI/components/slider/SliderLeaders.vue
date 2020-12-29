@@ -46,22 +46,20 @@ export default class SliderLeaders extends Vue {
     };
 
     next(): void {
-        // eslint-disable-next-line
-        this.$refs.swiper.$swiper.slideNext();
+        // this.$refs.swiper.$swiper.slideNext();
         this.checkActive();
     }
 
     prev(): void {
-        // eslint-disable-next-line
-        this.$refs.swiper.$swiper.slidePrev();
+        // this.$refs.swiper.$swiper.slidePrev();
         this.checkActive();
     }
 
     checkActive(): void {
-        // eslint-disable-next-line
-        if (this.$refs.swiper.$swiper.activeIndex != 0) {
-            this.$refs.swiper.$swiper.params.el.children[1].style.display = 'flex';
-        } else this.$refs.swiper.$swiper.params.el.children[1].style.display = 'none';
+        
+        // if (this.$refs.swiper.$swiper.activeIndex != 0) {
+        //     this.$refs.swiper.$swiper.params.el.children[1].style.display = 'flex';
+        // } else this.$refs.swiper.$swiper.params.el.children[1].style.display = 'none';
     }
 }
 </script>
