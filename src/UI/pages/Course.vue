@@ -260,7 +260,7 @@ export default class Course extends Vue {
     }
 
     @Watch('$route.params.lessonId')
-    onChangeRoute() {
+    onChangeRoute(): void {
         this.fetchData();
     }
 

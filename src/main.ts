@@ -10,6 +10,7 @@ import '@/UI/components/svg';
 Vue.config.productionTip = false;
 
 new Vue({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     render: (h): any => h(App),
     router,
     store,

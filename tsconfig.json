@@ -1,8 +1,45 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "strict": true,
-    "module": "es2015",
-    "moduleResolution": "node"
-  }
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "strict": true,
+        "jsx": "preserve",
+        "importHelpers": true,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "typeRoots": [
+            "./node_modules/@types",
+            "./node_modules/vuetify/types"
+        ],
+        "types": [
+            "webpack-env",
+            "jest",
+            "vuetify"
+        ],
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        },
+        "lib": [
+            "esnext",
+            "dom",
+            "dom.iterable",
+            "scripthost"
+        ]
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "tests/**/*.ts",
+        "tests/**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

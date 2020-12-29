@@ -5,3 +5,4 @@ Vue.use(SvgIcon, {
     defaultWidth: '1em',
     defaultHeight: '1em',
 });
+

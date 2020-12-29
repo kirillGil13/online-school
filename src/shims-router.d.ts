@@ -1,16 +1,17 @@
-import {VueRouter} from "vue-router/types/router";
+/* eslint-disable @typescript-eslint/interface-name-prefix */
+import { VueRouter } from 'vue-router/types/router';
 declare module 'vue/types/vue' {
     interface VueConstructor {
-        router: VueRouter
+        router: VueRouter;
     }
 }
 declare module 'vue/types/vue' {
     interface Vue {
-        router: VueRouter
+        router: VueRouter;
     }
 }
 declare module 'vue/types/vue' {
     interface ComponentOptions<V extends Vue> {
-        router: VueRouter
+        router: VueRouter;
     }
 }

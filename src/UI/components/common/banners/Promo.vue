@@ -2,21 +2,14 @@
     <div class="banner banner__promo">
         <div class="banner__content">
             <div class="banner__star-container">
-                <svg-icon
-                    name="Star"
-                    height="40"
-                    width="40"
-                    :color="`${variables.lightGreen} ${variables.green}`"
-                />
+                <svg-icon name="Star" height="40" width="40" :color="`${variables.lightGreen} ${variables.green}`" />
             </div>
             <p class="banner__descripton">
                 Подключите PRO аккаунт, чтобы <br />
                 получить доступ ко всем материалам
             </p>
             <!-- тут будет common/Button -->
-            <el-button class="banner__button green" @click="subscribe"
-                >Оформить подписку</el-button
-            >
+            <el-button class="banner__button green" @click="subscribe">Оформить подписку</el-button>
             <!-- тут будет common/Button -->
         </div>
     </div>
@@ -24,10 +17,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import variables from '@/UI/assets/scss/variables/_variables.scss';
+import variables, { IScssVariables } from '@/UI/assets/scss/variables/_variables.scss';
 @Component
 export default class PromoBanner extends Vue {
-    get variables() {
+    get variables(): IScssVariables {
         return variables;
     }
     private subscribe(): void {

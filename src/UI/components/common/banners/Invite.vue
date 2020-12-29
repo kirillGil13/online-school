@@ -16,12 +16,7 @@
                 </p>
             </div>
             <!-- тут будет common/Button -->
-            <el-button
-                size="medium"
-                class="banner__button blue"
-                @click="copyLink"
-                >Скопировать ссылку</el-button
-            >
+            <el-button size="medium" class="banner__button blue" @click="copyLink">Скопировать ссылку</el-button>
             <!-- тут будет common/Button -->
         </div>
     </div>
@@ -29,10 +24,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import variables from '@/UI/assets/scss/variables/_variables.scss';
+import variables, {IScssVariables} from '@/UI/assets/scss/variables/_variables.scss';
 @Component
 export default class InviteBanner extends Vue {
-    get variables() {
+    get variables(): IScssVariables {
         return variables;
     }
     private copyLink(): void {

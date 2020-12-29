@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
-import Vue from "vue";
+import Vue from 'vue';
 
 //@ts-ignore
 import auth from '@websanova/vue-auth/src';
@@ -18,9 +18,9 @@ Vue.use(auth, {
     tokenDefaultKey: 'token',
 
     // Redirects
-    authRedirect: {name: 'Login'},
-    forbiddenRedirect: {path: '/403'},
-    notFoundRedirect: {path: '/404'},
+    authRedirect: { name: 'Login' },
+    forbiddenRedirect: { path: '/403' },
+    notFoundRedirect: { path: '/404' },
     // Http
     registerData: {
         url: 'users/register',

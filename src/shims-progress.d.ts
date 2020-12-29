@@ -1,2 +1,1 @@
-import Vue from "vue"
-declare module "vue-ellipse-progress";
+declare module 'vue-ellipse-progress';
