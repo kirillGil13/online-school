@@ -2,10 +2,7 @@
     <v-container>
         <v-navigation-drawer class="aside-view" width="330px">
             <Sidebar :userInfo="user" />
-            <Banner
-                :bannerType="bannerTypes.PRO_ACCOUNT_PROMO"
-                :qrcode="'https://miro.medium.com/max/495/1*PNniLVIC_Hc7gNIxjvWPWg.png'"
-            />
+            <Banner/>
         </v-navigation-drawer>
         <v-container>
             <v-main class="main-view">
