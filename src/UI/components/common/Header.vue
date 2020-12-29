@@ -1,17 +1,17 @@
 <template>
-    <el-row :class="['top_bar', isBordered ? 'box-container' : 'py-24']" ref="topBar">
-        <el-col :span="16">
+    <v-row :class="['top_bar', isBordered ? 'box-container' : 'py-24']" ref="topBar">
+        <div>
             <router-link v-if="route" :to="{ name: route.name }" class="link">
                 <svg-icon name="Arrow_Left" class="svg-fill-none mr-14"></svg-icon>
                 {{ route.label }}
             </router-link>
             <h1 v-if="title">{{ title }}</h1>
-            <span v-if="description">{{ description }}</span>
-        </el-col>
-        <el-col :span="8">
+            <div class="desc" v-if="description">{{ description }}</div>
+        </div>
+        <div>
             <slot></slot>
-        </el-col>
-    </el-row>
+        </div>
+    </v-row>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -28,10 +28,10 @@ export default class Header extends Vue {
 </script>
 <style lang="scss">
 .top_bar {
+  display: flex !important;
+  justify-content: space-between !important;
   padding: 24px;
   margin-bottom: 16px;
-  display: flex;
-  align-items: center;
   h1 {
     margin-bottom: 0;
     margin-top: 6px;
@@ -48,9 +48,6 @@ export default class Header extends Vue {
   .link {
     display: flex;
     align-items: center;
-  }
-  &.py-24 {
-    padding: 24px 0;
   }
 }
 </style>
