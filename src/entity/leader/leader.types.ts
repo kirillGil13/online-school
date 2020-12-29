@@ -38,7 +38,7 @@ export type LeaderUserInfoResponseType = {
     id: number;
     name: string;
     surname: string;
-    avatar: string
+    avatar: string;
 }
 export type LeaderCoursesResponseType = {
     id: number;

@@ -1,6 +1,6 @@
 import {CandidatesResponseType, ICandidates} from "@/entity/candidates/candidates.types";
 
-export default class Candidates implements ICandidates {
+export default class CandidatesItem implements ICandidates {
     id: number;
     name: string;
     phone: string;
