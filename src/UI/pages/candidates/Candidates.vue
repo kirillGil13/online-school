@@ -1,7 +1,6 @@
 <template>
-    <el-container class="container_a">
-        <el-container class="ml-36 container_b">
-            <el-col>
+    <v-container class="container_a">
+            <v-col>
                 <Header
                     :isBordered="false"
                     title="Кандидаты"
@@ -9,7 +8,7 @@
                     description="Здесь отображаются контактные данные всех людей, которые регистрировались по Вашим партнерским ссылкам"
                 >
                 </Header>
-                <el-col class="link-bar">
+                <v-col class="link-bar">
                     <div class="link-container">
                         <div>Ваша ссылка на лендинг</div>
                         <div class="link-content">
@@ -18,13 +17,12 @@
                         </div>
                     </div>
                     <Search />
-                </el-col>
-                <el-col>
+                </v-col>
+                <v-col>
                     <TableCandidates :candidates="candidates" />
-                </el-col>
-            </el-col>
-        </el-container>
-    </el-container>
+                </v-col>
+            </v-col>
+    </v-container>
 </template>
 
 <script lang="ts">
@@ -62,6 +60,7 @@ export default class Candidates extends Vue {
 
 <style lang="scss">
 .link-bar {
+  margin-top: 24px;
     display: flex;
     flex-direction: row;
     align-items: center;

@@ -1,21 +1,15 @@
 <template>
-    <el-container class="container_a">
-        <el-container class="ml-36 container_b">
-            <el-col>
-                <Header
-                    :isBordered="false"
-                    title="Партнеры"
-                    class="top_bar_p_0"
-                    description="Здесь отображаются партнеры, которых вы пригласили"
-                >
-                    <Search />
-                </Header>
-                <el-col>
-                    <TablePartners />
-                </el-col>
-            </el-col>
-        </el-container>
-    </el-container>
+  <v-container>
+    <v-col>
+      <Header :isBordered="false" title="Партнеры" class="top_bar_p_0"
+              description="Здесь отображаются партнеры, которых вы пригласили">
+        <Search/>
+      </Header>
+      <v-col>
+        <TablePartners/>
+      </v-col>
+    </v-col>
+  </v-container>
 </template>
 
 <script lang="ts">

@@ -1,33 +1,33 @@
 <template>
-    <el-col class="table">
-        <div class="tr">
-            <el-col>Имя</el-col>
-            <el-col>Номер телефона</el-col>
-            <el-col>Почта</el-col>
-            <el-col>Видео</el-col>
-            <el-col>Дата</el-col>
-            <el-col>Партнер</el-col>
-            <el-col></el-col>
+  <div class="table">
+    <div class="tr">
+      <v-col>Имя</v-col>
+      <v-col>Номер телефона</v-col>
+      <v-col>Почта</v-col>
+      <v-col>Видео</v-col>
+      <v-col>Дата</v-col>
+      <v-col>Партнер</v-col>
+      <v-col></v-col>
+    </div>
+    <div class="tr tbody" v-for="(candidate, index) in candidates" :key="index">
+      <v-col>{{ candidate.name }}</v-col>
+      <v-col>{{ candidate.phone }}</v-col>
+      <v-col>{{ candidate.email }}</v-col>
+      <v-col>
+        <div class="video">
+          <div class="title">Porttitor euismod.</div>
+          <div class="duration">12:08 - 22:12</div>
         </div>
-        <div class="tr tbody" v-for="(candidate, index) in candidates" :key="index">
-            <el-col>{{ candidate.name }}</el-col>
-            <el-col>{{ candidate.phone }}</el-col>
-            <el-col>{{ candidate.email }}</el-col>
-            <el-col>
-                <div class="video">
-                    <div class="title">Porttitor euismod.</div>
-                    <div class="duration">12:08 - 22:12</div>
-                </div>
-            </el-col>
-            <el-col>{{ candidate.createdAt | moment('DD.MM, HH:mm') }}</el-col>
-            <el-col>
-                <Button>Сделать партнером</Button>
-            </el-col>
-            <el-col>
-                <svg-icon name="Calendar_Table"></svg-icon>
-            </el-col>
-        </div>
-    </el-col>
+      </v-col>
+      <v-col>{{ candidate.createdAt }}</v-col>
+      <v-col>
+        <Button>Сделать партнером</Button>
+      </v-col>
+      <v-col>
+        <svg-icon name="Calendar_Table"></svg-icon>
+      </v-col>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
