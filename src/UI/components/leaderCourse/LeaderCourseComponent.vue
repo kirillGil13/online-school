@@ -1,5 +1,5 @@
 <template>
-    <el-col class="container_a">
+    <v-col class="container_a">
         <h2>{{ leader.fullName }}: Индивидуальные курсы</h2>
         <div class="courses row">
             <LeaderCourseItem
@@ -11,7 +11,7 @@
                 v-on="$listeners"
             />
         </div>
-    </el-col>
+    </v-col>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';

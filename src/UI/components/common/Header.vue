@@ -1,17 +1,17 @@
 <template>
-    <el-row :class="['top_bar', isBordered ? 'box-container' : 'py-24']" ref="topBar">
-        <el-col :span="16">
+    <v-row :class="['top_bar', isBordered ? 'box-container' : 'py-24']" ref="topBar">
+        <v-col cols="8">
             <router-link v-if="route" :to="{ name: route.name }" class="link">
                 <svg-icon name="Arrow_Left" class="svg-fill-none mr-14"></svg-icon>
                 {{ route.label }}
             </router-link>
             <h1 v-if="title">{{ title }}</h1>
             <span v-if="description">{{ description }}</span>
-        </el-col>
-        <el-col :span="8">
+        </v-col>
+        <v-col cols="4">
             <slot></slot>
-        </el-col>
-    </el-row>
+        </v-col>
+    </v-row>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';

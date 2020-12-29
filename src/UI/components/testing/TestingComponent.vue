@@ -1,9 +1,9 @@
 <template>
-    <el-col class="box-container box-padding mt-16">
+    <v-col class="box-container box-padding mt-16">
         <h5>Тестирование</h5>
         <TestingFormVue :form="form" v-show="active" />
         <TestingResultComponent v-show="!active" v-on="$listeners" :result="result" :buttonType="result.result()" />
-    </el-col>
+    </v-col>
 </template>
 <script lang="ts">
 import Button from '../common/Button.vue';

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="banner__wrapper">
         <QrCodeBanner :qrcode="qrcode" v-if="bannerType === bannerTypes.QRCODE" />
         <PromoBanner v-if="bannerType === bannerTypes.PRO_ACCOUNT_PROMO" />
         <InviteBanner v-if="bannerType === bannerTypes.INVITE_BUNNER" />
@@ -28,4 +28,8 @@ export default class Banner extends Vue {
     }
 }
 </script>
-MainLayout
+<style lang="scss" scoped>
+.banner__wrapper{
+  max-width: 290px;
+}
+</style>

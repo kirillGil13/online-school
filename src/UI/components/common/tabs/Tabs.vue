@@ -1,5 +1,5 @@
 <template>
-    <el-col>
+    <v-col>
         <div class="tabs">
             <ul>
                 <li v-for="(tab, index) in tabsResponse" :key="index" :class="{ 'is-active': tab.isActive }">
@@ -11,7 +11,7 @@
         <div class="tabs-details">
             <slot></slot>
         </div>
-    </el-col>
+    </v-col>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';

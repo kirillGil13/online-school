@@ -1,7 +1,7 @@
 <template>
-    <el-col>
+    <v-col>
         <div class="timer">{{ currentTimeTemp }} сек.</div>
-    </el-col>
+    </v-col>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';

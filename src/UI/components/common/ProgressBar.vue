@@ -1,13 +1,13 @@
 <template>
-    <el-col>
+    <v-col>
         <div class="progress">Вопрос {{ step }} из {{ amount }}</div>
         <div class="full-width dash_container">
-            <el-col v-for="number in amount" :key="number">
+            <v-col v-for="number in amount" :key="number">
                 <div :class="['dash', number === 1 ? 'active' : '']" :id="number" ref="dash"></div>
-            </el-col>
+            </v-col>
         </div>
-        <el-divider class="divider"></el-divider>
-    </el-col>
+        <v-divider class="divider"></v-divider>
+    </v-col>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -45,7 +45,7 @@ export default class ProgressBar extends Vue {
 .dash_container {
     display: flex;
     flex-flow: row nowrap;
-    .el-col {
+    .v-col {
         margin-right: 4px;
         &:nth-last-child(1) {
             margin-right: 0;

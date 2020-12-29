@@ -1,12 +1,12 @@
 <template>
-    <el-row>
-        <el-col class="profile__col" :span="24">
+    <v-row>
+        <v-col class="profile__col" cols="12">
             <input-wrapper>
-                <el-input
+                <v-text-field
                     @blur="form.controls.name.markAsDirty()"
                     v-model="form.props.name"
                     title="Имя"
-                ></el-input>
+                ></v-text-field>
                 <template slot="title">
                     <span>Имя</span>
                 </template>
@@ -14,14 +14,14 @@
                     <span>{{ form.controls.name.errorMessage }}</span>
                 </template>
             </input-wrapper>
-        </el-col>
-        <el-col class="profile__col" :span="24">
+        </v-col>
+        <v-col class="profile__col" cols="12">
             <input-wrapper>
-                <el-input
+                <v-text-field
                     @blur="form.controls.surname.markAsDirty()"
                     v-model="form.props.surname"
                     title="Фамилия"
-                ></el-input>
+                ></v-text-field>
                 <template slot="title">
                     <span>Фамилия</span>
                 </template>
@@ -29,50 +29,50 @@
                     <span>{{ form.controls.surname.errorMessage }}</span>
                 </template>
             </input-wrapper>
-        </el-col>
-        <el-col class="profile__col" :span="24">
+        </v-col>
+        <v-col class="profile__col" cols="12">
             <input-wrapper>
-                <el-input
-                    :value="form.baseObject.oneLinksId"
+                <v-text-field
+                    :value="form.baseObject.id"
                     disabled
                     title="OneLinks ID"
-                ></el-input>
+                ></v-text-field>
                 <template slot="title">
                     <span>OneLinks ID</span>
                 </template>
             </input-wrapper>
-        </el-col>
-        <el-col class="profile__col" :span="24">
+        </v-col>
+        <v-col class="profile__col" cols="12">
             <input-wrapper>
-                <el-input
+                <v-text-field
                     :value="form.baseObject.referLink"
                     disabled
                     title="Партнерская ссылка на OneLinks"
-                ></el-input>
+                ></v-text-field>
                 <template slot="title">
                     <span>Партнерская ссылка на OneLinks</span>
                 </template>
             </input-wrapper>
-        </el-col>
-        <el-col class="profile__col" :span="24">
+        </v-col>
+        <v-col class="profile__col" cols="12">
             <input-wrapper>
-                <el-input
-                    @blur="form.controls.bio.markAsDirty()"
-                    v-model="form.props.bio"
+                <v-text-field
+                    @blur="form.controls.description.markAsDirty()"
+                    v-model="form.props.description"
                     title="Обо мне"
-                ></el-input>
+                ></v-text-field>
                 <template slot="title">
                     <span>Обо мне</span>
                 </template>
                 <template slot="error">
-                    <span>{{ form.controls.bio.errorMessage }}</span>
+                    <span>{{ form.controls.description.errorMessage }}</span>
                 </template>
             </input-wrapper>
-        </el-col>
-        <el-col class="profile__col" :span="24">
+        </v-col>
+        <v-col class="profile__col" cols="12">
             <Button :disabled="!form.valid" v-on="$listeners">Сохранить</Button>
-        </el-col>
-    </el-row>
+        </v-col>
+    </v-row>
 </template>
 
 <script lang="ts">

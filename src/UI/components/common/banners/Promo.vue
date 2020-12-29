@@ -9,7 +9,7 @@
                 получить доступ ко всем материалам
             </p>
             <!-- тут будет common/Button -->
-            <el-button class="banner__button green" @click="subscribe">Оформить подписку</el-button>
+            <v-btn class="banner__button green" @click="subscribe">Оформить подписку</v-btn>
             <!-- тут будет common/Button -->
         </div>
     </div>

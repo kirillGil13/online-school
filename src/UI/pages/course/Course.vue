@@ -1,20 +1,20 @@
 <template>
-    <el-container class="container_a">
-        <el-container class="ml-36 container_b">
-            <el-col>
+    <v-row class="container_a">
+        <div class="ml-36 container_b">
+            <v-col>
                 <Header :isBordered="true" :route="route" :title="lesson.title"></Header>
-                <el-col class="course">
-                    <el-col>
-                        <el-container ref="courseVideo" class="course-container"></el-container>
-                        <el-row class="course-video-row">
+                <v-col class="course">
+                    <v-col>
+                        <div ref="courseVideo" class="course-container"></div>
+                        <v-row class="course-video-row">
                             <Relation svg-name="Finger" title="Нравится" />
                             <Relation class="svg-down" svg-name="Finger" title="Не нравится" />
                             <Relation svg-name="Chosen" title="В избранное" />
-                        </el-row>
-                        <el-col class="box-container box-padding">
+                        </v-row>
+                        <v-col class="box-container box-padding">
                             <h5>ОПИСАНИЕ</h5>
                             <span class="desc">{{ lesson.description }}</span>
-                        </el-col>
+                        </v-col>
                         <TestingComponent
                             :form="testingForm"
                             :result="testingResult"
@@ -23,39 +23,39 @@
                             @reviewLesson="reviewLesson()"
                             @writeMaster="writeMaster()"
                         />
-                    </el-col>
-                </el-col>
-                <el-col class="lessons">
-                    <el-col>
+                    </v-col>
+                </v-col>
+                <v-col class="lessons">
+                    <v-col>
                         <Lessons ref="lessons" :course="course" @moveToLesson="moveToLesson" />
-                        <el-col class="box-container box-padding materials">
+                        <v-col class="box-container box-padding materials">
                             <h5>МАТЕРИАЛЫ К УРОКУ</h5>
-                            <el-row class="course-container mb-8">
+                            <v-row class="course-container mb-8">
                                 <svg-icon class="svg-wh" name="Doc_PDF"></svg-icon>
                                 Презентация продуктов FIniko
-                            </el-row>
-                            <el-row class="course-container">
+                            </v-row>
+                            <v-row class="course-container">
                                 <svg-icon class="svg-wh" name="Doc_PDF"></svg-icon>
                                 Презентация продуктов FIniko
-                            </el-row>
-                        </el-col>
-                    </el-col>
-                </el-col>
-            </el-col>
-        </el-container>
-    </el-container>
+                            </v-row>
+                        </v-col>
+                    </v-col>
+                </v-col>
+            </v-col>
+        </div>
+    </v-row>
 </template>
 <script lang="ts">
-import Header from '../components/common/Header.vue';
-import Button from '../components/common/Button.vue';
-import TestingComponent from '../components/testing/TestingComponent.vue';
+import Header from '../../components/common/Header.vue';
+import Button from '../../components/common/Button.vue';
+import TestingComponent from '../../components/testing/TestingComponent.vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { HeaderRouteType } from '@/entity/common/header.types';
 import { TestingForm } from '@/form/testing/testingForm';
 import Testing from '@/entity/testing/testing';
 import { TestingResultResponseType } from '@/entity/testingResult/testingResult.types';
 import TestingResult from '@/entity/testingResult/testingResult';
-import Relation from '../components/common/Relation.vue';
+import Relation from '../../components/common/Relation.vue';
 import { TestingResponseType } from '@/entity/testing/testing.types';
 import CourseItem from '@/entity/courseItem/courseItem';
 import { CourseItemResponseType } from '@/entity/courseItem/courseItem.type';

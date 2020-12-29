@@ -1,20 +1,20 @@
 <template>
-    <el-col>
+    <v-col>
         <div class="row">
             <ProgressCircleTesting :result="result" />
-            <el-col>
+            <v-col>
                 <h3>К сожалению, вы не прошли тестирование.</h3>
                 <span class="info"
                     >Внимательно пересмотрите видео для того, чтобы повторно пройти тестирование и перейти к следующему
                     уроку</span
                 >
-            </el-col>
+            </v-col>
         </div>
-        <el-divider></el-divider>
-        <el-col>
+        <v-divider></v-divider>
+        <v-col>
             <Button class="with_icon" @submit="$emit('reviewLesson')">Пересмотреть урок</Button>
-        </el-col>
-    </el-col>
+        </v-col>
+    </v-col>
 </template>
 <script lang="ts">
 import TestingResult from '@/entity/testingResult/testingResult';

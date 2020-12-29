@@ -12,6 +12,7 @@ export interface IUser {
     description: string;
     avatar: string;
     login: string;
+    referLink?: string;
 }
 
 export type UserResponseType = {

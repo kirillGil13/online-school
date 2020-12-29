@@ -1,19 +1,18 @@
 <template>
-    <el-container>
-        <el-aside class="aside-view" width="330px">
-            <Sidebar :userInfo="user" />
-            <Banner
-                :bannerType="bannerTypes.PRO_ACCOUNT_PROMO"
-                :qrcode="'https://miro.medium.com/max/495/1*PNniLVIC_Hc7gNIxjvWPWg.png'"
-            />
-        </el-aside>
-        <el-container>
-            <el-main class="main-view">
+    <v-app class="main-view">
+            <v-main>
+              <v-container fluid>
+                <div class="aside-view">
+                  <Sidebar :userInfo="user" />
+                  <Banner
+                      :bannerType="bannerTypes.PRO_ACCOUNT_PROMO"
+                      :qrcode="'https://miro.medium.com/max/495/1*PNniLVIC_Hc7gNIxjvWPWg.png'"
+                  />
+                </div>
                 <router-view></router-view>
-            </el-main>
-            <el-footer></el-footer>
-        </el-container>
-    </el-container>
+              </v-container>
+            </v-main>
+    </v-app>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -41,11 +40,11 @@ export default class MainLayout extends Vue {
 </script>
 <style lang="scss">
 .main-view {
-    padding: 15px !important;
 }
 
 .aside-view {
-    padding-top: 15px !important;
-    padding-left: 15px !important;
+  min-width: 330px;
+  padding-top: 15px !important;
+  padding-left: 15px !important;
 }
 </style>

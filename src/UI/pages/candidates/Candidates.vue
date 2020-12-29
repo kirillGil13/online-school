@@ -1,7 +1,7 @@
 <template>
-    <el-container class="container_a">
-        <el-container class="ml-36 container_b">
-            <el-col>
+    <v-row class="container_a">
+        <div class="ml-36 container_b">
+            <v-col>
                 <Header
                     :isBordered="false"
                     title="Кандидаты"
@@ -9,7 +9,7 @@
                     description="Здесь отображаются контактные данные всех людей, которые регистрировались по Вашим партнерским ссылкам"
                 >
                 </Header>
-                <el-col class="link-bar">
+                <v-col class="link-bar">
                     <div class="link-container">
                         <div>Ваша ссылка на лендинг</div>
                         <div class="link-content">
@@ -18,13 +18,13 @@
                         </div>
                     </div>
                     <Search />
-                </el-col>
-                <el-col>
+                </v-col>
+                <v-col>
                     <TableCandidates :candidates="candidates" />
-                </el-col>
-            </el-col>
-        </el-container>
-    </el-container>
+                </v-col>
+            </v-col>
+        </div>
+    </v-row>
 </template>
 
 <script lang="ts">

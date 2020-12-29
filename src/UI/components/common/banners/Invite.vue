@@ -16,7 +16,7 @@
                 </p>
             </div>
             <!-- тут будет common/Button -->
-            <el-button size="medium" class="banner__button blue" @click="copyLink">Скопировать ссылку</el-button>
+            <v-btn size="medium" class="banner__button blue" @click="copyLink">Скопировать ссылку</v-btn>
             <!-- тут будет common/Button -->
         </div>
     </div>
