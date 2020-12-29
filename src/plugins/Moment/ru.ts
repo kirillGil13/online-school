@@ -1,9 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 // @ts-ignore
 import moment from 'moment';
 import 'moment/locale/ru';
 
 moment.updateLocale('ru', {
+    // @ts-ignore
     durationLabelsStandard: {
         s: 'секунду',
         ss: 'секунды',
