@@ -1,6 +1,6 @@
 <template>
     <div class="banner">
-        <vue-qrcode :value="user.link" width="225" version="medium"/>
+        <vue-qrcode :value="user.link" :width="225"/>
     </div>
 </template>
 

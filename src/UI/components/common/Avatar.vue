@@ -1,13 +1,18 @@
 <template>
     <div>
         <div class="avatar-wrapper">
-            <img
-                class="avatar"
-                :style="{ height: `${height}px`, width: `${width}px` }"
-                :src="imageSourse"
-                alt="Avatar"
-            />
-            <div v-if="showStar" class="star" :class="starClass">
+            <v-avatar color="primary" rounded size="48">
+                <img
+                    v-if="user.avatar"
+                    :src="imageSourse"
+                    :style="{ height: `${height}px`, width: `${width}px` }"
+                    alt="Avatar"
+                    class="avatar"
+                />
+                <span v-else class="white--text headline">{{ user.initials }}</span>
+            </v-avatar>
+
+            <div v-if="showStar" :class="starClass" class="star">
                 <svg-icon name="Star" />
             </div>
         </div>
@@ -17,6 +22,9 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { AvatarSizeEnum } from '@/entity/common/avatar.types';
+import { IUser } from '@/entity/user';
+import { AuthStore } from '@/store/modules/Auth';
+
 @Component
 export default class Avatar extends Vue {
     @Prop({ required: true }) readonly imageSourse!: string;
@@ -26,6 +34,10 @@ export default class Avatar extends Vue {
     @Prop({ required: false, default: false }) readonly mediumStar!: boolean;
     @Prop({ required: false, default: AvatarSizeEnum.NONE })
     readonly starSize!: AvatarSizeEnum;
+
+    get user(): IUser {
+        return AuthStore.user;
+    }
 
     get showStar(): boolean {
         return this.starSize !== AvatarSizeEnum.NONE;
@@ -44,30 +56,35 @@ export default class Avatar extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .small-size {
     height: 18px;
     width: 18px;
     bottom: 0;
     right: 0;
+
     .svg-icon {
         width: 12px !important;
         height: 12px !important;
     }
 }
+
 .medium-size {
     height: 32px;
     width: 32px;
     bottom: -5px;
     right: -5px;
+
     .svg-icon {
         width: 20px !important;
         height: 20px !important;
     }
 }
+
 .avatar {
     border-radius: $main_border_radius;
 }
+
 .star {
     position: absolute;
     display: flex;
@@ -78,6 +95,7 @@ export default class Avatar extends Vue {
     color: $blue;
     border-radius: 50%;
 }
+
 .avatar-wrapper {
     display: inline-block;
     position: relative;

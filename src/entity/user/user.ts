@@ -33,4 +33,7 @@ export class User implements IUser {
     get link(): string {
         return 'https://partner.onelinks.com/' + this.login;
     }
+    get initials(): string {
+        return this.surname[0].toUpperCase() + this.name[0].toUpperCase();
+    }
 }

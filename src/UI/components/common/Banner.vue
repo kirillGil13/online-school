@@ -1,6 +1,6 @@
 <template>
     <div>
-        <QrCodeBanner v-if="isQrCode" :qrcode="qrcode" />
+        <QrCodeBanner v-if="isQrCode"/>
         <PromoBanner v-else-if="isProAccountPromo" />
         <InviteBanner v-else-if="isInviteBanner" />
     </div>
