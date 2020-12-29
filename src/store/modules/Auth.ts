@@ -13,6 +13,7 @@ import Api from '@/services/api';
     dynamic: true,
 })
 class AuthModule extends VuexModule {
+
     get user(): IUser {
         return new User(Vue.auth.user() as UserResponseType);
     }

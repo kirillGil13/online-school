@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-aside class="aside-view" width="330px">
-            <Sidebar :userInfo="fakeUserInfo" />
+            <Sidebar :userInfo="user" />
             <Banner
                 :bannerType="bannerTypes.PRO_ACCOUNT_PROMO"
                 :qrcode="'https://miro.medium.com/max/495/1*PNniLVIC_Hc7gNIxjvWPWg.png'"
@@ -19,8 +19,9 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Banner from '../common/Banner.vue';
 import Sidebar from '../sidebar/Sidebar.vue';
-import { IFakeUserInfo } from '@/entity/environment';
 import { BannerTypeEnum } from '@/entity/common/baner.types';
+import { AuthStore } from '@/store/modules/Auth';
+import { IUser } from '@/entity/user';
 
 @Component({
     components: {
@@ -29,12 +30,9 @@ import { BannerTypeEnum } from '@/entity/common/baner.types';
     },
 })
 export default class MainLayout extends Vue {
-    private fakeUserInfo: IFakeUserInfo = {
-        name: 'Денис',
-        surname: 'Денисов',
-        login: 'denis',
-        avatar: 'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg',
-    };
+    get user(): IUser {
+        return AuthStore.user;
+    }
 
     get bannerTypes(): typeof BannerTypeEnum {
         return BannerTypeEnum;

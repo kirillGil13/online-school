@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx:
-    container_name: fin2fin_client_nginx
+    container_name: onelinks_client_nginx
     build:
       context: .
       dockerfile: dockerfiles/nginx/Dockerfile
@@ -18,4 +18,4 @@ services:
 networks:
   default:
     external:
-      name: fin2fin_network
+      name: onelinks_network
