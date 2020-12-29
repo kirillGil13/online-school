@@ -1,15 +1,14 @@
-import { CoursesListItemResponseType, ICoursesListItem } from './courses.types';
+import {ILeaderCourses, LeaderCoursesResponseType} from './leaderCourses.types';
 
-export default class CoursesListItem implements ICoursesListItem {
-    id: number
+export default class LeaderCourses implements ILeaderCourses {
+    id: number;
     title: string;
     cover: string;
     totalLesson: number;
     lessonPassed: number;
     duration: number;
     rating: number;
-
-    constructor(data: CoursesListItemResponseType) {
+    constructor(data: LeaderCoursesResponseType) {
         this.id = data.id;
         this.title = data.title;
         this.cover = data.cover;

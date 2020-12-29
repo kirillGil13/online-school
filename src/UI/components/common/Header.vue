@@ -28,28 +28,29 @@ export default class Header extends Vue {
 </script>
 <style lang="scss">
 .top_bar {
-    padding: 24px;
-    margin-bottom: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  h1 {
+    margin-bottom: 0;
+    margin-top: 6px;
+    font-size: 24px;
+  }
+  a {
+    text-decoration: none;
+    color: #426df6;
+  }
+  .desc {
+    margin-top: 8px;
+    color: #828282;
+  }
+  .link {
     display: flex;
     align-items: center;
-    h1 {
-        margin-bottom: 0;
-        margin-top: 6px;
-        font-size: 24px;
-    }
-    a {
-        text-decoration: none;
-        color: #426df6;
-    }
-    span {
-        color: #828282;
-    }
-    .link {
-        display: flex;
-        align-items: center;
-    }
-    &.py-24 {
-        padding: 24px 0;
-    }
+  }
+  &.py-24 {
+    padding: 24px 0;
+  }
 }
 </style>
