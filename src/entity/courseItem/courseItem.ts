@@ -1,5 +1,5 @@
-import {CourseItemResponseType, ICourseItem, ICourseLessons} from './courseItem.type';
-import {LessonsTypesEnum} from "@/entity/common/lessons.types";
+import { CourseItemResponseType, ICourseItem, ICourseLessons } from './courseItem.type';
+import { LessonsTypesEnum } from '@/entity/common/lessons.types';
 
 export default class CourseItem implements ICourseItem {
     currentLessonId: number;
@@ -12,20 +12,19 @@ export default class CourseItem implements ICourseItem {
                 title: data.lessons[i].title,
                 available: data.lessons[i].available,
                 lessonPassed: data.lessons[i].lessonPassed,
-                type(): string{
+                type(): string {
                     let type = '';
-                    if(data.lessons[i].lessonPassed) {
+                    if (data.lessons[i].lessonPassed) {
                         type = LessonsTypesEnum.DONE;
-                    } else if(!data.lessons[i].lessonPassed && data.lessons[i].available) {
+                    } else if (!data.lessons[i].lessonPassed && data.lessons[i].available) {
                         type = LessonsTypesEnum.UN_DONE;
-                    } else
-                        type = LessonsTypesEnum.LOCKED;
-                    if(data.lessons[i].available && i.toString() === paramLessonId) {
+                    } else type = LessonsTypesEnum.LOCKED;
+                    if (data.lessons[i].available && i.toString() === paramLessonId) {
                         type = LessonsTypesEnum.IN_PROGRESS;
                     }
                     return type;
-                }
-            })
+                },
+            });
             /*if(this.lessons[i].lessonPassed) {
                 this.lessons[i].type = LessonsTypesEnum.DONE;
             } else if(!this.lessons[i].lessonPassed && this.lessons[i].available) {

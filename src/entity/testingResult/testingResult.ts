@@ -10,18 +10,16 @@ export default class TestingResult implements ITestingResult {
         this.questionLength = questions.length;
         this.totalRightAnswers = data.totalRightAnswers;
     }
-    get progress() {
-        return this.totalRightAnswers * 100 / this.questionLength;
+    get progress(): number {
+        return (this.totalRightAnswers * 100) / this.questionLength;
     }
     result(): string {
-        if(this.progress <= 75 && this.progress > 20) {
+        if (this.progress <= 75 && this.progress > 20) {
             return TestingResultComponentsEnum.PROCEED;
-        }
-        else if(this.progress <= 20) {
+        } else if (this.progress <= 20) {
             return TestingResultComponentsEnum.FAIL;
+        } else {
+            return TestingResultComponentsEnum.SUCCESS;
         }
-        else {
-            return TestingResultComponentsEnum .SUCCESS;
-        }
-    } 
+    }
 }

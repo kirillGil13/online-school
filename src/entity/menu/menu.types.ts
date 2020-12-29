@@ -1,6 +1,6 @@
 export interface IMainMenu {
-      title: string,
-      iconName: string,
-      path: string,
-      subMenu?: IMainMenu
-  }
+    title: string;
+    iconName: string;
+    route: string;
+    subMenu?: IMainMenu;
+}

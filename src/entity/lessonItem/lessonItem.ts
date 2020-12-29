@@ -1,4 +1,4 @@
-import {ILessonItem, LessonItemResponseType} from "@/entity/lessonItem/lessonItem.types";
+import { ILessonItem, LessonItemResponseType } from '@/entity/lessonItem/lessonItem.types';
 
 export default class LessonItem implements ILessonItem {
     title: string;

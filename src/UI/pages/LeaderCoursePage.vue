@@ -21,8 +21,8 @@ import Search from "../components/common/Search.vue";
 import Leader from "@/entity/leader/leader";
 import {LeaderResponseType} from "@/entity/leader/leader.types";
 import LeaderCourseComponent from "@/UI/components/leaderCourse/LeaderCourseComponent.vue";
-import {LeaderCoursesResponseType} from "@/entity/leaderCourses/leaderCourses.types";
-import LeaderCourses from "@/entity/leaderCourses/leaderCourses";
+// import {LeaderCoursesResponseType} from "@/entity/leaderCourses/leaderCourses.types";
+// import LeaderCourses from "@/entity/leaderCourses/leaderCourses";
 
 @Component({
   components: {
@@ -34,16 +34,16 @@ import LeaderCourses from "@/entity/leaderCourses/leaderCourses";
 })
 export default class LeaderCoursePage extends Vue {
   leaders: Leader[] = []
-  coursesLeader: LeaderCourses[] = [];
-  constructor() {
-    super();
-    for (let i = 0; i < this.leader.length; i++) {
-      this.leaders.push(new Leader(this.leader[i]));
-    }
-    for (let i = 0; i < this.leaderCoursesTemp.length; i++) {
-      this.coursesLeader.push(new LeaderCourses(this.leaderCoursesTemp[i]));
-    }
-  }
+  // coursesLeader: LeaderCourses[] = [];
+  // constructor() {
+  //   super();
+  //   for (let i = 0; i < this.leader.length; i++) {
+  //     this.leaders.push(new Leader(this.leader[i]));
+  //   }
+  //   for (let i = 0; i < this.leaderCoursesTemp.length; i++) {
+  //     this.coursesLeader.push(new LeaderCourses(this.leaderCoursesTemp[i]));
+  //   }
+  // }
   getCourses() {
     //по роуту определяем id каких данных загрузить
 
@@ -103,49 +103,49 @@ export default class LeaderCoursePage extends Vue {
     },
   ];
   //то что мы получаем при запросе через getCourse
-  leaderCoursesTemp: LeaderCoursesResponseType[] = [
-    {
-      id: 0,
-      title:
-          "Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris",
-      cover:
-          "https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg",
-      totalLesson: 20,
-      lessonPassed: 15,
-      duration: 3850,
-      rating: 10,
-    }, {
-      id: 1,
-      title:
-          "",
-      cover:
-          "https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg",
-      totalLesson: 20,
-      lessonPassed: 15,
-      duration: 3850,
-      rating: 10,
-    }, {
-      id: 2,
-      title:
-          "Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris",
-      cover:
-          "https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg",
-      totalLesson: 20,
-      lessonPassed: 15,
-      duration: 3850,
-      rating: 10,
-    }, {
-      id: 3,
-      title:
-          "Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris",
-      cover:
-          "https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg",
-      totalLesson: 20,
-      lessonPassed: 15,
-      duration: 3850,
-      rating: 10,
-    }
-  ];
+  // leaderCoursesTemp: LeaderCoursesResponseType[] = [
+  //   {
+  //     id: 0,
+  //     title:
+  //         "Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris",
+  //     cover:
+  //         "https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg",
+  //     totalLesson: 20,
+  //     lessonPassed: 15,
+  //     duration: 3850,
+  //     rating: 10,
+  //   }, {
+  //     id: 1,
+  //     title:
+  //         "",
+  //     cover:
+  //         "https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg",
+  //     totalLesson: 20,
+  //     lessonPassed: 15,
+  //     duration: 3850,
+  //     rating: 10,
+  //   }, {
+  //     id: 2,
+  //     title:
+  //         "Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris",
+  //     cover:
+  //         "https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg",
+  //     totalLesson: 20,
+  //     lessonPassed: 15,
+  //     duration: 3850,
+  //     rating: 10,
+  //   }, {
+  //     id: 3,
+  //     title:
+  //         "Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris",
+  //     cover:
+  //         "https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg",
+  //     totalLesson: 20,
+  //     lessonPassed: 15,
+  //     duration: 3850,
+  //     rating: 10,
+  //   }
+  // ];
 }
 </script>
 

@@ -1,4 +1,4 @@
 import vueEllipseProgress from 'vue-ellipse-progress';
-import Vue from "vue";
+import Vue from 'vue';
 
 Vue.use(vueEllipseProgress);

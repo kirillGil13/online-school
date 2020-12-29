@@ -1,0 +1,17 @@
+import {UserResponseType} from '@/entity/user';
+// import { LoginRequestType } from '@/Requests/LoginRequest';
+// import { SignupRequestType } from '@/Requests/SignupRequest';
+
+export interface IAuth {
+    user(): UserResponseType;
+
+    fetch(): Promise<void>;
+
+    load(): Promise<any>;
+
+    // login(data: { data: LoginRequestType; fetchUser: boolean; staySignedIn: boolean }): Promise<any>;
+    //
+    // register(data: { data: SignupRequestType }): Promise<any>;
+    //
+    // logout(data: any): Promise<any>;
+}

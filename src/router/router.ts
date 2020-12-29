@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Vue from 'vue';
 import Router from 'vue-router';
 import Login from '../UI/pages/Login.vue';
@@ -7,7 +8,7 @@ Vue.use(Router);
 const routes = [
     {
         path: '/',
-        name: 'login',
+        name: 'Login',
         component: Login,
     },
     {
@@ -15,33 +16,28 @@ const routes = [
         component: () => import('../UI/components/layouts/MainLayout.vue'),
         children: [
             {
-                path: '',
-                name: 'main',
-                component: () => import('../UI/pages/MainPage.vue'),
-            },
-            {
-                path: '/profile',
-                name: 'profile',
+                path: '/',
+                name: 'Profile',
                 component: () => import('../UI/pages/Profile.vue'),
             },
             {
                 path: '/training',
-                name: 'training',
+                name: 'Training',
                 component: () => import('../UI/pages/Training.vue'),
             },
             {
                 path: '/training/:id',
-                name: 'leaderCourses',
+                name: 'LeaderCourses',
                 component: () => import('../UI/pages/LeaderCoursePage.vue'),
             },
             {
                 path: '/training/:id/:lessonId',
-                name: 'course',
+                name: 'Course',
                 component: () => import('../UI/pages/Course.vue'),
             },
             {
                 path: '/candidates',
-                name:'candidates',
+                name:'Candidates',
                 component: () => import('../UI/pages/Candidates.vue')
             }
         ],

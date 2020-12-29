@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import Vue from "vue";
 
 //@ts-ignore
-import auth from '@websanova/vue-auth/src/auth';
+import auth from '@websanova/vue-auth/src';
 //@ts-ignore
 import authBearer from './bearer';
 //@ts-ignore
-import axios from '@websanova/vue-auth/src/drivers/http/axios.1.x';
+import axios from '@websanova/vue-auth/drivers/http/axios.1.x';
 //@ts-ignore
-import router from '@websanova/vue-auth/src/drivers/router/vue-router.2.x';
+import router from '@websanova/vue-auth/drivers/router/vue-router.2.x';
 
 Vue.use(auth, {
     auth: authBearer,
@@ -17,7 +18,7 @@ Vue.use(auth, {
     tokenDefaultKey: 'token',
 
     // Redirects
-    authRedirect: {name: 'login'},
+    authRedirect: {name: 'Login'},
     forbiddenRedirect: {path: '/403'},
     notFoundRedirect: {path: '/404'},
     // Http
@@ -25,7 +26,7 @@ Vue.use(auth, {
         url: 'users/register',
         method: 'POST',
         redirect: '/',
-        autoLogin: true
+        autoLogin: true,
     },
     loginData: {
         url: 'users/login',
@@ -36,7 +37,7 @@ Vue.use(auth, {
         url: 'users/token/refresh',
         method: 'POST',
         enabled: false,
-        interval: 10
+        interval: 10,
     },
     fetchData: {
         url: 'users/info',

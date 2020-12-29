@@ -9,7 +9,7 @@ export default class Leader implements ILeader {
     userInfo: ILeaderUserInfo;
     courses: ILeaderCourses[] = [];
     balance: string;
-    totalCoursesViewsCount: number
+    totalCoursesViewsCount: number;
     constructor(data: LeaderResponseType) {
         this.id = data.id;
         this.direction = data.direction;
@@ -23,7 +23,7 @@ export default class Leader implements ILeader {
         this.balance = data.balance;
         this.totalCoursesViewsCount = data.totalCoursesViewsCount;
     }
-    get fullName() {
+    get fullName(): string {
         return this.userInfo.name + ' ' + this.userInfo.surname;
     }
 }
