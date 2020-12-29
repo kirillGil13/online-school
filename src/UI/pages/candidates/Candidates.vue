@@ -1,27 +1,27 @@
 <template>
     <v-container class="container_a">
-            <v-col>
-                <Header
-                    :isBordered="false"
-                    title="Кандидаты"
-                    class="top_bar_p_0"
-                    description="Здесь отображаются контактные данные всех людей, которые регистрировались по Вашим партнерским ссылкам"
-                >
-                </Header>
-                <v-col class="link-bar">
-                    <div class="link-container">
-                        <div>Ваша ссылка на лендинг</div>
-                        <div class="link-content">
-                            <div class="link">https://onelinks.com/{{ user.login }}</div>
-                            <svg-icon name="Copy"></svg-icon>
-                        </div>
+        <v-col>
+            <Header
+                :isBordered="false"
+                title="Кандидаты"
+                class="top_bar_p_0"
+                description="Здесь отображаются контактные данные всех людей, которые регистрировались по Вашим партнерским ссылкам"
+            >
+            </Header>
+            <v-col class="link-bar">
+                <div class="link-container">
+                    <div>Ваша ссылка на лендинг</div>
+                    <div class="link-content">
+                        <div class="link">https://onelinks.com/{{ user.login }}</div>
+                        <svg-icon name="Copy"></svg-icon>
                     </div>
-                    <Search />
-                </v-col>
-                <v-col>
-                    <TableCandidates :candidates="candidates" />
-                </v-col>
+                </div>
+                <Search />
             </v-col>
+            <v-col>
+                <TableCandidates :candidates="candidates" />
+            </v-col>
+        </v-col>
     </v-container>
 </template>
 
@@ -60,7 +60,7 @@ export default class Candidates extends Vue {
 
 <style lang="scss">
 .link-bar {
-  margin-top: 24px;
+    margin-top: 24px;
     display: flex;
     flex-direction: row;
     align-items: center;

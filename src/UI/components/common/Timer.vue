@@ -1,7 +1,7 @@
 <template>
-    <el-col>
+    <v-col>
         <div class="timer">{{ currentTimeTemp }} сек.</div>
-    </el-col>
+    </v-col>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
@@ -14,7 +14,7 @@ export default class Timer extends Vue {
         super();
         this.currentTimeTemp = this.currentTime;
     }
-    timer!: NodeJS.Timeout;
+    timer!: number;
     isZero = false;
     @Watch('currentTimeTemp')
     onChangeTimer(time: number): void {
@@ -30,7 +30,6 @@ export default class Timer extends Vue {
     }
     changeTimer(): void {
         this.currentTimeTemp--;
-        console.log(this.currentTimeTemp);
     }
     stopTimer(): void {
         clearTimeout(this.timer);
