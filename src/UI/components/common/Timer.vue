@@ -14,7 +14,7 @@ export default class Timer extends Vue {
         super();
         this.currentTimeTemp = this.currentTime;
     }
-    timer!: number;
+    timer!: NodeJS.Timeout;
     isZero = false;
     @Watch('currentTimeTemp')
     onChangeTimer(time: number): void {
