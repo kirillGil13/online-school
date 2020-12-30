@@ -2,27 +2,7 @@
     <div class="account-info">
         <h3>ONELINKS.COM</h3>
         <account-badge :userInfo="userInfo" />
-        <v-list
-            :active-text-color="variables.menuActiveText"
-            :collapse-transition="false"
-
-            class="account-info__main-menu"
-            nav
-            rounded
-        >
-          <v-list-item-group
-              class="menu-group"
-              v-model="currentPage">
-            <Menu
-                v-for="(item, index) in menu"
-                :key="item.title"
-                :color="variables.menuText"
-                :index="`${index}`"
-                :item="item"
-            />
-          </v-list-item-group>
-
-        </v-list>
+        <Menu/>
     </div>
 </template>
 
@@ -31,9 +11,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { IFakeUserInfo } from '@/entity/environment';
 import Menu from './Menu.vue';
 import AccountBadge from './AccountBadge.vue';
-import variables, { IScssVariables } from '@/UI/assets/scss/variables/_variables.scss';
-import { MenuStore } from '@/store/modules/Menu';
-import { IMainMenu } from '../../../entity/menu';
 
 @Component({
     name: 'MainAccountCard',
@@ -44,19 +21,6 @@ import { IMainMenu } from '../../../entity/menu';
 })
 export default class extends Vue {
     @Prop({ required: true }) userInfo!: IFakeUserInfo;
-
-    private currentPage = 1
-
-    get variables(): IScssVariables {
-        return variables;
-    }
-    get menu(): IMainMenu[] {
-        return MenuStore.items;
-    }
-
-    private mounted(): void {
-      this.currentPage = this.menu.findIndex(a => a.route === this.$route.name)
-    }
 }
 </script>
 
@@ -89,9 +53,9 @@ export default class extends Vue {
         }
     }
 }
-.menu-group{
-  .v-list-item:not(.v-list-item--active):not(.v-list-item--disabled){
-    color: $link !important;
-  }
+.menu-group {
+    .v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+        color: $link !important;
+    }
 }
 </style>

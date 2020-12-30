@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Vue from 'vue';
 import Router from 'vue-router';
-import { RouterNameEnum } from '@/router/router.types';
+import {RouterNameEnum} from '@/router/router.types';
 
 Vue.use(Router);
 
@@ -18,13 +18,13 @@ const routes = [
         meta: { auth: true },
         children: [
             {
-                path: '/',
+                path: '/main',
                 name: 'Main',
                 component: () => import('../UI/pages/profile/Profile.vue'),
             },
             {
                 path: '/training',
-                name: 'Training',
+                name: RouterNameEnum.MaterialPresentation,
                 component: () => import('../UI/pages/training/Training.vue'),
             },
             {

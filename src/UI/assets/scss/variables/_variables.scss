@@ -5,6 +5,7 @@ $input_border: rgba(87, 81, 183, 0.12);
 $light_blue: rgba(66, 109, 246, 0.12);
 $blue_gradient: linear-gradient(180deg, #4f79ff 0%, #2150e7 100%);
 $link: #5f739c;
+$menuActiveBg: #e8edfe;
 $green: #27ae60;
 $light_green: #8ad2a9;
 $light: rgba(87, 81, 183, 0.12);
@@ -13,6 +14,7 @@ $light: rgba(87, 81, 183, 0.12);
 // https://mattferderer.com/use-sass-variables-in-typescript-and-javascript
 :export {
     menuBg: $white;
+    menuActiveBg: $menuActiveBg;
     menuText: $link;
     menuActiveText: $blue;
     green: $green;

@@ -1,46 +1,44 @@
 <template>
-  <!-- мб рекурсию ёбнуть? я вроде не видел больше одной вложенности, поэтому так-->
-<!--    <el-submenu v-if="item.submenu" :index="index">-->
-<!--      <el-menu-item-->
-<!--          v-for="(subItem, subIndex) in item.submenu"-->
-<!--          :key="subItem.title"-->
-<!--          :index="subIndex"-->
-<!--          @click="$router.push({name: item.route})"-->
-<!--      >-->
-<!--        <span>{{ subItem.title }}</span>-->
-<!--      </el-menu-item>-->
-<!--    </el-submenu>-->
-    <v-list-item :color="variables.menuActiveText" :index="index" @click="$router.push({name: item.route})">
-      <v-list-item-icon>
-        <svg-icon class="menu__icon" :name="item.iconName"/>
-      </v-list-item-icon>
-      <v-list-item-content>
-        <span slot="title">{{ item.title }}</span>
-      </v-list-item-content>
-    </v-list-item>
+    <v-list :active-text-color="variables.menuActiveText" :collapse-transition="false" class="main-menu" nav rounded>
+        <template v-for="item in items">
+            <v-list-item v-if="!item.subMenu" :key="item.title" :to="{ name: item.route }">
+                <v-list-item-icon>
+                    <svg-icon :name="item.iconName" class="menu__icon" height="24" width="24" />
+                </v-list-item-icon>
 
+                <v-list-item-title v-text="item.title" />
+            </v-list-item>
+
+            <v-list-group v-else no-action :key="item.title">
+                <v-list-item slot="activator">
+                    <v-list-item-icon>
+                        <svg-icon :name="item.iconName" class="menu__icon" height="24" width="24" />
+                    </v-list-item-icon>
+                    <v-list-item-title v-text="item.title" />
+                </v-list-item>
+                <v-list-item v-for="subItem in item.subMenu" :key="subItem.title" :to="{ name: subItem.route }">
+                    <v-list-item-title> {{ subItem.title }}</v-list-item-title>
+                </v-list-item>
+            </v-list-group>
+        </template>
+    </v-list>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import {IMainMenu} from '@/entity/menu/menu.types';
-import variables , {IScssVariables} from "@/UI/assets/scss/variables/_variables.scss";
+import { Component, Vue } from 'vue-property-decorator';
+import { IMainMenu } from '@/entity/menu/menu.types';
+import variables, { IScssVariables } from '@/UI/assets/scss/variables/_variables.scss';
+import { MenuStore } from '@/store/modules/Menu';
 
 @Component
 export default class MenuComponent extends Vue {
-  @Prop({required: true}) item!: IMainMenu;
-  @Prop({required: true}) readonly index!: string;
+    get variables(): IScssVariables {
+        return variables;
+    }
 
-  get variables(): IScssVariables {
-    return variables;
-  }
-  private resolvePath(path: string): void {
-    this.$router.push(path);
-  }
+    get items(): IMainMenu[] {
+        return MenuStore.items;
+    }
 }
 </script>
-<style lang="scss" scoped>
-.menu__icon {
-  margin-right: 16px;
-}
-</style>
+<style lang="scss" scoped></style>

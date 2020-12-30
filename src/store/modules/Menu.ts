@@ -1,6 +1,7 @@
 import {getModule, Module, VuexModule} from 'vuex-module-decorators';
 import { IMainMenu } from '@/entity/menu';
 import store from '@/store';
+import {RouterNameEnum} from "@/router/router.types";
 
 @Module({
     namespaced: true,
@@ -13,37 +14,59 @@ class MenuModule extends VuexModule {
         {
             title: 'Главная',
             iconName: 'Home',
-            route: 'Main',
+            route: RouterNameEnum.Main,
         },
         {
             title: 'Обучение',
             iconName: 'Education',
-            route: 'Main',
+            route: RouterNameEnum.Main,
         },
         {
             title: 'Материалы',
             iconName: 'Folder',
-            route: 'Main',
+            route: RouterNameEnum.Main,
+            subMenu: [
+                {
+                    title: 'Презентации',
+                    iconName: '',
+                    route: RouterNameEnum.MaterialPresentation,
+                },
+                {
+                    title: 'Документы',
+                    iconName: '',
+                    route: RouterNameEnum.MaterialPresentation,
+                },
+                {
+                    title: 'Видеоинструкции',
+                    iconName: '',
+                    route: RouterNameEnum.MaterialPresentation,
+                },
+                {
+                    title: 'Инфопакеты',
+                    iconName: '',
+                    route: RouterNameEnum.MaterialPresentation,
+                },
+            ]
         },
         {
             title: 'События',
             iconName: 'Calendar',
-            route: 'Main',
+            route: RouterNameEnum.Main,
         },
         {
             title: 'Чат',
             iconName: 'Chat',
-            route: 'Main',
+            route: RouterNameEnum.Main,
         },
         {
             title: 'Кандидаты',
             iconName: 'Add_User',
-            route: 'Candidates',
+            route: RouterNameEnum.Candidates,
         },
         {
             title: 'Партнеры',
             iconName: 'Users',
-            route: 'Partners',
+            route: RouterNameEnum.Partners,
         },
     ];
 }
