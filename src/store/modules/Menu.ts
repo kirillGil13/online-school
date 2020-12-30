@@ -4,7 +4,7 @@ import store from '@/store';
 
 @Module({
     namespaced: true,
-    name: 'creditor',
+    name: 'menu',
     store,
     dynamic: true,
 })
@@ -43,7 +43,7 @@ class MenuModule extends VuexModule {
         {
             title: 'Партнеры',
             iconName: 'Users',
-            route: 'Main',
+            route: 'Partners',
         },
     ];
 }

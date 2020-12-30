@@ -30,7 +30,6 @@ export default class Timer extends Vue {
     }
     changeTimer(): void {
         this.currentTimeTemp--;
-        console.log(this.currentTimeTemp);
     }
     stopTimer(): void {
         clearTimeout(this.timer);

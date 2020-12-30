@@ -14,11 +14,10 @@
                 {{ partner.name }}</v-col
             >
             <v-col>{{ partner.phone }}</v-col>
-            <v-col>23</v-col>
-            <v-col>Оформлена</v-col>
-            <v-col>{{ candidate.createdAt }}</v-col>
+            <v-col>{{ partner.totalPartners }}</v-col>
+            <v-col>{{partner.subscribe ? 'Оформлена' : 'Не оформлена'}}</v-col>
             <v-col>{{ partner.infoPackageTitle }}</v-col>
-            <v-col>{{ partner.startPartnerDate }}</v-col>
+            <v-col>{{ partner.startPartnerDate | moment('DD.MM, HH:mm') }}</v-col>
         </div>
     </v-col>
 </template>
@@ -26,7 +25,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Button from '@/UI/components/common/Button.vue';
-import PartnersItem from '@/entity/partners/partners';
+import { IPartner } from '@/entity/partners';
 
 @Component({
     components: {
@@ -34,7 +33,7 @@ import PartnersItem from '@/entity/partners/partners';
     },
 })
 export default class TablePartners extends Vue {
-    @Prop() readonly partners!: PartnersItem[];
+    @Prop() readonly partners!: IPartner[];
 }
 </script>
 

@@ -1,17 +1,19 @@
 <template>
     <div class="banner__wrapper">
-        <QrCodeBanner :qrcode="qrcode" v-if="bannerType === bannerTypes.QRCODE" />
-        <PromoBanner v-if="bannerType === bannerTypes.PRO_ACCOUNT_PROMO" />
-        <InviteBanner v-if="bannerType === bannerTypes.INVITE_BUNNER" />
+        <QrCodeBanner v-if="isQrCode"/>
+        <PromoBanner v-else-if="isProAccountPromo" />
+        <InviteBanner v-else-if="isInviteBanner" />
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { BannerTypeEnum } from '@/entity/common/baner.types';
 import PromoBanner from './banners/Promo.vue';
 import QrCodeBanner from './banners/QrCode.vue';
 import InviteBanner from './banners/Invite.vue';
+import { Route } from 'vue-router';
+import { RouterNameEnum } from '@/router/router.types';
 
 @Component({
     components: {
@@ -21,10 +23,39 @@ import InviteBanner from './banners/Invite.vue';
     },
 })
 export default class Banner extends Vue {
-    @Prop({ required: true }) bannerType!: string;
-    @Prop({ required: false }) qrcode!: string;
-    get bannerTypes(): typeof BannerTypeEnum {
-        return BannerTypeEnum;
+    bannerType: BannerTypeEnum = BannerTypeEnum.PRO_ACCOUNT_PROMO;
+
+    created(): void {
+        this.getBannerFromRoute(this.$route);
+    }
+
+    @Watch('$route')
+    onRouteChange(route: Route): void {
+        this.getBannerFromRoute(route);
+    }
+
+    get isQrCode(): boolean {
+        return this.bannerType === BannerTypeEnum.QRCODE;
+    }
+    get isInviteBanner(): boolean {
+        return this.bannerType === BannerTypeEnum.INVITE_BUNNER;
+    }
+    get isProAccountPromo(): boolean {
+        return this.bannerType === BannerTypeEnum.PRO_ACCOUNT_PROMO;
+    }
+
+    getBannerFromRoute(route: Route): void {
+        switch (route.name) {
+            case RouterNameEnum.Candidates:
+                this.bannerType = BannerTypeEnum.QRCODE;
+                break;
+            case RouterNameEnum.Partners:
+                this.bannerType = BannerTypeEnum.PRO_ACCOUNT_PROMO;
+                break;
+            default:
+                this.bannerType = BannerTypeEnum.INVITE_BUNNER;
+                break;
+        }
     }
 }
 </script>

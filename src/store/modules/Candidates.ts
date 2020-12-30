@@ -13,7 +13,7 @@ class CandidatesModule extends VuexModule {
 
     @MutationAction
     async fetchAll(): Promise<{ candidates: ICandidate[] }> {
-        const candidates = await store.$services.candidates.fetchAll();
+        const candidates = await store.$repository.candidates.fetchAll();
         return { candidates };
     }
 }

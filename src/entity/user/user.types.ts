@@ -12,6 +12,9 @@ export interface IUser {
     description: string;
     avatar: string;
     login: string;
+
+    link: string;
+    initials: string;
     referLink?: string;
 }
 

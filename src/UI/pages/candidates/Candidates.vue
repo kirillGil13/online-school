@@ -13,7 +13,7 @@
                     <div class="link-container">
                         <div>Ваша ссылка на лендинг</div>
                         <div class="link-content">
-                            <div class="link">https://onelinks.com/{{ user.login }}</div>
+                            <div class="link">{{ user.link }}</div>
                             <svg-icon name="Copy"></svg-icon>
                         </div>
                     </div>
@@ -62,6 +62,7 @@ export default class Candidates extends Vue {
 
 <style lang="scss">
 .link-bar {
+    margin-top: 24px;
     display: flex;
     flex-direction: row;
     align-items: center;

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Vue from 'vue';
 import Router from 'vue-router';
+import { RouterNameEnum } from '@/router/router.types';
 
 Vue.use(Router);
 
@@ -38,12 +39,12 @@ const routes = [
             },
             {
                 path: '/candidates',
-                name:'Candidates',
+                name: RouterNameEnum.Candidates,
                 component: () => import('../UI/pages/candidates/Candidates.vue')
             },
             {
                 path: '/partners',
-                name: 'Partners',
+                name: RouterNameEnum.Partners,
                 component: () => import('../UI/pages/partners/Partners.vue')
             }
         ],

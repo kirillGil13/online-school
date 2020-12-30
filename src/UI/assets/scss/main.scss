@@ -54,6 +54,9 @@ a {
 .box-padding {
     padding: 24px;
 }
+.container {
+    padding: 0 !important;
+}
 h5 {
     text-transform: uppercase;
     margin-top: 0;
@@ -131,12 +134,13 @@ h5 {
     margin-bottom: 8px;
 }
 .row {
-    display: flex;
-    flex-direction: row;
+    padding: 0 !important;
 }
 .col {
-    display: flex;
-    flex-direction: column;
+    padding: 0 !important;
+}
+.container-root {
+    padding: 21px 22px 21px 36px !important;
 }
 .center {
     align-items: center;
@@ -330,7 +334,7 @@ h5 {
             }
             .duration {
                 font-size: 10px;
-                color: #5F739C;
+                color: #5F739C ;
                 line-height: 150%;
             }
             &:after {

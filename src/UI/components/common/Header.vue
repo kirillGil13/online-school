@@ -28,10 +28,10 @@ export default class Header extends Vue {
 </script>
 <style lang="scss">
 .top_bar {
+  display: flex !important;
+  justify-content: space-between !important;
   padding: 24px;
   margin-bottom: 16px;
-  display: flex;
-  align-items: center;
   h1 {
     margin-bottom: 0;
     margin-top: 6px;
@@ -48,9 +48,6 @@ export default class Header extends Vue {
   .link {
     display: flex;
     align-items: center;
-  }
-  &.py-24 {
-    padding: 24px 0;
   }
 }
 </style>

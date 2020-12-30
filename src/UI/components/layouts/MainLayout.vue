@@ -4,10 +4,7 @@
               <v-container fluid>
                 <div class="aside-view">
                   <Sidebar :userInfo="user" />
-                  <Banner
-                      :bannerType="bannerTypes.PRO_ACCOUNT_PROMO"
-                      :qrcode="'https://miro.medium.com/max/495/1*PNniLVIC_Hc7gNIxjvWPWg.png'"
-                  />
+                    <Banner/>
                 </div>
                 <router-view></router-view>
               </v-container>

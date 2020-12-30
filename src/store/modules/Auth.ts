@@ -4,7 +4,7 @@ import Vue from 'vue';
 import store from '@/store';
 import { User, IUser, UserResponseType } from '@/entity/user';
 import { LoginRequestType } from '@/form/login';
-import Api from '@/services/api';
+import Api from '@/repository/api';
 
 @Module({
     namespaced: true,
