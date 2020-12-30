@@ -1,19 +1,21 @@
 <template>
-    <v-container>
-        <v-col>
-            <Header
-                :isBordered="false"
-                class="top_bar_p_0"
-                description="Здесь отображаются партнеры, которых вы пригласили"
-                title="Партнеры"
-            >
-                <Search />
-            </Header>
+    <v-row class="container_a">
+        <div class="ml-36 container_b">
             <v-col>
-                <TablePartners :partners="partners" />
+                <Header
+                    :isBordered="false"
+                    title="Партнеры"
+                    class="top_bar_p_0"
+                    description="Здесь отображаются партнеры, которых вы пригласили"
+                >
+                    <Search />
+                </Header>
+                <v-col>
+                    <TablePartners :partners="partners" />
+                </v-col>
             </v-col>
-        </v-col>
-    </v-container>
+        </div>
+    </v-row>
 </template>
 
 <script lang="ts">
@@ -21,9 +23,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
 import Search from '@/UI/components/common/Search.vue';
 import TablePartners from '@/UI/components/tables/TablePartners.vue';
-import { IUser } from '@/entity/user';
 import { AuthStore } from '@/store/modules/Auth';
 import { PartnersStore } from '@/store/modules/Partners';
+import { IUser } from '@/entity/user';
 import { IPartner } from '@/entity/partners';
 
 @Component({

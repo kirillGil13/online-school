@@ -1,5 +1,5 @@
 <template>
-    <el-col>
+    <v-col>
         <form @submit.prevent>
             <ProgressBar :amount="form.questions.length" :step="step" />
             <TestingQuestion
@@ -10,7 +10,7 @@
                 @change="change"
                 :resultsAnswerId="form.results[index].answerId"
             />
-            <el-col>
+            <v-col>
                 <Button v-if="step < form.questions.length" :disabled="!form.valid(step)" @submit="next()"
                     >Следующий вопрос</Button
                 >
@@ -18,9 +18,9 @@
                     >Отправить задание</Button
                 >
                 <Button class="secondary" v-if="step > 1" @submit="previous()">Назад</Button>
-            </el-col>
+            </v-col>
         </form>
-    </el-col>
+    </v-col>
 </template>
 <script lang="ts">
 import { TestingForm } from '@/form/testing/testingForm';

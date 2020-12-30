@@ -1,16 +1,15 @@
 <template>
-    <v-container>
-        <v-navigation-drawer class="aside-view" width="330px">
-            <Sidebar :userInfo="user" />
-            <Banner/>
-        </v-navigation-drawer>
-        <v-container>
-            <v-main class="main-view">
+    <v-app class="main-view">
+            <v-main>
+              <v-container fluid>
+                <div class="aside-view">
+                  <Sidebar :userInfo="user" />
+                    <Banner/>
+                </div>
                 <router-view></router-view>
+              </v-container>
             </v-main>
-            <el-footer></el-footer>
-        </v-container>
-    </v-container>
+    </v-app>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -38,11 +37,11 @@ export default class MainLayout extends Vue {
 </script>
 <style lang="scss">
 .main-view {
-  padding: 21px 22px 21px 36px !important;
 }
 
 .aside-view {
-    padding-top: 15px !important;
-    padding-left: 15px !important;
+  min-width: 330px;
+  padding-top: 15px !important;
+  padding-left: 15px !important;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-    <el-container class="container_a">
-        <el-container class="ml-36 container_b">
-            <el-col>
+    <v-row class="container_a">
+        <div class="ml-36 container_b">
+            <v-col>
                 <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
                     <Search />
                 </Header>
@@ -12,16 +12,16 @@
 <!--                    :courses="coursesLeader"-->
 <!--                    @proceed="proceed"-->
 <!--                />-->
-            </el-col>
-        </el-container>
-    </el-container>
+            </v-col>
+        </div>
+    </v-row>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Header from '../components/common/Header.vue';
-import SliderLeaders from '../components/slider/SliderLeaders.vue';
-import Search from '../components/common/Search.vue';
+import Header from '../../components/common/Header.vue';
+import SliderLeaders from '../../components/slider/SliderLeaders.vue';
+import Search from '../../components/common/Search.vue';
 import Leader from '@/entity/leader/leader';
 import { LeaderResponseType } from '@/entity/leader/leader.types';
 // import LeaderCourseComponent from '@/UI/components/leaderCourse/LeaderCourseComponent.vue';

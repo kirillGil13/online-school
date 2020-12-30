@@ -39,7 +39,7 @@ export default class AccountBadge extends Vue {
 
 <style scoped lang="scss">
 .account-badge {
-    max-width: 80%;
+    min-width: 80%;
     padding: 20px;
     display: flex;
     align-items: center;
@@ -68,6 +68,7 @@ export default class AccountBadge extends Vue {
         color: $blue;
         height: 100% !important;
         width: 20px !important;
+        cursor: pointer;
     }
 }
 </style>

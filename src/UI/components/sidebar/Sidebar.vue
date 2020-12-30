@@ -2,23 +2,27 @@
     <div class="account-info">
         <h3>ONELINKS.COM</h3>
         <account-badge :userInfo="userInfo" />
-        <el-menu
+        <v-list
             :active-text-color="variables.menuActiveText"
-            :background-color="variables.menuBg"
             :collapse-transition="false"
-            :text-color="variables.menuText"
-            :unique-opened="false"
+
             class="account-info__main-menu"
-            mode="vertical"
+            nav
+            rounded
         >
+          <v-list-item-group
+              class="menu-group"
+              v-model="currentPage">
             <Menu
                 v-for="(item, index) in menu"
                 :key="item.title"
-                :iconColor="variables.menuText"
+                :color="variables.menuText"
                 :index="`${index}`"
                 :item="item"
             />
-        </el-menu>
+          </v-list-item-group>
+
+        </v-list>
     </div>
 </template>
 
@@ -41,11 +45,17 @@ import { IMainMenu } from '../../../entity/menu';
 export default class extends Vue {
     @Prop({ required: true }) userInfo!: IFakeUserInfo;
 
+    private currentPage = 1
+
     get variables(): IScssVariables {
         return variables;
     }
     get menu(): IMainMenu[] {
         return MenuStore.items;
+    }
+
+    private mounted(): void {
+      this.currentPage = this.menu.findIndex(a => a.route === this.$route.name)
     }
 }
 </script>
@@ -78,5 +88,10 @@ export default class extends Vue {
             border-radius: $main_border_radius;
         }
     }
+}
+.menu-group{
+  .v-list-item:not(.v-list-item--active):not(.v-list-item--disabled){
+    color: $link !important;
+  }
 }
 </style>

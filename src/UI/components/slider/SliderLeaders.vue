@@ -1,5 +1,5 @@
 <template>
-    <el-col class="slider-container">
+    <v-col class="slider-container">
         <swiper class="swiper component" :options="swiperComponentOption" ref="swiper">
             <swiper-slide v-for="(leader, index) in leaders" :key="index" :id="index">
                 <router-link :to="{ name: 'leaderCourses', params: { id: leader.id } }" active-class="active_leader">
@@ -17,7 +17,7 @@
                 <svg-icon name="Slider_Arrow"></svg-icon>
             </div>
         </swiper>
-    </el-col>
+    </v-col>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';

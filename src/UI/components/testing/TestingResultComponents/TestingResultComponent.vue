@@ -1,9 +1,9 @@
 <template>
-    <el-col>
+    <v-col>
         <SuccessComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.SUCCESS" />
         <ProceedComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.PROCEED" />
         <FailComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.FAIL" />
-    </el-col>
+    </v-col>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';

@@ -1,13 +1,13 @@
 <template>
-  <el-container class="container_a">
-    <el-container class="ml-36 container_b">
-      <el-col>
+  <v-row class="container_a">
+    <div class="ml-36 container_b">
+      <v-col>
         <Header :isBordered="false" title="Инфопакеты" class="top_bar_p_0"
                 description="Здесь отображаются все инфопакеты компании">
         </Header>
-      </el-col>
-    </el-container>
-  </el-container>
+      </v-col>
+    </div>
+  </v-row>
 </template>
 
 <script lang="ts">

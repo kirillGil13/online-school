@@ -1,13 +1,13 @@
 <template>
-    <el-container class="container_a">
-        <el-container class="ml-36 container_b">
-            <el-col>
+    <v-row class="container_a">
+        <div class="ml-36 container_b">
+            <v-col>
                 <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
                     <Search />
                 </Header>
                 <h5>топ лидеры</h5>
                 <SliderLeaders :leaders="leaders" />
-                <el-col v-if="$route.params.id === undefined">
+                <v-col v-if="$route.params.id === undefined">
                     <Tabs :tabsResponse="tabs" @select="select">
                         <TabsContent
                             v-for="(tab, index) in tabs"
@@ -20,23 +20,23 @@
                             </keep-alive>
                         </TabsContent>
                     </Tabs>
-                </el-col>
-            </el-col>
-        </el-container>
-    </el-container>
+                </v-col>
+            </v-col>
+        </div>
+    </v-row>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Header from '../components/common/Header.vue';
-import SliderLeaders from '../components/slider/SliderLeaders.vue';
-import Search from '../components/common/Search.vue';
+import Header from '../../components/common/Header.vue';
+import SliderLeaders from '../../components/slider/SliderLeaders.vue';
+import Search from '../../components/common/Search.vue';
 import Leader from '@/entity/leader/leader';
 import { LeaderResponseType } from '@/entity/leader/leader.types';
-import Tabs from '../components/common/tabs/Tabs.vue';
-import TabsContent from '../components/common/tabs/TabsContent.vue';
+import Tabs from '../../components/common/tabs/Tabs.vue';
+import TabsContent from '../../components/common/tabs/TabsContent.vue';
 import { ITabs } from '@/entity/tabs/tabs.types';
 import CoursesListItem from '@/entity/courses/courses';
-import TrainingCourses from '../components/training/TrainingCourses.vue';
+import TrainingCourses from '../../components/training/TrainingCourses.vue';
 import { CoursesListItemResponseType } from '@/entity/courses/courses.types';
 
 @Component({

@@ -57,7 +57,7 @@ import LoginFormVue from '../../components/auth/LoginForm.vue';
 import CodeFormVue from '../../components/auth/CodeForm.vue';
 import { LoginForm } from '@/form/login/LoginForm';
 //import user from '@/store/modules/users';
-import Profile from '../Profile.vue';
+import Profile from '../profile/Profile.vue';
 import FormGroup from '@/UI/components/common/form/FormGroup.vue';
 import Button from '@/UI/components/common/Button.vue';
 import { AuthStore } from '@/store/modules/Auth';

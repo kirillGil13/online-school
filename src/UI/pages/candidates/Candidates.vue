@@ -1,28 +1,30 @@
 <template>
-    <v-container class="container_a">
-        <v-col>
-            <Header
-                :isBordered="false"
-                title="Кандидаты"
-                class="top_bar_p_0"
-                description="Здесь отображаются контактные данные всех людей, которые регистрировались по Вашим партнерским ссылкам"
-            >
-            </Header>
-            <v-col class="link-bar">
-                <div class="link-container">
-                    <div>Ваша ссылка на лендинг</div>
-                    <div class="link-content">
-                        <div class="link">{{ user.link }}</div>
-                        <svg-icon name="Copy"></svg-icon>
-                    </div>
-                </div>
-                <Search />
-            </v-col>
+    <v-row class="container_a">
+        <div class="ml-36 container_b">
             <v-col>
-                <TableCandidates :candidates="candidates" />
+                <Header
+                    :isBordered="false"
+                    title="Кандидаты"
+                    class="top_bar_p_0"
+                    description="Здесь отображаются контактные данные всех людей, которые регистрировались по Вашим партнерским ссылкам"
+                >
+                </Header>
+                <v-col class="link-bar">
+                    <div class="link-container">
+                        <div>Ваша ссылка на лендинг</div>
+                        <div class="link-content">
+                            <div class="link">{{ user.link }}</div>
+                            <svg-icon name="Copy"></svg-icon>
+                        </div>
+                    </div>
+                    <Search />
+                </v-col>
+                <v-col>
+                    <TableCandidates :candidates="candidates" />
+                </v-col>
             </v-col>
-        </v-col>
-    </v-container>
+        </div>
+    </v-row>
 </template>
 
 <script lang="ts">

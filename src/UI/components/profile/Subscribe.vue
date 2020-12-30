@@ -1,9 +1,9 @@
 <template>
-    <el-row>
-        <el-col class="profile__col" :span="24">
+    <v-row>
+        <v-col class="profile__col" cols="12">
             <div class="grid-conten bg-purple"></div>
-        </el-col>
-    </el-row>
+        </v-col>
+    </v-row>
 </template>
 
 <script>

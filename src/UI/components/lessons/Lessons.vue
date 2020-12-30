@@ -1,5 +1,5 @@
 <template>
-    <el-container class="box-container course-lessons-block">
+    <v-row class="box-container course-lessons-block">
         <div class="lesson-container">
             <ul class="lesson-list">
                 <li
@@ -13,14 +13,14 @@
                     @click="$emit('moveToLesson', lesson.id)"
                 >
                     <svg-icon class="svg-wh" :name="lesson.type()"></svg-icon>
-                    <el-col>
+                    <v-col>
                         <span class="desc">Урок {{ lesson.id + 1 }}</span>
                         {{ lesson.title }}
-                    </el-col>
+                    </v-col>
                 </li>
             </ul>
         </div>
-        <el-col class="lesson-btn">
+        <v-col class="lesson-btn">
             <Button class="with_icon">
                 <svg-icon name="Chat"></svg-icon>
                 Задать вопрос
@@ -29,8 +29,8 @@
                 <svg-icon name="Next"></svg-icon>
                 Следующий урок
             </Button>
-        </el-col>
-    </el-container>
+        </v-col>
+    </v-row>
 </template>
 
 <script lang="ts">
@@ -96,7 +96,7 @@ export default class Lessons extends Vue {
                     margin-right: 14px;
                 }
 
-                .el-col {
+                .v-col {
                     display: flex;
                     flex-direction: column;
 

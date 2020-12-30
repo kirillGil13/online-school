@@ -1,11 +1,11 @@
 <template>
-    <el-row class="profile">
-        <el-col :span="24">
-            <h1>Денис денисов</h1>
-        </el-col>
-        <el-col :span="24" class="profile__main-content">
-            <el-row>
-                <el-col :span="windowSize.x > windowWideBreak ? 3 : 24">
+    <v-row class="profile">
+        <v-col :cols="12">
+            <h1>{{`${user.name} ${user.surname}`}}</h1>
+        </v-col>
+        <v-col :cols="12" class="profile__main-content">
+            <v-row>
+                <v-col :cols="windowSize.x > windowWideBreak ? 2 : 12">
                     <div
                         :class="{
                             'profile__info-full-size': windowSize.x > windowWideBreak,
@@ -19,40 +19,57 @@
                             :width="windowSize.x > windowWideBreak ? 143 : 70"
                         />
                         <Badge>
-                            <template slot="title">dsfdswf</template>
-                            dfdf
+                            <template slot="title">Партнеров</template>
+                            18
                         </Badge>
-                        <el-button class="profile__singout-button">Выйти </el-button>
+                        <v-btn @click="logOut" class="profile__singout-button">Выйти </v-btn>
                     </div>
-                </el-col>
-                <el-col :span="windowSize.x > windowWideBreak ? 21 : 24">
+                </v-col>
+                <v-col :cols="windowSize.x > windowWideBreak ? 10 : 12">
                     <div class="grid-content profile__detail-info">
-                        <el-row>
-                            <el-col :span="24" class="profile__col">
-                                <el-tabs v-model="activeName">
-                                    <el-tab-pane label="Общие" name="common">
+                        <v-row>
+                            <v-col cols="12" class="profile__col">
+                                <v-tabs v-model="activeName">
+                                  <v-tab>
+                                    Общие
+                                  </v-tab>
+                                  <v-tab>
+                                    Контактные данные
+                                  </v-tab>
+                                  <v-tab>
+                                    Безопасность
+                                  </v-tab>
+                                  <v-tab>
+                                    Подписка
+                                  </v-tab>
+                                  <v-tab>
+                                    Сменить аватар
+                                  </v-tab>
+                                </v-tabs>
+                                <v-tabs-items v-model="activeName">
+                                    <v-tab-item>
                                         <profile-main-info :form="mainInfoForm" />
-                                    </el-tab-pane>
-                                    <el-tab-pane label="Контактные данные" name="contactData">
+                                    </v-tab-item>
+                                    <v-tab-item>
                                         <profile-contact-data />
-                                    </el-tab-pane>
-                                    <el-tab-pane label="Безопасность" name="security">
+                                    </v-tab-item>
+                                    <v-tab-item>
                                         <profile-security />
-                                    </el-tab-pane>
-                                    <el-tab-pane label="Подписка" name="subscribe">
+                                    </v-tab-item>
+                                    <v-tab-item>
                                         <profile-subscribe />
-                                    </el-tab-pane>
-                                    <el-tab-pane label="Сменить аватар" name="changeAvatar">
+                                    </v-tab-item>
+                                    <v-tab-item>
                                         <profile-avatar-change />
-                                    </el-tab-pane>
-                                </el-tabs>
-                            </el-col>
-                        </el-row>
+                                    </v-tab-item>
+                                </v-tabs-items>
+                            </v-col>
+                        </v-row>
                     </div>
-                </el-col>
-            </el-row>
-        </el-col>
-    </el-row>
+                </v-col>
+            </v-row>
+        </v-col>
+    </v-row>
 </template>
 
 <script lang="ts">
@@ -69,6 +86,8 @@ import { IFormGroup, RxFormBuilder } from '@rxweb/reactive-forms';
 import { ProfileMainInfoForm } from '@/form/profile/profileMainInfoForm';
 import { IWindowSize } from '@/entity/environment';
 import { AvatarSizeEnum } from '@/entity/common/avatar.types';
+import { AuthStore } from '@/store/modules/Auth';
+import {IUser} from '@/entity/user';
 
 @Component({
     components: {
@@ -89,19 +108,17 @@ export default class Profile extends Vue {
         x: 0,
         y: 0,
     };
-    activeName = 'common';
+    activeName = 0;
     AvatarSizeEnum = AvatarSizeEnum;
+
+    get user(): IUser {
+      return AuthStore.user;
+    }
 
     constructor() {
         super();
         this.mainInfoForm = this.formBuilder.formGroup(
-            new ProfileMainInfoForm({
-                name: 'Денис',
-                surname: 'Денисов',
-                oneLinksId: 1,
-                referLink: 'onelinks.com/denis',
-                bio: 'Я десятая звезда!',
-            })
+            new ProfileMainInfoForm(this.user)
         ) as IFormGroup<ProfileMainInfoForm>;
     }
 
@@ -116,6 +133,10 @@ export default class Profile extends Vue {
         };
     }
 
+    private logOut(): void {
+      AuthStore.logout()
+    }
+
     private mounted(): void {
         this.onResize();
         window.addEventListener('resize', this.onResize);
@@ -125,8 +146,6 @@ export default class Profile extends Vue {
 
 <style lang="scss" scoped>
 .profile {
-    width: 100%;
-    height: 100%;
 
     &__main-content {
         border-radius: $main_border_radius;

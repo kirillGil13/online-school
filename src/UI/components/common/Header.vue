@@ -1,16 +1,16 @@
 <template>
     <v-row :class="['top_bar', isBordered ? 'box-container' : 'py-24']" ref="topBar">
-        <div>
+        <v-col cols="8">
             <router-link v-if="route" :to="{ name: route.name }" class="link">
                 <svg-icon name="Arrow_Left" class="svg-fill-none mr-14"></svg-icon>
                 {{ route.label }}
             </router-link>
             <h1 v-if="title">{{ title }}</h1>
-            <div class="desc" v-if="description">{{ description }}</div>
-        </div>
-        <div>
+            <span v-if="description">{{ description }}</span>
+        </v-col>
+        <v-col cols="4">
             <slot></slot>
-        </div>
+        </v-col>
     </v-row>
 </template>
 <script lang="ts">

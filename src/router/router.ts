@@ -20,22 +20,22 @@ const routes = [
             {
                 path: '/',
                 name: 'Main',
-                component: () => import('../UI/pages/Profile.vue'),
+                component: () => import('../UI/pages/profile/Profile.vue'),
             },
             {
                 path: '/training',
                 name: 'Training',
-                component: () => import('../UI/pages/Training.vue'),
+                component: () => import('../UI/pages/training/Training.vue'),
             },
             {
                 path: '/training/:id',
                 name: 'LeaderCourses',
-                component: () => import('../UI/pages/LeaderCoursePage.vue'),
+                component: () => import('../UI/pages/leader/LeaderCoursePage.vue'),
             },
             {
                 path: '/training/:id/:lessonId',
                 name: 'Course',
-                component: () => import('../UI/pages/Course.vue'),
+                component: () => import('../UI/pages/course/Course.vue'),
             },
             {
                 path: '/candidates',

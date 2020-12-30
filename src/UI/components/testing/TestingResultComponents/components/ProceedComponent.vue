@@ -1,20 +1,20 @@
 <template>
-    <el-col>
+    <v-col>
         <div class="row">
             <ProgressCircleTesting :result="result" />
-            <el-col>
+            <v-col>
                 <h3>К сожалению, вы не прошли тестирование.</h3>
                 <span class="info">Ничего страшного - вы можете пройти повторно тест через</span>
                 <Timer v-if="!showButton" :currentTime="5" @stop="stop" />
                 <Button v-if="showButton" class="again" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
-            </el-col>
+            </v-col>
         </div>
-        <el-divider></el-divider>
-        <el-col>
+        <v-divider></v-divider>
+        <v-col>
             <Button class="with_icon" @submit="$emit('reviewLesson')">Пересмотреть урок</Button>
             <Button class="with_icon secondary" @submit="$emit('writeMaster')">Написать наставнику</Button>
-        </el-col>
-    </el-col>
+        </v-col>
+    </v-col>
 </template>
 <script lang="ts">
 import TestingResult from '@/entity/testingResult/testingResult';
