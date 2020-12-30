@@ -62,4 +62,7 @@ export class ProfileMainInfoForm implements IUser {
         this.login = login;
         this.facebook = facebook;
     }
+
+    initials!: string;
+    link!: string;
 }
