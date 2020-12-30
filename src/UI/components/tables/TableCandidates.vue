@@ -1,5 +1,5 @@
 <template>
-    <v-col class="table">
+    <div class="table">
         <div class="tr">
             <v-col>Имя</v-col>
             <v-col>Номер телефона</v-col>
@@ -27,7 +27,7 @@
                 <svg-icon name="Calendar_Table"></svg-icon>
             </v-col>
         </div>
-    </v-col>
+    </div>
 </template>
 
 <script lang="ts">

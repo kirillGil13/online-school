@@ -1,20 +1,20 @@
 <template>
-    <v-row class="container_a">
-        <div class="ml-36 container_b">
-            <v-col>
-                <Header
-                    :isBordered="false"
-                    title="Партнеры"
-                    class="top_bar_p_0"
-                    description="Здесь отображаются партнеры, которых вы пригласили"
-                >
-                    <Search />
-                </Header>
+    <v-row>
+        <v-col>
+            <Header
+                :isBordered="false"
+                title="Партнеры"
+                class="top_bar_p_0"
+                description="Здесь отображаются партнеры, которых вы пригласили"
+            >
+                <Search />
+            </Header>
+            <v-row>
                 <v-col>
                     <TablePartners :partners="partners" />
                 </v-col>
-            </v-col>
-        </div>
+            </v-row>
+        </v-col>
     </v-row>
 </template>
 

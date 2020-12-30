@@ -1,14 +1,14 @@
 <template>
-    <v-row class="container_a">
-        <div class="ml-36 container_b">
-            <v-col>
-                <Header
-                    :isBordered="false"
-                    title="Кандидаты"
-                    class="top_bar_p_0"
-                    description="Здесь отображаются контактные данные всех людей, которые регистрировались по Вашим партнерским ссылкам"
-                >
-                </Header>
+    <v-row>
+        <v-col>
+            <Header
+                :isBordered="false"
+                title="Кандидаты"
+                class="top_bar_p_0"
+                description="Здесь отображаются контактные данные всех людей, которые регистрировались по Вашим партнерским ссылкам"
+            >
+            </Header>
+            <v-row>
                 <v-col class="link-bar">
                     <div class="link-container">
                         <div>Ваша ссылка на лендинг</div>
@@ -19,11 +19,13 @@
                     </div>
                     <Search />
                 </v-col>
+            </v-row>
+            <v-row>
                 <v-col>
                     <TableCandidates :candidates="candidates" />
                 </v-col>
-            </v-col>
-        </div>
+            </v-row>
+        </v-col>
     </v-row>
 </template>
 
@@ -62,7 +64,7 @@ export default class Candidates extends Vue {
 
 <style lang="scss">
 .link-bar {
-    margin-top: 24px;
+    
     display: flex;
     flex-direction: row;
     align-items: center;

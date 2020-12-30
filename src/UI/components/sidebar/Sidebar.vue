@@ -1,6 +1,6 @@
 <template>
-    <div class="account-info">
-        <h3>ONELINKS.COM</h3>
+    <div class="sidebar">
+        <h3 class="sidebar__logo">ONELINKS.COM</h3>
         <account-badge :userInfo="userInfo" />
         <Menu/>
     </div>
@@ -25,7 +25,7 @@ export default class extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.account-info {
+.sidebar {
     max-width: 290px;
     border-radius: $main_border_radius;
     margin-bottom: 50px;
@@ -35,27 +35,11 @@ export default class extends Vue {
     align-items: center;
     flex-direction: column;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-
-    &__main-menu {
-        // border-radius: 16px;
-        // overflow: hidden;
-        width: 100%;
-        padding: 0;
-        list-style: none;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 16px;
-        border: none;
-
-        .is-active {
-            background-color: #e8edfe !important;
-            border-radius: $main_border_radius;
-        }
+    
+    &__logo {
+        font-size: 24px;
+        margin-bottom: 20px;
     }
 }
-.menu-group {
-    .v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
-        color: $link !important;
-    }
-}
+
 </style>

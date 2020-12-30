@@ -6,7 +6,9 @@
                     <Sidebar :userInfo="user" />
                     <Banner />
                 </div>
-                <router-view></router-view>
+                <div class="content">
+                    <router-view></router-view>
+                </div>
             </v-container>
         </v-main>
     </v-app>
@@ -35,8 +37,13 @@ export default class MainLayout extends Vue {
 }
 
 .aside-view {
-    min-width: 330px;
-    padding-top: 15px !important;
-    padding-left: 15px !important;
+    width: 290px;
+    padding-top: 16px !important;
+    padding-left: 16px !important;
+}
+.content {
+    min-width: 1070px;
+    padding-top: 20px !important;
+    margin-left: 36px;
 }
 </style>

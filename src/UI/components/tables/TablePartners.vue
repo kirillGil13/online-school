@@ -1,5 +1,5 @@
 <template>
-    <v-col class="table">
+    <div class="table">
         <div class="tr">
             <v-col>Имя</v-col>
             <v-col>Номер телефона</v-col>
@@ -19,7 +19,7 @@
             <v-col>{{ partner.infoPackageTitle }}</v-col>
             <v-col>{{ partner.startPartnerDate | moment('DD.MM, HH:mm') }}</v-col>
         </div>
-    </v-col>
+    </div>
 </template>
 
 <script lang="ts">
