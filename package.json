@@ -19,6 +19,7 @@
         "moment-duration-format": "^2.3.2",
         "qrcode": "^1.4.4",
         "swiper": "^6.4.5",
+        "v-clipboard": "^2.2.3",
         "vue": "2.6.12",
         "vue-awesome-swiper": "^4.1.1",
         "vue-axios": "2.1.5",

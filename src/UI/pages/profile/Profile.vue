@@ -13,16 +13,15 @@
                         }"
                     >
                         <avatar
-                            :height="windowSize.x > windowWideBreak ? 143 : 70"
+                            :size="windowSize.x > windowWideBreak ? 143 : 70"
                             :imageSourse="'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'"
                             :starSize="AvatarSizeEnum.MEDIUM"
-                            :width="windowSize.x > windowWideBreak ? 143 : 70"
                         />
                         <Badge>
                             <template slot="title">Партнеров</template>
                             18
                         </Badge>
-                        <v-btn @click="logOut" class="profile__singout-button">Выйти </v-btn>
+                        <v-btn @click="logOut" class="profile__singout-button secondary">Выйти </v-btn>
                     </div>
                 </v-col>
                 <v-col :cols="windowSize.x > windowWideBreak ? 10 : 12">
@@ -155,7 +154,7 @@ export default class Profile extends Vue {
     }
 
     &__singout-button {
-        background-color: rgba(66, 109, 246, 0.12);
+        background-color: rgba(66, 109, 246, 0.12)!important;
         border-radius: $main_border_radius;
         color: $blue;
         width: 144px;

@@ -3,8 +3,7 @@
         <avatar
             :imageSourse="userInfo.avatar"
             :imageClass="'account-badge__avatar'"
-            :height="48"
-            :width="48"
+            :size="48"
             :starSize="AvatarSizeEnum.SMALL"
         />
         <div class="account-badge__account-info">
@@ -15,7 +14,7 @@
                         userInfo.login
                     }}</span>
                 </div>
-                <svg-icon class="account-badge__copy-icon" name="Copy" />
+                <svg-icon v-clipboard="userInfo.login" class="account-badge__copy-icon" name="Copy" />
             </div>
         </div>
     </div>
