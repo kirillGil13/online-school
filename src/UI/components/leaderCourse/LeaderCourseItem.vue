@@ -4,10 +4,10 @@
             <Rating :rating="course.rating" />
             <div class="course-info duration">{{ course.fullDuration() }}</div>
         </div>
-        <el-row class="leader">
+        <v-row class="leader">
             <div class="course-avatar" :style="{ backgroundImage: 'url(' + leaderAvatar + ')' }"></div>
             <span class="desc">{{ leaderFullName }}</span>
-        </el-row>
+        </v-row>
         <div class="course-title">{{ course.title }}</div>
     </div>
 </template>

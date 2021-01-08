@@ -1,6 +1,5 @@
 <template>
     <v-row class="container_a">
-        <div class="ml-36 container_b">
             <v-col>
                 <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
                     <Search />
@@ -22,7 +21,7 @@
                     </Tabs>
                 </v-col>
             </v-col>
-        </div>
+
     </v-row>
 </template>
 <script lang="ts">
