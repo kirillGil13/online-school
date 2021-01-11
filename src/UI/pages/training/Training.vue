@@ -7,7 +7,7 @@
                 <h5>топ лидеры</h5>
                 <SliderLeaders :leaders="leaders" />
                 <v-col v-if="$route.params.id === undefined">
-                    <Tabs :tabsResponse="tabs" @select="select">
+                    <Tabs>
                         <TabsContent
                             v-for="(tab, index) in tabs"
                             :key="index"
@@ -33,10 +33,11 @@ import Leader from '@/entity/leader/leader';
 import { LeaderResponseType } from '@/entity/leader/leader.types';
 import Tabs from '../../components/common/tabs/Tabs.vue';
 import TabsContent from '../../components/common/tabs/TabsContent.vue';
-import { ITabs } from '@/entity/tabs/tabs.types';
 import CoursesListItem from '@/entity/courses/courses';
 import TrainingCourses from '../../components/training/TrainingCourses.vue';
 import { CoursesListItemResponseType } from '@/entity/courses/courses.types';
+import {ITabs} from '@/entity/tabs/tabs.types';
+import {TabsStore} from '@/store/modules/Tabs';
 
 @Component({
     components: {
@@ -62,25 +63,12 @@ export default class Training extends Vue {
         }
     }
 
-    select(id: string): void {
-        this.tabs.forEach((tab) => {
-            tab.isActive = tab.id === id;
-        });
-    }
-
-    mounted(): void {
-        this.tabs.forEach((tab) => {
-            if (this.$route.hash != '') {
-                tab.isActive = false;
-                if ('#' + tab.id === this.$route.hash) {
-                    tab.isActive = true;
-                }
-            }
-        });
-    }
-
     proceed(id: number): void {
         this.$router.push({ path: `/training/${id}/0` });
+    }
+
+    get tabs(): ITabs[] {
+      return TabsStore.tabs;
     }
 
     //для теста
@@ -125,32 +113,6 @@ export default class Training extends Vue {
         duration: 3850,
         rating: 10,
       },
-    ];
-    tabs: ITabs[] = [
-        {
-            id: 'home',
-            title: 'Главная',
-            isActive: true,
-            component: '',
-        },
-        {
-            id: 'courses',
-            title: 'Курсы',
-            isActive: false,
-            component: 'TrainingCourses',
-        },
-        {
-            id: 'club',
-            title: 'Клуб 100',
-            isActive: false,
-            component: '',
-        },
-        {
-            id: 'leaders',
-            title: 'Лидеры',
-            isActive: false,
-            component: '',
-        },
     ];
     leader: LeaderResponseType[] = [
         {

@@ -1,8 +1,8 @@
 <template>
-    <div class="content center">
+    <div class="content">
         <v-form class="form" @submit.prevent="submit">
             <div class="pa-6">
-                <h1 class="mb-36">ONELINKS.COM</h1>
+                <Logo font-size="24px" height="38px" width="38px"/>
                 <div class="my-9">
                     <FormGroup
                         v-if="!form.codeStep"
@@ -61,6 +61,7 @@ import Profile from '../profile/Profile.vue';
 import FormGroup from '@/UI/components/common/form/FormGroup.vue';
 import Button from '@/UI/components/common/Button.vue';
 import { AuthStore } from '@/store/modules/Auth';
+import Logo from '@/UI/components/common/Logo.vue';
 
 @Component({
     components: {
@@ -69,6 +70,7 @@ import { AuthStore } from '@/store/modules/Auth';
         LoginFormVue,
         CodeFormVue,
         Profile,
+        Logo
     },
 })
 export default class Login extends Vue {
@@ -86,3 +88,19 @@ export default class Login extends Vue {
     }
 }
 </script>
+<style lang="scss">
+html,body, #app {
+  width: 100%;
+  height: 100%;
+  .content {
+    justify-content: center;
+    align-items: center;
+    .logo {
+      justify-content: center !important;
+      margin-right: 10px;
+    }
+  }
+}
+
+
+</style>
