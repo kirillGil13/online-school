@@ -207,4 +207,8 @@ export default class Training extends Vue {
     //то что мы получаем при запросе через getCourse
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+  h5 {
+    margin-top: 24px;
+  }
+</style>

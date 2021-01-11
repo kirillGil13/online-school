@@ -1,7 +1,7 @@
 import {getModule, Module, VuexModule} from 'vuex-module-decorators';
 import { IMainMenu } from '@/entity/menu';
 import store from '@/store';
-import {RouterNameEnum} from "@/router/router.types";
+import {RouterNameEnum} from '@/router/router.types';
 
 @Module({
     namespaced: true,

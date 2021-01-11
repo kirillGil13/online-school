@@ -1,7 +1,7 @@
 <template>
     <div class="course-block" @click="$emit('proceed', course.id)">
         <div class="course-video-block" :style="{ backgroundImage: 'url(' + course.cover + ')' }">
-            <div class="course-info progress row center">
+            <div class="course-info progress">
                 <ProgressCircle :progress="course.progress" />
                 <div class="text">Прогресс: {{ course.lessonPassed }} из {{ course.totalLesson }}</div>
             </div>
