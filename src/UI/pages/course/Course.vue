@@ -1,48 +1,50 @@
 <template>
     <v-row class="container_a">
-        <div class="ml-36 container_b">
-            <v-col>
-                <Header :isBordered="true" :route="route" :title="lesson.title"></Header>
-                <v-col class="course">
-                    <v-col>
-                        <div ref="courseVideo" class="course-container"></div>
-                        <v-row class="course-video-row">
-                            <Relation svg-name="Finger" title="Нравится" />
-                            <Relation class="svg-down" svg-name="Finger" title="Не нравится" />
-                            <Relation svg-name="Chosen" title="В избранное" />
-                        </v-row>
-                        <v-col class="box-container box-padding">
-                            <h5>ОПИСАНИЕ</h5>
-                            <span class="desc">{{ lesson.description }}</span>
-                        </v-col>
-                        <TestingComponent
-                            :form="testingForm"
-                            :result="testingResult"
-                            @moveToNextLesson="moveToNextLesson()"
-                            @passTestAgain="passTestAgain()"
-                            @reviewLesson="reviewLesson()"
-                            @writeMaster="writeMaster()"
-                        />
-                    </v-col>
+        <v-col cols="12">
+          <Header :isBordered="true" :route="route" :title="lesson.title"></Header>
+        </v-col>
+        <v-col cols="8">
+          <v-row>
+            <v-col class="course">
+              <v-col>
+                <div ref="courseVideo" class="course-container"></div>
+                <v-row class="course-video-row">
+                  <Relation svg-name="Finger" title="Нравится" />
+                  <Relation class="svg-down" svg-name="Finger" title="Не нравится" />
+                  <Relation svg-name="Chosen" title="В избранное" />
+                </v-row>
+                <v-col class="box-container box-padding">
+                  <h5>ОПИСАНИЕ</h5>
+                  <span class="desc">{{ lesson.description }}</span>
                 </v-col>
-                <v-col class="lessons">
-                    <v-col>
-                        <Lessons ref="lessons" :course="course" @moveToLesson="moveToLesson" />
-                        <v-col class="box-container box-padding materials">
-                            <h5>МАТЕРИАЛЫ К УРОКУ</h5>
-                            <v-row class="course-container mb-8">
-                                <svg-icon class="svg-wh" name="Doc_PDF"></svg-icon>
-                                Презентация продуктов FIniko
-                            </v-row>
-                            <v-row class="course-container">
-                                <svg-icon class="svg-wh" name="Doc_PDF"></svg-icon>
-                                Презентация продуктов FIniko
-                            </v-row>
-                        </v-col>
-                    </v-col>
+                <TestingComponent
+                    :form="testingForm"
+                    :result="testingResult"
+                    @moveToNextLesson="moveToNextLesson()"
+                    @passTestAgain="passTestAgain()"
+                    @reviewLesson="reviewLesson()"
+                    @writeMaster="writeMaster()"
+                />
+              </v-col>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="4" class="lessons">
+            <v-col>
+                <Lessons ref="lessons" :course="course" @moveToLesson="moveToLesson" />
+                <v-col class="box-container box-padding materials">
+                    <h5>МАТЕРИАЛЫ К УРОКУ</h5>
+                    <v-row class="course-container mb-8">
+                        <svg-icon class="svg-wh" name="Doc_PDF"></svg-icon>
+                        Презентация продуктов FIniko
+                    </v-row>
+                    <v-row class="course-container">
+                        <svg-icon class="svg-wh" name="Doc_PDF"></svg-icon>
+                        Презентация продуктов FIniko
+                    </v-row>
                 </v-col>
             </v-col>
-        </div>
+        </v-col>
     </v-row>
 </template>
 <script lang="ts">

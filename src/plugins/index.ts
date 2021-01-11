@@ -8,3 +8,4 @@ export * from './Vuelidate';
 export * from './Vuetify';
 export * from './Repository';
 export * from './Moment';
+export * from './ClipBoard'

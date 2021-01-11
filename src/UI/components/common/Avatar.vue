@@ -1,11 +1,10 @@
 <template>
     <div>
         <div class="avatar-wrapper">
-            <v-avatar color="primary" rounded size="48">
+            <v-avatar color="primary" rounded :size="size">
                 <img
                     v-if="user.avatar"
                     :src="imageSourse"
-                    :style="{ height: `${height}px`, width: `${width}px` }"
                     alt="Avatar"
                     class="avatar"
                 />
@@ -28,8 +27,7 @@ import { AuthStore } from '@/store/modules/Auth';
 @Component
 export default class Avatar extends Vue {
     @Prop({ required: true }) readonly imageSourse!: string;
-    @Prop({ required: true }) readonly height!: number;
-    @Prop({ required: true }) readonly width!: number;
+    @Prop({ required: true }) readonly size!: number;
     @Prop({ required: false, default: false }) readonly smallStar!: boolean;
     @Prop({ required: false, default: false }) readonly mediumStar!: boolean;
     @Prop({ required: false, default: AvatarSizeEnum.NONE })

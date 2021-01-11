@@ -1,7 +1,7 @@
 <template>
     <v-app class="main-view">
-        <v-main>
-            <v-container fluid>
+        <v-main class="main-view__container">
+            <v-container  fluid>
                 <div class="aside-view">
                     <Sidebar :userInfo="user" />
                     <Banner />
@@ -34,6 +34,9 @@ export default class MainLayout extends Vue {
 </script>
 <style lang="scss">
 .main-view {
+  &__container{
+    background-color: #fbfcfe;
+  }
 }
 
 .aside-view {
