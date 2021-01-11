@@ -1,5 +1,5 @@
 <template>
-    <div class="rating row center">
+    <div class="rating">
         <svg-icon name="Star"></svg-icon>
         <span>{{ rating }}</span>
     </div>
@@ -14,6 +14,9 @@ export default class Rating extends Vue {
 </script>
 <style lang="scss">
 .rating {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     padding: 0 3px 0 3px;
     position: absolute;
     bottom: 8px;
