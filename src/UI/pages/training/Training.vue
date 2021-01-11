@@ -95,36 +95,36 @@ export default class Training extends Vue {
             duration: 3850,
             rating: 10,
         },
-        {
-            id: 1,
-            title: 'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-            cover:
-                'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-            totalLesson: 20,
-            lessonPassed: 7,
-            duration: 3850,
-            rating: 10,
-        },
-        {
-            id: 2,
-            title: 'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-            cover:
-                'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-            totalLesson: 20,
-            lessonPassed: 15,
-            duration: 3850,
-            rating: 10,
-        },
-        {
-            id: 3,
-            title: 'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-            cover:
-                'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-            totalLesson: 20,
-            lessonPassed: 7,
-            duration: 3850,
-            rating: 10,
-        },
+      {
+        id: 1,
+        title: 'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
+        cover:
+            'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
+        totalLesson: 20,
+        lessonPassed: 7,
+        duration: 3850,
+        rating: 10,
+      },
+      {
+        id: 2,
+        title: 'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
+        cover:
+            'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
+        totalLesson: 20,
+        lessonPassed: 15,
+        duration: 3850,
+        rating: 10,
+      },
+      {
+        id: 3,
+        title: 'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
+        cover:
+            'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
+        totalLesson: 20,
+        lessonPassed: 7,
+        duration: 3850,
+        rating: 10,
+      },
     ];
     tabs: ITabs[] = [
         {

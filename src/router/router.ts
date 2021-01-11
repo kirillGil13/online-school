@@ -24,12 +24,12 @@ const routes = [
             },
             {
                 path: '/training',
-                name: RouterNameEnum.MaterialPresentation,
+                name: RouterNameEnum.Training,
                 component: () => import('../UI/pages/training/Training.vue'),
             },
             {
                 path: '/training/:id',
-                name: 'LeaderCourses',
+                name: RouterNameEnum.LeaderCourses,
                 component: () => import('../UI/pages/leader/LeaderCoursePage.vue'),
             },
             {
@@ -46,7 +46,18 @@ const routes = [
                 path: '/partners',
                 name: RouterNameEnum.Partners,
                 component: () => import('../UI/pages/partners/Partners.vue')
-            }
+            },
+            {
+                path: '/calendar',
+                name: RouterNameEnum.Calendar,
+                component: () => import('../UI/pages/events/Events.vue')
+            },
+            {
+                path: '/chat',
+                name: RouterNameEnum.Chat,
+                component: () => import('../UI/pages/chat/Chat.vue')
+            },
+
         ],
     },
 ];

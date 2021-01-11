@@ -12,7 +12,7 @@
 html,
 body {
     color: $black;
-    font-family: 'Ubuntu';
+    font-family: 'Ubuntu' !important;
     background-color: $background;
     padding: 0;
     margin: 0;

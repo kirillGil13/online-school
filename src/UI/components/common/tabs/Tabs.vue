@@ -1,5 +1,5 @@
 <template>
-  <v-col>
+  <div>
     <div class="tabs">
       <ul>
         <li v-for="(tab, index) in tabsResponse" :key="index" :class="{ 'is-active': tab.isActive }">
@@ -11,7 +11,7 @@
     <div class="tabs-details">
       <slot></slot>
     </div>
-  </v-col>
+  </div>
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
@@ -32,7 +32,6 @@ export default class Tabs extends Vue {
   align-items: center;
   width: max-content;
   height: 60px;
-  margin-top: 36px;
   margin-bottom: 16px;
   background: #ffffff;
   border: 1px solid #f2f2f2;

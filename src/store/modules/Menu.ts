@@ -19,12 +19,12 @@ class MenuModule extends VuexModule {
         {
             title: 'Обучение',
             iconName: 'Education',
-            route: RouterNameEnum.Main,
+            route: RouterNameEnum.Training,
         },
         {
             title: 'Материалы',
             iconName: 'Folder',
-            route: RouterNameEnum.Main,
+            route: RouterNameEnum.Materials,
             subMenu: [
                 {
                     title: 'Презентации',
@@ -51,12 +51,12 @@ class MenuModule extends VuexModule {
         {
             title: 'События',
             iconName: 'Calendar',
-            route: RouterNameEnum.Main,
+            route: RouterNameEnum.Calendar,
         },
         {
             title: 'Чат',
             iconName: 'Chat',
-            route: RouterNameEnum.Main,
+            route: RouterNameEnum.Chat,
         },
         {
             title: 'Кандидаты',

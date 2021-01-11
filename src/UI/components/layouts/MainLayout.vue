@@ -34,6 +34,7 @@ export default class MainLayout extends Vue {
 </script>
 <style lang="scss">
 .main-view {
+  font-family: 'Ubuntu' !important;
   &__container{
     background-color: #fbfcfe;
   }
@@ -45,7 +46,7 @@ export default class MainLayout extends Vue {
     padding-left: 16px !important;
 }
 .content {
-    min-width: 1070px;
+    min-width: 1114px;
     padding-top: 20px !important;
     margin-left: 36px;
 }
