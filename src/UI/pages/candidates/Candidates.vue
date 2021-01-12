@@ -14,7 +14,7 @@
                         <div>Ваша ссылка на лендинг</div>
                         <div class="link-content">
                             <div class="link">{{ user.link }}</div>
-                            <svg-icon name="Copy"></svg-icon>
+                            <svg-icon v-clipboard="user.link" name="Copy"></svg-icon>
                         </div>
                     </div>
                     <Search />

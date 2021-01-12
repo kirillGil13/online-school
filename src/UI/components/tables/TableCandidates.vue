@@ -1,31 +1,31 @@
 <template>
     <div class="table">
         <div class="tr">
-            <v-col>Имя</v-col>
-            <v-col>Номер телефона</v-col>
-            <v-col>Почта</v-col>
-            <v-col>Видео</v-col>
-            <v-col>Дата</v-col>
-            <v-col>Партнер</v-col>
-            <v-col></v-col>
+            <div>Имя</div>
+            <div>Номер телефона</div>
+            <div>Почта</div>
+            <div class="video-container">Видео</div>
+            <div>Дата</div>
+            <div>Партнер</div>
+            <div></div>
         </div>
         <div class="tr tbody" v-for="(candidate, index) in candidates" :key="index">
-            <v-col>{{ candidate.name }}</v-col>
-            <v-col>{{ candidate.phone }}</v-col>
-            <v-col>{{ candidate.email }}</v-col>
-            <v-col>
+            <div>{{ candidate.name }}</div>
+            <div class="link">{{ candidate.phone }}</div>
+            <div class="email link">{{ candidate.email }}</div>
+            <div class="video-container">
                 <div class="video">
                     <div class="title">Porttitor euismod.</div>
                     <div class="duration">12:08 - 22:12</div>
                 </div>
-            </v-col>
-            <v-col>{{ candidate.createdAt | moment('DD.MM, HH:mm') }}</v-col>
-            <v-col>
+            </div>
+            <div>{{ candidate.createdAt | moment('DD.MM, HH:mm') }}</div>
+            <div>
                 <Button>Сделать партнером</Button>
-            </v-col>
-            <v-col>
+            </div>
+            <div>
                 <svg-icon name="Calendar_Table"></svg-icon>
-            </v-col>
+            </div>
         </div>
     </div>
 </template>
@@ -46,4 +46,12 @@ export default class TablePartners extends Vue {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.email {
+  line-height: 80%;
+}
+.video-container{
+  width: 70%;
+  margin-left: 10%;
+}
+</style>
