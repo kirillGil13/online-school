@@ -328,10 +328,9 @@ h5 {
             text-align: left;
             background: rgba(66, 109, 246, 0.12);
             border-radius: 5px;
-            width: 70%;
             .title {
-                font-size: 12px;
-                line-height: 150%;
+                font-size: 12px !important;
+                line-height: 140%;
             }
             .duration {
                 font-size: 10px;
