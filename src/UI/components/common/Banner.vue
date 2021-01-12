@@ -61,6 +61,7 @@ export default class Banner extends Vue {
 </script>
 <style lang="scss" scoped>
 .banner__wrapper{
-  max-width: 290px;
+  width: 100%;
+  position: relative;
 }
 </style>

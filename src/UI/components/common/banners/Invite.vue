@@ -5,8 +5,8 @@
                 name="PaperPlane"
                 :color="variables.menuActiveText"
                 class="banner__paper-plane"
-                height="45"
-                width="45"
+                height="69"
+                width="72"
             />
             <div>
                 <h3 class="banner__title">Пригласить кандидата</h3>
@@ -42,12 +42,22 @@ export default class InviteBanner extends Vue {
     color: $white;
 }
 .banner {
+  padding: 66px 34px 16px 34px;
     &__invite {
         background-color: rgba(66, 109, 246, 0.12) !important;
         border: 1px solid rgba(66, 109, 246, 0.12);
     }
     &__paper-plane {
-        transform: rotate(320deg);
+      position: absolute;
+      left: 35%;
+      top: -7%;
+    }
+    &__title {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+    &__descripton {
+      font-size: 12px;
     }
 }
 </style>

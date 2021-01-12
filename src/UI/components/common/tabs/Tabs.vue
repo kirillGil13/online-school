@@ -2,8 +2,8 @@
   <div>
     <div class="tabs">
       <ul>
-        <li v-for="(tab, index) in tabsResponse" :key="index" :class="{ 'is-active': tab.isActive }">
-          <a :href="'#' + tab.id" @click="selectTab(tab.id)">{{ tab.title }}</a>
+        <li v-for="(tab, index) in tabs" :key="index" :class="{ 'is-active': tab.isActive }">
+          <a :href="'#' + tab.id" @click="select(tab.id)">{{ tab.title }}</a>
         </li>
       </ul>
     </div>
@@ -14,15 +14,32 @@
   </div>
 </template>
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 import {ITabs} from '@/entity/tabs/tabs.types';
+import {TabsStore} from '@/store/modules/Tabs';
 
 @Component
 export default class Tabs extends Vue {
-  @Prop() readonly tabsResponse!: ITabs[];
 
-  selectTab(id: string): void {
-    this.$emit('select', id);
+  get tabs(): ITabs[] {
+    return TabsStore.tabs;
+  }
+
+  select(id: string): void {
+    this.tabs.forEach((tab) => {
+      tab.isActive = tab.id === id;
+    });
+  }
+
+  mounted(): void {
+    this.tabs.forEach((tab) => {
+      if (this.$route.hash != '') {
+        tab.isActive = false;
+        if ('#' + tab.id === this.$route.hash) {
+          tab.isActive = true;
+        }
+      }
+    });
   }
 }
 </script>

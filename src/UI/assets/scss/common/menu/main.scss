@@ -1,17 +1,19 @@
 .main-menu {
+    margin-top: 24px;
     width: 100%;
-    padding: 0;
+    padding: 0 !important;
     list-style: none;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
     border: none;
-
+    .v-list-item {
+        padding: 0 16px !important;
+    }
     .v-list-group {
         & > .v-list-group__header.v-list-item {
-            padding: 0 8px !important;
-            margin-bottom: 8px !important;
-
+            padding: 0 0 0 16px !important;
+            margin-bottom: 0px !important;
             & > .v-list-item {
                 margin-bottom: 0 !important;
                 padding: 0 !important;
@@ -19,16 +21,19 @@
         }
         & > .v-list-group__items {
             & > .v-list-item {
-                padding-left: 64px !important;
+                padding-left: 52px !important;
             }
-            margin-bottom: 8px !important;
+            margin-bottom: 0px !important;
         }
     }
 
     .v-list-item__icon {
+        margin-right: 12px !important;
+        width: 24px;
+        height: 24px;
         svg {
-            width: 24px;
-            height: 24px;
+            max-width: 19px;
+            max-height: 20px;
         }
     }
 
@@ -59,5 +64,16 @@
                 border-radius: $main_border_radius !important;
             }
         }
+    }
+    &.v-list--rounded{
+        .v-list-item {
+            &:not(:last-child):not(:only-child) {
+                margin-bottom: 0 !important;
+            }
+        }
+
+    }
+    .sub {
+        font-size: 14px !important;
     }
 }

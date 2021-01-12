@@ -7,7 +7,7 @@
             :starSize="AvatarSizeEnum.SMALL"
         />
         <div class="account-badge__account-info">
-            <span>{{ `${userInfo.name} ${userInfo.surname}` }}</span>
+            <span class="user_name">{{ `${userInfo.name} ${userInfo.surname}` }}</span>
             <div class="account-badge__bottom">
                 <div class="account-badge__login-wrapper">
                     <span class="account-badge__login">{{
@@ -39,7 +39,7 @@ export default class AccountBadge extends Vue {
 <style scoped lang="scss">
 .account-badge {
     min-width: 80%;
-    padding: 20px;
+    padding: 12px;
     display: flex;
     align-items: center;
     border: 1px solid #f2f2f2;
@@ -48,10 +48,24 @@ export default class AccountBadge extends Vue {
     &__account-info {
         margin-left: 15px;
         display: flex;
+        justify-content: center;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        .user_name {
+          font-weight: bold;
+          margin-bottom: 5px;
+          width: 90%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
     }
     &__login-wrapper {
+        font-size: 11px;
+        line-height: 15px;
+        font-family: 'Manrope-Regular';
+        font-weight: 600;
+        letter-spacing: 1px;
         color: $blue;
         background-color: #e8edfe;
         padding: 5px;
@@ -66,7 +80,7 @@ export default class AccountBadge extends Vue {
         margin-left: 10px;
         color: $blue;
         height: 100% !important;
-        width: 20px !important;
+        width: 16px !important;
         cursor: pointer;
     }
 }

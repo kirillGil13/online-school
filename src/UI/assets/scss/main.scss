@@ -226,7 +226,7 @@ h5 {
         font-family: $font-family-base;
         height: 50px;
         border-radius: $main_border_radius;
-        padding: 16px, 24px;
+        padding: 16px 24px;
     }
 }
 .profile__col {
@@ -236,6 +236,7 @@ h5 {
 }
 .course-block {
     width: calc((100% / 3) - 24px);
+    filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.08));
     margin-right: 24px;
     margin-bottom: 28px;
     cursor: pointer;

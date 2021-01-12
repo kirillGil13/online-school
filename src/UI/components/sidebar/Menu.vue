@@ -17,7 +17,7 @@
                     <v-list-item-title v-text="item.title" />
                 </v-list-item>
                 <v-list-item v-for="subItem in item.subMenu" :key="subItem.title" :to="{ name: subItem.route }">
-                    <v-list-item-title> {{ subItem.title }}</v-list-item-title>
+                    <v-list-item-title class="sub"> {{ subItem.title }}</v-list-item-title>
                 </v-list-item>
             </v-list-group>
         </template>
