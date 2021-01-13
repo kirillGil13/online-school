@@ -1,8 +1,8 @@
 <template>
-    <v-row :class="['top_bar', isBordered ? 'box-container' : 'py-24']" ref="topBar">
+    <v-row :class="['top_bar', isBordered ? 'box-container pa-2' : 'py-24']" ref="topBar">
         <v-col cols="8">
             <router-link v-if="route" :to="{ name: route.name }" class="link">
-                <svg-icon name="Arrow_Left" class="svg-fill-none mr-14"></svg-icon>
+                <svg-icon name="Arrow_Left" class="svg-fill-none"></svg-icon>
                 {{ route.label }}
             </router-link>
             <h1 v-if="title">{{ title }}</h1>
@@ -30,6 +30,7 @@ export default class Header extends Vue {
 .top_bar {
     display: flex !important;
     justify-content: space-between !important;
+    box-sizing: border-box;
     h1 {
         margin-bottom: 0;
         margin-top: 6px;
@@ -46,6 +47,10 @@ export default class Header extends Vue {
     .link {
         display: flex;
         align-items: center;
+        justify-content: left;
+    }
+    .svg-icon {
+      margin-right: 14px;
     }
 }
 </style>

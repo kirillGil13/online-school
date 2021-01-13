@@ -1,19 +1,18 @@
 <template>
     <v-col>
-        <div class="row">
+        <v-row class="ma-0">
             <ProgressCircleTesting :result="result" />
             <v-col>
                 <h3>К сожалению, вы не прошли тестирование.</h3>
-                <span class="info"
+                <span class="success_info"
                     >Внимательно пересмотрите видео для того, чтобы повторно пройти тестирование и перейти к следующему
-                    уроку</span
-                >
+                    уроку</span>
             </v-col>
-        </div>
+        </v-row>
         <v-divider></v-divider>
-        <v-col>
-            <Button class="with_icon" @submit="$emit('reviewLesson')">Пересмотреть урок</Button>
-        </v-col>
+        <v-row class="ma-0 justify-end">
+            <Button @submit="$emit('reviewLesson')">Пересмотреть урок</Button>
+        </v-row>
     </v-col>
 </template>
 <script lang="ts">

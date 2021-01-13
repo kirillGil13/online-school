@@ -1,8 +1,8 @@
 <template>
-    <v-col>
+    <v-col class="pa-0">
         <div class="progress">Вопрос {{ step }} из {{ amount }}</div>
         <div class="full-width dash_container">
-            <v-col v-for="number in amount" :key="number">
+            <v-col class="pa-0 mr-2" v-for="number in amount" :key="number">
                 <div :class="['dash', number === 1 ? 'active' : '']" :id="number" ref="dash"></div>
             </v-col>
         </div>
@@ -45,10 +45,9 @@ export default class ProgressBar extends Vue {
 .dash_container {
     display: flex;
     flex-flow: row nowrap;
-    .v-col {
-        margin-right: 4px;
+    .col {
         &:nth-last-child(1) {
-            margin-right: 0;
+            margin-right: 0 !important;
         }
     }
     .dash {

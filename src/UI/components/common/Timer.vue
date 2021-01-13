@@ -1,5 +1,5 @@
 <template>
-    <v-col>
+    <v-col class="pa-0">
         <div class="timer">{{ currentTimeTemp }} сек.</div>
     </v-col>
 </template>

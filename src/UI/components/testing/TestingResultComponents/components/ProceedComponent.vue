@@ -1,46 +1,47 @@
 <template>
-    <v-col>
-        <div class="row">
-            <ProgressCircleTesting :result="result" />
-            <v-col>
-                <h3>К сожалению, вы не прошли тестирование.</h3>
-                <span class="info">Ничего страшного - вы можете пройти повторно тест через</span>
-                <Timer v-if="!showButton" :currentTime="5" @stop="stop" />
-                <Button v-if="showButton" class="again" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
-            </v-col>
-        </div>
-        <v-divider></v-divider>
-        <v-col>
-            <Button class="with_icon" @submit="$emit('reviewLesson')">Пересмотреть урок</Button>
-            <Button class="with_icon secondary" @submit="$emit('writeMaster')">Написать наставнику</Button>
-        </v-col>
-    </v-col>
+  <v-col>
+    <v-row class="ma-0">
+      <ProgressCircleTesting :result="result"/>
+      <v-col>
+        <h3>К сожалению, вы не прошли тестирование.</h3>
+        <span class="success_info">Ничего страшного - вы можете пройти повторно тест через</span>
+        <Timer v-if="!showButton" :currentTime="5" @stop="stop"/>
+        <Button v-if="showButton" class="again" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
+      </v-col>
+    </v-row>
+    <v-divider></v-divider>
+    <v-row class="ma-0 justify-end">
+      <Button class="secondary_blue mr-2" @submit="$emit('writeMaster')">Написать наставнику</Button>
+      <Button @submit="$emit('reviewLesson')">Пересмотреть урок</Button>
+    </v-row>
+  </v-col>
 </template>
 <script lang="ts">
 import TestingResult from '@/entity/testingResult/testingResult';
 import ProgressCircleTesting from '@/UI/components/progress/ProgressCircleTesting.vue';
 import Button from '@/UI/components/common/Button.vue';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-property-decorator';
 import Timer from '@/UI/components/common/Timer.vue';
 
 @Component({
-    components: {
-        ProgressCircleTesting,
-        Button,
-        Timer,
-    },
+  components: {
+    ProgressCircleTesting,
+    Button,
+    Timer,
+  },
 })
 export default class Proceed extends Vue {
-    @Prop() readonly result!: TestingResult;
-    showButton = false;
-    stop(isZero: boolean): void {
-        this.showButton = isZero;
-    }
+  @Prop() readonly result!: TestingResult;
+  showButton = false;
+
+  stop(isZero: boolean): void {
+    this.showButton = isZero;
+  }
 }
 </script>
 <style lang="scss">
 .again {
-    font-size: 12px;
-    float: left;
+  font-size: 12px;
+  float: left;
 }
 </style>

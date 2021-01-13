@@ -9,4 +9,5 @@ export enum RouterNameEnum {
     Materials = 'Materials',
     Calendar = 'Calendar',
     Chat = 'Chat',
+    Course = 'Course',
 }

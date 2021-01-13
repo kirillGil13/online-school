@@ -1,36 +1,39 @@
 <template>
-    <v-col>
-        <div class="row">
-            <ProgressCircleTesting :result="result" />
-            <v-col>
-                <h3>Поздравляем - вы выполнили задание!</h3>
-                <span class="info">Теперь вы можете перейти к следующему уроку.</span>
-            </v-col>
-        </div>
-        <v-divider></v-divider>
-        <v-col>
-            <Button class="with_icon" @sumbit="$emit('moveToNextLesson')">
-                <svg-icon class="svg next" name="Next"></svg-icon>Перейти к следующему уроку
-            </Button>
-            <Button class="with_icon secondary" @submit="$emit('reviewLesson')">
-                <svg-icon class="svg" name="Return"></svg-icon>Пересмотреть урок
-            </Button>
-        </v-col>
-    </v-col>
+  <v-col>
+    <v-row class="ma-0">
+      <ProgressCircleTesting :result="result"/>
+      <v-col>
+        <h3>Поздравляем - вы выполнили задание!</h3>
+        <span class="success_info">Теперь вы можете перейти к следующему уроку.</span>
+      </v-col>
+    </v-row>
+    <v-divider></v-divider>
+    <v-row class="ma-0 justify-end">
+      <Button class="with_icon secondary_blue mr-2" @submit="$emit('reviewLesson')">
+        <svg-icon class="svg" name="Return"></svg-icon>
+        Пересмотреть урок
+      </Button>
+      <Button class="with_icon" @sumbit="$emit('moveToNextLesson')">
+        <svg-icon class="svg next" name="Next"></svg-icon>
+        Перейти к следующему уроку
+      </Button>
+
+    </v-row>
+  </v-col>
 </template>
 <script lang="ts">
 import TestingResult from '@/entity/testingResult/testingResult';
 import ProgressCircleTesting from '@/UI/components/progress/ProgressCircleTesting.vue';
 import Button from '@/UI/components/common/Button.vue';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-property-decorator';
 
 @Component({
-    components: {
-        ProgressCircleTesting,
-        Button,
-    },
+  components: {
+    ProgressCircleTesting,
+    Button,
+  },
 })
 export default class Success extends Vue {
-    @Prop() readonly result!: TestingResult;
+  @Prop() readonly result!: TestingResult;
 }
 </script>

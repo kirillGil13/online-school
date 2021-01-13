@@ -1,9 +1,9 @@
 <template>
-    <v-col>
+    <v-row>
         <SuccessComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.SUCCESS" />
         <ProceedComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.PROCEED" />
         <FailComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.FAIL" />
-    </v-col>
+    </v-row>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -33,8 +33,8 @@ h3 {
     margin-bottom: 4px;
     margin-top: 0;
 }
-.info {
-    color: #5f739cbd;
+.success_info {
+  color: #5F739C;
 }
 .svg {
     height: 24px !important;

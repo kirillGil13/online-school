@@ -56,6 +56,10 @@ a {
 .container {
     padding: 0 !important;
 }
+.container_main {
+    box-sizing: border-box;
+    margin: 0 !important;
+}
 h5 {
     text-transform: uppercase;
     margin-top: 0;
@@ -149,7 +153,7 @@ h5 {
     flex-direction: column;
 }
 .container,
-#app,.mainLayout {
+#app, body, .mainLayout {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -235,7 +239,7 @@ h5 {
     }
 }
 .course-block {
-    width: calc((100% / 3) - 24px);
+    width: calc((100% / 3) - 17px);
     filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.08));
     margin-right: 24px;
     margin-bottom: 28px;

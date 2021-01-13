@@ -34,7 +34,7 @@ const routes = [
             },
             {
                 path: '/training/:id/:lessonId',
-                name: 'Course',
+                name: RouterNameEnum.Course,
                 component: () => import('../UI/pages/course/Course.vue'),
             },
             {

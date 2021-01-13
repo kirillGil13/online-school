@@ -30,10 +30,14 @@ button{
         justify-content: space-between;
         line-height: 170%;
     }
-    &.secondary {
+    &.secondary_white {
+        background: #FFFFFF;
+        border: 1px solid #F2F2F2;
+        color: #426DF6 !important;
+    }
+    &.secondary_blue {
         background: rgba(66, 109, 246, 0.12);
-        border-color: rgba(66, 109, 246, 0.12);
-        color: #426df6;
-        margin-right: 8px;
+        border: none;
+        color: #426DF6 !important;
     }
 }

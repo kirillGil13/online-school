@@ -6,9 +6,9 @@
                     <Sidebar :userInfo="user" />
                     <Banner />
                 </div>
-                <div class="content">
+                <v-container class="ml-7">
                     <router-view></router-view>
-                </div>
+                </v-container>
             </v-container>
         </v-main>
     </v-app>
@@ -37,17 +37,16 @@ export default class MainLayout extends Vue {
   font-family: 'Ubuntu' !important;
   &__container{
     background-color: #fbfcfe;
+    padding: 15px 55px 0 15px !important;
   }
 }
 
 .aside-view {
     width: 290px;
-    padding-top: 16px !important;
-    padding-left: 16px !important;
 }
 .content {
-    min-width: 1114px;
-    padding-top: 20px !important;
+    width: 100%;
+    padding-top: 10px !important;
     margin-left: 36px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-    <label class="radio row">
-        <div class="radio row">
+   <label class="radio_row ml-0 mb-2" :for="'radioButton' + id">
+        <div class="radio_row">
             <input
                 type="radio"
                 :value="id"
@@ -46,7 +46,6 @@ label {
 
     div {
         padding: 13px;
-
         input[type='radio'] {
             margin-right: 13px;
 
@@ -56,8 +55,8 @@ label {
                 background: rgba(66, 109, 246, 0.12);
                 border: 1px solid #426df6;
                 position: absolute;
-                width: 95.5%;
-                height: 45%;
+                width: 100%;
+                height: 100%;
                 border-radius: 5px;
                 top: 0;
                 left: 0;
@@ -74,11 +73,10 @@ label {
         }
     }
 }
-
-.radio {
-    &.row {
-        align-items: center;
-        justify-content: flex-start;
-    }
+.radio_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 }
 </style>
