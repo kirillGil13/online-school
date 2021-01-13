@@ -13,3 +13,17 @@
     position: relative;
     margin: 0;
 }
+.form-text-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+    .desc {
+        width: 75%;
+        font-size: 14px;
+        line-height: 160%;
+        color: #5F739C;
+        text-align: center;
+    }
+}
+

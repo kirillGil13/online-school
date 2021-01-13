@@ -5,17 +5,16 @@ input{
     border-radius: 5px;
     color: $dark;
     font-size: 14px;
-    width: 98%;
-    height: 46px;
+    width: 100%;
     &::placeholder{
         color: $dark;
     }
-    text-indent: 32px;
 }
 label{
     text-align: left;
     width: 95%;
     color: $label;
+    margin-left: 15px;
 }
 .error-label{
     color: rgba(255, 0, 0, 0.63);
