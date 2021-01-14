@@ -5,7 +5,7 @@ export interface ITesting {
 }
 export interface ITestingAnswers {
     id: number;
-    answerOption: string
+    answerOption: string;
 }
 export type TestingResponseType = {
     id: number;

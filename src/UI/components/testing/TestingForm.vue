@@ -1,5 +1,5 @@
 <template>
-    <v-col>
+    <v-col class="pa-0">
         <form @submit.prevent>
             <ProgressBar :amount="form.questions.length" :step="step" />
             <TestingQuestion
@@ -10,15 +10,13 @@
                 @change="change"
                 :resultsAnswerId="form.results[index].answerId"
             />
-            <v-col>
+            <v-row class="ma-0 justify-end">
+                <Button class="secondary_blue mr-3" v-if="step > 1" @submit="previous()">Назад</Button>
                 <Button v-if="step < form.questions.length" :disabled="!form.valid(step)" @submit="next()"
-                    >Следующий вопрос</Button
-                >
+                    >Следующий вопрос</Button>
                 <Button v-if="step === form.questions.length" :disabled="!form.valid(step)" @submit="form.send()"
-                    >Отправить задание</Button
-                >
-                <Button class="secondary" v-if="step > 1" @submit="previous()">Назад</Button>
-            </v-col>
+                    >Отправить задание</Button>
+            </v-row>
         </form>
     </v-col>
 </template>

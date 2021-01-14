@@ -1,28 +1,27 @@
 <template>
-    <v-row class="container_a">
-            <v-col>
-                <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
-                    <Search />
-                </Header>
-                <h5>топ лидеры</h5>
-                <SliderLeaders :leaders="leaders" />
-                <v-col v-if="$route.params.id === undefined">
-                    <Tabs>
-                        <TabsContent
-                            v-for="(tab, index) in tabs"
-                            :key="index"
-                            :name="tab.title"
-                            :selected="tab.isActive"
-                        >
-                            <keep-alive>
-                                <component :is="tab.component" :courses="courses" @proceed="proceed"></component>
-                            </keep-alive>
-                        </TabsContent>
-                    </Tabs>
-                </v-col>
-            </v-col>
-
-    </v-row>
+    <v-col>
+        <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
+          <Search />
+        </Header>
+        <h5>топ лидеры</h5>
+        <SliderLeaders :leaders="leaders" />
+        <v-row v-if="$route.params.id === undefined">
+          <v-col>
+            <Tabs>
+              <TabsContent
+                  v-for="(tab, index) in tabs"
+                  :key="index"
+                  :name="tab.title"
+                  :selected="tab.isActive"
+              >
+                <keep-alive>
+                  <component :is="tab.component" :courses="courses" @proceed="proceed"></component>
+                </keep-alive>
+              </TabsContent>
+            </Tabs>
+          </v-col>
+        </v-row>
+    </v-col>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';

@@ -1,5 +1,5 @@
-import { Component } from 'vue-property-decorator';
-import { maxLength, minLength, required, requiredIf } from 'vuelidate/lib/validators';
+import {Component} from 'vue-property-decorator';
+import {maxLength, minLength, required, requiredIf} from 'vuelidate/lib/validators';
 import { LoginRequestType } from '@/form/login';
 import { Form } from '@/form/form';
 
@@ -7,6 +7,8 @@ import { Form } from '@/form/form';
     validations: {
         phone: {
             required,
+            minLength: minLength(12),
+            maxLength: maxLength(12),
         },
         code: {
             required: requiredIf('codeStep'),
@@ -25,6 +27,8 @@ export class LoginForm extends Form {
     public messages = {
         phone: {
             required: 'Введите номер телефона',
+            minLength: 'Введите корректный номер телефона',
+            maxLength: 'Введите корректный номер телефона',
         },
         code: {
             required: 'Введите код подтверждения',
@@ -35,7 +39,7 @@ export class LoginForm extends Form {
 
     getFormData(): LoginRequestType {
         return {
-            phone: this.phone ?? '',
+            phone: this.phone.slice(1) ?? '',
             code: this.code ?? '',
         };
     }

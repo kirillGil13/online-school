@@ -1,5 +1,5 @@
 <template>
-    <div v-if="active">
+    <v-col class="pa-0" v-if="active">
         <div class="question">{{ question.question }}</div>
         <div>
             <RadioButton
@@ -11,7 +11,7 @@
                 :resultsAnswerId="resultsAnswerId"
             />
         </div>
-    </div>
+    </v-col>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';

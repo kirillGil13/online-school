@@ -12,7 +12,7 @@ export class TestingForm implements ITestingForm {
         }
     }
     valid(step: number): boolean {
-        const answer = this.results.find((item) => item.questionId === step - 1 && item.answerId != null);
+        const answer = this.results.find(item => item.questionId === step - 1 && item.answerId != null);
         if (answer) {
             return true;
         } else return false;

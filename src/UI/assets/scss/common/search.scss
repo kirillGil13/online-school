@@ -1,6 +1,8 @@
 @import "/src/UI/assets/scss/const/const.scss";
 input[type="search"]{
+    padding: 11px 0;
     border: 1px solid $input_border;
+    text-indent: 44px;
     border-radius: 8px;
     background: #FFFFFF;
     &::placeholder{

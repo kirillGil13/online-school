@@ -87,6 +87,7 @@ export default class SliderLeaders extends Vue {
 
 .slider-container {
   position: relative;
+  margin-bottom: 24px;
 }
 
 .swiper-slide {

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <slot :attrs="{ errorMessages: allErrorsMessages, success: hasAnyErrors }" :hasErrors="hasErrors" />
+        <slot name="label"></slot>
+        <slot name="input" :attrs="{ errorMessages: allErrorsMessages, success: hasAnyErrors }" :hasErrors="hasAnyErrors"></slot>
     </div>
 </template>
 <script lang="ts">
