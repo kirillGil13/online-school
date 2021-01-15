@@ -1,5 +1,5 @@
 export interface ICoursesListItem {
-    id: number
+    id: number;
     title: string;
     cover: string;
     totalLesson: number;
@@ -10,7 +10,7 @@ export interface ICoursesListItem {
     fullDuration(): string;
 }
 export type CoursesListItemResponseType = {
-    id: number
+    id: number;
     title: string;
     cover: string;
     totalLesson: number;

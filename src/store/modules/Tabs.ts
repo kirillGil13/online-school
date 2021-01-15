@@ -1,6 +1,6 @@
 import {getModule, Module, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import {ITabs} from '@/entity/tabs/tabs.types';
+import {ITabs, TabsNameEnum} from '@/entity/tabs/tabs.types';
 
 @Module({
     namespaced: true,
@@ -14,25 +14,25 @@ class TabsModule extends VuexModule {
             id: 'home',
             title: 'Главная',
             isActive: true,
-            component: '',
+            component: TabsNameEnum.Main,
         },
         {
             id: 'courses',
             title: 'Курсы',
             isActive: false,
-            component: 'TrainingCourses',
+            component: TabsNameEnum.Courses,
         },
         {
             id: 'club',
             title: 'Клуб 100',
             isActive: false,
-            component: '',
+            component: TabsNameEnum.Club,
         },
         {
             id: 'leaders',
             title: 'Лидеры',
             isActive: false,
-            component: '',
+            component: TabsNameEnum.Leaders,
         },
     ];
 }

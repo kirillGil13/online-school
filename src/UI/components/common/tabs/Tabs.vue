@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div class="tabs">
-      <ul>
-        <li v-for="(tab, index) in tabs" :key="index" :class="{ 'is-active': tab.isActive }">
-          <a :href="'#' + tab.id" @click="select(tab.id)">{{ tab.title }}</a>
-        </li>
-      </ul>
-    </div>
-
+    <v-row class="ma-0 align-center justify-space-between mb-5">
+      <div class="tabs">
+        <ul>
+          <li v-for="(tab, index) in tabs" :key="index" :class="{ 'is-active': tab.isActive }">
+            <a :href="'#' + tab.id" @click="select(tab.id)">{{ tab.title }}</a>
+          </li>
+        </ul>
+      </div>
+      <FilterCourses v-if="$route.hash === '#leaders'"/>
+    </v-row>
     <div class="tabs-details">
       <slot></slot>
     </div>
@@ -17,8 +19,13 @@
 import {Component, Vue} from 'vue-property-decorator';
 import {ITabs} from '@/entity/tabs/tabs.types';
 import {TabsStore} from '@/store/modules/Tabs';
+import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
 
-@Component
+@Component({
+  components: {
+    FilterCourses
+  }
+})
 export default class Tabs extends Vue {
 
   get tabs(): ITabs[] {
@@ -49,7 +56,6 @@ export default class Tabs extends Vue {
   align-items: center;
   width: max-content;
   height: 60px;
-  margin-bottom: 16px;
   background: #ffffff;
   border: 1px solid #f2f2f2;
   box-sizing: border-box;

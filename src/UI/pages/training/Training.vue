@@ -1,5 +1,5 @@
 <template>
-    <v-col>
+    <v-col class="training">
         <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
           <Search />
         </Header>
@@ -15,7 +15,7 @@
                   :selected="tab.isActive"
               >
                 <keep-alive>
-                  <component :is="tab.component" :courses="courses" @proceed="proceed"></component>
+                  <component :is="tab.component" :courses="courses" :leaders="leaders" @proceed="proceed"></component>
                 </keep-alive>
               </TabsContent>
             </Tabs>
@@ -37,6 +37,9 @@ import TrainingCourses from '../../components/training/TrainingCourses.vue';
 import { CoursesListItemResponseType } from '@/entity/courses/courses.types';
 import {ITabs} from '@/entity/tabs/tabs.types';
 import {TabsStore} from '@/store/modules/Tabs';
+import TrainingLeaders from '@/UI/components/training/TrainingLeaders.vue';
+import TrainingMain from '@/UI/components/training/TrainingMain.vue';
+import TrainingClub from '@/UI/components/training/TrainingClub.vue';
 
 @Component({
     components: {
@@ -46,6 +49,9 @@ import {TabsStore} from '@/store/modules/Tabs';
         Tabs,
         TabsContent,
         TrainingCourses,
+        TrainingLeaders,
+        TrainingMain,
+        TrainingClub,
     },
 })
 export default class Training extends Vue {
@@ -169,7 +175,9 @@ export default class Training extends Vue {
 }
 </script>
 <style lang="scss">
+.training {
   h5 {
     margin-top: 24px;
   }
+}
 </style>
