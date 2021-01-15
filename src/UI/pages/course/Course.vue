@@ -1,6 +1,6 @@
 <template>
   <v-col>
-      <Header :isBordered="true" :route="route" :title="lesson.title"></Header>
+      <Header :isBordered="true" :route="route" :title="course.title"></Header>
       <v-row class="mt-6">
         <div class="course" >
             <v-responsive :aspect-ratio="16/9" content-class="course-container"></v-responsive>
@@ -81,6 +81,11 @@ export default class Course extends Vue {
     totalRightAnswers: 3,
   };
   courseTemp: CourseItemResponseType = {
+    id: 0,
+    title: 'Как стать Мастером Вовлечения',
+    description: 'lorem ipsum',
+    isTestingRequire: true,
+    createdAt: '12000',
     lessons: [
       {
         id: 0,
@@ -128,7 +133,7 @@ export default class Course extends Vue {
     currentLessonId: 0,
   };
   lessonTemp: LessonItemResponseType = {
-    title: 'Как стать Мастером Вовлечения',
+    title: 'Вступительный урок',
     videoLink: 'http/',
     description:
         'Tincidunt volutpat sit arcu facilisis ut suspendisse. Laoreet non pulvinar etiam enim. Nisi pulvinar proin enim, cursus risus arcu eu. Gravida sagittis sed nam massa dignissim tempor accumsan. Malesuada eget cras malesuada mauris iaculis amet, eu. Enim ante imperdiet ut in urna, fermentum nunc et adipiscing. Volutpat sed id ornare pellentesque. Eu suspendisse sit morbi ut nullam cursus a ipsum. Velit hendrerit blandit id quis nulla lectus urna.',
@@ -254,7 +259,7 @@ export default class Course extends Vue {
     this.fetchData();
   }
 
-  @Watch('$route.params.lessonId')
+  @Watch('$route.params.lessonId', {immediate: true})
   onChangeRoute(): void {
     this.fetchData();
   }
@@ -271,7 +276,7 @@ export default class Course extends Vue {
   }
 
   moveToLesson(lessonId: number): void {
-    this.$router.replace({
+    this.$router.push({
       name: RouterNameEnum.Course,
       params: {id: this.$route.params.id, lessonId: lessonId.toString()},
     });

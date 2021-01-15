@@ -2,9 +2,19 @@ import { CourseItemResponseType, ICourseItem, ICourseLessons } from './courseIte
 import { LessonsTypesEnum } from '@/entity/common/lessons.types';
 
 export default class CourseItem implements ICourseItem {
+    id: number;
+    title: string;
+    description: string;
+    isTestingRequire: boolean;
+    createdAt: string;
     currentLessonId: number;
     lessons: ICourseLessons[] = [];
     constructor(data: CourseItemResponseType, paramLessonId: string) {
+        this.id = data.id;
+        this.title = data.title;
+        this.description = data.description;
+        this.isTestingRequire = data.isTestingRequire;
+        this.createdAt = data.createdAt;
         this.currentLessonId = data.currentLessonId;
         for (let i = 0; i < data.lessons.length; i++) {
             this.lessons.push({
@@ -25,14 +35,6 @@ export default class CourseItem implements ICourseItem {
                     return type;
                 },
             });
-            /*if(this.lessons[i].lessonPassed) {
-                this.lessons[i].type = LessonsTypesEnum.DONE;
-            } else if(!this.lessons[i].lessonPassed && this.lessons[i].available) {
-                this.lessons[i].type = LessonsTypesEnum.UN_DONE;
-            } else if(!this.lessons[i].lessonPassed && this.lessons[i].available && i.toString() === pathParam) {
-                this.lessons[i].type = LessonsTypesEnum.IN_PROGRESS;
-            } else
-                this.lessons[i].type = LessonsTypesEnum.LOCKED;*/
         }
     }
 }
