@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="avatar-wrapper">
-            <v-avatar color="primary" rounded :size="size">
+            <v-avatar color="primary" rounded tile :size="size">
                 <img
                     v-if="user.avatar"
                     :src="imageSourse"
@@ -58,8 +58,8 @@ export default class Avatar extends Vue {
 .small-size {
     height: 18px;
     width: 18px;
-    bottom: 0;
-    right: 0;
+    bottom: -5px;
+    right: -7px;
 
     .svg-icon {
         width: 12px !important;
@@ -70,8 +70,8 @@ export default class Avatar extends Vue {
 .medium-size {
     height: 32px;
     width: 32px;
-    bottom: -5px;
-    right: -5px;
+    bottom: -10px;
+    right: -10px;
 
     .svg-icon {
         width: 20px !important;
@@ -97,5 +97,8 @@ export default class Avatar extends Vue {
 .avatar-wrapper {
     display: inline-block;
     position: relative;
+    .v-avatar {
+      border-radius: 12px !important;
+    }
 }
 </style>
