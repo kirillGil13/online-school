@@ -57,7 +57,11 @@ const routes = [
                 name: RouterNameEnum.Chat,
                 component: () => import('../UI/pages/chat/Chat.vue')
             },
-
+            {
+                path: '/materials-presentation',
+                name: RouterNameEnum.MaterialPresentation,
+                component: () => import('../UI/pages/materials/presentation/Presentation.vue')
+            }
         ],
     },
 ];

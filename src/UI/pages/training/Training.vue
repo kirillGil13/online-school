@@ -1,27 +1,30 @@
 <template>
-    <v-col class="training">
-        <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
-          <Search />
-        </Header>
-        <h5>топ лидеры</h5>
-        <SliderLeaders :leaders="leaders" />
-        <v-row v-if="$route.params.id === undefined">
-          <v-col>
-            <Tabs>
-              <TabsContent
-                  v-for="(tab, index) in tabs"
-                  :key="index"
-                  :name="tab.title"
-                  :selected="tab.isActive"
-              >
-                <keep-alive>
-                  <component :is="tab.component" :courses="courses" :leaders="leaders" @proceed="proceed"></component>
-                </keep-alive>
-              </TabsContent>
-            </Tabs>
-          </v-col>
-        </v-row>
+  <v-row>
+    <v-col cols="12" class="training">
+      <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
+        <Search />
+      </Header>
+      <h5>топ лидеры</h5>
+      <SliderLeaders :leaders="leaders" />
+      <v-row v-if="$route.params.id === undefined">
+        <v-col>
+          <Tabs :tabs="tabs">
+            <TabsContent
+                v-for="(tab, index) in tabs"
+                :key="index"
+                :name="tab.title"
+                :selected="tab.isActive"
+            >
+              <keep-alive>
+                <component :is="tab.component" :courses="courses" :leaders="leaders" @proceed="proceed"></component>
+              </keep-alive>
+            </TabsContent>
+          </Tabs>
+        </v-col>
+      </v-row>
     </v-col>
+  </v-row>
+
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -73,7 +76,7 @@ export default class Training extends Vue {
     }
 
     get tabs(): ITabs[] {
-      return TabsStore.tabs;
+      return TabsStore.trainingTabs;
     }
 
     //для теста
@@ -170,6 +173,156 @@ export default class Training extends Vue {
             balance: '',
             totalCoursesViewsCount: 10,
         },
+      {
+        id: 1,
+        direction: 'dir',
+        rating: '10',
+        createdAt: '',
+        updatedAt: '',
+        userInfo: {
+          id: 0,
+          name: 'Ivan',
+          surname: 'Sidorov',
+          avatar:
+              'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/136697800/original/ad0b0ec86b4d6cc39a8f2350c1979d0be2182691/do-youtube-banner-watermark-avatar-logo-for-your-channel.png',
+        },
+        courses: [
+          {
+            id: 0,
+            title: 'jdkckdjc',
+            description: 'gjhgk',
+            isTestingRequire: true,
+            createdAt: '',
+          },
+        ],
+        balance: '',
+        totalCoursesViewsCount: 10,
+      },
+      {
+        id: 1,
+        direction: 'dir',
+        rating: '10',
+        createdAt: '',
+        updatedAt: '',
+        userInfo: {
+          id: 0,
+          name: 'Ivan',
+          surname: 'Sidorov',
+          avatar:
+              'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/136697800/original/ad0b0ec86b4d6cc39a8f2350c1979d0be2182691/do-youtube-banner-watermark-avatar-logo-for-your-channel.png',
+        },
+        courses: [
+          {
+            id: 0,
+            title: 'jdkckdjc',
+            description: 'gjhgk',
+            isTestingRequire: true,
+            createdAt: '',
+          },
+        ],
+        balance: '',
+        totalCoursesViewsCount: 10,
+      },
+      {
+        id: 1,
+        direction: 'dir',
+        rating: '10',
+        createdAt: '',
+        updatedAt: '',
+        userInfo: {
+          id: 0,
+          name: 'Ivan',
+          surname: 'Sidorov',
+          avatar:
+              'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/136697800/original/ad0b0ec86b4d6cc39a8f2350c1979d0be2182691/do-youtube-banner-watermark-avatar-logo-for-your-channel.png',
+        },
+        courses: [
+          {
+            id: 0,
+            title: 'jdkckdjc',
+            description: 'gjhgk',
+            isTestingRequire: true,
+            createdAt: '',
+          },
+        ],
+        balance: '',
+        totalCoursesViewsCount: 10,
+      },
+      {
+        id: 1,
+        direction: 'dir',
+        rating: '10',
+        createdAt: '',
+        updatedAt: '',
+        userInfo: {
+          id: 0,
+          name: 'Ivan',
+          surname: 'Sidorov',
+          avatar:
+              'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/136697800/original/ad0b0ec86b4d6cc39a8f2350c1979d0be2182691/do-youtube-banner-watermark-avatar-logo-for-your-channel.png',
+        },
+        courses: [
+          {
+            id: 0,
+            title: 'jdkckdjc',
+            description: 'gjhgk',
+            isTestingRequire: true,
+            createdAt: '',
+          },
+        ],
+        balance: '',
+        totalCoursesViewsCount: 10,
+      },
+      {
+        id: 1,
+        direction: 'dir',
+        rating: '10',
+        createdAt: '',
+        updatedAt: '',
+        userInfo: {
+          id: 0,
+          name: 'Ivan',
+          surname: 'Sidorov',
+          avatar:
+              'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/136697800/original/ad0b0ec86b4d6cc39a8f2350c1979d0be2182691/do-youtube-banner-watermark-avatar-logo-for-your-channel.png',
+        },
+        courses: [
+          {
+            id: 0,
+            title: 'jdkckdjc',
+            description: 'gjhgk',
+            isTestingRequire: true,
+            createdAt: '',
+          },
+        ],
+        balance: '',
+        totalCoursesViewsCount: 10,
+      },
+      {
+        id: 1,
+        direction: 'dir',
+        rating: '10',
+        createdAt: '',
+        updatedAt: '',
+        userInfo: {
+          id: 0,
+          name: 'Ivan',
+          surname: 'Sidorov',
+          avatar:
+              'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/136697800/original/ad0b0ec86b4d6cc39a8f2350c1979d0be2182691/do-youtube-banner-watermark-avatar-logo-for-your-channel.png',
+        },
+        courses: [
+          {
+            id: 0,
+            title: 'jdkckdjc',
+            description: 'gjhgk',
+            isTestingRequire: true,
+            createdAt: '',
+          },
+        ],
+        balance: '',
+        totalCoursesViewsCount: 10,
+      },
     ];
     //то что мы получаем при запросе через getCourse
 }

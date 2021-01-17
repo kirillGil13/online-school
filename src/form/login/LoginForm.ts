@@ -38,6 +38,7 @@ export class LoginForm extends Form {
     };
 
     getFormData(): LoginRequestType {
+        console.log(this)
         return {
             phone: this.phone.slice(1) ?? '',
             code: this.code ?? '',
