@@ -1,13 +1,13 @@
 <template>
   <v-col class="profile">
-    <Header :title="`${user.name} ${user.surname}`"></Header>
+    <Header class="mb-3" :title="`${user.name} ${user.surname}`"></Header>
     <v-col :cols="12" class="profile__main-content">
-      <v-row>
-        <v-col :cols="windowSize.x > windowWideBreak ? 2 : 12">
+      <v-row class="ma-0">
+        <v-col class="mr-6 pa-0" :cols="windowSize.x > windowWideBreak ? 2 : 12">
           <div
               :class="{
                             'profile__info-full-size': windowSize.x > windowWideBreak,
-                            'profile__info-low-size': windowSize.x < windowWideBreak,
+                            '': windowSize.x < windowWideBreak,
                         }"
           >
             <avatar
@@ -16,9 +16,10 @@
                 :starSize="AvatarSizeEnum.MEDIUM"
             />
             <v-col class="badges pa-0">
-              <Badge :subs="true">
+              <Badge :subs="user.activeSubscription">
                 <template v-slot:title>Подписка</template>
-                <template v-slot:sub>Оформлена</template>
+                <template v-if="user.activeSubscription" v-slot:sub>Оформлена</template>
+                <template v-else v-slot:sub>Не оформлена</template>
               </Badge>
               <Badge>
                 <template v-slot:title>Партнеров</template>
@@ -32,11 +33,11 @@
             <Button @submit="logOut" class="btn secondary_blue py-3 mt-2">Выйти</Button>
           </div>
         </v-col>
-        <v-col :cols="windowSize.x > windowWideBreak ? 10 : 12">
-          <div class="grid-content profile__detail-info">
-            <v-row>
+        <v-col class="profile__detail-info-container pa-6">
+            <v-row class="grid-content">
               <v-col cols="12" class="profile__col">
-                <v-tabs v-model="activeName">
+                <v-tabs show-arrows class="mb-2" color="#426DF6" v-model="activeName">
+                  <v-tabs-slider color="#426DF6"></v-tabs-slider>
                   <v-tab>
                     Общие
                   </v-tab>
@@ -54,11 +55,16 @@
                   </v-tab>
                 </v-tabs>
                 <v-tabs-items v-model="activeName">
+                  <v-divider></v-divider>
                   <v-tab-item>
-                    <profile-main-info :form="mainInfoForm"/>
+                    <keep-alive>
+                      <profile-main-info @submit="submit()" :form="mainInfoForm"/>
+                    </keep-alive>
                   </v-tab-item>
                   <v-tab-item>
-                    <profile-contact-data/>
+                    <keep-alive>
+                      <profile-contact-data @submit="submit()" :form="contactDataForm"/>
+                    </keep-alive>
                   </v-tab-item>
                   <v-tab-item>
                     <profile-security/>
@@ -72,7 +78,6 @@
                 </v-tabs-items>
               </v-col>
             </v-row>
-          </div>
         </v-col>
       </v-row>
     </v-col>
@@ -90,12 +95,14 @@ import ProfileSecurity from '@/UI/components/profile/Security.vue';
 import ProfileContactData from '@/UI/components/profile/ContactData.vue';
 import ProfileMainInfo from '@/UI/components/profile/MainInfo.vue';
 import {IFormGroup, RxFormBuilder} from '@rxweb/reactive-forms';
-import {ProfileMainInfoForm} from '@/form/profile/profileMainInfoForm';
+import {ProfileMainInfoForm} from '@/form/profile/mainInfo/profileMainInfoForm';
 import {IWindowSize} from '@/entity/environment';
 import {AvatarSizeEnum} from '@/entity/common/avatar.types';
 import {AuthStore} from '@/store/modules/Auth';
-import {IUser} from '@/entity/user';
+import {IUser, UserRequestType} from '@/entity/user';
 import Header from '@/UI/components/common/Header.vue';
+import {ProfileContactDataForm} from '@/form/profile/contactData/profileContactDataForm';
+import {UserUpdateStore} from '@/store/modules/UserUpdate';
 
 @Component({
   components: {
@@ -112,6 +119,7 @@ import Header from '@/UI/components/common/Header.vue';
 })
 export default class Profile extends Vue {
   mainInfoForm!: IFormGroup<ProfileMainInfoForm>;
+  contactDataForm!: IFormGroup<ProfileContactDataForm>
   formBuilder: RxFormBuilder = new RxFormBuilder();
   windowSize: IWindowSize = {
     x: 0,
@@ -119,6 +127,17 @@ export default class Profile extends Vue {
   };
   activeName = 0;
   AvatarSizeEnum = AvatarSizeEnum;
+  userRequest: UserRequestType = {
+    name: '',
+    surname: '',
+    login: '',
+    email: '',
+    vk: '',
+    facebook: '',
+    instagram: '',
+    skype: '',
+    description: ''
+  };
 
   get user(): IUser {
     return AuthStore.user;
@@ -129,10 +148,13 @@ export default class Profile extends Vue {
     this.mainInfoForm = this.formBuilder.formGroup(
         new ProfileMainInfoForm(this.user)
     ) as IFormGroup<ProfileMainInfoForm>;
+    this.contactDataForm = this.formBuilder.formGroup(
+        new ProfileContactDataForm(this.user)
+    ) as IFormGroup<ProfileContactDataForm>;
   }
 
   get windowWideBreak(): number {
-    return 1024;
+    return 1400;
   }
 
   private onResize(): void {
@@ -149,6 +171,18 @@ export default class Profile extends Vue {
   private mounted(): void {
     this.onResize();
     window.addEventListener('resize', this.onResize);
+  }
+
+  private submit(): void {
+    this.userRequest.description = this.mainInfoForm.modelInstance.description == null ? '' : this.mainInfoForm.modelInstance.description;
+    this.userRequest.name = this.mainInfoForm.modelInstance.name;
+    this.userRequest.surname = this.mainInfoForm.modelInstance.surname;
+    this.userRequest.login = this.mainInfoForm.modelInstance.login;
+    this.userRequest.email = this.contactDataForm.modelInstance.email;
+    this.userRequest.skype = this.contactDataForm.modelInstance.skype == null ? '' : this.contactDataForm.modelInstance.skype;
+    this.userRequest.vk = this.contactDataForm.modelInstance.vk == null ? '' : this.contactDataForm.modelInstance.vk;
+    this.userRequest.instagram = this.contactDataForm.modelInstance.instagram == null ? '' : this.contactDataForm.modelInstance.instagram;
+    UserUpdateStore.updateUser(this.userRequest);
   }
 }
 </script>
@@ -178,11 +212,15 @@ export default class Profile extends Vue {
 
   &__col {
     padding: 10px;
+    .v-tab {
+      font-size: 14px !important;
+      text-transform: none !important;
+      letter-spacing: normal !important;
+    }
   }
 
   &__info-full-size {
-    max-width: 144px;
-    min-height: 600px;
+    width: 144px;
   }
 
   &__info-low-size {
@@ -191,9 +229,9 @@ export default class Profile extends Vue {
     align-items: center;
   }
 
-  &__detail-info {
+  &__detail-info-container {
+    border: 1px solid rgba(66, 109, 246, 0.12);
     border-radius: $main_border_radius;
-    border: 1px solid #e8edfe;
   }
 }
 
@@ -207,8 +245,6 @@ export default class Profile extends Vue {
 
 .grid-content {
   border-radius: 4px;
-  min-height: 600px;
-  margin-bottom: 10px;
 }
 
 .grid-conten {

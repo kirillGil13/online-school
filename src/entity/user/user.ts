@@ -29,7 +29,6 @@ export class User implements IUser {
         this.name = data.name;
         this.surname = data.surname;
     }
-
     get link(): string {
         return 'https://partner.onelinks.com/' + this.login;
     }

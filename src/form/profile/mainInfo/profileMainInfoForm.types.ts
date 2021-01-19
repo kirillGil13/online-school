@@ -1,4 +1,4 @@
-export interface ProfileMainInfo {
+export interface IProfileMainInfo {
       name: string;
       surname: string;
       oneLinksId: number|string;

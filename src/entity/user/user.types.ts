@@ -12,7 +12,6 @@ export interface IUser {
     description: string;
     avatar: string;
     login: string;
-
     link: string;
     initials: string;
     referLink?: string;
@@ -33,3 +32,14 @@ export type UserResponseType = {
     avatar: string;
     login: string;
 };
+export type UserRequestType = {
+    name: string;
+    surname: string;
+    login: string;
+    email: string;
+    vk: string;
+    facebook: string;
+    instagram: string;
+    skype: string;
+    description: string;
+}

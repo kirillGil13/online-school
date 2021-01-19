@@ -12,6 +12,8 @@ export abstract class Form extends Vue implements IForm {
         return this.serverErrors[property] ?? [];
     }
 
+    abstract getFullPhone(): string;
+
     clearErrors(): void {
         this.serverErrors = {};
     }

@@ -43,4 +43,7 @@ export class LoginForm extends Form {
             code: this.code ?? '',
         };
     }
+    getFullPhone(): string {
+        return [this.phone.slice(0, 2), ' ', this.phone.slice(2,5), ' ', this.phone.slice(5,8), ' ', this.phone.slice(8,10), ' ', this.phone.slice(10)].join('')
+    }
 }
