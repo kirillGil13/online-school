@@ -2,6 +2,7 @@ import { IForm, RequestType } from '@/form/form.types';
 import { Vue } from 'vue-property-decorator';
 
 export abstract class Form extends Vue implements IForm {
+
     serverErrors: { [property: string]: string[] } = {};
 
     setErrors(propertyPath: string, title: string): void {
@@ -11,6 +12,8 @@ export abstract class Form extends Vue implements IForm {
     getErrors(property: string): string[] {
         return this.serverErrors[property] ?? [];
     }
+
+    abstract getFullPhone(): string;
 
     clearErrors(): void {
         this.serverErrors = {};

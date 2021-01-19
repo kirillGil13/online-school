@@ -3,6 +3,8 @@ export interface IForm {
 
     getFormData(): RequestType;
 
+    getFullPhone(): string;
+
     setErrors(propertyPath: string, title: string): void;
 
     getErrors(property: string): string[];

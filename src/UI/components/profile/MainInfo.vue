@@ -1,93 +1,106 @@
 <template>
-    <v-row>
-        <v-col class="profile__col" cols="12">
-            <input-wrapper>
-                <v-text-field
-                    @blur="form.controls.name.markAsDirty()"
-                    v-model="form.props.name"
-                    title="Имя"
-                ></v-text-field>
-                <template slot="title">
-                    <span>Имя</span>
-                </template>
-                <template slot="error">
-                    <span>{{ form.controls.name.errorMessage }}</span>
-                </template>
-            </input-wrapper>
+    <v-row class="mt-3">
+        <v-col class="profile__col pt-0 pb-4" cols="12">
+          <FormGroup
+              :messages="form.messages.name"
+              :server-errors="form.getErrors('name')"
+              :validator="form.$v.name"
+          >
+            <template v-slot:label>
+              <label for="name">Имя</label>
+            </template>
+            <template v-slot:input="{attrs}">
+              <input
+                  class="input input__normal"
+                  type="text" name="name"
+                  id="name"
+                  @input="form.$v.name.$touch()"
+                  v-model="form.name"
+                  v-bind="attrs"
+              >
+            </template>
+          </FormGroup>
         </v-col>
-        <v-col class="profile__col" cols="12">
-            <input-wrapper>
-                <v-text-field
-                    @blur="form.controls.surname.markAsDirty()"
-                    v-model="form.props.surname"
-                    title="Фамилия"
-                ></v-text-field>
-                <template slot="title">
-                    <span>Фамилия</span>
-                </template>
-                <template slot="error">
-                    <span>{{ form.controls.surname.errorMessage }}</span>
-                </template>
-            </input-wrapper>
+        <v-col class="profile__col pt-0 pb-4" cols="12">
+          <FormGroup
+              :messages="form.messages.surname"
+              :server-errors="form.getErrors('surname')"
+              :validator="form.$v.surname"
+          >
+            <template v-slot:label>
+              <label for="surname">Фамилия</label>
+            </template>
+            <template v-slot:input="{attrs}">
+              <input
+                  class="input input__normal"
+                  type="text" name="surname"
+                  id="surname"
+                  @input="form.$v.surname.$touch()"
+                  v-model="form.surname"
+                  v-bind="attrs"
+              >
+            </template>
+          </FormGroup>
         </v-col>
-        <v-col class="profile__col" cols="12">
-            <input-wrapper>
-                <v-text-field
-                    :value="form.baseObject.id"
-                    disabled
-                    title="OneLinks ID"
-                ></v-text-field>
-                <template slot="title">
-                    <span>OneLinks ID</span>
-                </template>
-            </input-wrapper>
+        <v-col class="profile__col pt-0 pb-4" cols="12">
+          <FormGroup
+          >
+            <template v-slot:label>
+              <label for="name">OneLinks ID</label>
+            </template>
+            <template v-slot:input>
+              <input
+                  class="input input__normal"
+                  type="text" name="id"
+                  id="id"
+                  :disabled="true"
+                  @input="form.$v.id.$touch()"
+                  v-model="form.id"
+              >
+            </template>
+          </FormGroup>
         </v-col>
-        <v-col class="profile__col" cols="12">
-            <input-wrapper>
-                <v-text-field
-                    :value="form.baseObject.referLink"
-                    disabled
-                    title="Партнерская ссылка на OneLinks"
-                ></v-text-field>
-                <template slot="title">
-                    <span>Партнерская ссылка на OneLinks</span>
-                </template>
-            </input-wrapper>
+        <v-col class="profile__col pt-0 pb-4" cols="12">
+          <FormGroup
+              :messages="form.messages.description"
+              :server-errors="form.getErrors('description')"
+              :validator="form.$v.description"
+          >
+            <template v-slot:label>
+              <label for="description">Обо мне</label>
+            </template>
+            <template v-slot:input="{attrs}">
+              <input
+                  class="input input__normal"
+                  type="text" name="description"
+                  id="description"
+                  @input="form.$v.description.$touch()"
+                  v-model="form.description"
+                  v-bind="attrs"
+              >
+            </template>
+          </FormGroup>
         </v-col>
-        <v-col class="profile__col" cols="12">
-            <input-wrapper>
-                <v-text-field
-                    @blur="form.controls.description.markAsDirty()"
-                    v-model="form.props.description"
-                    title="Обо мне"
-                ></v-text-field>
-                <template slot="title">
-                    <span>Обо мне</span>
-                </template>
-                <template slot="error">
-                    <span>{{ form.controls.description.errorMessage }}</span>
-                </template>
-            </input-wrapper>
-        </v-col>
-        <v-col class="profile__col" cols="12">
-            <Button :disabled="!form.valid" v-on="$listeners">Сохранить</Button>
+        <v-col class="profile__col pt-0 pb-3" cols="12">
+            <Button class="py-3" :disabled="form.$v.$invalid" v-on="$listeners">Сохранить</Button>
         </v-col>
     </v-row>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { IFormGroup } from '@rxweb/reactive-forms';
-import { ProfileMainInfoForm } from '@/form/profile/profileMainInfoForm';
-import InputWrapper from '@/UI/components/common/InputWrapper.vue';
+import { ProfileMainInfoForm } from '@/form/profile/mainInfo/ProfileMainInfoForm';
+import Button from '@/UI/components/common/Button.vue';
+import FormGroup from '@/UI/components/common/form/FormGroup.vue';
 
 @Component({
     components: {
-        InputWrapper,
+      FormGroup,
+      Button
     },
 })
 export default class ProfileMainInfo extends Vue {
-    @Prop({ required: true }) readonly form!: IFormGroup<ProfileMainInfoForm>;
+    @Prop({ required: true }) readonly form!: ProfileMainInfoForm;
 }
 </script>
 

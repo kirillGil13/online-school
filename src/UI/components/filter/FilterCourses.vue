@@ -57,7 +57,7 @@ export default class FilterCourses extends Vue {
     }
     .v-input__control {
       .v-input__slot {
-        background: #F0F2F6;
+        background: #F0F2F6 !important;
         margin: 0 !important;
         border-radius: 8px;
         padding: 8px 6px 8px 12px;

@@ -9,6 +9,10 @@ input{
     &::placeholder{
         color: $dark;
     }
+    &:disabled {
+        background-color: #f2f2f2;
+        cursor: not-allowed;
+    }
 }
 label{
     text-align: left;
