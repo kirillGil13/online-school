@@ -15,6 +15,7 @@ export interface IUser {
     link: string;
     initials: string;
     referLink?: string;
+    getRequestData(): UserRequestType;
 }
 
 export type UserResponseType = {

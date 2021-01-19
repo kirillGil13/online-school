@@ -94,15 +94,15 @@ import ProfileSubscribe from '@/UI/components/profile/Subscribe.vue';
 import ProfileSecurity from '@/UI/components/profile/Security.vue';
 import ProfileContactData from '@/UI/components/profile/ContactData.vue';
 import ProfileMainInfo from '@/UI/components/profile/MainInfo.vue';
-import {IFormGroup, RxFormBuilder} from '@rxweb/reactive-forms';
-import {ProfileMainInfoForm} from '@/form/profile/mainInfo/profileMainInfoForm';
 import {IWindowSize} from '@/entity/environment';
 import {AvatarSizeEnum} from '@/entity/common/avatar.types';
 import {AuthStore} from '@/store/modules/Auth';
-import {IUser, UserRequestType} from '@/entity/user';
+import {IUser} from '@/entity/user';
 import Header from '@/UI/components/common/Header.vue';
-import {ProfileContactDataForm} from '@/form/profile/contactData/profileContactDataForm';
 import {UserUpdateStore} from '@/store/modules/UserUpdate';
+import {ProfileMainInfoForm} from '@/form/profile/mainInfo/ProfileMainInfoForm';
+import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactDataForm';
+import ProfileEditForm from '@/form/profile/profileEditForm';
 
 @Component({
   components: {
@@ -118,26 +118,15 @@ import {UserUpdateStore} from '@/store/modules/UserUpdate';
   },
 })
 export default class Profile extends Vue {
-  mainInfoForm!: IFormGroup<ProfileMainInfoForm>;
-  contactDataForm!: IFormGroup<ProfileContactDataForm>
-  formBuilder: RxFormBuilder = new RxFormBuilder();
+  mainInfoForm: ProfileMainInfoForm;
+  contactDataForm: ProfileContactDataForm;
+  editForm!: ProfileEditForm;
   windowSize: IWindowSize = {
     x: 0,
     y: 0,
   };
   activeName = 0;
   AvatarSizeEnum = AvatarSizeEnum;
-  userRequest: UserRequestType = {
-    name: '',
-    surname: '',
-    login: '',
-    email: '',
-    vk: '',
-    facebook: '',
-    instagram: '',
-    skype: '',
-    description: ''
-  };
 
   get user(): IUser {
     return AuthStore.user;
@@ -145,12 +134,10 @@ export default class Profile extends Vue {
 
   constructor() {
     super();
-    this.mainInfoForm = this.formBuilder.formGroup(
-        new ProfileMainInfoForm(this.user)
-    ) as IFormGroup<ProfileMainInfoForm>;
-    this.contactDataForm = this.formBuilder.formGroup(
-        new ProfileContactDataForm(this.user)
-    ) as IFormGroup<ProfileContactDataForm>;
+    this.mainInfoForm = new ProfileMainInfoForm();
+    this.mainInfoForm.setFormData(this.user);
+    this.contactDataForm = new ProfileContactDataForm();
+    this.contactDataForm.setFormData(this.user);
   }
 
   get windowWideBreak(): number {
@@ -174,15 +161,8 @@ export default class Profile extends Vue {
   }
 
   private submit(): void {
-    this.userRequest.description = this.mainInfoForm.modelInstance.description == null ? '' : this.mainInfoForm.modelInstance.description;
-    this.userRequest.name = this.mainInfoForm.modelInstance.name;
-    this.userRequest.surname = this.mainInfoForm.modelInstance.surname;
-    this.userRequest.login = this.mainInfoForm.modelInstance.login;
-    this.userRequest.email = this.contactDataForm.modelInstance.email;
-    this.userRequest.skype = this.contactDataForm.modelInstance.skype == null ? '' : this.contactDataForm.modelInstance.skype;
-    this.userRequest.vk = this.contactDataForm.modelInstance.vk == null ? '' : this.contactDataForm.modelInstance.vk;
-    this.userRequest.instagram = this.contactDataForm.modelInstance.instagram == null ? '' : this.contactDataForm.modelInstance.instagram;
-    UserUpdateStore.updateUser(this.userRequest);
+    this.editForm = new ProfileEditForm(this.mainInfoForm.getFormData(), this.contactDataForm.getFormData());
+    UserUpdateStore.updateUser(this.editForm.getFullRequest());
   }
 }
 </script>
@@ -249,5 +229,14 @@ export default class Profile extends Vue {
 
 .grid-conten {
   min-height: 32px;
+}
+.input {
+  padding: 12px 16px 12px 16px;
+  border-style: solid;
+  border-radius: 5px 0 0 5px;
+
+  &__normal {
+    border-radius: 5px;
+  }
 }
 </style>
