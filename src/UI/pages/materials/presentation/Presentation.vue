@@ -5,7 +5,7 @@
       </Header>
     </v-col>
     <v-col cols="12">
-      <new-presentation-slider :presentations="testData"></new-presentation-slider>
+      <new-presentation-slider :presentations="testDataForSwiper"></new-presentation-slider>
     </v-col>
     <v-col cols="12">
       <tabs :tabs="tabs">
@@ -16,7 +16,7 @@
             :selected="tab.isActive"
         >
           <keep-alive>
-            <component :is="tab.component"></component>
+            <component :is="tab.component" :presentations="testPresentations"></component>
           </keep-alive>
         </tabs-content>
       </tabs>
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Mixins} from 'vue-property-decorator';
 import NewPresentationSlider from '@/UI/components/slider/NewPresentationSlider.vue';
 import {IPresentationType} from '@/entity/materials/presentations/presentation.types';
 import Header from '@/UI/components/common/Header.vue';
@@ -34,13 +34,15 @@ import Tabs from "@/UI/components/common/tabs/Tabs.vue";
 import TabsContent from "@/UI/components/common/tabs/TabsContent.vue";
 import {ITabs} from "@/entity/tabs/tabs.types";
 import {TabsStore} from "@/store/modules/Tabs";
-
+import IProductPresentations from "@/entity/materials/presentations/productsPresentation.types";
+import PresentationProduct from "@/UI/components/materials/presentation/PresentationProduct.vue";
 @Component({
   components: {
     TabsContent,
     Tabs,
     Header,
-    NewPresentationSlider
+    NewPresentationSlider,
+    PresentationProduct
   }
 })
 export default class Presentation extends Vue {
@@ -48,7 +50,7 @@ export default class Presentation extends Vue {
   get tabs(): ITabs[] {
     return TabsStore.presentationTabs
   }
-  testData: IPresentationType[] = [
+  testDataForSwiper: IPresentationType[] = [
     {
       id: 1,
       name: 'eget dolor quis a',
@@ -61,7 +63,7 @@ export default class Presentation extends Vue {
       updatedAt: '22212',
     },
     {
-      id: 1,
+      id: 2,
       name: 'eget dolor quis b',
       filename: 'eget_dolor_quis_a.pdf',
       fileType: 'pdf',
@@ -72,7 +74,7 @@ export default class Presentation extends Vue {
       updatedAt: '22212',
     },
     {
-      id: 1,
+      id: 3,
       name: 'eget dolor quis a',
       filename: 'eget_dolor_quis_a.pdf',
       fileType: 'pdf',
@@ -82,7 +84,7 @@ export default class Presentation extends Vue {
       createdAt: '221112',
       updatedAt: '22212',
     },{
-      id: 1,
+      id: 4,
       name: 'eget dolor quis a',
       filename: 'eget_dolor_quis_a.pdf',
       fileType: 'pdf',
@@ -92,7 +94,7 @@ export default class Presentation extends Vue {
       createdAt: '221112',
       updatedAt: '22212',
     },{
-      id: 1,
+      id: 5,
       name: 'eget dolor quis a',
       filename: 'eget_dolor_quis_a.pdf',
       fileType: 'pdf',
@@ -101,6 +103,59 @@ export default class Presentation extends Vue {
       cover: 'https://i.pinimg.com/736x/be/9f/41/be9f417ed861b0ce4e4df3106c108d20.jpg',
       createdAt: '221112',
       updatedAt: '22212',
+    }
+  ]
+  testPresentations: IProductPresentations[] = [
+    {
+      id: 1,
+      name: 'd',
+      subcategories: [
+        {
+          id:1,
+          name: 'Автомобили 25%',
+          presentations: [
+            {
+              id: 1,
+              name: 'eget dolor quis a',
+              filename: 'eget_dolor_quis_a.pdf',
+              fileType: 'pdf',
+              fileSize: 272,
+              isPaid: false,
+              cover: 'https://i.pinimg.com/736x/be/9f/41/be9f417ed861b0ce4e4df3106c108d20.jpg',
+              createdAt: '221112',
+              updatedAt: '22212',
+            },
+          ]
+        },
+        {
+          id: 2,
+          name: 'Недвижимость 25%',
+          presentations: [
+            {
+              id: 1,
+              name: 'eget dolor quis a',
+              filename: 'eget_dolor_quis_a.pdf',
+              fileType: 'pdf',
+              fileSize: 272,
+              isPaid: false,
+              cover: 'https://i.pinimg.com/736x/be/9f/41/be9f417ed861b0ce4e4df3106c108d20.jpg',
+              createdAt: '221112',
+              updatedAt: '22212',
+            },
+            {
+              id: 2,
+              name: 'eget dolor quis a',
+              filename: 'eget_dolor_quis_a.pdf',
+              fileType: 'pdf',
+              fileSize: 272,
+              isPaid: false,
+              cover: 'https://i.pinimg.com/736x/be/9f/41/be9f417ed861b0ce4e4df3106c108d20.jpg',
+              createdAt: '221112',
+              updatedAt: '22212',
+            },
+          ]
+        }
+      ]
     }
   ]
 }

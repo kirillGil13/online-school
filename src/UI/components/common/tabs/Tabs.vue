@@ -37,7 +37,6 @@ export default class Tabs extends Vue {
 
   mounted(): void {
     this.tabs.forEach((tab) => {
-      console.log(this.$route)
       if (this.$route.hash != '') {
         tab.isActive = false;
         if ('#' + tab.id === this.$route.hash) {

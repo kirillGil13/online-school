@@ -5,6 +5,9 @@
         <div class="slide">
           <v-img class="img" :aspect-ratio="16/9" width="100%" :src="presentation.cover">
           </v-img>
+          <div class="format_icon">
+            <svg-icon v-if="presentation.fileType === 'pdf'" name="Doc_PDF"></svg-icon>
+          </div>
           <div class="slider-description">
             <h4>{{ presentation.name }}</h4>
             <span class="desc">{{ presentation.fileSize }} kb</span>
@@ -46,12 +49,12 @@ export default class NewPresentationSlider extends Vue {
 
 
   next(): void {
-    // this.$refs.swiper.$swiper.slideNext();
+    this.$refs.swiper.$swiper.slideNext();
     this.checkActive();
   }
 
   prev(): void {
-    // this.$refs.swiper.$swiper.slidePrev();
+    this.$refs.swiper.$swiper.slidePrev();
     this.checkActive();
   }
 
@@ -62,7 +65,7 @@ export default class NewPresentationSlider extends Vue {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .swiper {
   width: 90%;
   position: static;
@@ -98,6 +101,7 @@ export default class NewPresentationSlider extends Vue {
     padding-bottom: 16px;
     height: 100%;
     width: 100%;
+    position: relative;
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -106,6 +110,23 @@ export default class NewPresentationSlider extends Vue {
       border-top-left-radius: 12px;
       border-top-right-radius: 12px;
 
+    }
+    .format_icon {
+      position: absolute;
+      background-color: white;
+      border-radius: $main-border-radius;
+      height: 36px;
+      width: 36px;
+      display: flex;
+      justify-content: center;
+      bottom: 50px;
+      left: 5px;
+      align-items: center;
+      .svg-icon {
+        width: 15px !important;
+        height: 15px !important;
+        color: $blue !important;
+      }
     }
     h4 {
       color: #060516;
