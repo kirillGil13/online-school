@@ -64,7 +64,6 @@ export default class Candidates extends Vue {
 
 <style lang="scss">
 .link-bar {
-    
     display: flex;
     flex-direction: row;
     align-items: center;

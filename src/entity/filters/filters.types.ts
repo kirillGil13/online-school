@@ -7,4 +7,5 @@ export enum FiltersNameEnum{
     Theme = 'Темы',
     Level = 'Мой уровень',
     Cost = 'Стоимость',
+    Period = 'Период'
 }
