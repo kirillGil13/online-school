@@ -38,6 +38,18 @@ class FiltersModule extends VuexModule {
             filterType: FiltersNameEnum.Cost
         },
     ];
+
+    periods: IFilters[] = [
+        {
+            id: 0,
+            filter: [
+                'Последние 30 дней',
+                'Последние 15 дней',
+                'Последние 5 дней'
+            ],
+            filterType: FiltersNameEnum.Period
+        },
+    ]
 }
 
 export const FiltersStore = getModule(FiltersModule);

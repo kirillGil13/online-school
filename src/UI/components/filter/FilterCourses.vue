@@ -1,11 +1,11 @@
 <template>
   <v-col>
-    <v-row class="tab-controls justify-end">
-      <v-col v-for="(item, index) in filters.filters" id="select" :key="index" cols="auto" class="pa-0">
+    <v-row class="tab-controls" :class="{'justify-end': isOnRight}">
+      <v-col v-for="(item, index) in filter" id="select" :key="index" cols="auto" class="pa-0">
         <label :for="index">{{item.filterType}}</label>
         <v-select
             :items="item.filter"
-            v-model="filters.default[index]"
+            v-model="defaultName[index]"
             class="filter pa-0"
             :menu-props="{ left: true}"
             flat
@@ -21,8 +21,7 @@
   </v-col>
 </template>
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import Filters from '@/entity/filters/filters';
+import {Component, Prop, Vue} from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -30,11 +29,9 @@ import Filters from '@/entity/filters/filters';
   }
 })
 export default class FilterCourses extends Vue {
-  filters: Filters;
-  constructor() {
-    super();
-    this.filters = new Filters();
-  }
+  @Prop() readonly filter!: IFilter[];
+  @Prop() readonly defaultName!: string[];
+  @Prop() readonly isOnRight: boolean;
 }
 </script>
 <style lang="scss">
@@ -91,7 +88,7 @@ export default class FilterCourses extends Vue {
   }
 }
 .v-menu__content {
-  top: 390px !important;
+  margin-top: 45px;
   width: 13.5% !important;
   max-width: 200px !important;
 }
