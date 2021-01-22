@@ -62,36 +62,32 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
-import FilterCourses from '@/UI/components/filter/FilterCourses';
-import Badge from '@/UI/components/common/Badge';
-import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem';
+import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
+import Badge from '@/UI/components/common/Badge.vue';
+import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 import Filters from '@/entity/filters/filters';
-import Leader from '@/entity/leader/leader';
 import {LeaderResponseType} from '@/entity/leader';
 import CoursesListItem from '@/entity/courses/courses';
 import {CoursesListItemResponseType} from '@/entity/courses/courses.types';
-import EventItem from '@/UI/components/events/EventsItem';
+import EventItem from '../../components/events/EventsItem.vue';
 import {EventsResponseType} from '@/entity/events/events.types';
 import EventsListItem from '@/entity/events/events';
+
 
 @Component({
   components: {
     Header,
     FilterCourses,
     Badge,
-    Leader,
     LeaderCourseItem,
-    EventItem,
-    EventsListItem
+    EventItem
   },
 })
+
 export default class Events extends Vue {
   filters: Filters;
   courses: CoursesListItem[] = [];
   events: EventsListItem[] = [];
-
-
-  // testings: string[] = ['asd', 'sad', 'sdfa'];
 
   constructor() {
     super();
