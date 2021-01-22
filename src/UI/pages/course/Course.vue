@@ -3,7 +3,11 @@
       <Header :isBordered="true" :route="route" :title="course.title"></Header>
       <v-row class="mt-6">
         <div class="course" >
-            <v-responsive :aspect-ratio="16/9" content-class="course-container"></v-responsive>
+            <v-responsive :aspect-ratio="16/9" content-class="course-container">
+              <h1 v-if="!isPlaying" class="abs">{{lesson.title}}</h1>
+              <video-player :class="[!isPlaying ? 'shadow' : '']" :options="playerOptions" :playsinline="true" ref="videoPlayer" @play="onPlayerPlay()">
+              </video-player>
+            </v-responsive>
             <v-row class="course-video-row">
               <Relation svg-name="Finger" title="Нравится"/>
               <Relation svg-class="svg-down" svg-name="Finger" title="Не нравится"/>
@@ -11,20 +15,23 @@
             </v-row>
             <v-col class="box-container pa-6">
               <h5>ОПИСАНИЕ</h5>
-              <span class="desc">{{ lesson.description }}</span>
+              <span class="desc">{{ course.description }}</span>
             </v-col>
-            <TestingComponent
+            <!--<TestingComponent
                 :form="testingForm"
                 :result="testingResult"
                 @moveToNextLesson="moveToNextLesson()"
                 @passTestAgain="passTestAgain()"
                 @reviewLesson="reviewLesson()"
                 @writeMaster="writeMaster()"
-            />
+            />-->
           </div>
         <div class="lessons">
             <Lessons ref="lessons" :course="course" @moveToLesson="moveToLesson"/>
-            <v-col class="box-container pa-6 materials">
+
+
+
+          <v-col class="box-container pa-6 materials">
               <h5>МАТЕРИАЛЫ К УРОКУ</h5>
               <v-row class="course-container material align-center mb-5 mt-4 pa-3">
                 <svg-icon class="svg-wh" name="Doc_PDF"></svg-icon>
@@ -45,18 +52,20 @@ import Button from '../../components/common/Button.vue';
 import TestingComponent from '../../components/testing/TestingComponent.vue';
 import {Component, Vue, Watch} from 'vue-property-decorator';
 import {HeaderRouteType} from '@/entity/common/header.types';
-import {TestingForm} from '@/form/testing/testingForm';
-import Testing from '@/entity/testing/testing';
-import {TestingResultResponseType} from '@/entity/testingResult/testingResult.types';
-import TestingResult from '@/entity/testingResult/testingResult';
 import Relation from '../../components/common/Relation.vue';
-import {TestingResponseType} from '@/entity/testing/testing.types';
-import CourseItem from '@/entity/courseItem/courseItem';
-import {CourseItemResponseType} from '@/entity/courseItem/courseItem.type';
-import {LessonItemResponseType} from '@/entity/lessonItem/lessonItem.types';
-import LessonItem from '@/entity/lessonItem/lessonItem';
+import {ITesting} from '@/entity/testing/testing.types';
+import {ICourseItem} from '@/entity/courseItem/courseItem.type';
+import {ILessonItem} from '@/entity/lessonItem/lessonItem.types';
 import Lessons from '@/UI/components/lessons/Lessons.vue';
 import {RouterNameEnum} from '@/router/router.types';
+import {CourseItemStore} from '@/store/modules/CourseItem';
+import {LessonItemStore} from '@/store/modules/LessonItem';
+import {QuestionsStore} from '@/store/modules/Questions';
+import {TestingForm} from '@/form/testing/testingForm';
+import TestingResult from '@/entity/testingResult/testingResult';
+import {TestingResultResponseType} from '@/entity/testingResult/testingResult.types';
+import 'video.js/dist/video-js.css';
+import { videoPlayer } from 'vue-video-player';
 
 @Component({
   components: {
@@ -65,214 +74,64 @@ import {RouterNameEnum} from '@/router/router.types';
     Button,
     TestingComponent,
     Relation,
+    videoPlayer
   },
 })
 export default class Course extends Vue {
-  questions: Testing[] = [];
-  course!: CourseItem;
-  lesson!: LessonItem;
+  testingForm: TestingForm;
+  testingResult: TestingResult;
+  rightAnswers: TestingResultResponseType = { totalRightAnswers: 3, };
+  isPlaying = false;
   route: HeaderRouteType = {
     name: 'Training',
     label: 'Вернуться к списку курсов',
   };
-  testingForm!: TestingForm;
-  testingResult!: TestingResult;
-  rightAnswers: TestingResultResponseType = {
-    totalRightAnswers: 3,
-  };
-  courseTemp: CourseItemResponseType = {
-    id: 0,
-    title: 'Как стать Мастером Вовлечения',
-    description: 'lorem ipsum',
-    isTestingRequire: true,
-    createdAt: '12000',
-    lessons: [
-      {
-        id: 0,
-        title: 'Вступительный урок',
-        lessonPassed: false,
-        available: true,
-      },
-      {
-        id: 1,
-        title: 'Колесо баланса лидера',
-        lessonPassed: true,
-        available: true,
-      },
-      {
-        id: 2,
-        title: 'Источники энергии для большого бизнеса',
-        lessonPassed: false,
-        available: true,
-      },
-      {
-        id: 3,
-        title: 'Как обрабатывать возражения',
-        lessonPassed: false,
-        available: false,
-      },
-      {
-        id: 4,
-        title: 'Как обрабатывать возражения',
-        lessonPassed: false,
-        available: false,
-      },
-      {
-        id: 4,
-        title: 'Как обрабатывать возражения',
-        lessonPassed: false,
-        available: false,
-      },
-      {
-        id: 5,
-        title: 'Как обрабатывать возражения',
-        lessonPassed: false,
-        available: false,
-      },
-    ],
-    currentLessonId: 0,
-  };
-  lessonTemp: LessonItemResponseType = {
-    title: 'Вступительный урок',
-    videoLink: 'http/',
-    description:
-        'Tincidunt volutpat sit arcu facilisis ut suspendisse. Laoreet non pulvinar etiam enim. Nisi pulvinar proin enim, cursus risus arcu eu. Gravida sagittis sed nam massa dignissim tempor accumsan. Malesuada eget cras malesuada mauris iaculis amet, eu. Enim ante imperdiet ut in urna, fermentum nunc et adipiscing. Volutpat sed id ornare pellentesque. Eu suspendisse sit morbi ut nullam cursus a ipsum. Velit hendrerit blandit id quis nulla lectus urna.',
-    available: true,
-    userViewingVideoDuration: 0,
-  };
-  questionsTemp: TestingResponseType[] = [
-    {
-      id: 0,
-      question: 'Какой самый важный критерий в лидере?',
-      answers: [
-        {
-          id: 0,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 1,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 2,
-          answerOption: 'Презентация продуктов',
-        },
-      ],
-    },
-    {
-      id: 1,
-      question: 'Какой самый важный критерий в лидере?',
-      answers: [
-        {
-          id: 0,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 1,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 2,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 3,
-          answerOption: 'Презентация продуктов',
-        },
-      ],
-    },
-    {
-      id: 2,
-      question: 'Какой самый важный критерий в лидере?',
-      answers: [
-        {
-          id: 0,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 1,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 2,
-          answerOption: 'Презентация продуктов',
-        },
-      ],
-    },
-    {
-      id: 3,
-      question: 'Какой самый важный критерий в лидере?',
-      answers: [
-        {
-          id: 0,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 1,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 2,
-          answerOption: 'Презентация продуктов',
-        },
-      ],
-    },
-    {
-      id: 4,
-      question: 'Какой самый важный критерий в лидере?',
-      answers: [
-        {
-          id: 0,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 1,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 2,
-          answerOption: 'Презентация продуктов',
-        },
-      ],
-    },
-    {
-      id: 5,
-      question: 'Какой самый важный критерий в лидере?',
-      answers: [
-        {
-          id: 0,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 1,
-          answerOption: 'Презентация продуктов',
-        },
-        {
-          id: 2,
-          answerOption: 'Презентация продуктов',
-        },
-      ],
-    },
-  ];
-
-  created(): void {
-    this.fetchData();
+  playerOptions: Record<string, any> = {
+    muted: true,
+    language: 'ru',
+    playbackRates: [0.7, 1.0, 1.5, 2.0],
+    sources: [{
+      type: 'video/mp4',
+      src: 'https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm',
+    }],
+    aspectRatio: '16:9',
   }
 
-  @Watch('$route.params.lessonId', {immediate: true})
-  onChangeRoute(): void {
-    this.fetchData();
-  }
-
-  //тест
-  fetchData(): void {
-    for (let i = 0; i < this.questionsTemp.length; i++) {
-      this.questions.push(this.questionsTemp[i]);
-    }
-    this.course = new CourseItem(this.courseTemp, this.$route.params.lessonId);
-    this.lesson = new LessonItem(this.lessonTemp);
+  constructor() {
+    super();
     this.testingForm = new TestingForm(this.questions);
     this.testingResult = new TestingResult(this.questions, this.rightAnswers);
+  }
+
+  async created(): Promise<void> {
+    await this.fetchData();
+  }
+
+  @Watch('$route.params.lessonId')
+  async onChangeRoute(): Promise<void> {
+    await this.fetchData();
+  }
+
+  async fetchData(): Promise<void> {
+    await CourseItemStore.fetchData({courseId: this.$route.params.id,lessonId: this.$route.params.lessonId});
+    await LessonItemStore.fetchData(this.$route.params.lessonId);
+    await QuestionsStore.fetchAll(this.$route.params.lessonId);
+  }
+
+  get course(): ICourseItem{
+    return CourseItemStore.courseItem;
+  }
+
+  get lesson(): ILessonItem{
+    return LessonItemStore.lessonItem;
+  }
+
+  get questions(): ITesting[] {
+    return QuestionsStore.questions;
+  }
+
+  onPlayerPlay(): void {
+    this.isPlaying = true;
   }
 
   moveToLesson(lessonId: number): void {
@@ -304,6 +163,14 @@ export default class Course extends Vue {
   .desc {
     color: #818c99;
   }
+  .abs {
+    font-size: 24px;
+     position: absolute;
+     color: #ffffff;
+     top: 36px;
+     left: 36px;
+     z-index: 99999999;
+   }
 }
 
 .course-container {
@@ -328,4 +195,5 @@ export default class Course extends Vue {
 .materials {
   margin-top: 68px;
 }
+
 </style>

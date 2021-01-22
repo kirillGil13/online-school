@@ -2,7 +2,7 @@ export interface ILessonItem {
     title: string;
     videoLink: string;
     description: string;
-    available: true;
+    available: boolean;
     userViewingVideoDuration: number;
 }
 export type LessonItemResponseType = {

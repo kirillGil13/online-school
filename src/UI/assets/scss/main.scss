@@ -369,3 +369,58 @@ h5 {
         cursor: pointer;
     }
 }
+.video-player {
+    border-radius: 12px;
+    &.shadow {
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+    .video-js {
+        border-radius: 12px;
+        video {
+            border-radius: 12px;
+        }
+        .vjs-big-play-button {
+            top: 45%;
+            left: 43%;
+        }
+        .vjs-control-bar {
+            bottom: 10px;
+            background-color: transparent !important;
+            .vjs-control {
+                .vjs-icon-placeholder {
+                    font-size: 15px;
+                    &::before {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+            }
+            .vjs-play-control {
+                margin-left: 20px !important;
+            }
+            .vjs-progress-control {
+                .vjs-slider {
+                    background: rgba(255, 255, 255, 0.3);
+                    .vjs-load-progress {
+                        background-color: #F2F2F2;
+                    }
+                    .vjs-play-progress {
+                        background-color: #FF4D2C;
+                    }
+                }
+                .vjs-progress-holder {
+                    height: 0.4em;
+                }
+            }
+           .vjs-fullscreen-control {
+               margin-right: 20px !important;
+           }
+        }
+    }
+}

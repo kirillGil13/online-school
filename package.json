@@ -31,6 +31,7 @@
         "vue-qrcode": "^0.3.5",
         "vue-router": "3.4.3",
         "vue-svgicon": "^3.2.9",
+        "vue-video-player": "^5.0.2",
         "vuelidate": "^0.7.6",
         "vuelidate-error-extractor": "^2.4.1",
         "vuetify": "^2.4.0",
