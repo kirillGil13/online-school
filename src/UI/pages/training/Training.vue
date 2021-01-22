@@ -7,12 +7,13 @@
         <SliderLeaders :leaders="leaders" />
         <v-row v-if="$route.params.id === undefined">
           <v-col>
-            <Tabs>
+            <Tabs :filters="filters">
               <TabsContent
                   v-for="(tab, index) in tabs"
                   :key="index"
                   :name="tab.title"
                   :selected="tab.isActive"
+
               >
                 <keep-alive>
                   <component :is="tab.component" :courses="courses" :leaders="leaders" @proceed="proceed"></component>
@@ -61,8 +62,12 @@ export default class Training extends Vue {
 
 
 
+    filters: Filters;
+
+
     constructor() {
         super();
+        this.filters = new Filters();
         for (let i = 0; i < this.leader.length; i++) {
             this.leaders.push(new Leader(this.leader[i]));
         }
