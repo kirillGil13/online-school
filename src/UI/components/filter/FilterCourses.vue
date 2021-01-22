@@ -22,6 +22,7 @@
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import Filters from '@/entity/filters/filters';
 
 @Component({
   components: {
@@ -29,9 +30,11 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
   }
 })
 export default class FilterCourses extends Vue {
-  @Prop() readonly filter!: IFilter[];
+
+
+  @Prop() readonly filter!: Filters[];
   @Prop() readonly defaultName!: string[];
-  @Prop() readonly isOnRight: boolean;
+  @Prop() readonly isOnRight: boolean | undefined;
 }
 </script>
 <style lang="scss">

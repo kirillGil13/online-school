@@ -34,17 +34,12 @@ class MenuModule extends VuexModule {
                 {
                     title: 'Документы',
                     iconName: '',
-                    route: RouterNameEnum.MaterialPresentation,
-                },
-                {
-                    title: 'Видеоинструкции',
-                    iconName: '',
-                    route: RouterNameEnum.MaterialPresentation,
+                    route: RouterNameEnum.MaterialDocuments,
                 },
                 {
                     title: 'Инфопакеты',
                     iconName: '',
-                    route: RouterNameEnum.MaterialPresentation,
+                    route: RouterNameEnum.MaterialInfoPacks,
                 },
             ]
         },
