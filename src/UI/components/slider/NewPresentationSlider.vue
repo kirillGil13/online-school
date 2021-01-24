@@ -49,12 +49,12 @@ export default class NewPresentationSlider extends Vue {
 
 
   next(): void {
-    this.$refs.swiper.$swiper.slideNext();
+    // this.$refs.swiper.$swiper.slideNext();
     this.checkActive();
   }
 
   prev(): void {
-    this.$refs.swiper.$swiper.slidePrev();
+    // this.$refs.swiper.$swiper.slidePrev();
     this.checkActive();
   }
 
