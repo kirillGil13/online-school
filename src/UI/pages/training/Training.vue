@@ -43,6 +43,7 @@ import {TabsStore} from '@/store/modules/Tabs';
 import TrainingLeaders from '@/UI/components/training/TrainingLeaders.vue';
 import TrainingMain from '@/UI/components/training/TrainingMain.vue';
 import TrainingClub from '@/UI/components/training/TrainingClub.vue';
+import Filters from '@/entity/filters/filters';
 
 @Component({
     components: {
@@ -61,8 +62,12 @@ export default class Training extends Vue {
     leaders: Leader[] = [];
     courses: CoursesListItem[] = [];
 
+    filters: Filters;
+
+
     constructor() {
         super();
+        this.filters = new Filters();
         for (let i = 0; i < this.leader.length; i++) {
             this.leaders.push(new Leader(this.leader[i]));
         }

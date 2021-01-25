@@ -26,3 +26,14 @@ export default class extends Vue {
     }
 }
 </script>
+<style lang="scss">
+.input {
+  padding: 12px 16px 12px 16px;
+  border-style: solid;
+  border-radius: 5px 0 0 5px;
+
+  &__normal {
+    border-radius: 5px;
+  }
+}
+</style>

@@ -6,9 +6,12 @@ import '@/UI/assets/scss/common/element-variables.scss';
 import '@/UI/assets/scss/main.scss';
 import '@/UI/components/svg';
 import { vuetify, prepareRepository } from '@/plugins';
+import currencyFilter from '@/entity/filters/currency.filter';
 
 Vue.config.productionTip = false;
+Vue.filter('currency', currencyFilter)
 prepareRepository(store);
+
 
 new Vue({
     render: (h): VNode => h(App),

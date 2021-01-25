@@ -16,8 +16,12 @@ export default class InputWrapper extends Vue {}
 
 <style lang="scss">
 .input {
-    &__error-message {
-        color: $red;
-    }
+  padding: 12px 16px 12px 16px;
+  border-style: solid;
+  border-radius: 5px 0 0 5px;
+
+  &__normal {
+    border-radius: 5px;
+  }
 }
 </style>

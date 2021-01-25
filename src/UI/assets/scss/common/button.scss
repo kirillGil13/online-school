@@ -14,7 +14,7 @@ button{
     &:disabled {
         background: #f2f2f2;
         border-color: rgba(87, 81, 183, 0.12);
-        color: rgba(87, 81, 183, 0.12);
+        color: #5F739C !important;
     }
     &:hover {
         background: linear-gradient(180deg, #7092FF 0%, #567EFF 100%);

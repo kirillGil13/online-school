@@ -8,7 +8,7 @@
           </li>
         </ul>
       </div>
-      <FilterCourses v-if="$route.hash === '#leaders'"/>
+      <FilterCourses :isOnRight="true" :filter="filters.filters" :defaultName="filters.default" v-if="$route.hash === '#leaders'"/>
     </v-row>
     <div class="tabs-details">
       <slot></slot>
@@ -19,6 +19,7 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {ITabs} from '@/entity/tabs/tabs.types';
 import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
+import Filters from '@/entity/filters/filters';
 
 @Component({
   components: {

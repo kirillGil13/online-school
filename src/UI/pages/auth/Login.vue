@@ -5,7 +5,7 @@
         <Logo font-size="24px" height="38px" width="38px"/>
         <div class="my-9">
           <div class="form-text-container" v-if="form.codeStep">
-            <div class="desc">Подтвердите номер телефона {{ form.phone.slice(1) }} введите код из СМС</div>
+            <div class="desc">Подтвердите номер телефона <br>{{ form.getFullPhone() }} введите код из СМС</div>
           </div>
           <FormGroup
               v-if="!form.codeStep"
@@ -28,21 +28,7 @@
                   flagSize="normal"
               />
             </template>
-            <!--<v-text-field
-                slot-scope="{ attrs }"
-                v-model="form.phone"
-                v-bind="attrs"
-                color="#4F79FF"
-                class="form-input"
-                autocomplete="off"
-                label="Номер телефона"
-                name="phone"
-                outlined
-                placeholder="Введите номер телефона"
-                @input="form.$v.phone.$touch()"
-            />-->
           </FormGroup>
-
           <FormGroup
               v-else
               :messages="form.messages.code"
@@ -62,17 +48,6 @@
                   v-bind="attrs"
               >
             </template>
-            <!--<v-text-field
-                slot-scope="{ attrs }"
-                v-model="form.code"
-                v-bind="attrs"
-                autocomplete="off"
-                label="Код подтверждения"
-                name="code"
-                outlined
-                placeholder="Введите код подтверждения"
-                @input="form.$v.code.$touch()"
-            />-->
           </FormGroup>
         </div>
         <div>
