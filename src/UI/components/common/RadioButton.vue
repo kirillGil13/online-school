@@ -24,7 +24,7 @@ export default class RadioButton extends Vue {
     @Prop({ default: null }) readonly resultsAnswerId!: number;
 
     set resultsAnswerIdChange(id: number) {
-        this.$emit('change', this.id);
+        this.$emit('change', id);
     }
 
     get resultsAnswerIdChange(): number {

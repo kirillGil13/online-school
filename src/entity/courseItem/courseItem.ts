@@ -1,4 +1,4 @@
-import { CourseItemResponseType, ICourseItem, ICourseLessons } from './courseItem.type';
+import {CourseItemResponseType, ICourseItem, ICourseLessons} from './courseItem.type';
 import { LessonsTypesEnum } from '@/entity/common/lessons.types';
 
 export default class CourseItem implements ICourseItem {
@@ -29,7 +29,7 @@ export default class CourseItem implements ICourseItem {
                     } else if (!data.lessons[i].lessonPassed && data.lessons[i].available) {
                         type = LessonsTypesEnum.UN_DONE;
                     } else type = LessonsTypesEnum.LOCKED;
-                    if (data.lessons[i].available && i.toString() === paramLessonId) {
+                    if (data.lessons[i].available && data.lessons[i].id.toString() === paramLessonId) {
                         type = LessonsTypesEnum.IN_PROGRESS;
                     }
                     return type;

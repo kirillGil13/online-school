@@ -13,7 +13,6 @@
                   :key="index"
                   :name="tab.title"
                   :selected="tab.isActive"
-
               >
                 <keep-alive>
                   <component :is="tab.component" :courses="courses" :leaders="leaders" @proceed="proceed"></component>
@@ -33,14 +32,16 @@ import Leader from '@/entity/leader/leader';
 import { LeaderResponseType } from '@/entity/leader/leader.types';
 import Tabs from '../../components/common/tabs/Tabs.vue';
 import TabsContent from '../../components/common/tabs/TabsContent.vue';
-import CoursesListItem from '@/entity/courses/courses';
 import TrainingCourses from '../../components/training/TrainingCourses.vue';
-import { CoursesListItemResponseType } from '@/entity/courses/courses.types';
+import { ICoursesListItem} from '@/entity/courses/courses.types';
 import {ITabs} from '@/entity/tabs/tabs.types';
 import {TabsStore} from '@/store/modules/Tabs';
 import TrainingLeaders from '@/UI/components/training/TrainingLeaders.vue';
 import TrainingMain from '@/UI/components/training/TrainingMain.vue';
 import TrainingClub from '@/UI/components/training/TrainingClub.vue';
+import {CoursesStore} from '@/store/modules/Courses';
+import {CourseItemStore} from '@/store/modules/CourseItem';
+import {ICourseItem} from '@/entity/courseItem/courseItem.type';
 import Filters from '@/entity/filters/filters';
 
 @Component({
@@ -58,9 +59,7 @@ import Filters from '@/entity/filters/filters';
 })
 export default class Training extends Vue {
     leaders: Leader[] = [];
-    courses: CoursesListItem[] = [];
-
-    filters: Filters;
+    filters: Filters
 
 
     constructor() {
@@ -69,62 +68,33 @@ export default class Training extends Vue {
         for (let i = 0; i < this.leader.length; i++) {
             this.leaders.push(new Leader(this.leader[i]));
         }
-        for (let i = 0; i < this.coursesBack.length; i++) {
-            this.courses.push(new CoursesListItem(this.coursesBack[i]));
-        }
     }
 
-    proceed(id: number): void {
-        this.$router.push({ path: `/training/${id}/0` });
+    async proceed(id: number): Promise<void> {
+        await this.loadCourseItem(id);
+        await this.$router.push({ path: `/training/${id}/${this.courseItem.lessons[0].id}` });
+    }
+
+    async loadCourseItem(id: number): Promise<void> {
+      await CourseItemStore.fetchData({courseId: id.toString()})
     }
 
     get tabs(): ITabs[] {
       return TabsStore.tabs;
     }
 
-    //для теста
-    coursesBack: CoursesListItemResponseType[] = [
-        {
-            id: 0,
-            title: 'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-            cover:
-                'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-            totalLesson: 20,
-            lessonPassed: 7,
-            duration: 3850,
-            rating: 10,
-        },
-      {
-        id: 1,
-        title: 'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-        cover:
-            'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-        totalLesson: 20,
-        lessonPassed: 7,
-        duration: 3850,
-        rating: 10,
-      },
-      {
-        id: 2,
-        title: 'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-        cover:
-            'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-        totalLesson: 20,
-        lessonPassed: 15,
-        duration: 3850,
-        rating: 10,
-      },
-      {
-        id: 3,
-        title: 'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-        cover:
-            'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-        totalLesson: 20,
-        lessonPassed: 7,
-        duration: 3850,
-        rating: 10,
-      },
-    ];
+    get courses(): ICoursesListItem[] {
+      return CoursesStore.courses;
+    }
+
+    get courseItem(): ICourseItem {
+      return CourseItemStore.courseItem;
+    }
+
+    async created(): Promise<void> {
+      await CoursesStore.fetchAll();
+    }
+    //для
     leader: LeaderResponseType[] = [
         {
             id: 0,

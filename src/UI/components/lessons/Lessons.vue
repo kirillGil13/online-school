@@ -15,7 +15,7 @@
             >
               <svg-icon class="svg-wh" :name="lesson.type()"></svg-icon>
               <div class="lesson_name">
-                <span class="desc">Урок {{ lesson.id + 1 }}</span>
+                <span class="desc">Урок {{ index + 1 }}</span>
                 {{ lesson.title }}
               </div>
             </li>

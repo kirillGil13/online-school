@@ -81,6 +81,7 @@
         </v-col>
       </v-row>
     </v-col>
+    <Alert :success="success" :show="show" @change="changeAlert"/>
   </v-col>
 </template>
 
@@ -103,6 +104,7 @@ import {UserUpdateStore} from '@/store/modules/UserUpdate';
 import {ProfileMainInfoForm} from '@/form/profile/mainInfo/ProfileMainInfoForm';
 import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactDataForm';
 import ProfileEditForm from '@/form/profile/profileEditForm';
+import Alert from '@/UI/components/common/Alert.vue';
 
 @Component({
   components: {
@@ -114,13 +116,16 @@ import ProfileEditForm from '@/form/profile/profileEditForm';
     ProfileContactData,
     ProfileSubscribe,
     ProfileAvatarChange,
-    Header
+    Header,
+    Alert
   },
 })
 export default class Profile extends Vue {
   mainInfoForm: ProfileMainInfoForm;
   contactDataForm: ProfileContactDataForm;
   editForm!: ProfileEditForm;
+  show = false;
+  success = false;
   windowSize: IWindowSize = {
     x: 0,
     y: 0,
@@ -151,6 +156,11 @@ export default class Profile extends Vue {
     };
   }
 
+  changeAlert(show: boolean, success: boolean): void {
+    this.show = show;
+    this.success = success;
+  }
+
   private logOut(): void {
     AuthStore.logout()
   }
@@ -162,7 +172,10 @@ export default class Profile extends Vue {
 
   private submit(): void {
     this.editForm = new ProfileEditForm(this.mainInfoForm.getFormData(), this.contactDataForm.getFormData());
-    UserUpdateStore.updateUser(this.editForm.getFullRequest());
+    const resp = UserUpdateStore.updateUser(this.editForm.getFullRequest());
+    if (resp) {
+      this.changeAlert(true, true);
+    } else this.changeAlert(true, false);
   }
 }
 </script>
@@ -229,6 +242,9 @@ export default class Profile extends Vue {
 
 .grid-conten {
   min-height: 32px;
+}
+label {
+  border: none !important;
 }
 .input {
   padding: 12px 16px 12px 16px;
