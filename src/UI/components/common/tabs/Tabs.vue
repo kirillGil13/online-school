@@ -26,7 +26,7 @@ import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
   }
 })
 export default class Tabs extends Vue {
-
+  @Prop() readonly filters!: Filters;
   @Prop({ required: true }) readonly tabs!: ITabs[];
 
   select(id: string): void {

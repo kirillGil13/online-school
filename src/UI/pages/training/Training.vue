@@ -8,7 +8,7 @@
       <SliderLeaders :leaders="leaders" />
       <v-row v-if="$route.params.id === undefined">
         <v-col>
-          <Tabs :tabs="tabs">
+          <Tabs :filters="filters" :tabs="tabs">
             <TabsContent
                 v-for="(tab, index) in tabs"
                 :key="index"
