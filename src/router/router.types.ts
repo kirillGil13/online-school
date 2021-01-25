@@ -4,6 +4,8 @@ export enum RouterNameEnum {
     Candidates = 'Candidates',
     Partners = 'Partners',
     MaterialPresentation = 'MaterialPresentation',
+    MaterialDocuments = 'MaterialDocuments',
+    MaterialInfoPacks = 'MaterialInfoPacks',
     Training = 'Training',
     LeaderCourses = 'LeaderCourses',
     Materials = 'Materials',

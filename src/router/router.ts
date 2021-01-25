@@ -40,24 +40,45 @@ const routes = [
             {
                 path: '/candidates',
                 name: RouterNameEnum.Candidates,
-                component: () => import('../UI/pages/candidates/Candidates.vue')
+                component: () => import('../UI/pages/candidates/Candidates.vue'),
             },
             {
                 path: '/partners',
                 name: RouterNameEnum.Partners,
-                component: () => import('../UI/pages/partners/Partners.vue')
+                component: () => import('../UI/pages/partners/Partners.vue'),
             },
             {
                 path: '/calendar',
                 name: RouterNameEnum.Calendar,
-                component: () => import('../UI/pages/events/Events.vue')
+                component: () => import('../UI/pages/events/Events.vue'),
             },
             {
                 path: '/chat',
                 name: RouterNameEnum.Chat,
-                component: () => import('../UI/pages/chat/Chat.vue')
+                component: () => import('../UI/pages/chat/Chat.vue'),
             },
-
+            {
+                path: '/materials',
+                name: RouterNameEnum.Materials,
+                redirect: '/materials/presentations',
+                children: [
+                    {
+                        path: 'presentations',
+                        name: RouterNameEnum.MaterialPresentation,
+                        component: () => import('../UI/pages/materials/Presentations.vue'),
+                    },
+                    {
+                        path: 'documents',
+                        name: RouterNameEnum.MaterialDocuments,
+                        component: () => import('../UI/pages/materials/Documents.vue'),
+                    },
+                    {
+                        path: 'infopacks',
+                        name: RouterNameEnum.MaterialInfoPacks,
+                        component: () => import('../UI/pages/materials/InfoPacks.vue'),
+                    },
+                ]
+            },
         ],
     },
 ];
