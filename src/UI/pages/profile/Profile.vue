@@ -3,70 +3,72 @@
         <v-col :cols="12">
             <h1>{{`${user.name} ${user.surname}`}}</h1>
         </v-col>
-        <v-col :cols="12" class="profile__main-content">
+        <v-col :cols="12" >
+          <div class="profile__main-content">
             <v-row>
-                <v-col :cols="windowSize.x > windowWideBreak ? 2 : 12">
-                    <div
-                        :class="{
+              <v-col :cols="windowSize.x > windowWideBreak ? 2 : 12">
+                <div
+                    :class="{
                             'profile__info-full-size': windowSize.x > windowWideBreak,
                             'profile__info-low-size': windowSize.x < windowWideBreak,
                         }"
-                    >
-                        <avatar
-                            :size="windowSize.x > windowWideBreak ? 143 : 70"
-                            :imageSourse="'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'"
-                            :starSize="AvatarSizeEnum.MEDIUM"
-                        />
-                        <Badge>
-                            <template slot="title">Партнеров</template>
-                            18
-                        </Badge>
-                        <v-btn @click="logOut" class="profile__singout-button secondary">Выйти </v-btn>
-                    </div>
-                </v-col>
-                <v-col :cols="windowSize.x > windowWideBreak ? 10 : 12">
-                    <div class="grid-content profile__detail-info">
-                        <v-row>
-                            <v-col cols="12" class="profile__col">
-                                <v-tabs v-model="activeName">
-                                  <v-tab>
-                                    Общие
-                                  </v-tab>
-                                  <v-tab>
-                                    Контактные данные
-                                  </v-tab>
-                                  <v-tab>
-                                    Безопасность
-                                  </v-tab>
-                                  <v-tab>
-                                    Подписка
-                                  </v-tab>
-                                  <v-tab>
-                                    Сменить аватар
-                                  </v-tab>
-                                </v-tabs>
-                                <v-tabs-items v-model="activeName">
-                                    <v-tab-item>
-                                        <profile-main-info :form="mainInfoForm" />
-                                    </v-tab-item>
-                                    <v-tab-item>
-                                        <profile-contact-data />
-                                    </v-tab-item>
-                                    <v-tab-item>
-                                        <profile-security />
-                                    </v-tab-item>
-                                    <v-tab-item>
-                                        <profile-subscribe />
-                                    </v-tab-item>
-                                    <v-tab-item>
-                                        <profile-avatar-change />
-                                    </v-tab-item>
-                                </v-tabs-items>
-                            </v-col>
-                        </v-row>
-                    </div>
-                </v-col>
+                >
+                  <avatar
+                      :size="windowSize.x > windowWideBreak ? 143 : 70"
+                      :imageSourse="'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'"
+                      :starSize="AvatarSizeEnum.MEDIUM"
+                  />
+                  <Badge>
+                    <template slot="title">Партнеров</template>
+                    18
+                  </Badge>
+                  <v-btn @click="logOut" class="profile__singout-button secondary">Выйти </v-btn>
+                </div>
+              </v-col>
+              <v-col :cols="windowSize.x > windowWideBreak ? 10 : 12">
+                <div class="grid-content profile__detail-info">
+                  <v-row>
+                    <v-col cols="12" class="profile__col">
+                      <v-tabs v-model="activeName">
+                        <v-tab>
+                          Общие
+                        </v-tab>
+                        <v-tab>
+                          Контактные данные
+                        </v-tab>
+                        <v-tab>
+                          Безопасность
+                        </v-tab>
+                        <v-tab>
+                          Подписка
+                        </v-tab>
+                        <v-tab>
+                          Сменить аватар
+                        </v-tab>
+                      </v-tabs>
+                      <v-tabs-items v-model="activeName">
+                        <v-tab-item>
+                          <profile-main-info :form="mainInfoForm" />
+                        </v-tab-item>
+                        <v-tab-item>
+                          <profile-contact-data />
+                        </v-tab-item>
+                        <v-tab-item>
+                          <profile-security />
+                        </v-tab-item>
+                        <v-tab-item>
+                          <profile-subscribe />
+                        </v-tab-item>
+                        <v-tab-item>
+                          <profile-avatar-change />
+                        </v-tab-item>
+                      </v-tabs-items>
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
             </v-row>
+          </div>
         </v-col>
     </v-row>
 </template>

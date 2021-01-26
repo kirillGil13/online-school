@@ -1,5 +1,5 @@
 <template>
- <v-row>
+ <v-row v-if="presentations">
    <v-col v-for="subcategory in presentations[0].subcategories" :key="subcategory.id" cols="12">
      <h2>{{subcategory.name}}</h2>
      <v-row>

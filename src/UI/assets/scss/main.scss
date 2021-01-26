@@ -235,10 +235,6 @@ h5 {
         padding: 16px 24px;
     }
 }
-// по умолчанию в ровах вьютифая маргин -12пх, это раздражает
-.row {
-    margin: 0 !important;
-}
 
 .course-block {
     width: calc((100% / 3) - 17px);
