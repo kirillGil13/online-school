@@ -1,4 +1,4 @@
-import { IUser, UserResponseType } from './user.types';
+import {IUser, UserRequestType, UserResponseType} from './user.types';
 
 export class User implements IUser {
     id: number;
@@ -14,6 +14,7 @@ export class User implements IUser {
     activeSubscription: boolean;
     name: string;
     surname: string;
+
     constructor(data: UserResponseType) {
         this.id = data.id;
         this.email = data.email;
@@ -33,7 +34,23 @@ export class User implements IUser {
     get link(): string {
         return 'https://partner.onelinks.com/' + this.login;
     }
+
     get initials(): string {
         return this.surname[0].toUpperCase() + this.name[0].toUpperCase();
     }
+
+    getRequestData(): UserRequestType {
+        return {
+            name: this.name,
+            surname: this.surname,
+            login: this.login,
+            email: this.email,
+            vk: this.vk,
+            facebook: this.facebook,
+            instagram: this.instagram,
+            skype: this.skype,
+            description: this.description
+        }
+    }
+
 }
