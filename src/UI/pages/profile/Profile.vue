@@ -226,7 +226,7 @@ export default class Profile extends Vue {
   }
 
   &__info-full-size {
-    max-width: 144px;
+    width: 144px;
   }
 
   &__info-low-size {
