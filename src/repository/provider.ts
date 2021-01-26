@@ -17,6 +17,5 @@ export const provider = (): IProvider => ({
     courseItem: new CourseItemRepository(),
     lessonItem: new LessonItemRepository(),
     questions: new QuestionsRepository(),
-
 });
 

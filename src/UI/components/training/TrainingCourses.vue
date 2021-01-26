@@ -4,9 +4,9 @@
   </div>
 </template>
 <script lang="ts">
-import CoursesListItem from '@/entity/courses/courses';
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import CourseComponent from '../course/CourseComponent.vue';
+import {ICoursesListItem} from '@/entity/courses/courses.types';
 
 @Component({
   components: {
@@ -14,7 +14,7 @@ import CourseComponent from '../course/CourseComponent.vue';
   },
 })
 export default class TrainingCourses extends Vue {
-  @Prop() readonly courses!: CoursesListItem[];
+  @Prop() readonly courses!: ICoursesListItem[];
 }
 </script>
 <style lang="scss">

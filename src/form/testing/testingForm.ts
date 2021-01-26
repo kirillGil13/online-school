@@ -1,11 +1,10 @@
-import Testing from '@/entity/testing/testing';
 import { ITesting } from '@/entity/testing/testing.types';
 import { ITestingForm, TestingFormRequestType } from './testingForm.types';
 
 export class TestingForm implements ITestingForm {
     questions: ITesting[] = [];
     results: TestingFormRequestType[] = [];
-    constructor(data: Testing[]) {
+    constructor(data: ITesting[]) {
         for (let i = 0; i < data.length; i++) {
             this.questions.push({ id: data[i].id, question: data[i].question, answers: data[i].answers });
             this.results.push({ questionId: data[i].id, answerId: null });

@@ -113,7 +113,6 @@ import { ProfileContactDataForm } from '@/form/profile/contactData/ProfileContac
 import ProfileEditForm from '@/form/profile/profileEditForm';
 import Alert from '@/UI/components/common/Alert.vue';
 
-
 @Component({
   components: {
     Badge,
@@ -169,7 +168,6 @@ export default class Profile extends Vue {
     this.show = show;
     this.success = success;
   }
-
 
   private logOut(): void {
     AuthStore.logout()

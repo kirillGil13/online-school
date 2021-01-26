@@ -1,4 +1,4 @@
-import { ITesting, ITestingAnswers, TestingResponseType } from "./testing.types";
+import { ITesting, ITestingAnswers, TestingResponseType } from './testing.types';
 
 export default class Testing implements ITesting{
     id: number;

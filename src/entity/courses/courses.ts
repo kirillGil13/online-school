@@ -25,14 +25,21 @@ export default class CoursesListItem implements ICoursesListItem {
         let h = 0;
         let m = 0;
         let s = 0;
-        h = Math.floor(this.duration / 3600);
-        m = Math.floor(this.duration % 3600 / 60);
-        s = Math.floor(this.duration % 3600 % 60);
+        m = Math.floor(this.duration / 60);
+        s = Math.floor(this.duration % 60);
+        h = Math.floor(m / 60);
+        m = m % 60;
         let hDisplay = '';
-        let mDisplay = m > 0 ? m + ':' : '';
+        let mDisplay = '';
+        if (m < 10 && m > 0) {
+            mDisplay = '0' + m + ':';
+        } else if (m >= 10) {
+            mDisplay = m + ':';
+        } else mDisplay = '0:';
         let sDisplay = s > 0 ? s.toString() : '';
         hDisplay = h > 0 ? h + ':' : '';
-        mDisplay = m < 10 ? '0' + mDisplay : mDisplay;
+        if (h === 0)
+            hDisplay = '0:';
         sDisplay = s < 10 ? '0' + sDisplay : sDisplay;
         return hDisplay + mDisplay + sDisplay;
     }

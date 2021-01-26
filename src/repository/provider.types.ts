@@ -16,5 +16,4 @@ export interface IProvider {
     courseItem: ICourseItemRepository;
     lessonItem: ILessonItemRepository;
     questions: IQuestionsItemRepository;
-
 }
