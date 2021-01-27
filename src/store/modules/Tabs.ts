@@ -11,27 +11,27 @@ import {ITabs, TabsNameEnum} from '@/entity/tabs/tabs.types';
 class TabsModule extends VuexModule {
     tabs: ITabs[] = [
         {
-            id: 'home',
+            id: '',
             title: 'Главная',
-            isActive: true,
+            filter: false,
             component: TabsNameEnum.Main,
         },
         {
             id: 'courses',
             title: 'Курсы',
-            isActive: false,
+            filter: false,
             component: TabsNameEnum.Courses,
         },
         {
             id: 'club',
             title: 'Клуб 100',
-            isActive: false,
+            filter: false,
             component: TabsNameEnum.Club,
         },
         {
             id: 'leaders',
             title: 'Лидеры',
-            isActive: false,
+            filter: true,
             component: TabsNameEnum.Leaders,
         },
     ];

@@ -1,0 +1,42 @@
+.video-js {
+  font-size: 22px !important;
+  border-radius: 12px;
+  video {
+    border-radius: 12px;
+  }
+  .vjs-control-bar {
+    bottom: 10px;
+    background-color: transparent !important;
+    .vjs-control {
+      width: 8em !important;
+      .vjs-icon-placeholder {
+        font-size: 15px;
+        &::before {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+    .vjs-play-control {
+      margin-left: 20px !important;
+    }
+    .vjs-progress-control {
+      .vjs-slider {
+        background: rgba(255, 255, 255, 0.3);
+        .vjs-load-progress {
+          background-color: #F2F2F2;
+        }
+        .vjs-play-progress {
+          background-color: #FF4D2C;
+        }
+      }
+      .vjs-progress-holder {
+        height: 0.4em;
+      }
+    }
+    .vjs-fullscreen-control {
+      margin-right: 20px !important;
+    }
+  }
+}

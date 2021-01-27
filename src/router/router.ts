@@ -23,8 +23,13 @@ const routes = [
                 component: () => import('../UI/pages/profile/Profile.vue'),
             },
             {
+                path: '/leader/:id',
+                name: RouterNameEnum.LeaderCourses,
+                component: () => import('../UI/pages/leader/LeaderCoursePage.vue'),
+            },
+            {
                 path: '/training',
-                name: RouterNameEnum.Training,
+                redirect: '/training/main',
                 component: () => import('../UI/pages/training/Training.vue'),
             },
             {

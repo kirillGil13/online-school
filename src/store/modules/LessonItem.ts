@@ -9,18 +9,14 @@ import {ILessonItem} from '@/entity/lessonItem/lessonItem.types';
     dynamic: true,
 })
 class LessonItemModule extends VuexModule {
-    lessonItem: ILessonItem = {
-        title: '',
-        videoLink: '',
-        description: '',
-        available: false,
-        userViewingVideoDuration: 0
-    };
+    lessonItem: ILessonItem | null  = null;
+    lessonLoaded = false;
 
     @MutationAction
-    async fetchData(lessonId: string): Promise<{ lessonItem: ILessonItem }> {
+    async fetchData(lessonId: string): Promise<{ lessonItem: ILessonItem; lessonLoaded: boolean }> {
         const lessonItem = await store.$repository.lessonItem.fetchData(lessonId);
-        return { lessonItem };
+        const lessonLoaded = true;
+        return { lessonItem, lessonLoaded };
     }
 }
 
