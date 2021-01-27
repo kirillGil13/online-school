@@ -28,7 +28,7 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {SwiperOptions} from 'swiper';
-import {IPresentationType} from "@/entity/materials/presentations/presentation.types";
+import {IPresentationType} from '@/entity/materials/presentations/presentation.types';
 
 @Component
 export default class NewPresentationSlider extends Vue {

@@ -22,8 +22,6 @@
           </v-col>
         </v-row>
     </v-col>
-  </v-row>
-
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';

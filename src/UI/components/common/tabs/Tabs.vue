@@ -21,7 +21,7 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import {ITabs} from '@/entity/tabs/tabs.types';
 import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
 import Filters from '@/entity/filters/filters';
-import {TabsNameEnum} from '@/entity/tabs/tabs.types';
+import {TrainingTabsNameEnum} from '@/entity/tabs/trainingTabs.types';
 
 @Component({
   components: {
@@ -31,7 +31,7 @@ import {TabsNameEnum} from '@/entity/tabs/tabs.types';
 export default class Tabs extends Vue {
   @Prop() readonly filters!: Filters;
   @Prop() readonly tabs!: ITabs[];
-  tabsName = TabsNameEnum;
+  tabsName = TrainingTabsNameEnum;
 }
 </script>
 <style lang="scss">
