@@ -1,28 +1,46 @@
 <template>
-  <v-row>
-    <v-col>
-      <Header
-          :isBordered="false"
-          title="Презентации от компании"
-          class="top_bar_p_0"
-          description="Здесь отображаются все документы, которые будут полезны в расширении своей сети"
-      >
-      </Header>
-    </v-col>
-  </v-row>
+  <v-col>
+    <Header
+        :isBordered="false"
+        title="Презентации от компании"
+        class="top_bar_p_0 presentation__head"
+        description="Здесь отображаются все документы, которые будут полезны в расширении своей сети"
+    >
+    </Header>
+    <h3>Новое за последние 7 дней</h3>
+<!--    <PresentationsLast/>-->
+    {{ presentations }}
+  </v-col>
 </template>
 
-<script>
-import {Component, Vue} from 'vue-property-decorator'
+<script lang="ts">
+import {Component, Vue} from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
+import PresentationsLast from '@/UI/components/materials/PresentationsLast.vue';
+import { PresentationsStore } from '@/store/modules/Presentations';
+import { IPresentationsListItem } from '@/entity/presentations/presentations.types'
 
 @Component({
   components: {
-    Header
+    Header,
+    PresentationsLast
   }
 })
 
 export default class Presentations extends Vue {
+  get presentations(): IPresentationsListItem[] {
+    return PresentationsStore.presentations;
+  }
 
+  async created(): Promise<void> {
+    await PresentationsStore.fetchAll();
+  }
 }
 </script>
+<style lang="scss">
+.presentation {
+  &__head {
+    margin-bottom: 36px;
+  }
+}
+</style>

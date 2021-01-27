@@ -60,24 +60,25 @@ const routes = [
             {
                 path: '/materials',
                 name: RouterNameEnum.Materials,
+                component: () => import('../UI/pages/materials/Materials.vue'),
                 redirect: '/materials/presentations',
                 children: [
                     {
-                        path: 'presentations',
+                        path: '/materials/presentations',
                         name: RouterNameEnum.MaterialPresentation,
                         component: () => import('../UI/pages/materials/Presentations.vue'),
                     },
                     {
-                        path: 'documents',
+                        path: '/materials/documents',
                         name: RouterNameEnum.MaterialDocuments,
                         component: () => import('../UI/pages/materials/Documents.vue'),
                     },
                     {
-                        path: 'infopacks',
+                        path: '/materials/infopacks',
                         name: RouterNameEnum.MaterialInfoPacks,
                         component: () => import('../UI/pages/materials/InfoPacks.vue'),
                     },
-                ]
+                ],
             },
         ],
     },

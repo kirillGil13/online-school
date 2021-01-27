@@ -5,6 +5,7 @@ import {ICoursesRepository} from '@/repository/courses';
 import {ICourseItemRepository} from '@/repository/courseItem';
 import {ILessonItemRepository} from '@/repository/lessonItem';
 import {IQuestionsItemRepository} from '@/repository/questions';
+import {IPresentationsRepository} from '@/repository/presentations';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -14,4 +15,5 @@ export interface IProvider {
     courseItem: ICourseItemRepository;
     lessonItem: ILessonItemRepository;
     questions: IQuestionsItemRepository;
+    presentations: IPresentationsRepository;
 }

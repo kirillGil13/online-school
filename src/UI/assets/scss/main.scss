@@ -9,6 +9,9 @@
 @import './common/form/input.scss';
 @import './common/menu/main.scss';
 
+//Components
+@import "components/init";
+
 html,
 body {
     color: $black;
