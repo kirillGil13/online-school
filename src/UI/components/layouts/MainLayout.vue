@@ -1,14 +1,16 @@
 <template>
     <v-app class="main-view">
         <v-main class="main-view__container">
-            <v-container  fluid>
+            <v-container class="fluid-container" fluid>
                 <div class="aside-view">
                     <Sidebar :userInfo="user" />
                     <Banner />
                 </div>
-                <v-container class="ml-7">
+                <div class="ml-7 content">
+                  <v-main>
                     <router-view></router-view>
-                </v-container>
+                  </v-main>
+                </div>
             </v-container>
         </v-main>
     </v-app>
@@ -37,8 +39,9 @@ export default class MainLayout extends Vue {
   font-family: 'Ubuntu' !important;
   width: 100%;
   &__container{
+    max-width: 1440px;
     background-color: #fbfcfe;
-    padding: 15px 55px 0 15px !important;
+    padding: 15px 0 0 0 !important;
   }
 }
 
@@ -46,8 +49,11 @@ export default class MainLayout extends Vue {
     width: 290px;
 }
 .content {
-    width: 100%;
+    width: 1440px - 290px - 36px;
     padding-top: 10px !important;
     margin-left: 36px;
+}
+.fluid-container{
+  max-width: 1440px !important;
 }
 </style>

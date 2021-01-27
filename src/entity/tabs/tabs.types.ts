@@ -4,9 +4,3 @@ export interface ITabs {
     filter: boolean;
     component: string;
 }
-export enum TabsNameEnum{
-    Main = 'TrainingMain',
-    Courses = 'TrainingCourses',
-    Club = 'TrainingClub',
-    Leaders = 'TrainingLeaders'
-}
