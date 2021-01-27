@@ -9,8 +9,9 @@ import { vuetify, prepareRepository } from '@/plugins';
 import currencyFilter from '@/entity/filters/currency.filter';
 
 Vue.config.productionTip = false;
-Vue.filter('currency', currencyFilter)
+Vue.filter('currency', currencyFilter);
 prepareRepository(store);
+Vue.config.ignoredElements = ['stream'];
 
 
 new Vue({

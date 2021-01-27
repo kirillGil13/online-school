@@ -26,6 +26,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import Button from '../common/Button.vue';
 import ProgressBar from '../common/ProgressBar.vue';
 import TestingQuestion from './TestingQuestion.vue';
+import {ITesting} from '@/entity/testing/testing.types';
 
 @Component({
     components: {
@@ -36,6 +37,7 @@ import TestingQuestion from './TestingQuestion.vue';
 })
 export default class TestingFormVue extends Vue {
     @Prop() readonly form!: TestingForm;
+    @Prop() readonly questions!: ITesting[];
     step = 1;
     next(): void {
         this.step += 1;

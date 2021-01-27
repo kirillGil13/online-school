@@ -181,8 +181,8 @@ export default class SliderLeaders extends Vue {
 }
 
 .master-rating {
-  background: linear-gradient(180deg, #f2cd4a 0%, #ff6d1b 100%);
-  backdrop-filter: blur(4px);
+  background: linear-gradient(180deg, #f2cd4a 0%, #ff6d1b 100%) !important;
+  backdrop-filter: blur(4px) !important;
 }
 
 .active_leader {

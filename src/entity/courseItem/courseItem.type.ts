@@ -6,13 +6,18 @@ export interface ICourseItem {
     createdAt: string;
     lessons: ICourseLessons[];
     currentLessonId: number;
+    materials: ICourseMaterials[];
+    resolveType(index: number, routeParam: string): string;
 }
 export interface ICourseLessons {
     id: number;
     title: string;
     lessonPassed: boolean;
     available: boolean;
-    type(): string;
+}
+export interface ICourseMaterials {
+    name: string;
+    filename: string;
 }
 
 export type CourseItemResponseType = {
@@ -23,10 +28,15 @@ export type CourseItemResponseType = {
     createdAt: string;
     lessons: CourseLessonsResponseType[];
     currentLessonId: number;
+    materials: CourseMaterialsResponseType[];
 }
 export type CourseLessonsResponseType = {
     id: number;
     title: string;
     lessonPassed: boolean;
     available: boolean;
+}
+export type CourseMaterialsResponseType = {
+    name: string;
+    filename: string;
 }

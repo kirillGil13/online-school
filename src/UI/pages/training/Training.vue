@@ -1,30 +1,27 @@
 <template>
-  <v-row>
-    <v-col cols="12" class="training">
-      <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
-        <Search />
-      </Header>
-      <h5>топ лидеры</h5>
-      <SliderLeaders :leaders="leaders" />
-      <v-row v-if="$route.params.id === undefined">
-        <v-col>
-          <Tabs :filters="filters" :tabs="tabs">
-            <TabsContent
-                v-for="(tab, index) in tabs"
-                :key="index"
-                :name="tab.title"
-                :selected="tab.isActive"
-            >
-              <keep-alive>
-                <component :is="tab.component" :courses="courses" :leaders="leaders" @proceed="proceed"></component>
-              </keep-alive>
-            </TabsContent>
-          </Tabs>
-        </v-col>
-      </v-row>
+    <v-col class="training">
+        <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
+          <Search />
+        </Header>
+        <h5>топ лидеры</h5>
+        <SliderLeaders :leaders="leaders" />
+        <v-row v-if="$route.params.id === undefined">
+          <v-col>
+            <Tabs :filters="filters" :tabs="tabs">
+              <TabsContent
+                  v-for="(tab, index) in tabs"
+                  :key="index"
+                  :name="tab.title"
+                  :selected="tab.component === $route.name"
+              >
+                <keep-alive>
+                  <router-view :courses="courses" :leaders="leaders" @proceed="proceed"></router-view>
+                </keep-alive>
+              </TabsContent>
+            </Tabs>
+          </v-col>
+        </v-row>
     </v-col>
-  </v-row>
-
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -35,16 +32,10 @@ import Leader from '@/entity/leader/leader';
 import { LeaderResponseType } from '@/entity/leader/leader.types';
 import Tabs from '../../components/common/tabs/Tabs.vue';
 import TabsContent from '../../components/common/tabs/TabsContent.vue';
-import TrainingCourses from '../../components/training/TrainingCourses.vue';
 import { ICoursesListItem} from '@/entity/courses/courses.types';
 import {ITabs} from '@/entity/tabs/tabs.types';
 import {TabsStore} from '@/store/modules/Tabs';
-import TrainingLeaders from '@/UI/components/training/TrainingLeaders.vue';
-import TrainingMain from '@/UI/components/training/TrainingMain.vue';
-import TrainingClub from '@/UI/components/training/TrainingClub.vue';
 import {CoursesStore} from '@/store/modules/Courses';
-import {CourseItemStore} from '@/store/modules/CourseItem';
-import {ICourseItem} from '@/entity/courseItem/courseItem.type';
 import Filters from '@/entity/filters/filters';
 
 @Component({
@@ -54,10 +45,6 @@ import Filters from '@/entity/filters/filters';
         Header,
         Tabs,
         TabsContent,
-        TrainingCourses,
-        TrainingLeaders,
-        TrainingMain,
-        TrainingClub,
     },
 })
 export default class Training extends Vue {
@@ -73,14 +60,10 @@ export default class Training extends Vue {
         }
     }
 
-    async proceed(id: number): Promise<void> {
-        await this.loadCourseItem(id);
-        await this.$router.push({ path: `/training/${id}/${this.courseItem.lessons[0].id}` });
+    proceed(id: number): void{
+        this.$router.push({ path: `/course/${id}` });
     }
 
-    async loadCourseItem(id: number): Promise<void> {
-      await CourseItemStore.fetchData({courseId: id.toString()})
-    }
 
     get tabs(): ITabs[] {
       return TabsStore.trainingTabs;
@@ -88,10 +71,6 @@ export default class Training extends Vue {
 
     get courses(): ICoursesListItem[] {
       return CoursesStore.courses;
-    }
-
-    get courseItem(): ICourseItem {
-      return CourseItemStore.courseItem;
     }
 
     async created(): Promise<void> {

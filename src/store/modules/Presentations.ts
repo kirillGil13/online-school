@@ -1,4 +1,4 @@
-import { Module, getModule, VuexModule, MutationAction, Mutation } from 'vuex-module-decorators';
+import { Module, getModule, VuexModule, Mutation } from 'vuex-module-decorators';
 import IProductPresentations from '@/entity/materials/presentations/productsPresentation.types';
 import { IPresentationType } from '@/entity/materials/presentations/presentation.types';
 import store from '@/store';

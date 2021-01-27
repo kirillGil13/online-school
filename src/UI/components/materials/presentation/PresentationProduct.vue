@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import IProductPresentations from "@/entity/materials/presentations/productsPresentation.types";
+import IProductPresentations from '@/entity/materials/presentations/productsPresentation.types';
 
 @Component
 export default class PresentationProduct extends Vue {

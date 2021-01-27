@@ -1,6 +1,6 @@
 export interface ITabs {
     id: string;
     title: string;
-    isActive: boolean;
+    filter: boolean;
     component: string;
 }

@@ -2,7 +2,7 @@ import {getModule, Module, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import {ITabs} from '@/entity/tabs/tabs.types';
 import {TrainingTabsNameEnum} from '@/entity/tabs/trainingTabs.types';
-import {PresentationTabsNameEnum} from "@/entity/tabs/presentationTabs.types";
+import {PresentationTabsNameEnum} from '@/entity/tabs/presentationTabs.types';
 
 
 @Module({
@@ -14,27 +14,27 @@ import {PresentationTabsNameEnum} from "@/entity/tabs/presentationTabs.types";
 class TabsModule extends VuexModule {
     trainingTabs: ITabs[] = [
         {
-            id: 'home',
+            id: '',
             title: 'Главная',
-            isActive: true,
+            filter: false,
             component: TrainingTabsNameEnum.Main,
         },
         {
             id: 'courses',
             title: 'Курсы',
-            isActive: false,
+            filter: false,
             component: TrainingTabsNameEnum.Courses,
         },
         {
             id: 'club',
             title: 'Клуб 100',
-            isActive: false,
+            filter: false,
             component: TrainingTabsNameEnum.Club,
         },
         {
             id: 'leaders',
             title: 'Лидеры',
-            isActive: false,
+            filter: true,
             component: TrainingTabsNameEnum.Leaders,
         },
     ];
@@ -43,13 +43,13 @@ class TabsModule extends VuexModule {
         {
             id: 'product-presentation',
             title: 'Презентации по продуктам',
-            isActive: true,
+            filter: false,
             component: PresentationTabsNameEnum.ProductPresentation,
         },
         {
             id: 'marketing-plans-presentation',
             title: 'Презентации по маркетинг-планам',
-            isActive: false,
+            filter: false,
             component: PresentationTabsNameEnum.MarketingPlansPresentation,
         },
     ]
