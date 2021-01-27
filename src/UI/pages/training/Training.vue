@@ -22,6 +22,8 @@
           </v-col>
         </v-row>
     </v-col>
+  </v-row>
+
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -66,7 +68,7 @@ export default class Training extends Vue {
 
 
     get tabs(): ITabs[] {
-      return TabsStore.tabs;
+      return TabsStore.trainingTabs;
     }
 
     get courses(): ICoursesListItem[] {

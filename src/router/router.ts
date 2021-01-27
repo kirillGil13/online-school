@@ -98,6 +98,11 @@ const routes = [
                     },
                 ]
             },
+            {
+                path: '/materials-presentation',
+                name: RouterNameEnum.MaterialPresentation,
+                component: () => import('../UI/pages/materials/presentation/Presentation.vue')
+            }
         ],
     },
 ];

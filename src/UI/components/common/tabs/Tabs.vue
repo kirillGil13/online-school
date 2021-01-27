@@ -28,7 +28,6 @@ import {TabsNameEnum} from '@/entity/tabs/tabs.types';
     FilterCourses
   }
 })
-
 export default class Tabs extends Vue {
   @Prop() readonly filters!: Filters;
   @Prop() readonly tabs!: ITabs[];
