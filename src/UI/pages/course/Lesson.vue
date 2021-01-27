@@ -35,7 +35,6 @@
 <script lang="ts">
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import {TestingForm} from '../../../form/testing/testingForm';
-import TestingResult from '../../../entity/testingResult/testingResult';
 import {LessonItemStore} from '../../../store/modules/LessonItem';
 import {ILessonItem} from '../../../entity/lessonItem/lessonItem.types';
 import Lessons from '../../components/lessons/Lessons.vue';
@@ -43,7 +42,6 @@ import Button from '../../components/common/Button.vue';
 import TestingComponent from '../../components/testing/TestingComponent.vue';
 import Relation from '../../components/common/Relation.vue';
 import {VideoStream} from 'stream-vue';
-import {TestingResultResponseType} from '@/entity/testingResult/testingResult.types';
 import {QuestionsStore} from '@/store/modules/Questions';
 import {ITesting} from '@/entity/testing/testing.types';
 import {ICourseItem} from '@/entity/courseItem/courseItem.type';
@@ -61,12 +59,9 @@ export default class Lesson extends Vue {
   @Prop() readonly isPlaying!: boolean;
   @Prop() readonly course!: ICourseItem;
   testingForm: TestingForm;
-  testingResult: TestingResult;
-  rightAnswers: TestingResultResponseType = {totalRightAnswers: 3,};
   constructor() {
     super();
-    this.testingForm = new TestingForm();
-    this.testingResult = new TestingResult(this.questions, this.rightAnswers);
+    this.testingForm = new TestingForm(this.questions);
   }
 
   @Watch('$route.params.lessonId')

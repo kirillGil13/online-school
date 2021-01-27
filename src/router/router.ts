@@ -38,9 +38,23 @@ const routes = [
                 component: () => import('../UI/pages/leader/LeaderCoursePage.vue'),
             },
             {
-                path: '/training/:id/:lessonId',
+                path: '/training',
+                redirect: '/training/main',
+                component: () => import('../UI/pages/training/Training.vue'),
+                children: [
+                    {path: '/training/main', name: RouterNameEnum.TrainingMain, component: () => import('../UI/components/training/TrainingMain.vue')},
+                    {path: '/training/courses', name: RouterNameEnum.TrainingCourses, component: () => import('../UI/components/training/TrainingCourses.vue')},
+                    {path: '/training/leaders', name: RouterNameEnum.TrainingLeaders, component: () => import('../UI/components/training/TrainingLeaders.vue')},
+                    {path: '/training/club', name: RouterNameEnum.TrainingClub, component: () => import('../UI/components/training/TrainingClub.vue')}
+                ]
+            },
+            {
+                path: '/course/:id',
                 name: RouterNameEnum.Course,
                 component: () => import('../UI/pages/course/Course.vue'),
+                children: [
+                    {path: ':lessonId', name: RouterNameEnum.Lesson, component: () => import('../UI/pages/course/Lesson.vue')}
+                ]
             },
             {
                 path: '/candidates',

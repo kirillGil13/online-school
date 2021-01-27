@@ -49,7 +49,6 @@ export default class TestingFormVue extends Vue {
         this.form.results[this.step - 1].answerId = id;
     }
     mounted(): void {
-        this.form.setFormData(this.questions);
         window.addEventListener('beforeunload', (e) => {
             e.preventDefault();
             e.returnValue = '';
