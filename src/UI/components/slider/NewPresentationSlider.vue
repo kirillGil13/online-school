@@ -1,18 +1,19 @@
 <template>
-  <v-col class="slider-container">
-    <swiper class="swiper component" :options="swiperComponentOption" ref="swiper">
-      <swiper-slide v-for="(leader, index) in leaders" :key="index" :id="index">
-        <!--<router-link
-            :to="{ name: routerName.LeaderCourses, params: { id: leader.id } }"
-            active-class="active_leader" @click="back">-->
-        <div :class=" ['slide', $route.params.id === leader.id.toString() ? 'active_leader' : '' ]" @click="proceed(leader.id)">
-          <div class="leader-photo" :style="{ backgroundImage: 'url(' + leader.userInfo.avatar + ')' }">
-            <Rating :rating="leader.rating" class="master-rating"/>
+  <div class="slider-container">
+    <swiper class="swiper" :options="swiperComponentOption" ref="swiper">
+      <swiper-slide v-for="(presentation, index) in presentations" :key="index" :id="index">
+        <div class="slide">
+          <v-img class="img" :aspect-ratio="16/9" width="100%" :src="presentation.cover">
+          </v-img>
+          <div class="format_icon">
+            <svg-icon v-if="presentation.fileType === 'pdf'" name="Doc_PDF"></svg-icon>
           </div>
-          <h4>{{ leader.fullName }}</h4>
-          <span class="desc">{{ leader.direction }}</span>
+          <div class="slider-description">
+            <h4>{{ presentation.name }}</h4>
+            <span class="desc">{{ presentation.fileSize }} kb</span>
+          </div>
+
         </div>
-        <!--</router-link>-->
       </swiper-slide>
       <div class="swiper-button-prev" @click="prev()" slot="button-prev">
         <svg-icon name="Slider_Arrow"></svg-icon>
@@ -21,29 +22,24 @@
         <svg-icon name="Slider_Arrow"></svg-icon>
       </div>
     </swiper>
-  </v-col>
+  </div>
+
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import Rating from '../common/Rating.vue';
-import Leader from '@/entity/leader/leader';
 import {SwiperOptions} from 'swiper';
-import {RouterNameEnum} from '@/router/router.types';
+import {IPresentationType} from "@/entity/materials/presentations/presentation.types";
 
-@Component({
-  components: {
-    Rating,
-  },
-})
-export default class SliderLeaders extends Vue {
-  @Prop() readonly leaders!: Leader[];
-  routerName = RouterNameEnum;
+@Component
+export default class NewPresentationSlider extends Vue {
+  @Prop() readonly presentations!: IPresentationType[];
 
   swiperComponentOption: SwiperOptions = {
-    slidesPerView: 6,
+    slidesPerView: 4,
     spaceBetween: 8,
     slidesPerGroup: 1,
     loop: false,
+    preloadImages: true,
     navigation: {
       nextEl: 'swiper-button-next',
       prevEl: 'swiper-button-prev',
@@ -51,11 +47,6 @@ export default class SliderLeaders extends Vue {
     simulateTouch: false,
   };
 
-  proceed(id: number): void {
-    if (this.$route.params.id === id.toString()) {
-      this.$router.push({path: '/training'});
-    } else this.$router.push({ name: this.routerName.LeaderCourses, params: { id: id.toString() } });
-  }
 
   next(): void {
     // this.$refs.swiper.$swiper.slideNext();
@@ -68,7 +59,6 @@ export default class SliderLeaders extends Vue {
   }
 
   checkActive(): void {
-
     // if (this.$refs.swiper.$swiper.activeIndex != 0) {
     //     this.$refs.swiper.$swiper.params.el.children[1].style.display = 'flex';
     // } else this.$refs.swiper.$swiper.params.el.children[1].style.display = 'none';
@@ -79,10 +69,10 @@ export default class SliderLeaders extends Vue {
 .swiper {
   width: 90%;
   position: static;
+  max-height: 223px;
 }
 
 .swiper-wrapper {
-  position: static;
 }
 
 .slider-container {
@@ -108,30 +98,36 @@ export default class SliderLeaders extends Vue {
 
   .slide {
     border-radius: 12px;
-    padding-top: 16px;
     padding-bottom: 16px;
     height: 100%;
     width: 100%;
+    position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     flex-direction: column;
+    .img {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
 
-    .leader-photo {
-      width: 72px;
-      height: 72px;
-      position: relative;
-      background-repeat: no-repeat;
-      background-size: cover;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      border-radius: 50%;
-
-      .rating {
-        left: 25%;
-        bottom: -10%;
+    }
+    .format_icon {
+      position: absolute;
+      background-color: white;
+      border-radius: $main-border-radius;
+      height: 36px;
+      width: 36px;
+      display: flex;
+      justify-content: center;
+      bottom: 50px;
+      left: 5px;
+      align-items: center;
+      .svg-icon {
+        width: 15px !important;
+        height: 15px !important;
+        color: $blue !important;
       }
     }
-
     h4 {
       color: #060516;
       font-size: 12px;
@@ -145,6 +141,9 @@ export default class SliderLeaders extends Vue {
       opacity: 0.6;
       font-size: 12px;
       line-height: 150%;
+    }
+    .slider-description{
+      margin-left: 10px;
     }
   }
 }
@@ -178,14 +177,5 @@ export default class SliderLeaders extends Vue {
 
 .swiper-button-next {
   display: flex;
-}
-
-.master-rating {
-  background: linear-gradient(180deg, #f2cd4a 0%, #ff6d1b 100%);
-  backdrop-filter: blur(4px);
-}
-
-.active_leader {
-  border: 2px solid #426df6;
 }
 </style>

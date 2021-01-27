@@ -1,27 +1,30 @@
 <template>
-    <v-col class="training">
-        <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
-          <Search />
-        </Header>
-        <h5>топ лидеры</h5>
-        <SliderLeaders :leaders="leaders" />
-        <v-row v-if="$route.params.id === undefined">
-          <v-col>
-            <Tabs :filters="filters">
-              <TabsContent
-                  v-for="(tab, index) in tabs"
-                  :key="index"
-                  :name="tab.title"
-                  :selected="tab.isActive"
-              >
-                <keep-alive>
-                  <component :is="tab.component" :courses="courses" :leaders="leaders" @proceed="proceed"></component>
-                </keep-alive>
-              </TabsContent>
-            </Tabs>
-          </v-col>
-        </v-row>
+  <v-row>
+    <v-col cols="12" class="training">
+      <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
+        <Search />
+      </Header>
+      <h5>топ лидеры</h5>
+      <SliderLeaders :leaders="leaders" />
+      <v-row v-if="$route.params.id === undefined">
+        <v-col>
+          <Tabs :filters="filters" :tabs="tabs">
+            <TabsContent
+                v-for="(tab, index) in tabs"
+                :key="index"
+                :name="tab.title"
+                :selected="tab.isActive"
+            >
+              <keep-alive>
+                <component :is="tab.component" :courses="courses" :leaders="leaders" @proceed="proceed"></component>
+              </keep-alive>
+            </TabsContent>
+          </Tabs>
+        </v-col>
+      </v-row>
     </v-col>
+  </v-row>
+
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -80,7 +83,7 @@ export default class Training extends Vue {
     }
 
     get tabs(): ITabs[] {
-      return TabsStore.tabs;
+      return TabsStore.trainingTabs;
     }
 
     get courses(): ICoursesListItem[] {
