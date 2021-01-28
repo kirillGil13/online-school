@@ -1,4 +1,4 @@
-import {CourseItemResponseType, ICourseItem, ICourseLessons} from './courseItem.type';
+import {CourseItemResponseType, ICourseItem, ICourseLessons, ICourseMaterials} from './courseItem.type';
 import { LessonsTypesEnum } from '@/entity/common/lessons.types';
 
 export default class CourseItem implements ICourseItem {
@@ -9,7 +9,8 @@ export default class CourseItem implements ICourseItem {
     createdAt: string;
     currentLessonId: number;
     lessons: ICourseLessons[] = [];
-    constructor(data: CourseItemResponseType, paramLessonId: string) {
+    materials: ICourseMaterials[] = [];
+    constructor(data: CourseItemResponseType) {
         this.id = data.id;
         this.title = data.title;
         this.description = data.description;
@@ -22,19 +23,22 @@ export default class CourseItem implements ICourseItem {
                 title: data.lessons[i].title,
                 available: data.lessons[i].available,
                 lessonPassed: data.lessons[i].lessonPassed,
-                type(): string {
-                    let type = '';
-                    if (data.lessons[i].lessonPassed) {
-                        type = LessonsTypesEnum.DONE;
-                    } else if (!data.lessons[i].lessonPassed && data.lessons[i].available) {
-                        type = LessonsTypesEnum.UN_DONE;
-                    } else type = LessonsTypesEnum.LOCKED;
-                    if (data.lessons[i].available && data.lessons[i].id.toString() === paramLessonId) {
-                        type = LessonsTypesEnum.IN_PROGRESS;
-                    }
-                    return type;
-                },
             });
         }
+        for (let i = 0; i < data.materials.length; i++) {
+            this.materials.push(data.materials[i]);
+        }
+    }
+    resolveType(index: number, routeParam: string): string {
+        let type = '';
+        if (this.lessons[index].lessonPassed) {
+            type = LessonsTypesEnum.DONE;
+        } else if (!this.lessons[index].lessonPassed && this.lessons[index].available) {
+            type = LessonsTypesEnum.UN_DONE;
+        } else type = LessonsTypesEnum.LOCKED;
+        if (this.lessons[index].available && this.lessons[index].id.toString() === routeParam) {
+            type = LessonsTypesEnum.IN_PROGRESS;
+        }
+        return type;
     }
 }

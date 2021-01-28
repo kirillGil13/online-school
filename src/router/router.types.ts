@@ -12,4 +12,9 @@ export enum RouterNameEnum {
     Calendar = 'Calendar',
     Chat = 'Chat',
     Course = 'Course',
+    Lesson = 'Lesson',
+    TrainingMain = 'TrainingMain',
+    TrainingCourses = 'TrainingCourses',
+    TrainingClub = 'TrainingClub',
+    TrainingLeaders = 'TrainingLeaders',
 }

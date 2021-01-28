@@ -10,11 +10,13 @@ import {ITesting} from '@/entity/testing/testing.types';
 })
 class QuestionsModule extends VuexModule {
     questions: ITesting[] = [];
+    questionsLoaded = false;
 
     @MutationAction
-    async fetchAll(lessonId: string): Promise<{ questions: ITesting[] }> {
+    async fetchAll(lessonId: string): Promise<{questions: ITesting[]; questionsLoaded: boolean}> {
         const questions = await store.$repository.questions.fetchAll(lessonId);
-        return { questions };
+        const questionsLoaded = true;
+        return {questions, questionsLoaded};
     }
 }
 

@@ -9,20 +9,17 @@ import {ICourseItem} from '@/entity/courseItem/courseItem.type';
     dynamic: true,
 })
 class CourseItemModule extends VuexModule {
-    courseItem: ICourseItem = {
-        id: 0,
-        title: '',
-        description: '',
-        isTestingRequire: false,
-        createdAt: '',
-        currentLessonId: 0,
-        lessons: []
-    };
+    courseItem: ICourseItem | null  = null;
+    courseLoaded = false;
 
     @MutationAction
-    async fetchData(data: {courseId: string; lessonId?: string}): Promise<{ courseItem: ICourseItem }> {
-        const courseItem = await store.$repository.courseItem.fetchData(data.courseId, data.lessonId);
-        return { courseItem };
+    async fetchData(data: {courseId: string; lessonId: string}): Promise<{ courseItem: ICourseItem; courseLoaded: boolean }> {
+        const courseItem = await store.$repository.courseItem.fetchData(data.courseId);
+        let courseLoaded = false;
+        if (courseItem) {
+            courseLoaded = true;
+        }
+        return { courseItem, courseLoaded };
     }
 }
 

@@ -33,7 +33,11 @@ export default class RadioButton extends Vue {
 }
 </script>
 <style lang="scss">
-label {
+.radio_row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
     width: 100%;
     position: relative;
     border: 1px solid #f2f2f2;
@@ -72,11 +76,5 @@ label {
             font-size: 14px;
         }
     }
-}
-.radio_row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
 }
 </style>

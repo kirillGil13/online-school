@@ -1,5 +1,5 @@
-import {IPresentationsListItem} from '@/entity/presentations/presentations.types';
+import IProductPresentations from '@/entity/materials/presentations/productsPresentation.types';
 
-export interface IPresentationsRepository {
-    fetchAll(): Promise<IPresentationsListItem[]>;
+export interface IPresentationRepository {
+    fetch(): Promise<IProductPresentations[]>;
 }

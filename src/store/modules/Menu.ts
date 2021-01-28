@@ -19,7 +19,7 @@ class MenuModule extends VuexModule {
         {
             title: 'Обучение',
             iconName: 'Education',
-            route: RouterNameEnum.Training,
+            route: RouterNameEnum.TrainingMain,
         },
         {
             title: 'Материалы',

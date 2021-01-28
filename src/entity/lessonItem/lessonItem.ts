@@ -2,13 +2,15 @@ import { ILessonItem, LessonItemResponseType } from '@/entity/lessonItem/lessonI
 
 export default class LessonItem implements ILessonItem {
     title: string;
-    videoLink: string;
+    videoPath: string;
+    videoUid: string;
     description: string;
     available: true;
     userViewingVideoDuration: number;
     constructor(data: LessonItemResponseType) {
         this.title = data.title;
-        this.videoLink = data.videoLink;
+        this.videoPath = data.videoPath;
+        this.videoUid = data.videoUid;
         this.description = data.description;
         this.available = data.available;
         this.userViewingVideoDuration = data.userViewingVideoDuration;

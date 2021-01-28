@@ -1,2 +1,2 @@
-export * from './PresentationsRepository';
-export * from './PresentationsRepository.types';
+export * from './PresentationsRepository'
+export * from './PresentationsRepository.types'
