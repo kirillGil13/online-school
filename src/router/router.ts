@@ -28,15 +28,53 @@ const routes = [
                 component: () => import('../UI/pages/leader/LeaderCoursePage.vue'),
             },
             {
-                path: '/training',
-                redirect: '/training/main',
-                component: () => import('../UI/pages/training/Training.vue'),
+                path: '/organization',
+                component: () => import('../UI/pages/orgDetail/OrganizationDetail.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: RouterNameEnum.OrganizationMain,
+                        component: () => import('../UI/components/orgDetail/OrganizationMain.vue')
+                    },
+{
+                        path: 'training',
+                        name: RouterNameEnum.OrganizationTraining,
+                        component: () => import('../UI/components/orgDetail/OrganizationTraining.vue')
+                    },
+{
+                        path: 'presentations',
+                        name: RouterNameEnum.OrganizationPresentations,
+                        component: () => import('../UI/components/orgDetail/OrganizationPresentations.vue')
+                    },
+{
+                        path: 'info-packages',
+                        name: RouterNameEnum.OrganizationInfoPackages,
+                        component: () => import('../UI/components/orgDetail/OrganizationInfoPackages.vue')
+                    },
+{
+                        path: 'documents',
+                        name: RouterNameEnum.OrganizationDocuments,
+                        component: () => import('../UI/components/orgDetail/OrganizationDocuments.vue')
+                    },
+{
+                        path: 'instructions',
+                        name: RouterNameEnum.OrganizationInstructions,
+                        component: () => import('../UI/components/orgDetail/OrganizationInstructions.vue')
+                    },
+{
+                        path: 'leaders',
+                        name: RouterNameEnum.OrganizationLeaders,
+                        component: () => import('../UI/components/orgDetail/OrganizationLeaders.vue')
+                    },
+{
+                        path: 'group',
+                        name: RouterNameEnum.OrganizationGroup,
+                        component: () => import('../UI/components/orgDetail/OrganizationGroup.vue')
+                    },
+
+                ]
             },
-            {
-                path: '/training/:id',
-                name: RouterNameEnum.LeaderCourses,
-                component: () => import('../UI/pages/leader/LeaderCoursePage.vue'),
-            },
+
             {
                 path: '/training',
                 redirect: '/training/main',
@@ -87,22 +125,17 @@ const routes = [
                         component: () => import('../UI/pages/materials/Presentations.vue'),
                     },
                     {
-                        path: 'documents',
+                        path: '/materials/documents',
                         name: RouterNameEnum.MaterialDocuments,
                         component: () => import('../UI/pages/materials/Documents.vue'),
                     },
                     {
-                        path: 'infopacks',
+                        path: '/materials/infopacks',
                         name: RouterNameEnum.MaterialInfoPacks,
                         component: () => import('../UI/pages/materials/InfoPacks.vue'),
                     },
                 ]
             },
-            {
-                path: '/materials-presentation',
-                name: RouterNameEnum.MaterialPresentation,
-                component: () => import('../UI/pages/materials/presentation/Presentation.vue')
-            }
         ],
     },
 ];

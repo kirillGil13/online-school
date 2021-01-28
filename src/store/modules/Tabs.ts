@@ -3,6 +3,7 @@ import store from '@/store';
 import {ITabs} from '@/entity/tabs/tabs.types';
 import {TrainingTabsNameEnum} from '@/entity/tabs/trainingTabs.types';
 import {PresentationTabsNameEnum} from '@/entity/tabs/presentationTabs.types';
+import {OrganizationTabsNameEnum} from '@/entity/tabs/organizationTabs.types';
 
 
 @Module({
@@ -52,6 +53,57 @@ class TabsModule extends VuexModule {
             filter: false,
             component: PresentationTabsNameEnum.MarketingPlansPresentation,
         },
+    ];
+    organizationTabs: ITabs[] = [
+        {
+            id: 'main',
+            title: 'Главная',
+            filter: false,
+            component: OrganizationTabsNameEnum.OrganizationMain
+        },
+        {
+            id: 'training',
+            title: 'Обучение',
+            filter: false,
+            component: OrganizationTabsNameEnum.OrganizationTraining
+        },
+        {
+            id: 'presentations',
+            title: 'Презентации',
+            filter: false,
+            component: OrganizationTabsNameEnum.OrganizationPresentations
+        },
+        {
+            id: 'info-packages',
+            title: 'Инфопакеты',
+            filter: false,
+            component: OrganizationTabsNameEnum.OrganizationInfoPackages
+        },
+        {
+            id: 'documents',
+            title: 'Документы',
+            filter: false,
+            component: OrganizationTabsNameEnum.OrganizationDocuments
+        },
+        {
+            id: 'instructions',
+            title: 'Инструкции',
+            filter: false,
+            component: OrganizationTabsNameEnum.OrganizationInstructions
+        },
+        {
+            id: 'leaders',
+            title: 'Лидеры',
+            filter: false,
+            component: OrganizationTabsNameEnum.OrganizationLeaders
+        },
+        {
+            id: 'group',
+            title: 'Сообщество',
+            filter: false,
+            component: OrganizationTabsNameEnum.OrganizationGroup
+        },
+
     ]
 }
 

@@ -1,6 +1,6 @@
 <template>
     <v-row :class="['top_bar', isBordered ? 'box-container pa-2' : 'py-24']" ref="topBar">
-        <v-col cols="8">
+        <v-col class="title">
             <router-link v-if="route" :to="{ name: route.name }" class="link">
                 <svg-icon name="Arrow_Left" class="svg-fill-none"></svg-icon>
                 {{ route.label }}
@@ -8,7 +8,7 @@
             <h1 v-if="title">{{ title }}</h1>
             <span v-if="description">{{ description }}</span>
         </v-col>
-        <v-col cols="4">
+        <v-col class="top_bar_right" cols="7">
             <slot></slot>
         </v-col>
     </v-row>

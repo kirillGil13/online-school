@@ -1,6 +1,6 @@
 import {getModule, Module, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import {FiltersNameEnum, IFilters} from '@/entity/filters/filters.types';
+import {FiltersCourseNameEnum, FiltersNameEnum, IFilters} from '@/entity/filters/filters.types';
 
 @Module({
     namespaced: true,
@@ -38,6 +38,42 @@ class FiltersModule extends VuexModule {
             filterType: FiltersNameEnum.Cost
         },
     ];
+    courses: IFilters[] = [
+        {
+            id: 0,
+            filter: [
+                'Все курсы',
+            ],
+            filterType: FiltersCourseNameEnum.Course
+        },
+        {
+            id: 1,
+            filter: [
+                'Все темы',
+            ],
+            filterType: FiltersCourseNameEnum.Theme
+        },
+        {
+            id: 2,
+            filter: [
+                'Неважно',
+                'Стартовый',
+                'С опытом'
+            ],
+            filterType: FiltersCourseNameEnum.Level
+        },
+        {
+            id: 3,
+            filter: [
+                'Неважно',
+                '50 - 5000 ₽',
+                '5000 - 20 000 ₽',
+                '20 000 - 50 000 ₽',
+                'выше 50 000 ₽'
+            ],
+            filterType: FiltersCourseNameEnum.Cost
+        },
+    ];
 
     periods: IFilters[] = [
         {
@@ -49,7 +85,8 @@ class FiltersModule extends VuexModule {
             ],
             filterType: FiltersNameEnum.Period
         },
-    ]
+    ];
+
 }
 
 export const FiltersStore = getModule(FiltersModule);
