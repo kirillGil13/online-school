@@ -20,7 +20,7 @@ const routes = [
             {
                 path: '/main',
                 name: 'Main',
-                component: () => import('../UI/pages/profile/Profile.vue'),
+                component: () => import('../UI/pages/main/Main.vue'),
             },
             {
                 path: '/leader/:id',
@@ -80,12 +80,12 @@ const routes = [
                 path: '/materials',
                 name: RouterNameEnum.Materials,
                 component: () => import('../UI/pages/materials/Materials.vue'),
-                redirect: '/materials/presentations',
+                redirect: '/materials/presentation/Presentation.vue',
                 children: [
                     {
-                        path: '/materials/presentations',
+                        path: '/materials/presentation',
                         name: RouterNameEnum.MaterialPresentation,
-                        component: () => import('../UI/pages/materials/Presentations.vue'),
+                        component: () => import('../UI/pages/materials/presentation/Presentation.vue'),
                     },
                     {
                         path: '/materials/documents',

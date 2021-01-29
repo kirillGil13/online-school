@@ -8,7 +8,7 @@
     >
     </Header>
     <h3>Новое за последние 7 дней</h3>
-<!--    <PresentationsLast/>-->
+    <PresentationsLast/>
     {{ presentations }}
   </v-col>
 </template>
@@ -17,8 +17,8 @@
 import {Component, Vue} from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
 import PresentationsLast from '@/UI/components/materials/PresentationsLast.vue';
-import { PresentationsStore } from '@/store/modules/Presentations';
-import { IPresentationsListItem } from '@/entity/presentations/presentations.types'
+/*import { PresentationStore } from '@/store/modules/Presentations';
+import { IPresentationsListItem } from '@/entity/presentations/presentations.types'*/
 
 @Component({
   components: {
@@ -28,13 +28,13 @@ import { IPresentationsListItem } from '@/entity/presentations/presentations.typ
 })
 
 export default class Presentations extends Vue {
-  get presentations(): IPresentationsListItem[] {
-    return PresentationsStore.presentations;
+  /*get presentations(): IPresentationsListItem[] {
+    return PresentationStore.presentations;
   }
 
   async created(): Promise<void> {
-    await PresentationsStore.fetchAll();
-  }
+    await PresentationStorefetchAll();
+  }*/
 }
 </script>
 <style lang="scss">

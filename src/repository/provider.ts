@@ -7,7 +7,6 @@ import {CoursesRepository} from '@/repository/courses';
 import {CourseItemRepository} from '@/repository/courseItem';
 import {LessonItemRepository} from '@/repository/lessonItem';
 import {QuestionsRepository} from '@/repository/questions';
-import {PresentationsRepository} from '@/repository/presentations';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -18,6 +17,5 @@ export const provider = (): IProvider => ({
     courseItem: new CourseItemRepository(),
     lessonItem: new LessonItemRepository(),
     questions: new QuestionsRepository(),
-    presentations: new PresentationsRepository(),
 });
 
