@@ -23,14 +23,18 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
 import SliderLeaders from '@/UI/components/slider/SliderLeaders.vue';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
-import {ILeaderCourses} from '@/entity/leaderCourses/leaderCourses.types';
-import {ILeader} from '@/entity/leader';
+import {ILeaderCourses, LeaderCoursesResponseType} from '@/entity/leaderCourses/leaderCourses.types';
+import {ILeader, LeaderResponseType} from '@/entity/leader';
 import Filters from '@/entity/filters/filters';
 import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
+import Leader from '@/entity/leader/leader';
+import CoursesListItem from '@/entity/courses/courses';
+import {LeaderTestStore} from '@/store/modules/LeadersTest';
+import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
 
 @Component({
   components: {
@@ -41,14 +45,29 @@ import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
   }
 })
 export default class OrganizationTraining extends Vue {
-  @Prop() readonly leaderCourses!: ILeaderCourses[];
-  @Prop() readonly leaders!: ILeader[];
-  @Prop() readonly filters!: Filters;
+  leaderCourses: ILeaderCourses[] = [];
+  leaders: ILeader[] = [];
+  filters: Filters;
+
+  constructor() {
+    super();
+    this.filters = new Filters();
+    for (let i = 0; i < this.leadersTest.length; i++) {
+      this.leaders.push(new Leader(this.leadersTest[i]));
+    }
+    for (let i = 0; i < this.leadersCoursesTest.length; i++) {
+      this.leaderCourses.push(new CoursesListItem(this.leadersCoursesTest[i]));
+    }
+  }
+  get leadersTest(): LeaderResponseType[] {
+    return LeaderTestStore.leader;
+  }
+  get leadersCoursesTest(): LeaderCoursesResponseType[] {
+    return LeadersCoursesTestStore.leadersCourses;
+  }
 }
 </script>
 
 <style lang="scss">
-.top_bar_small {
 
-}
 </style>

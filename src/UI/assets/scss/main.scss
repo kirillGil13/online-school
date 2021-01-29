@@ -293,11 +293,21 @@ h5 {
                 margin-left: 4px;
                 text-transform: none;
             }
-            &.share {
-                top: 12px;
-                right: 12px;
-            }
+
         }
+        .share {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            color: #ffffff;
+            top: 12px;
+            right: 12px;
+            .svg-icon {
+                width: 20px !important;
+                height: 20px !important;
+            }
+         }
     }
     .course-title{
         margin-top: 12px;
@@ -305,9 +315,19 @@ h5 {
         font-weight: 550;
     }
     .course-description {
+        height: 54px;
+        max-width: 330px;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
         margin-top: 8px;
         color: #5F739C;
         font-size: 12px;
+    }
+    .course-download {
+        color: #426DF6;
+        font-size: 14px;
     }
 }
 .svg-wh {
@@ -419,5 +439,9 @@ iframe {
         display: flex;
         justify-content: flex-end;
         align-items: flex-end;
+    }
+    .desc {
+        margin-top: 10px;
+        font-size: 12px;
     }
 }

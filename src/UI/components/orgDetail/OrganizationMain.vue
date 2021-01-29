@@ -15,13 +15,17 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
-import {ILeader} from '@/entity/leader';
+import {ILeader, LeaderResponseType} from '@/entity/leader';
 import SliderLeaders from '@/UI/components/slider/SliderLeaders.vue';
 import CourseComponent from '@/UI/components/course/CourseComponent.vue';
-import {ICoursesListItem} from '@/entity/courses/courses.types';
+import {CoursesListItemResponseType, ICoursesListItem} from '@/entity/courses/courses.types';
 import Button from '@/UI/components/common/Button.vue';
+import Leader from '@/entity/leader/leader';
+import CoursesListItem from '@/entity/courses/courses';
+import {LeaderTestStore} from '@/store/modules/LeadersTest';
+import {CoursesTestStore} from '@/store/modules/CoursesTest';
 @Component({
   components: {
     Button,
@@ -31,8 +35,23 @@ import Button from '@/UI/components/common/Button.vue';
   }
 })
 export default class OrganizationMain extends Vue {
-  @Prop() readonly courses!: ICoursesListItem[];
-  @Prop() readonly leaders!: ILeader[];
+  leaders: ILeader[] = [];
+  courses: ICoursesListItem[] = [];
+  constructor() {
+    super();
+    for (let i = 0; i < this.leadersTest.length; i++) {
+      this.leaders.push(new Leader(this.leadersTest[i]));
+    }
+    for (let i = 0; i < this.coursesTest.length; i++) {
+      this.courses.push(new CoursesListItem(this.coursesTest[i]));
+    }
+  }
+  get leadersTest(): LeaderResponseType[] {
+    return LeaderTestStore.leader;
+  }
+  get coursesTest(): CoursesListItemResponseType[] {
+    return CoursesTestStore.courses;
+  }
 }
 </script>
 
