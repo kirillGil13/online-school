@@ -22,7 +22,7 @@ import CoursesListItem from '@/entity/courses/courses';
 })
 
 export default class CompanyComponent extends Vue {
-  @Prop() readonly courses: CoursesListItem[];
+  @Prop() readonly courses!: CoursesListItem[];
 }
 </script>
 <style lang="scss">

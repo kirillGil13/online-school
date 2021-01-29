@@ -74,8 +74,6 @@ import {LeaderTestStore} from '@/store/modules/LeadersTest';
 import {CoursesTestStore} from '@/store/modules/CoursesTest';
 import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
 import {ILeaderCourses, LeaderCoursesResponseType} from '@/entity/leaderCourses/leaderCourses.types';
-import IProductPresentations from '@/entity/materials/presentations/productsPresentation.types';
-import {PresentationStore} from '@/store/modules/Presentations';
 @Component({
   components: {Button}
 })
@@ -113,9 +111,6 @@ export default class OrganizationDetail extends Vue {
   @Watch('$route.name', {immediate: true})
   onChangeRoute(): void {
     this.activeName = this.tabs.findIndex(item => item.component === this.$route.name);
-  }
-  get presentations(): IProductPresentations[] {
-    return PresentationStore.presentations
   }
 }
 </script>

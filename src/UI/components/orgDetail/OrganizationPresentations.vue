@@ -6,14 +6,11 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import IProductPresentations from '@/entity/materials/presentations/productsPresentation.types';
-import PresentationCategory from '@/UI/components/presentationCategory/PresentationCategory.vue';
+import {Component, Vue} from 'vue-property-decorator';
 @Component({
-  components: {PresentationCategory}
+  components: {}
 })
 export default class OrganizationPresentations extends Vue {
-  @Prop() readonly presentations!: IProductPresentations;
 }
 </script>
 
