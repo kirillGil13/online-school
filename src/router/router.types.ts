@@ -17,4 +17,13 @@ export enum RouterNameEnum {
     TrainingCourses = 'TrainingCourses',
     TrainingClub = 'TrainingClub',
     TrainingLeaders = 'TrainingLeaders',
+    Organization = 'Organization',
+    OrganizationMain = 'OrganizationMain',
+    OrganizationTraining = 'OrganizationTraining',
+    OrganizationPresentations = 'OrganizationPresentations',
+    OrganizationInfoPackages = 'OrganizationInfoPackages',
+    OrganizationDocuments = 'OrganizationDocuments',
+    OrganizationInstructions = 'OrganizationInstructions',
+    OrganizationLeaders = 'OrganizationLeaders',
+    OrganizationGroup = 'OrganizationGroup',
 }

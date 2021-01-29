@@ -245,6 +245,19 @@ h5 {
     margin-right: 24px;
     margin-bottom: 28px;
     cursor: pointer;
+    &.course-block-s {
+        width: calc((100% / 4) - 16px);
+        margin-right: 16px !important;
+        &:nth-child(4n + 4) {
+            margin-right: 0;
+        }
+        &:nth-child(3n + 3) {
+            margin-right: 16px;
+        }
+        .course-video-block {
+            height: 135px;
+        }
+    }
     &:nth-child(3n + 3) {
         margin-right: 0;
     }
@@ -280,10 +293,21 @@ h5 {
                 margin-left: 4px;
                 text-transform: none;
             }
+            &.share {
+                top: 12px;
+                right: 12px;
+            }
         }
     }
     .course-title{
         margin-top: 12px;
+        color: #000000;
+        font-weight: 550;
+    }
+    .course-description {
+        margin-top: 8px;
+        color: #5F739C;
+        font-size: 12px;
     }
 }
 .svg-wh {
@@ -378,5 +402,22 @@ iframe {
             top: 0;
             left: 0;
         }
+    }
+}
+.v-tabs-items {
+    background-color: transparent !important;
+}
+.top_bar_small {
+    h1 {
+        font-size: 18px !important;
+    }
+    a {
+        color: #426DF6;
+        font-size: 14px;
+    }
+    .top_bar_right {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
     }
 }
