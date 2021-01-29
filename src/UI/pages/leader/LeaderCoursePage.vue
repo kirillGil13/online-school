@@ -20,7 +20,7 @@
             <Button class="py-3">Подписаться</Button>
           </v-col>
         </div>
-        <div class="mt-3 leader__desc">{{leader.direction}}</div>
+        <div class="mt-3 leader_page__desc">{{leader.direction}}</div>
       </v-col>
       <v-col class="box-container mt-6">
         <Header class="top_bar_small" title="Курсы">

@@ -4,6 +4,8 @@
         v-for="(company, index) in companies"
         :key="index"
         :company="company"
+        :courses="courses"
+        v-on="$listeners"
     />
   </div>
 </template>
@@ -12,6 +14,7 @@
 import {Vue, Component, Prop} from 'vue-property-decorator';
 import CompanyComponent from '@/UI/components/companies/company/CompanyComponent.vue';
 import {ICompaniesListItem} from '@/entity/companies/companies.types';
+import {ICoursesListItem} from '@/entity/courses/courses.types';
 
 @Component({
   components: {
@@ -21,6 +24,7 @@ import {ICompaniesListItem} from '@/entity/companies/companies.types';
 
 export default class Companies extends Vue {
   @Prop() readonly companies!: ICompaniesListItem[];
+  @Prop() readonly courses!: ICoursesListItem[];
 
 }
 </script>

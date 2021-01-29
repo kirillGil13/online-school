@@ -7,7 +7,7 @@
     />
     <div class="companies__company-devider"></div>
     <CompanyLeaders :leaders="company.leaders"/>
-    <CompanyCourses :courses="company.courses"/>
+    <CompanyCourses :courses="courses"/>
     <Button class="companies__button" v-on="$listeners">Подробнее</Button>
   </div>
 </template>
@@ -17,17 +17,21 @@ import CompanyAvatar from '@/UI/components/companies/company/Avatar.vue';
 import {ICompaniesListItem} from '@/entity/companies/companies.types';
 import CompanyLeaders from '@/UI/components/companies/company/Leaders.vue';
 import CompanyCourses from '@/UI/components/companies/company/Courses.vue';
+import Button from '@/UI/components/common/Button.vue';
+import {ICoursesListItem} from '@/entity/courses/courses.types';
 
 @Component({
   components: {
     CompanyAvatar,
     CompanyLeaders,
-    CompanyCourses
+    CompanyCourses,
+    Button
   }
 })
 
 export default class CompanyComponent extends Vue {
   @Prop() readonly company!: ICompaniesListItem;
+  @Prop() readonly courses!: ICoursesListItem[];
 }
 </script>
 <style lang="scss">

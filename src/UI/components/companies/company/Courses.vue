@@ -13,7 +13,7 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import CourseComponent from '@/UI/components/course/CourseComponent.vue';
-import CoursesListItem from '@/entity/courses/courses';
+import {ICoursesListItem} from '@/entity/courses/courses.types';
 
 @Component({
   components: {
@@ -22,7 +22,7 @@ import CoursesListItem from '@/entity/courses/courses';
 })
 
 export default class CompanyComponent extends Vue {
-  @Prop() readonly courses!: CoursesListItem[];
+  @Prop() readonly courses!: ICoursesListItem[];
 }
 </script>
 <style lang="scss">

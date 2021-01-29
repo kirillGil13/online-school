@@ -1,20 +1,20 @@
 import {CompaniesResponseType, ICompaniesListItem} from '@/entity/companies/companies.types';
 import {ILeader} from '@/entity/leader';
-import {ICoursesListItem} from '@/entity/courses/courses.types';
+import Leader from '@/entity/leader/leader';
 
 export class Company implements ICompaniesListItem {
     id: number;
     name: string;
     avatar: string;
     description: string;
-    courses: ICoursesListItem[];
-    leaders: ILeader[];
+    leaders: ILeader[] = [];
     constructor(data: CompaniesResponseType) {
         this.id = data.id;
         this.name = data.name;
         this.avatar = data.avatar;
         this.description = data.description;
-        this.courses = data.courses;
-        this.leaders = data.leaders;
+        for (let i = 0; i < data.leaders.length; i++) {
+            this.leaders.push(new Leader(data.leaders[i]));
+        }
     }
 }

@@ -1,5 +1,4 @@
-import {ILeader} from '@/entity/leader';
-import {ICoursesListItem} from '@/entity/courses/courses.types';
+import {ILeader, LeaderResponseType} from '@/entity/leader';
 
 export interface ICompaniesListItem {
     id: number;
@@ -7,7 +6,6 @@ export interface ICompaniesListItem {
     avatar: string;
     description: string;
     leaders: ILeader[];
-    courses: ICoursesListItem[];
 }
 
 export type CompaniesResponseType = {
@@ -15,6 +13,5 @@ export type CompaniesResponseType = {
     name: string;
     avatar: string;
     description: string;
-    leaders: ILeader[];
-    courses: ICoursesListItem[];
+    leaders: LeaderResponseType[];
 }
