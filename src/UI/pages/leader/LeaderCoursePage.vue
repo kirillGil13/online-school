@@ -1,18 +1,45 @@
 <template>
-  <v-col class="training">
-    <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
-      <Search/>
-    </Header>
-    <h5>топ лидеры</h5>
-    <SliderLeaders :leaders="leaders"/>
-    <v-row>
-      <LeaderCourseComponent
-          :leader="leaders[$route.params.id]"
-          :courses="coursesLeader"
-          @proceed="proceed"
-      />
-    </v-row>
-  </v-col>
+  <v-row class="leader_page">
+    <v-col class="pa-0">
+      <v-col class="box-container">
+        <div class="container">
+          <v-col class="pa-0">
+            <v-row class="ma-0">
+              <v-col cols="2" class="pa-0">
+                <v-avatar
+                    color="white"
+                    size="66"
+                ><img :src="leader.userInfo.avatar" alt=""></v-avatar>
+              </v-col>
+              <v-col class="leader-info pa-0">
+                <h1>{{leader.fullName}}</h1>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col class="leader-action pa-0">
+            <Button class="py-3">Подписаться</Button>
+          </v-col>
+        </div>
+        <div class="mt-3 leader__desc">{{leader.direction}}</div>
+      </v-col>
+      <v-col class="box-container mt-6">
+        <Header class="top_bar_small" title="Курсы">
+          <FilterCourses :isOnRight="true" :filter="filters.filters" :defaultName="filters.default"/>
+        </Header>
+        <div class="d-flex flex-wrap flex-row mt-6">
+          <LeaderCourseItem
+              v-for="(course, index) in leaderCourses"
+              :key="index"
+              :course="course"
+              :leader-avatar="leader.userInfo.avatar"
+              :leader-full-name="leader.fullName"
+              v-on="$listeners"
+              class="course-block-s"
+          />
+        </div>
+      </v-col>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -21,13 +48,20 @@ import Header from '../../components/common/Header.vue';
 import SliderLeaders from '../../components/slider/SliderLeaders.vue';
 import Search from '../../components/common/Search.vue';
 import Leader from '@/entity/leader/leader';
-import {LeaderResponseType} from '@/entity/leader/leader.types';
+import {ILeader, LeaderResponseType} from '@/entity/leader/leader.types';
 import LeaderCourseComponent from '@/UI/components/leaderCourse/LeaderCourseComponent.vue';
-import {LeaderCoursesResponseType} from '@/entity/leaderCourses/leaderCourses.types';
-import LeaderCourses from '@/entity/leaderCourses/leaderCourses';
+import {ILeaderCourses, LeaderCoursesResponseType} from '@/entity/leaderCourses/leaderCourses.types';
+import CoursesListItem from '@/entity/courses/courses';
+import {LeaderTestStore} from '@/store/modules/LeadersTest';
+import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
+import Filters from '@/entity/filters/filters';
+import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
+import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 
 @Component({
   components: {
+    LeaderCourseItem,
+    FilterCourses,
     SliderLeaders,
     Search,
     Header,
@@ -35,130 +69,60 @@ import LeaderCourses from '@/entity/leaderCourses/leaderCourses';
   },
 })
 export default class LeaderCoursePage extends Vue {
-  leaders: Leader[] = [];
-  coursesLeader: LeaderCourses[] = [];
-
+  leaderCourses: ILeaderCourses[] = [];
+  leader: ILeader;
+  filters: Filters;
   constructor() {
     super();
-    for (let i = 0; i < this.leader.length; i++) {
-      this.leaders.push(new Leader(this.leader[i]));
-    }
-    for (let i = 0; i < this.leaderCoursesTemp.length; i++) {
-      this.coursesLeader.push(new LeaderCourses(this.leaderCoursesTemp[i]));
+    this.filters = new Filters();
+    this.leader = new Leader(this.leaderTest.filter(item => item.id.toString() === this.$route.params.id)[0]);
+    for (let i = 0; i < this.leadersCoursesTest.length; i++) {
+      this.leaderCourses.push(new CoursesListItem(this.leadersCoursesTest[i]));
     }
   }
-
-  getCourses(): void {
-    //по роуту определяем id каких данных загрузить
+  get leaderTest(): LeaderResponseType[] {
+    return LeaderTestStore.leader;
   }
-
-  proceed(id: number): void {
-    this.$router.push({path: `/training/${id}/0`});
+  get leadersCoursesTest(): LeaderCoursesResponseType[] {
+    return LeadersCoursesTestStore.leadersCourses;
   }
-
-  leader: LeaderResponseType[] = [
-    {
-      id: 0,
-      direction: 'dir',
-      rating: '10',
-      createdAt: '',
-      updatedAt: '',
-      userInfo: {
-        id: 0,
-        name: 'Ivan',
-        surname: 'Ivanov',
-        avatar:
-            'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/136697800/original/ad0b0ec86b4d6cc39a8f2350c1979d0be2182691/do-youtube-banner-watermark-avatar-logo-for-your-channel.png',
-      },
-      courses: [
-        {
-          id: 0,
-          title: 'jdkckdjc',
-          description: 'gjhgk',
-          isTestingRequire: true,
-          createdAt: '',
-        },
-      ],
-      balance: '',
-      totalCoursesViewsCount: 10,
-    },
-    {
-      id: 1,
-      direction: 'dir',
-      rating: '10',
-      createdAt: '',
-      updatedAt: '',
-      userInfo: {
-        id: 0,
-        name: 'Ivan',
-        surname: 'Sidorov',
-        avatar:
-            'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/136697800/original/ad0b0ec86b4d6cc39a8f2350c1979d0be2182691/do-youtube-banner-watermark-avatar-logo-for-your-channel.png',
-      },
-      courses: [
-        {
-          id: 0,
-          title: 'jdkckdjc',
-          description: 'gjhgk',
-          isTestingRequire: true,
-          createdAt: '',
-        },
-      ],
-      balance: '',
-      totalCoursesViewsCount: 10,
-    },
-  ];
-  //то что мы получаем при запросе через getCourse
-  leaderCoursesTemp: LeaderCoursesResponseType[] = [
-    {
-      id: 0,
-      title:
-          'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-      cover:
-          'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-      totalLesson: 20,
-      lessonPassed: 15,
-      duration: 3850,
-      rating: 10,
-    }, {
-      id: 1,
-      title:
-          'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-      cover:
-          'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-      totalLesson: 20,
-      lessonPassed: 15,
-      duration: 3850,
-      rating: 10,
-    }, {
-      id: 2,
-      title:
-          'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-      cover:
-          'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-      totalLesson: 20,
-      lessonPassed: 15,
-      duration: 3850,
-      rating: 10,
-    }, {
-      id: 3,
-      title:
-          'Ornare platea tortor risus elit mauris, mattis. Eget ultricies tortor sed id mauris',
-      cover:
-          'https://www.open.edu/openlearn/sites/www.open.edu.openlearn/files/ole_images/become_a_student_inline.jpg',
-      totalLesson: 20,
-      lessonPassed: 15,
-      duration: 3850,
-      rating: 10,
-    }
-  ];
 }
 </script>
 
 <style lang="scss">
-.training {
-  h5 {
-    margin-top: 24px;
+.leader_page {
+  margin-top: -11px !important;
+  &__desc {
+  font-size: 12px;
+  color: #828282;
+  }
+  .container {
+    .v-avatar {
+      border: 1px solid #F2F2F2 !important;
+    }
+    .leader-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      h1 {
+        font-size: 24px;
+        color: #060516;
+      }
+
+    }
+    .leader-action {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    button {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      font-size: 12px;
+      border-radius: 8px;
+      margin-top: 0;
+    }
   }
 }
+
 </style>

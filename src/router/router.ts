@@ -114,28 +114,6 @@ const routes = [
                 name: RouterNameEnum.Chat,
                 component: () => import('../UI/pages/chat/Chat.vue'),
             },
-            {
-                path: '/materials',
-                name: RouterNameEnum.Materials,
-                redirect: '/materials/presentations',
-                children: [
-                    {
-                        path: 'presentations',
-                        name: RouterNameEnum.MaterialPresentation,
-                        component: () => import('../UI/pages/materials/Presentations.vue'),
-                    },
-                    {
-                        path: '/materials/documents',
-                        name: RouterNameEnum.MaterialDocuments,
-                        component: () => import('../UI/pages/materials/Documents.vue'),
-                    },
-                    {
-                        path: '/materials/infopacks',
-                        name: RouterNameEnum.MaterialInfoPacks,
-                        component: () => import('../UI/pages/materials/InfoPacks.vue'),
-                    },
-                ]
-            },
         ],
     },
 ];
