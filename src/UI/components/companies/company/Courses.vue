@@ -32,6 +32,10 @@ export default class CompanyComponent extends Vue {
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
     margin-top: 8px;
+
+    .course-video-block {
+      height: 135px;
+    }
   }
 
   .course-block {
