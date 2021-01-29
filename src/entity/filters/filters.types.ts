@@ -9,3 +9,9 @@ export enum FiltersNameEnum{
     Cost = 'Стоимость',
     Period = 'Период'
 }
+export enum FiltersCourseNameEnum{
+    Course = 'Все курсы',
+    Theme = 'Все темы',
+    Level = 'Уровень',
+    Cost = 'Стоимость'
+}

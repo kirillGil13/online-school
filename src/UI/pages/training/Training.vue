@@ -37,6 +37,7 @@ import {ITabs} from '@/entity/tabs/tabs.types';
 import {TabsStore} from '@/store/modules/Tabs';
 import {CoursesStore} from '@/store/modules/Courses';
 import Filters from '@/entity/filters/filters';
+import {LeaderTestStore} from '@/store/modules/LeadersTest';
 
 @Component({
     components: {
@@ -55,8 +56,8 @@ export default class Training extends Vue {
     constructor() {
         super();
         this.filters = new Filters();
-        for (let i = 0; i < this.leader.length; i++) {
-            this.leaders.push(new Leader(this.leader[i]));
+        for (let i = 0; i < this.leadersTest.length; i++) {
+            this.leaders.push(new Leader(this.leadersTest[i]));
         }
     }
 
@@ -76,60 +77,10 @@ export default class Training extends Vue {
     async created(): Promise<void> {
       await CoursesStore.fetchAll();
     }
-    //для
-    leader: LeaderResponseType[] = [
-        {
-            id: 0,
-            direction: 'dir',
-            rating: '10',
-            createdAt: '',
-            updatedAt: '',
-            userInfo: {
-                id: 0,
-                name: 'Ivan',
-                surname: 'Ivanov',
-                avatar:
-                    'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/136697800/original/ad0b0ec86b4d6cc39a8f2350c1979d0be2182691/do-youtube-banner-watermark-avatar-logo-for-your-channel.png',
-            },
-            courses: [
-                {
-                    id: 0,
-                    title: 'jdkckdjc',
-                    description: 'gjhgk',
-                    isTestingRequire: true,
-                    createdAt: '',
-                },
-            ],
-            balance: '',
-            totalCoursesViewsCount: 10,
-        },
-        {
-            id: 1,
-            direction: 'dir',
-            rating: '10',
-            createdAt: '',
-            updatedAt: '',
-            userInfo: {
-                id: 0,
-                name: 'Ivan',
-                surname: 'Sidorov',
-                avatar:
-                    'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/136697800/original/ad0b0ec86b4d6cc39a8f2350c1979d0be2182691/do-youtube-banner-watermark-avatar-logo-for-your-channel.png',
-            },
-            courses: [
-                {
-                    id: 0,
-                    title: 'jdkckdjc',
-                    description: 'gjhgk',
-                    isTestingRequire: true,
-                    createdAt: '',
-                },
-            ],
-            balance: '',
-            totalCoursesViewsCount: 10,
-        },
-    ];
-    //то что мы получаем при запросе через getCourse
+
+    get leadersTest(): LeaderResponseType[] {
+      return LeaderTestStore.leader;
+    }
 }
 </script>
 <style lang="scss">
