@@ -52,9 +52,7 @@ export default class SliderLeaders extends Vue {
   };
 
   proceed(id: number): void {
-    if (this.$route.params.id === id.toString()) {
-      this.$router.push({path: '/training'});
-    } else this.$router.push({ name: this.routerName.LeaderCourses, params: { id: id.toString() } });
+    this.$router.push({ name: this.routerName.LeaderCourses, params: { id: id.toString() } });
   }
 
   next(): void {

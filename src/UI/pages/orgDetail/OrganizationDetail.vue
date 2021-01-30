@@ -50,9 +50,7 @@
     <v-col class="pa-0 mt-6">
       <v-tabs-items v-model="activeName">
         <v-tab-item v-for="(item, index) in tabs" :key="index">
-          <keep-alive>
-            <router-view :courses="courses" :leaders="leaders" :leaderCourses="leaderCourses" :filters="filters" :presentations="presentations[0]" ></router-view>
-          </keep-alive>
+            <router-view></router-view>
         </v-tab-item>
       </v-tabs-items>
     </v-col>
@@ -65,57 +63,17 @@ import {Component, Vue, Watch} from 'vue-property-decorator';
 import Button from '@/UI/components/common/Button.vue';
 import {ITabs} from '@/entity/tabs/tabs.types';
 import {TabsStore} from '@/store/modules/Tabs';
-import {ILeader, LeaderResponseType} from '@/entity/leader';
-import {CoursesListItemResponseType, ICoursesListItem} from '@/entity/courses/courses.types';
-import Filters from '@/entity/filters/filters';
-import Leader from '@/entity/leader/leader';
-import CoursesListItem from '@/entity/courses/courses';
-import {LeaderTestStore} from '@/store/modules/LeadersTest';
-import {CoursesTestStore} from '@/store/modules/CoursesTest';
-import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
-import {ILeaderCourses, LeaderCoursesResponseType} from '@/entity/leaderCourses/leaderCourses.types';
-import IProductPresentations from '@/entity/materials/presentations/productsPresentation.types';
-import {PresentationStore} from '@/store/modules/Presentations';
 @Component({
   components: {Button}
 })
 export default class OrganizationDetail extends Vue {
-  filters: Filters;
   activeName = 0;
   get tabs(): ITabs[] {
     return TabsStore.organizationTabs;
   }
-  leaders: ILeader[] = [];
-  courses: ICoursesListItem[] = [];
-  leaderCourses: ILeaderCourses[] = [];
-  constructor() {
-    super();
-    this.filters = new Filters();
-    for (let i = 0; i < this.leadersTest.length; i++) {
-      this.leaders.push(new Leader(this.leadersTest[i]));
-    }
-    for (let i = 0; i < this.coursesTest.length; i++) {
-      this.courses.push(new CoursesListItem(this.coursesTest[i]));
-    }
-    for (let i = 0; i < this.leadersCoursesTest.length; i++) {
-      this.leaderCourses.push(new CoursesListItem(this.leadersCoursesTest[i]));
-    }
-  }
-  get leadersTest(): LeaderResponseType[] {
-    return LeaderTestStore.leader;
-  }
-  get coursesTest(): CoursesListItemResponseType[] {
-    return CoursesTestStore.courses;
-  }
-  get leadersCoursesTest(): LeaderCoursesResponseType[] {
-    return LeadersCoursesTestStore.leadersCourses;
-  }
   @Watch('$route.name', {immediate: true})
   onChangeRoute(): void {
     this.activeName = this.tabs.findIndex(item => item.component === this.$route.name);
-  }
-  get presentations(): IProductPresentations[] {
-    return PresentationStore.presentations
   }
 }
 </script>

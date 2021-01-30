@@ -12,7 +12,7 @@ class LeaderModule extends VuexModule {
     leader: LeaderResponseType[] = [
         {
             id: 0,
-            direction: 'dir',
+            direction: 'Мастер вовлечения',
             rating: '10',
             createdAt: '',
             updatedAt: '',
@@ -37,7 +37,7 @@ class LeaderModule extends VuexModule {
         },
         {
             id: 1,
-            direction: 'dir',
+            direction: 'Мастер вовлечения',
             rating: '10',
             createdAt: '',
             updatedAt: '',
@@ -62,7 +62,7 @@ class LeaderModule extends VuexModule {
         },
         {
             id: 2,
-            direction: 'dir',
+            direction: 'Мастер вовлечения',
             rating: '10',
             createdAt: '',
             updatedAt: '',
@@ -87,7 +87,7 @@ class LeaderModule extends VuexModule {
         },
         {
             id: 3,
-            direction: 'dir',
+            direction: 'Мастер вовлечения',
             rating: '10',
             createdAt: '',
             updatedAt: '',
