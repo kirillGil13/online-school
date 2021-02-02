@@ -12,9 +12,13 @@ export default class Filters extends Vue {
     get courses(): IFilters[] {
         return FiltersStore.courses;
     }
+    get candidates(): IFilters[] {
+        return FiltersStore.candidates;
+    }
     default: string[] = [];
     defaultPeriod: string[] = [];
     defaultCourse: string[] = [];
+    defaultCandidate: string[] = [];
     constructor() {
         super();
         for (let i = 0; i < this.filters.length; i++) {
@@ -26,5 +30,9 @@ export default class Filters extends Vue {
         for (let i = 0; i < this.courses.length; i++) {
             this.defaultCourse[i] = this.courses[i].filter[0];
         }
+        for (let i = 0; i < this.candidates.length; i++) {
+            this.defaultCandidate[i] = this.candidates[i].filter[0];
+        }
+
     }
 }

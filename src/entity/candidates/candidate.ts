@@ -6,6 +6,7 @@ export class Candidate implements ICandidate {
     name: string;
     phone: string;
     email: string;
+    status: string;
     createdAt: Moment;
 
     constructor(data: CandidateResponseType) {
@@ -14,5 +15,6 @@ export class Candidate implements ICandidate {
         this.phone = data.phone;
         this.email = data.email;
         this.createdAt = moment(data.createdAt);
+        this.status = 'Client';
     }
 }

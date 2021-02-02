@@ -2,7 +2,8 @@
   <div class="course">
     <v-responsive :aspect-ratio="16/9" content-class="course-container">
       <h1 v-if="!isPlaying && lessonLoaded" class="abs">{{ lesson.title }}</h1>
-      <VideoStream v-if="lessonLoaded" controls :src="lesson.videoUid" id="player" :class="['player', !isPlaying ? 'shadow' : '']"
+      <VideoStream v-if="lessonLoaded" controls :src="lesson.videoUid" id="player"
+                   :class="['player', !isPlaying ? 'shadow' : '']"
                    style="border-radius: 12px;position: absolute; top: 0; height: 100%; width: 100%;"
                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                    allowFullScreen
@@ -18,12 +19,13 @@
       <h5>ОПИСАНИЕ</h5>
       <span class="desc">{{ course.description }}</span>
     </v-col>
-
-    <TestingComponent v-if="false"
+    <TestingComponent
         :form="testingForm"
-        :result="testingResult"
-        v-show="questions"
+        v-if="questionsLoaded && questions"
         :questions="questions"
+        :result="result"
+        :active-result="activeResult"
+        @send="send()"
         @moveToNextLesson="moveToNextLesson()"
         @passTestAgain="passTestAgain()"
         @reviewLesson="reviewLesson()"
@@ -45,6 +47,9 @@ import {VideoStream} from 'stream-vue';
 import {QuestionsStore} from '@/store/modules/Questions';
 import {ITesting} from '@/entity/testing/testing.types';
 import {ICourseItem} from '@/entity/courseItem/courseItem.type';
+import {RightAnswersStore} from '@/store/modules/RightAnswers';
+import TestingResult from '@/entity/testingResult/testingResult';
+import {TestingResultResponseType} from '@/entity/testingResult/testingResult.types';
 
 @Component({
   components: {
@@ -58,7 +63,10 @@ import {ICourseItem} from '@/entity/courseItem/courseItem.type';
 export default class Lesson extends Vue {
   @Prop() readonly isPlaying!: boolean;
   @Prop() readonly course!: ICourseItem;
+  result: TestingResult | null = null;
   testingForm: TestingForm;
+  activeResult = false;
+
   constructor() {
     super();
     this.testingForm = new TestingForm(this.questions);
@@ -67,27 +75,63 @@ export default class Lesson extends Vue {
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
     await this.fetchData();
+    this.testingForm = new TestingForm(this.questions);
+    this.activeResult = false;
+    if (this.questionsLoaded === true) {
+      this.testingForm.activeStep[0].active = true;
+    }
+  }
+
+  @Watch('questionsLoaded')
+  onChangeLoad(): void {
+    if (this.questionsLoaded === true) {
+      this.testingForm = new TestingForm(this.questions);
+      this.testingForm.activeStep[0].active = true;
+      this.activeResult = false;
+    }
   }
 
   async fetchData(): Promise<void> {
     await LessonItemStore.fetchData(this.$route.params.lessonId);
     await QuestionsStore.fetchAll(this.$route.params.lessonId);
   }
+
   get lesson(): ILessonItem | null {
     return LessonItemStore.lessonItem;
   }
+
   get questions(): ITesting[] {
     return QuestionsStore.questions;
   }
+
   get questionsLoaded(): boolean {
     return QuestionsStore.questionsLoaded;
   }
+
   get lessonLoaded(): boolean {
     return LessonItemStore.lessonLoaded;
   }
+
   async mounted(): Promise<void> {
     if (this.$route.params.lessonId) {
       await this.fetchData();
+    }
+  }
+  passTestAgain(): void {
+     window.location.reload();
+  }
+  reviewLesson(): void {
+    window.location.reload();
+  }
+
+ async send(): Promise<void> {
+    await RightAnswersStore.postAnswers({ answers: this.testingForm.results, param: this.$route.params.lessonId});
+    if (RightAnswersStore.answersLoaded) {
+      const response = RightAnswersStore.rightAnswers;
+      if (response) {
+        this.activeResult = true;
+        this.result = new TestingResult(this.questions, response as TestingResultResponseType);
+      }
     }
   }
 }
@@ -113,6 +157,7 @@ export default class Lesson extends Vue {
     z-index: 99999999;
   }
 }
+
 .course-container {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -122,25 +167,33 @@ export default class Lesson extends Vue {
     border-radius: 5px;
   }
 }
+
 .course-video-row {
   margin: 16px 0 16px 24px;
 }
+
 .materials {
   margin-top: 68px;
 }
+
 .video-js {
   font-size: 22px !important;
   border-radius: 12px;
+
   video {
     border-radius: 12px;
   }
+
   .vjs-control-bar {
     bottom: 10px;
     background-color: transparent !important;
+
     .vjs-control {
       width: 8em !important;
+
       .vjs-icon-placeholder {
         font-size: 15px;
+
         &::before {
           display: flex;
           align-items: center;
@@ -148,23 +201,29 @@ export default class Lesson extends Vue {
         }
       }
     }
+
     .vjs-play-control {
       margin-left: 20px !important;
     }
+
     .vjs-progress-control {
       .vjs-slider {
         background: rgba(255, 255, 255, 0.3);
+
         .vjs-load-progress {
           background-color: #F2F2F2;
         }
+
         .vjs-play-progress {
           background-color: #FF4D2C;
         }
       }
+
       .vjs-progress-holder {
         height: 0.4em;
       }
     }
+
     .vjs-fullscreen-control {
       margin-right: 20px !important;
     }

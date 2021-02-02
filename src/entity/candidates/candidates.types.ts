@@ -6,6 +6,7 @@ export interface ICandidate {
     phone: string;
     email: string;
     createdAt: Moment;
+    status: string;
 }
 export type CandidateResponseType = {
     id: number;
@@ -13,4 +14,5 @@ export type CandidateResponseType = {
     phone: string;
     email: string;
     createdAt: string;
+    status: string;
 };

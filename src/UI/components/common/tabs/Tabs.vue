@@ -19,7 +19,7 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {ITabs} from '@/entity/tabs/tabs.types';
-import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
+import FilterCourses from '@/UI/components/filter/FilterComponent.vue';
 import Filters from '@/entity/filters/filters';
 import {TrainingTabsNameEnum} from '@/entity/tabs/trainingTabs.types';
 

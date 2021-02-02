@@ -36,7 +36,7 @@ export default class CourseItem implements ICourseItem {
         } else if (!this.lessons[index].lessonPassed && this.lessons[index].available) {
             type = LessonsTypesEnum.UN_DONE;
         } else type = LessonsTypesEnum.LOCKED;
-        if (this.lessons[index].available && this.lessons[index].id.toString() === routeParam) {
+        if (this.lessons[index].available && this.lessons[index].id.toString() === routeParam.toString()) {
             type = LessonsTypesEnum.IN_PROGRESS;
         }
         return type;

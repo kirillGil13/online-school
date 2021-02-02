@@ -1,4 +1,4 @@
-import { getModule, Module, MutationAction, VuexModule } from 'vuex-module-decorators';
+import {getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import {ITesting} from '@/entity/testing/testing.types';
 
@@ -13,9 +13,12 @@ class QuestionsModule extends VuexModule {
     questionsLoaded = false;
 
     @MutationAction
-    async fetchAll(lessonId: string): Promise<{questions: ITesting[]; questionsLoaded: boolean}> {
+    async fetchAll(lessonId: string): Promise<{ questions: ITesting[]; questionsLoaded: boolean }> {
         const questions = await store.$repository.questions.fetchAll(lessonId);
-        const questionsLoaded = true;
+        let questionsLoaded = false;
+        if (questions.length !== 0) {
+            questionsLoaded = true;
+        }
         return {questions, questionsLoaded};
     }
 }

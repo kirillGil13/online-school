@@ -348,14 +348,15 @@ h5 {
     color: #060516;
     .tr {
         display: grid;
-        grid-template-columns: 21% 15% 15% 20% 10% 15% 4%;
-        padding: 9px 16px;
+        grid-template-columns: 5% 20% 15% 20% 17% 10% 13%;
+        padding: 16px;
         text-align: left;
         align-items: center;
         box-sizing: border-box;
 
         &:nth-child(1) {
             color: #5F739C;
+            padding-bottom: 0;
         }
 
         &.tbody {

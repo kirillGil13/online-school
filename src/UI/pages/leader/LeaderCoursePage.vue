@@ -24,7 +24,7 @@
       </v-col>
       <v-col class="box-container mt-6">
         <Header class="top_bar_small" title="Курсы">
-          <FilterCourses :isOnRight="true" :filter="filters.filters" :defaultName="filters.default"/>
+          <FilterComponent :isOnRight="true" :filter="filters.filters" :defaultName="filters.default"/>
         </Header>
         <div class="d-flex flex-wrap flex-row mt-6">
           <LeaderCourseItem
@@ -55,13 +55,13 @@ import CoursesListItem from '@/entity/courses/courses';
 import {LeaderTestStore} from '@/store/modules/LeadersTest';
 import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
 import Filters from '@/entity/filters/filters';
-import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
+import FilterComponent from '@/UI/components/filter/FilterComponent.vue';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 
 @Component({
   components: {
     LeaderCourseItem,
-    FilterCourses,
+    FilterComponent,
     SliderLeaders,
     Search,
     Header,
