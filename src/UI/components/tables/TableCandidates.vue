@@ -11,7 +11,7 @@
         </div>
         <div class="tr tbody" v-for="(candidate, index) in candidates" :key="index">
             <div>
-              <Select :selects="selects[0]">
+              <Select class-name="select_content" :selects="selects[0]">
                 <template v-slot:act>
                   <div class="d-flex flex-row">
                     <svg-icon
@@ -29,7 +29,7 @@
             <div class="product">Недвижимость за 35%</div>
             <div>{{ candidate.createdAt | moment('DD.MM, HH:mm') }}</div>
             <div>
-              <Select :selects="selects[1]">
+              <Select class-name="select_content action" :selects="selects[1]">
                 <template v-slot:act>
                   <div class="d-flex justify-end">
                     <svg-icon
@@ -64,12 +64,26 @@ export default class TablePartners extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .email {
   line-height: 80%;
 }
 .video-container{
   width: 70%;
   margin-left: 10%;
+}
+.select_content {
+    margin-top: 30px !important;
+    border-radius: 12px !important;
+  &.action {
+    #select0 {
+      font-weight: 600;
+    }
+    #select3 {
+      .v-list-item__title {
+        color: #EB5757 !important;
+      }
+    }
+  }
 }
 </style>

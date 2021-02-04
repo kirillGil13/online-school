@@ -1,4 +1,4 @@
-<template>
+ <template>
   <v-col >
     <v-row>
       <v-col v-if="courseLoaded">

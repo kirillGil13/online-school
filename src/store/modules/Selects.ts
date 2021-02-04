@@ -43,17 +43,17 @@ class SelectsModule extends VuexModule {
                     icon: false,
                 },
                 {
-                    id: 0,
+                    id: 1,
                     title: 'Создать действие',
                     icon: false,
                 },
                 {
-                    id: 0,
+                    id: 2,
                     title: 'Изменить',
                     icon: false,
                 },
                 {
-                    id: 0,
+                    id: 3,
                     title: 'Удалить',
                     icon: false,
                 },

@@ -8,7 +8,7 @@
           </li>
         </ul>
       </div>
-      <FilterCourses :isOnRight="true" :filter="filters.filters" :defaultName="filters.default"
+      <FilterComponent :isOnRight="true" :filter="filters.filters" :defaultName="filters.default"
                      v-if="tabs.some(item => item.filter && item.component === $route.name)"/>
     </v-row>
     <div class="tabs-details">
@@ -19,13 +19,13 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {ITabs} from '@/entity/tabs/tabs.types';
-import FilterCourses from '@/UI/components/filter/FilterComponent.vue';
 import Filters from '@/entity/filters/filters';
 import {TrainingTabsNameEnum} from '@/entity/tabs/trainingTabs.types';
+import FilterComponent from '@/UI/components/filter/FilterComponent.vue';
 
 @Component({
   components: {
-    FilterCourses
+    FilterComponent,
   }
 })
 export default class Tabs extends Vue {

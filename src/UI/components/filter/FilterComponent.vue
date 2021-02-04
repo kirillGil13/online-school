@@ -1,7 +1,7 @@
 <template>
   <v-col>
     <v-row class="tab-controls" :class="{'justify-end': isOnRight}">
-      <v-col v-for="(item, index) in filter" id="select" :key="index" cols="auto" class="pa-0 d-flex justify-end flex-column">
+      <v-col v-for="(item, index) in filter" id="select" :key="index" cols="auto" class="pa-0 d-flex justify-end flex-column" :style="{order: isOnRight ? '2' : '1'}">
         <label :for="index">{{item.filterType}}</label>
         <v-select
             :items="item.filter"
@@ -17,10 +17,10 @@
           </template>
         </v-select>
       </v-col>
-      <v-col class="filter-search pa-0 d-flex align-end" v-if="search">
+      <v-col class="filter-search pa-0 d-flex align-end" v-if="search" :style="{order: isOnRight ? '1' : '2'}">
         <slot name="search"/>
       </v-col>
-      <v-col cols="2" class="filter-button pa-0 d-flex align-end" v-if="button">
+      <v-col cols="2" class="filter-button pa-0 d-flex align-end" v-if="button" :style="{order: '3'}">
         <slot name="button"/>
       </v-col>
     </v-row>
@@ -119,6 +119,7 @@ export default class FilterComponent extends Vue {
       margin: 0 !important;
       font-size: 12px;
       padding: 10px 16px !important;
+      order: 3;
     }
   }
 }

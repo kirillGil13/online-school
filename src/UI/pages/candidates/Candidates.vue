@@ -29,7 +29,7 @@
           <template v-slot:default>25</template>
           <template v-slot:stats>0.2</template>
         </Badge>
-        <Badge class="badges__container" :link="true">
+        <Badge class="badges__container" :link-name="route.CandidatesStatistics">
           <template v-slot:title>Подробная аналитика</template>
           <template v-slot:link>Посмотреть</template>
         </Badge>
@@ -44,17 +44,22 @@
               <Search/>
             </template>
             <template v-slot:button>
-              <Button>Добавить кандидата</Button>
+              <Button @submit="activator = true">Добавить кандидата</Button>
             </template>
           </FilterComponent>
         </v-col>
       </v-row>
       <v-row>
-        <v-col>
+        <v-col class="mt-6">
           <TableCandidates :candidates="candidates" :selects="selects"/>
         </v-col>
       </v-row>
     </v-col>
+    <Modal :activator="activator" @activatorChange="activatorChange">
+      <template v-slot:content>
+        <CandidateFormComponent :form="candidateForm" @close="close"/>
+      </template>
+    </Modal>
   </v-row>
 </template>
 
@@ -75,9 +80,17 @@ import Button from '@/UI/components/common/Button.vue';
 import {ISelect} from '@/entity/select/select.types';
 import {SelectsStore} from '@/store/modules/Selects';
 import Select from '@/entity/select/select';
+import Modal from '@/UI/components/common/Modal.vue';
+import CandidateFormComponent from '@/UI/components/candidateForm/CandidateFormComponent.vue';
+import {CandidateForm} from '@/form/candidate/candidateForm';
+import {RouterNameEnum} from '@/router/router.types';
+import {IInfoPackage} from '@/entity/infoPackage/infoPackage.types';
+import {InfoPackagesStore} from '@/store/modules/InfoPackages';
 
 @Component({
   components: {
+    CandidateFormComponent,
+    Modal,
     Button,
     FilterComponent,
     Badge,
@@ -89,11 +102,28 @@ import Select from '@/entity/select/select';
 export default class Candidates extends Vue {
   filters: Filters;
   selects: ISelect[] = [];
+  activator = false;
+  candidateForm: CandidateForm;
+  route = RouterNameEnum;
 
   constructor() {
     super();
+    this.candidateForm = new CandidateForm();
+    for (let i = 0; i < this.selectsStatus.items.length; i++) {
+      this.candidateForm.statusList.push(this.selectsStatus.items[i].title);
+    }
+    for (let i = 0; i < this.infoPackages.length; i++) {
+      this.candidateForm.productList.push(this.infoPackages[i].title)
+    }
     this.filters = new Filters();
     this.selects.push(new Select(this.selectsStatus), new Select(this.selectsActions))
+  }
+
+  activatorChange(act: boolean): void {
+    this.activator = act;
+  }
+  close(): void {
+    this.activator = false;
   }
 
   get user(): IUser {
@@ -107,11 +137,17 @@ export default class Candidates extends Vue {
   async created(): Promise<void> {
     await CandidatesStore.fetchAll();
   }
+
   get selectsStatus(): ISelect {
     return SelectsStore.selectsStatus;
   }
+
   get selectsActions(): ISelect {
     return SelectsStore.selectsActions;
+  }
+
+  get infoPackages(): IInfoPackage[] {
+    return InfoPackagesStore.infoPackages;
   }
 
 }
