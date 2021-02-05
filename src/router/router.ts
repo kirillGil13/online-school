@@ -10,12 +10,12 @@ const routes = [
         path: '/auth/login',
         name: 'Login',
         component: () => import('../UI/pages/auth/Login.vue'),
-        meta: { auth: false },
+        meta: {auth: false},
     },
     {
         path: '/',
         component: () => import('../UI/components/layouts/MainLayout.vue'),
-        meta: { auth: true },
+        meta: {auth: true},
         children: [
             {
                 path: '/main',
@@ -36,37 +36,37 @@ const routes = [
                         name: RouterNameEnum.OrganizationMain,
                         component: () => import('../UI/components/orgDetail/OrganizationMain.vue')
                     },
-{
+                    {
                         path: 'training',
                         name: RouterNameEnum.OrganizationTraining,
                         component: () => import('../UI/components/orgDetail/OrganizationTraining.vue')
                     },
-{
+                    {
                         path: 'presentations',
                         name: RouterNameEnum.OrganizationPresentations,
                         component: () => import('../UI/components/orgDetail/OrganizationPresentations.vue')
                     },
-{
+                    {
                         path: 'info-packages',
                         name: RouterNameEnum.OrganizationInfoPackages,
                         component: () => import('../UI/components/orgDetail/OrganizationInfoPackages.vue')
                     },
-{
+                    {
                         path: 'documents',
                         name: RouterNameEnum.OrganizationDocuments,
                         component: () => import('../UI/components/orgDetail/OrganizationDocuments.vue')
                     },
-{
+                    {
                         path: 'instructions',
                         name: RouterNameEnum.OrganizationInstructions,
                         component: () => import('../UI/components/orgDetail/OrganizationInstructions.vue')
                     },
-{
+                    {
                         path: 'leaders',
                         name: RouterNameEnum.OrganizationLeaders,
                         component: () => import('../UI/components/orgDetail/OrganizationLeaders.vue')
                     },
-{
+                    {
                         path: 'group',
                         name: RouterNameEnum.OrganizationGroup,
                         component: () => import('../UI/components/orgDetail/OrganizationGroup.vue')
@@ -80,10 +80,26 @@ const routes = [
                 redirect: '/training/main',
                 component: () => import('../UI/pages/training/Training.vue'),
                 children: [
-                    {path: '/training/main', name: RouterNameEnum.TrainingMain, component: () => import('../UI/components/training/TrainingMain.vue')},
-                    {path: '/training/courses', name: RouterNameEnum.TrainingCourses, component: () => import('../UI/components/training/TrainingCourses.vue')},
-                    {path: '/training/leaders', name: RouterNameEnum.TrainingLeaders, component: () => import('../UI/components/training/TrainingLeaders.vue')},
-                    {path: '/training/club', name: RouterNameEnum.TrainingClub, component: () => import('../UI/components/training/TrainingClub.vue')}
+                    {
+                        path: '/training/main',
+                        name: RouterNameEnum.TrainingMain,
+                        component: () => import('../UI/components/training/TrainingMain.vue')
+                    },
+                    {
+                        path: '/training/courses',
+                        name: RouterNameEnum.TrainingCourses,
+                        component: () => import('../UI/components/training/TrainingCourses.vue')
+                    },
+                    {
+                        path: '/training/leaders',
+                        name: RouterNameEnum.TrainingLeaders,
+                        component: () => import('../UI/components/training/TrainingLeaders.vue')
+                    },
+                    {
+                        path: '/training/club',
+                        name: RouterNameEnum.TrainingClub,
+                        component: () => import('../UI/components/training/TrainingClub.vue')
+                    }
                 ]
             },
             {
@@ -91,13 +107,23 @@ const routes = [
                 name: RouterNameEnum.Course,
                 component: () => import('../UI/pages/course/Course.vue'),
                 children: [
-                    {path: ':lessonId', name: RouterNameEnum.Lesson, component: () => import('../UI/pages/course/Lesson.vue')}
+                    {
+                        path: ':lessonId',
+                        name: RouterNameEnum.Lesson,
+                        component: () => import('../UI/pages/course/Lesson.vue')
+                    }
                 ]
             },
             {
                 path: '/candidates',
                 name: RouterNameEnum.Candidates,
                 component: () => import('../UI/pages/candidates/Candidates.vue'),
+
+            },
+            {
+                path: '/candidates/statistics',
+                name: RouterNameEnum.CandidatesStatistics,
+                component: () => import('../UI/pages/candidates/CandidatesStatistics.vue')
             },
             {
                 path: '/partners',

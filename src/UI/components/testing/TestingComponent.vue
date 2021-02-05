@@ -1,8 +1,8 @@
 <template>
     <v-col class="box-container pa-6 mt-4">
         <h5>Тестирование</h5>
-        <TestingFormVue :form="form" v-show="!active" :questions="questions"/>
-        <!--<TestingResultComponent v-show="active" v-on="$listeners" :result="result" :buttonType="result.result()" />-->
+        <TestingFormVue :form="form" v-if="!activeResult" :questions="questions" v-on="$listeners"/>
+        <TestingResultComponent v-if="activeResult" v-on="$listeners" :result="result" :buttonType="result.result()" />
     </v-col>
 </template>
 <script lang="ts">
@@ -22,10 +22,10 @@ import {ITesting} from '@/entity/testing/testing.types';
     },
 })
 export default class TestingComponent extends Vue {
-    active = false;
     @Prop() readonly form!: TestingForm;
     @Prop() readonly result!: TestingResult;
     @Prop() readonly questions!: ITesting[];
+    @Prop({default: false}) readonly activeResult!: boolean;
 }
 </script>
 <style lang="scss">

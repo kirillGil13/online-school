@@ -8,7 +8,9 @@
     <div class="companies__company-devider"></div>
     <CompanyLeaders :leaders="company.leaders"/>
     <CompanyCourses :courses="courses"/>
-    <Button class="companies__button" v-on="$listeners">Подробнее</Button>
+    <div class="d-flex justify-center">
+      <Button class="companies__button" v-on="$listeners">Подробнее</Button>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -53,8 +55,6 @@ export default class CompanyComponent extends Vue {
     padding: 10px 16px;
     display: block;
     margin-top: 16px;
-    margin-left: auto;
-    margin-right: auto;
   }
 }
 </style>

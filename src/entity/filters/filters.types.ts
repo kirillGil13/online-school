@@ -15,3 +15,8 @@ export enum FiltersCourseNameEnum{
     Level = 'Уровень',
     Cost = 'Стоимость'
 }
+export enum FiltersCandidatesNameEnum{
+    Status = 'Статус',
+    Type = 'Тип',
+    Product = 'Продукт',
+}

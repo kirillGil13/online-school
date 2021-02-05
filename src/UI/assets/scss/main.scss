@@ -341,21 +341,21 @@ h5 {
 }
 .table {
     width: 100%;
-    margin-top: 24px;
     display: grid;
     grid-row-gap: 8px;
     box-sizing: border-box;
     color: #060516;
     .tr {
         display: grid;
-        grid-template-columns: 21% 15% 15% 20% 10% 15% 4%;
-        padding: 9px 16px;
+        grid-template-columns: 5% 20% 15% 20% 17% 10% 13%;
+        padding: 16px;
         text-align: left;
         align-items: center;
         box-sizing: border-box;
 
         &:nth-child(1) {
             color: #5F739C;
+            padding-bottom: 0;
         }
 
         &.tbody {
@@ -444,4 +444,18 @@ iframe {
         margin-top: 10px;
         font-size: 12px;
     }
+}
+.flag-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #F2F2F2;
+    width: 12%;
+    background-color: #ecebeb;
+    border-radius: 0 5px 5px 0;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
 }

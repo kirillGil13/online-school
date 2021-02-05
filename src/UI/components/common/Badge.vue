@@ -8,6 +8,7 @@
         </div>
       <div :class="['badge__default', profit || loss ? 'mt-3' : '']">
             <div><slot name="default" /></div>
+            <router-link class="link mt-5" :to="{name: linkName}" v-if="linkName"><slot name="link"/><svg-icon name="Arrow_Right"></svg-icon></router-link>
             <div :class="['badge__stats profit', loss ? 'loss' : '']" v-if="profit || loss">
               <template v-if="profit">+</template>
               <template v-else>-</template>
@@ -23,6 +24,7 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 @Component
 export default class Badge extends Vue {
   @Prop({default: false}) readonly subs!: boolean;
+  @Prop() readonly linkName!: string;
   @Prop() readonly sub!: boolean;
   @Prop() readonly profit!: boolean;
   @Prop({default: false}) readonly loss!: boolean;
@@ -57,6 +59,16 @@ export default class Badge extends Vue {
         }
         &.in-active {
           color: #EB5757;
+        }
+      }
+      .link {
+        font-size: 16px;
+        color: #426DF6;
+        font-weight: normal;
+        .svg-icon {
+          margin-left: 8px;
+          width: 11px !important;
+          height: 16px !important;
         }
       }
     }

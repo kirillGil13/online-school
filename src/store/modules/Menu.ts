@@ -22,28 +22,6 @@ class MenuModule extends VuexModule {
             route: RouterNameEnum.TrainingMain,
         },
         {
-            title: 'Материалы',
-            iconName: 'Folder',
-            route: RouterNameEnum.Materials,
-            subMenu: [
-                {
-                    title: 'Презентации',
-                    iconName: '',
-                    route: RouterNameEnum.MaterialPresentation,
-                },
-                {
-                    title: 'Документы',
-                    iconName: '',
-                    route: RouterNameEnum.MaterialDocuments,
-                },
-                {
-                    title: 'Инфопакеты',
-                    iconName: '',
-                    route: RouterNameEnum.MaterialInfoPacks,
-                },
-            ]
-        },
-        {
             title: 'События',
             iconName: 'Calendar',
             route: RouterNameEnum.Calendar,

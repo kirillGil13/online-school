@@ -1,7 +1,7 @@
 <template>
   <v-col>
     <v-row class="tab-controls" :class="{'justify-end': isOnRight}">
-      <v-col v-for="(item, index) in filter" id="select" :key="index" cols="auto" class="pa-0">
+      <v-col v-for="(item, index) in filter" id="select" :key="index" cols="auto" class="pa-0 d-flex justify-end flex-column" :style="{order: isOnRight ? '2' : '1'}">
         <label :for="index">{{item.filterType}}</label>
         <v-select
             :items="item.filter"
@@ -17,6 +17,12 @@
           </template>
         </v-select>
       </v-col>
+      <v-col class="filter-search pa-0 d-flex align-end" v-if="search" :style="{order: isOnRight ? '1' : '2'}">
+        <slot name="search"/>
+      </v-col>
+      <v-col cols="2" class="filter-button pa-0 d-flex align-end" v-if="button" :style="{order: '3'}">
+        <slot name="button"/>
+      </v-col>
     </v-row>
   </v-col>
 </template>
@@ -29,9 +35,9 @@ import Filters from '@/entity/filters/filters';
 
   }
 })
-export default class FilterCourses extends Vue {
-
-
+export default class FilterComponent extends Vue {
+  @Prop() readonly search!: boolean;
+  @Prop() readonly button!: boolean;
   @Prop() readonly filter!: Filters[];
   @Prop() readonly defaultName!: string[];
   @Prop() readonly isOnRight: boolean | undefined;
@@ -87,6 +93,33 @@ export default class FilterCourses extends Vue {
           }
         }
       }
+    }
+  }
+  .filter-search {
+    margin-right: 24px;
+    margin-left: 12px;
+    .search {
+      width: 100%;
+      input[type='search'] {
+        border: none;
+        width: 100%;
+        background: #F4F6F9;
+        padding: 8px;
+        text-indent: 36px;
+      }
+      & svg{
+        position: absolute;
+        left: 15px;
+        top: 31.82%;
+      }
+    }
+  }
+  .filter-button {
+    button {
+      margin: 0 !important;
+      font-size: 12px;
+      padding: 10px 16px !important;
+      order: 3;
     }
   }
 }

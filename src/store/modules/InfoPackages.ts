@@ -20,7 +20,7 @@ class InfoPackagesModule extends VuexModule {
         },
         {
             id: 1,
-            title: 'Инфопакет маркетинг план Finiko',
+            title: 'Недвижимость за 35%',
             cover: 'https://lh3.googleusercontent.com/proxy/uHcx7uivb0egzBfH_f_F5uQ7v7TCU569nSjQZw4_Osp9OgnnyCrSHHmC_Eg_Szinb_fWlQ-DeVFn3Cg4DKntBFadZn2R24d_qQD1fUDhu0Q-xwz27nLf2_Pau_JEfJToRASFDA',
             openCount: 23,
             registerCount: 13,
@@ -28,7 +28,7 @@ class InfoPackagesModule extends VuexModule {
         },
         {
             id: 2,
-            title: 'Инфопакет маркетинг план Finiko',
+            title: 'Авто за 35%',
             cover: 'https://lh3.googleusercontent.com/proxy/uHcx7uivb0egzBfH_f_F5uQ7v7TCU569nSjQZw4_Osp9OgnnyCrSHHmC_Eg_Szinb_fWlQ-DeVFn3Cg4DKntBFadZn2R24d_qQD1fUDhu0Q-xwz27nLf2_Pau_JEfJToRASFDA',
             openCount: 23,
             registerCount: 13,
