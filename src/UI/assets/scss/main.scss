@@ -67,8 +67,10 @@ a {
     margin: 0 !important;
 }
 h5 {
-    text-transform: uppercase;
     margin-top: 0;
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
     margin-bottom: 12px;
     letter-spacing: 1px;
   }
@@ -258,6 +260,13 @@ h5 {
             height: 135px;
         }
     }
+    &.course-mobile {
+        width: 100%;
+        margin-right: 0 !important;
+        .course-video-block {
+            height: 197px;
+        }
+    }
     &:nth-child(3n + 3) {
         margin-right: 0;
     }
@@ -310,9 +319,9 @@ h5 {
          }
     }
     .course-title{
-        margin-top: 12px;
+        margin-top: 4px;
+        font-weight: 600;
         color: #000000;
-        font-weight: 550;
     }
     .course-description {
         height: 54px;
@@ -345,6 +354,16 @@ h5 {
     grid-row-gap: 8px;
     box-sizing: border-box;
     color: #060516;
+    &.mobile {
+        display: block;
+        .tr {
+            display: block;
+            &:nth-child(1) {
+                color: #060516;
+                padding-bottom: 16px;
+            }
+        }
+    }
     .tr {
         display: grid;
         grid-template-columns: 5% 20% 15% 20% 17% 10% 13%;
@@ -366,36 +385,17 @@ h5 {
             .v-col:nth-child(2), .v-col:nth-child(3) {
                 color: #426DF6;
             }
+            .name {
+                font-size: 16px;
+            }
+            .label {
+                font-size: 12px;
+                color: #5F739C;
+            }
         }
 
         .v-col:nth-last-child(1) {
             text-align: right;
-        }
-        .video {
-            position: relative;
-            padding: 8px 10px;
-            text-align: left;
-            background: rgba(66, 109, 246, 0.12);
-            border-radius: 5px;
-            .title {
-                font-size: 12px !important;
-                line-height: 140%;
-            }
-            .duration {
-                font-size: 10px;
-                color: #5F739C ;
-                line-height: 150%;
-            }
-            &:after {
-                content: '';
-                position: absolute;
-                border-radius: 5px;
-                top: 0;
-                left: 0;
-                height: 100%;
-                width: 80%;
-                background: rgba(66, 109, 246, 0.12);
-            }
         }
     }
 
@@ -458,4 +458,18 @@ iframe {
 .wrapper {
     display: flex;
     flex-direction: row;
+}
+.messages {
+    width: calc(100% - 327px);
+    font-size: 14px;
+    background: transparent;
+
+    .message-container {
+        padding: 60px 11px 16px 11px;
+        height: 100%;
+        overflow: scroll;
+    }
+}
+.v-menu__content {
+    min-width: 190px !important;
 }

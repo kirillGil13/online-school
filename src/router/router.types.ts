@@ -4,6 +4,7 @@ export enum RouterNameEnum {
     Candidates = 'Candidates',
     CandidatesStatistics = 'CandidatesStatistics',
     Partners = 'Partners',
+    PartnerPage = 'PartnerPage',
     MaterialPresentation = 'MaterialPresentation',
     MaterialDocuments = 'MaterialDocuments',
     MaterialInfoPacks = 'MaterialInfoPacks',
@@ -27,4 +28,8 @@ export enum RouterNameEnum {
     OrganizationInstructions = 'OrganizationInstructions',
     OrganizationLeaders = 'OrganizationLeaders',
     OrganizationGroup = 'OrganizationGroup',
+    ChatMain = 'ChatMain',
+    ChatNotes = 'ChatNotes',
+    ChatTasks = 'ChatTasks',
+    Profile = 'Profile'
 }

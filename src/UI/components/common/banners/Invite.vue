@@ -16,7 +16,7 @@
                 </p>
             </div>
             <!-- тут будет common/Button -->
-            <v-btn size="medium" class="banner__button blue" @click="copyLink">Скопировать ссылку</v-btn>
+          <Button @click="copyLink">Скопировать ссылку</Button>
             <!-- тут будет common/Button -->
         </div>
     </div>
@@ -25,7 +25,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import variables, {IScssVariables} from '@/UI/assets/scss/variables/_variables.scss';
-@Component
+import Button from '@/UI/components/common/Button.vue';
+@Component({
+  components: {Button}
+})
 export default class InviteBanner extends Vue {
     get variables(): IScssVariables {
         return variables;
@@ -59,5 +62,9 @@ export default class InviteBanner extends Vue {
     &__descripton {
       font-size: 12px;
     }
+  button {
+    margin-top: 16px;
+    width: 100%;
+  }
 }
 </style>

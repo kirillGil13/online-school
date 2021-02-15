@@ -5,55 +5,47 @@
         <Button class="mt-0">Добавить свой курс</Button>
       </div>
     </Header>
-    <h5>топ лидеры</h5>
+    <div class="slider-title d-flex flex-row justify-space-between align-end mb-4">
+      <h5>Топ лидеры</h5>
+      <router-link :to="''">Показать все</router-link>
+    </div>
     <SliderLeaders :leaders="leaders"/>
     <v-row>
-      <FilterComponent :search="true" :is-on-right="true" :filter="filters.filters" :defaultName="filters.default">
-        <template v-slot:search>
-          <Search/>
-        </template>
-      </FilterComponent>
+      <v-col class="py-0">
+        <FilterComponent :search="true" :is-on-right="true" :filter="filters.filters" :defaultName="filters.default">
+          <template v-slot:search>
+            <Search/>
+          </template>
+        </FilterComponent>
+      </v-col>
     </v-row>
-    <v-row class="mt-10">
-      <div class="hash-tag__wrapper mr-3">
-        <span class="hash-tag__content">#finiko</span>
-      </div>
-      <div class="hash-tag__wrapper mr-3">
-        <span class="hash-tag__content">#vexel</span>
-      </div>
-      <div class="hash-tag__wrapper">
-        <span class="hash-tag__content">#fnk</span>
-      </div>
-    </v-row>
-    <v-row class="mt-10">
-      <div class="d-flex flex-row flex-wrap">
-        <LeaderCourseItem v-for="(course, index) in leaderCourses"
-                          :key="index"
-                          :course="course"
-                          :leader-avatar="leaders[index].userInfo.avatar"
-                          :leader-full-name="leaders[index].fullName"
-                          v-on="$listeners"
-                          class="course-block-s"
-        />
-      </div>
-    </v-row>
-    <!-- <v-row v-if="$route.params.id === undefined">
-        <v-col>
-          <Tabs :filters="filters" :tabs="tabs">
-              <TabsContent
-                v-for="(tab, index) in tabs"
-                :key="index"
-                :name="tab.title"
-                :selected="tab.component === $route.name"
-            >
-              <keep-alive>
-                <router-view :courses="courses" :leaders="leaders" @proceed="proceed"></router-view>
-              </keep-alive>
-            </TabsContent>
-          </Tabs>
-        </v-col>
+    <v-col>
+      <v-row class="mt-10">
+        <div class="hash-tag__wrapper mr-3">
+          <span class="hash-tag__content">#finiko</span>
+        </div>
+        <div class="hash-tag__wrapper mr-3">
+          <span class="hash-tag__content">#vexel</span>
+        </div>
+        <div class="hash-tag__wrapper">
+          <span class="hash-tag__content">#fnk</span>
+        </div>
       </v-row>
-     -->
+    </v-col>
+    <v-col class="py-0">
+      <v-row class="mt-7">
+        <div class="d-flex flex-row flex-wrap">
+          <LeaderCourseItem v-for="(course, index) in leaderCourses"
+                            :key="index"
+                            :course="course"
+                            :leader-avatar="leaders[index].userInfo.avatar"
+                            :leader-full-name="leaders[index].fullName"
+                            v-on="$listeners"
+                            class="course-block-s"
+          />
+        </div>
+      </v-row>
+    </v-col>
   </v-col>
 </template>
 <script lang="ts">
@@ -110,7 +102,6 @@ export default class Training extends Vue {
     this.$router.push({path: `/course/${id}`});
   }
 
-
   get tabs(): ITabs[] {
     return TabsStore.trainingTabs;
   }
@@ -156,9 +147,6 @@ export default class Training extends Vue {
       padding: 7px 12px;
       border-radius: 4px;
     }
-  }
-  .search {
-    margin-left: -12px;
   }
 }
 </style>

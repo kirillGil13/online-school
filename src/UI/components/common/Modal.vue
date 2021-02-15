@@ -31,5 +31,7 @@ export default class Modal extends Vue {
 <style lang="scss">
 .modal-content {
   border-radius: 12px !important;
+  max-height: 900px;
+  overflow: scroll;
 }
 </style>

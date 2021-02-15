@@ -1,5 +1,5 @@
 <template>
-  <v-responsive content-class="course-lessons-block" :aspect-ratio="22/23">
+  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="39/23">
     <div class="lessons-block box-container">
       <div class="lesson-container">
         <ul class="lesson-list">
@@ -7,7 +7,7 @@
               v-for="(lesson, index) in course.lessons"
               :key="index"
           >
-            <router-link :to="{name: routeName.Lesson, params: {lessonId: lesson.id}}" active-class="lesson-current"
+            <router-link :to="{name: routeName.Lesson, params: {lessonId: lesson.id}}" active-class="lesson-current" :id="`lesson${index}`"
                          :class="[ course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED ? 'lesson-locked' : '']">
               <svg-icon class="svg-wh" :name="course.resolveType(index, $route.params.lessonId)"></svg-icon>
               <div class="lesson_name">
@@ -27,28 +27,6 @@
           <svg-icon name="Next"></svg-icon>
           Следующий урок
         </Button>
-      </div>
-    </div>
-    <div class="contacts">
-      <div class="contacts__content">
-        <div class="contacts__item d-flex flex-row">
-          <v-avatar>
-            <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">
-          </v-avatar>
-          <div class="details d-flex flex-column justify-center">
-            <h3 class="ma-0">Ильгиз Шакиров</h3>
-            <div class="details-desc">Автор курса</div>
-          </div>
-        </div>
-        <div class="contacts__item d-flex flex-row">
-          <v-avatar>
-            <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">
-          </v-avatar>
-          <div class="details d-flex flex-column justify-center">
-            <h3 class="ma-0">Ильгиз Шакиров</h3>
-            <div class="details-desc">Ваш лидер</div>
-          </div>
-        </div>
       </div>
     </div>
   </v-responsive>
@@ -74,15 +52,19 @@ export default class Lessons extends Vue {
 </script>
 
 <style lang="scss">
+.border {
+  border-radius: 12px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
+}
 .course-lessons-block {
   position: relative;
-
+  border-radius: 12px;
   .lessons-block {
     position: absolute;
     width: 100%;
     top: 0;
     left: 0;
-    height: 57%;
+    height: 100%;
 
     .lesson-container {
       width: 100%;
@@ -104,7 +86,10 @@ export default class Lessons extends Vue {
             font-size: 12px;
             color: #060516;
             padding: 12px 18px 12px 18px;
-
+            &#lesson0 {
+              border-top-left-radius: 12px;
+              border-top-right-radius: 12px;
+            }
             &:hover {
               background-color: rgba(87, 81, 183, 0.12) !important;
             }
@@ -170,37 +155,6 @@ export default class Lessons extends Vue {
               fill: #426df6 !important;
             }
           }
-        }
-      }
-    }
-  }
-  .contacts {
-    position: absolute;
-    top: 60%;
-    left: 0;
-    width: 100%;
-
-    &__content {
-      position: relative;
-      padding: 16px;
-      background: #FFFFFF;
-      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 4px 32px rgba(0, 0, 0, 0.16);
-      border-radius: 8px;
-      &:before {
-        z-index: 9999999;
-        content: "";
-        position: absolute;
-        bottom: 100%;
-        left: 76px;
-        border: 9px solid transparent;
-        border-bottom-color: #FFFFFF;
-      }
-    }
-    &__item {
-      .details {
-        .details-desc {
-          font-size: 12px;
-          color: #828282;
         }
       }
     }

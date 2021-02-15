@@ -29,7 +29,7 @@ class MenuModule extends VuexModule {
         {
             title: 'Чат',
             iconName: 'Chat',
-            route: RouterNameEnum.Chat,
+            route: RouterNameEnum.ChatMain,
         },
         {
             title: 'Кандидаты',
