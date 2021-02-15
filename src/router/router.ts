@@ -95,24 +95,24 @@ const routes = [
                     {
                         path: '/training/main',
                         name: RouterNameEnum.TrainingMain,
-                        component: () => import('../UI/components/training/TrainingMain.vue'),
+                        component: () => import('../UI/components/training/TrainingMain.vue')
                     },
                     {
                         path: '/training/courses',
                         name: RouterNameEnum.TrainingCourses,
-                        component: () => import('../UI/components/training/TrainingCourses.vue'),
+                        component: () => import('../UI/components/training/TrainingCourses.vue')
                     },
                     {
                         path: '/training/leaders',
                         name: RouterNameEnum.TrainingLeaders,
-                        component: () => import('../UI/components/training/TrainingLeaders.vue'),
+                        component: () => import('../UI/components/training/TrainingLeaders.vue')
                     },
                     {
                         path: '/training/club',
                         name: RouterNameEnum.TrainingClub,
-                        component: () => import('../UI/components/training/TrainingClub.vue'),
-                    },
-                ],
+                        component: () => import('../UI/components/training/TrainingClub.vue')
+                    }
+                ]
             },
             {
                 path: '/course/:id',
@@ -122,14 +122,20 @@ const routes = [
                     {
                         path: ':lessonId',
                         name: RouterNameEnum.Lesson,
-                        component: () => import('../UI/pages/course/Lesson.vue'),
-                    },
-                ],
+                        component: () => import('../UI/pages/course/Lesson.vue')
+                    }
+                ]
             },
             {
                 path: '/candidates',
                 name: RouterNameEnum.Candidates,
                 component: () => import('../UI/pages/candidates/Candidates.vue'),
+
+            },
+            {
+                path: '/candidates/statistics',
+                name: RouterNameEnum.CandidatesStatistics,
+                component: () => import('../UI/pages/candidates/CandidatesStatistics.vue')
             },
             {
                 path: '/partners',

@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import { AxiosPromise, AxiosRequestConfig } from 'axios';
-import { RequestType } from '@/form/form.types';
+import {AxiosPromise, AxiosRequestConfig} from 'axios';
+import {RequestType} from '@/form/form.types';
 
 const Api = {
     get(url: string, config?: AxiosRequestConfig): AxiosPromise {

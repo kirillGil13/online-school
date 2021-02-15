@@ -1,4 +1,4 @@
-<template>
+ <template>
   <v-col >
     <v-row>
       <v-col v-if="courseLoaded">
@@ -18,7 +18,6 @@
         <v-overlay :value="!courseLoaded">
           <v-progress-circular
               indeterminate
-              color="primary"
               :size="150"
           ></v-progress-circular>
         </v-overlay>
@@ -53,7 +52,6 @@ import Doc from '@/UI/components/common/Doc.vue';
 })
 export default class Course extends Vue {
   isPlaying = false;
-  dataIsReady = false;
   route: HeaderRouteType = {
     name: RouterNameEnum.TrainingMain,
     label: 'Вернуться к списку курсов',
@@ -61,7 +59,9 @@ export default class Course extends Vue {
 
   async created(): Promise<void> {
     await this.fetchData();
-    await this.$router.push({name: RouterNameEnum.Lesson, params: {lessonId: this.course!.currentLessonId.toString()}});
+    if (!this.$route.params.lessonId) {
+      await this.$router.push({name: RouterNameEnum.Lesson, params: {lessonId: this.course!.currentLessonId.toString()}});
+    }
   }
 
   @Watch('$route.params.lessonId')

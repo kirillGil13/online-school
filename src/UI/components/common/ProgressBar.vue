@@ -3,27 +3,21 @@
         <div class="progress">Вопрос {{ step }} из {{ amount }}</div>
         <div class="full-width dash_container">
             <v-col class="pa-0 mr-2" v-for="number in amount" :key="number">
-                <div :class="['dash', number === 1 ? 'active' : '']" :id="number" ref="dash"></div>
+                <div :class="['dash', activeStep[number - 1].active ? 'active' : '']" :id="number" ref="dash"></div>
             </v-col>
         </div>
         <v-divider class="divider"></v-divider>
     </v-col>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-property-decorator';
+import {ITestingFormActiveStep} from '@/form/testing/testingForm.types';
 
 @Component
 export default class ProgressBar extends Vue {
     @Prop({ default: 0 }) readonly amount!: number;
     @Prop({ default: 1 }) readonly step!: number;
-    // @Watch('step')
-    // onChangeFlag(val: number, oldVal: number): void {
-    //     if (val > oldVal) {
-    //         this.$refs.dash[val - 1].classList.add('active');
-    //     } else {
-    //         this.$refs.dash[val].classList.remove('active');
-    //     }
-    // }
+    @Prop() readonly activeStep!: ITestingFormActiveStep[];
 }
 </script> 
 <style lang="scss">

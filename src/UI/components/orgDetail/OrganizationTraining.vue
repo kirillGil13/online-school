@@ -26,21 +26,21 @@
 import {Component, Vue} from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
 import SliderLeaders from '@/UI/components/slider/SliderLeaders.vue';
-import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 import {ILeaderCourses, LeaderCoursesResponseType} from '@/entity/leaderCourses/leaderCourses.types';
 import {ILeader, LeaderResponseType} from '@/entity/leader';
 import Filters from '@/entity/filters/filters';
-import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
+import FilterCourses from '@/UI/components/filter/FilterComponent.vue';
 import Leader from '@/entity/leader/leader';
 import CoursesListItem from '@/entity/courses/courses';
 import {LeaderTestStore} from '@/store/modules/LeadersTest';
 import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
+import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 
 @Component({
   components: {
+    LeaderCourseItem,
     Header,
     SliderLeaders,
-    LeaderCourseItem,
     FilterCourses
   }
 })

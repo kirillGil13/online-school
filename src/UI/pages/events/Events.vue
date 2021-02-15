@@ -3,7 +3,7 @@
     <Header :isBordered="false" title="Кабинет лидера" class="top_bar_p_0"></Header>
     <v-row>
       <v-col>
-        <FilterCourses :isOnRight="false" :filter="filters.periods" :defaultName="filters.defaultPeriod"/>
+        <FilterComponent :isOnRight="false" :filter="filters.periods" :defaultName="filters.defaultPeriod"/>
       </v-col>
     </v-row>
     <v-row class="badges pa-0">
@@ -62,7 +62,7 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
-import FilterCourses from '@/UI/components/filter/FilterCourses.vue';
+import FilterComponent from '@/UI/components/filter/FilterComponent.vue';
 import Badge from '@/UI/components/common/Badge.vue';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 import Filters from '@/entity/filters/filters';
@@ -77,7 +77,7 @@ import EventsListItem from '@/entity/events/events';
 @Component({
   components: {
     Header,
-    FilterCourses,
+    FilterComponent,
     Badge,
     LeaderCourseItem,
     EventItem

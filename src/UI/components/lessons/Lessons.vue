@@ -1,6 +1,6 @@
 <template>
-  <v-responsive class="box-container" content-class="course-lessons-block" :aspect-ratio="22/23">
-    <div class="lessons-block">
+  <v-responsive content-class="course-lessons-block" :aspect-ratio="22/23">
+    <div class="lessons-block box-container">
       <div class="lesson-container">
         <ul class="lesson-list">
           <li
@@ -29,7 +29,28 @@
         </Button>
       </div>
     </div>
-
+    <div class="contacts">
+      <div class="contacts__content">
+        <div class="contacts__item d-flex flex-row">
+          <v-avatar>
+            <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">
+          </v-avatar>
+          <div class="details d-flex flex-column justify-center">
+            <h3 class="ma-0">Ильгиз Шакиров</h3>
+            <div class="details-desc">Автор курса</div>
+          </div>
+        </div>
+        <div class="contacts__item d-flex flex-row">
+          <v-avatar>
+            <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">
+          </v-avatar>
+          <div class="details d-flex flex-column justify-center">
+            <h3 class="ma-0">Ильгиз Шакиров</h3>
+            <div class="details-desc">Ваш лидер</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </v-responsive>
 </template>
 
@@ -61,12 +82,12 @@ export default class Lessons extends Vue {
     width: 100%;
     top: 0;
     left: 0;
-    height: 100%;
+    height: 57%;
 
     .lesson-container {
       width: 100%;
       overflow: scroll;
-      height: 80%;
+      height: 65%;
 
       ul {
         padding: 0;
@@ -153,6 +174,36 @@ export default class Lessons extends Vue {
       }
     }
   }
+  .contacts {
+    position: absolute;
+    top: 60%;
+    left: 0;
+    width: 100%;
 
+    &__content {
+      position: relative;
+      padding: 16px;
+      background: #FFFFFF;
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 4px 32px rgba(0, 0, 0, 0.16);
+      border-radius: 8px;
+      &:before {
+        z-index: 9999999;
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 76px;
+        border: 9px solid transparent;
+        border-bottom-color: #FFFFFF;
+      }
+    }
+    &__item {
+      .details {
+        .details-desc {
+          font-size: 12px;
+          color: #828282;
+        }
+      }
+    }
+  }
 }
 </style>

@@ -16,8 +16,3 @@ export type TestingAnswersResponseType = {
     id: number;
     answerOption: string;
 }
-
-export type TestingRequestType = {
-    questionId: number;
-    answerId: number;
-}

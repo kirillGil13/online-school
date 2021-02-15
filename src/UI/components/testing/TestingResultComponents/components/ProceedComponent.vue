@@ -6,7 +6,7 @@
         <h3>К сожалению, вы не прошли тестирование.</h3>
         <span class="success_info">Ничего страшного - вы можете пройти повторно тест через</span>
         <Timer v-if="!showButton" :currentTime="5" @stop="stop"/>
-        <Button v-if="showButton" class="again" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
+        <Button v-if="showButton" class="again pa-3" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
       </v-col>
     </v-row>
     <v-divider></v-divider>
