@@ -1,21 +1,34 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Vue from 'vue';
 import Router from 'vue-router';
-import {RouterNameEnum} from '@/router/router.types';
+import { RouterNameEnum } from '@/router/router.types';
 
 Vue.use(Router);
+Vue.prototype.$routeRules = RouterNameEnum;
 
 const routes = [
     {
-        path: '/auth/login',
-        name: 'Login',
-        component: () => import('../UI/pages/auth/Login.vue'),
-        meta: {auth: false},
+        path: '/auth',
+        redirect: '/auth/login',
+        component: () => import('../UI/layouts/AuthLayout.vue'),
+        meta: { auth: false },
+        children: [
+            {
+                path: 'login',
+                name: RouterNameEnum.AuthLogin,
+                component: () => import('@/UI/pages/auth/Login.vue'),
+            },
+            {
+                path: 'signup',
+                name: RouterNameEnum.AuthSignup,
+                component: () => import('@/UI/pages/auth/Login.vue'),
+            },
+        ],
     },
     {
         path: '/',
-        component: () => import('../UI/components/layouts/MainLayout.vue'),
-        meta: {auth: true},
+        component: () => import('../UI/layouts/MainLayout.vue'),
+        meta: { auth: true },
         children: [
             {
                 path: '/main',
@@ -34,45 +47,44 @@ const routes = [
                     {
                         path: '',
                         name: RouterNameEnum.OrganizationMain,
-                        component: () => import('../UI/components/orgDetail/OrganizationMain.vue')
+                        component: () => import('../UI/components/orgDetail/OrganizationMain.vue'),
                     },
                     {
                         path: 'training',
                         name: RouterNameEnum.OrganizationTraining,
-                        component: () => import('../UI/components/orgDetail/OrganizationTraining.vue')
+                        component: () => import('../UI/components/orgDetail/OrganizationTraining.vue'),
                     },
                     {
                         path: 'presentations',
                         name: RouterNameEnum.OrganizationPresentations,
-                        component: () => import('../UI/components/orgDetail/OrganizationPresentations.vue')
+                        component: () => import('../UI/components/orgDetail/OrganizationPresentations.vue'),
                     },
                     {
                         path: 'info-packages',
                         name: RouterNameEnum.OrganizationInfoPackages,
-                        component: () => import('../UI/components/orgDetail/OrganizationInfoPackages.vue')
+                        component: () => import('../UI/components/orgDetail/OrganizationInfoPackages.vue'),
                     },
                     {
                         path: 'documents',
                         name: RouterNameEnum.OrganizationDocuments,
-                        component: () => import('../UI/components/orgDetail/OrganizationDocuments.vue')
+                        component: () => import('../UI/components/orgDetail/OrganizationDocuments.vue'),
                     },
                     {
                         path: 'instructions',
                         name: RouterNameEnum.OrganizationInstructions,
-                        component: () => import('../UI/components/orgDetail/OrganizationInstructions.vue')
+                        component: () => import('../UI/components/orgDetail/OrganizationInstructions.vue'),
                     },
                     {
                         path: 'leaders',
                         name: RouterNameEnum.OrganizationLeaders,
-                        component: () => import('../UI/components/orgDetail/OrganizationLeaders.vue')
+                        component: () => import('../UI/components/orgDetail/OrganizationLeaders.vue'),
                     },
                     {
                         path: 'group',
                         name: RouterNameEnum.OrganizationGroup,
-                        component: () => import('../UI/components/orgDetail/OrganizationGroup.vue')
+                        component: () => import('../UI/components/orgDetail/OrganizationGroup.vue'),
                     },
-
-                ]
+                ],
             },
 
             {
@@ -171,6 +183,7 @@ const routes = [
         ],
     },
 ];
+
 Vue.router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,

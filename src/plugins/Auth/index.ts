@@ -6,9 +6,10 @@ import auth from '@websanova/vue-auth/src';
 //@ts-ignore
 import authBearer from './bearer';
 //@ts-ignore
-import axios from '@websanova/vue-auth/drivers/http/axios.1.x' ;
+import axios from '@websanova/vue-auth/drivers/http/axios.1.x';
 //@ts-ignore
 import router from '@websanova/vue-auth/drivers/router/vue-router.2.x';
+import { RouterNameEnum } from '@/router/router.types';
 
 Vue.use(auth, {
     auth: authBearer,
@@ -18,12 +19,12 @@ Vue.use(auth, {
     tokenDefaultKey: 'token',
 
     // Redirects
-    authRedirect: { name: 'Login' },
+    authRedirect: { name: RouterNameEnum.AuthLogin },
     forbiddenRedirect: { path: '/403' },
     notFoundRedirect: { path: '/404' },
     // Http
     loginData: {
-        url: 'users/auth',
+        url: 'users/password-auth',
         method: 'POST',
         redirect: '/',
     },
