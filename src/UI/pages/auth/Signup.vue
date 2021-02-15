@@ -58,7 +58,7 @@ import PhoneMaskInput from 'vue-phone-mask-input';
         PhoneMaskInput,
     },
 })
-export default class Login extends Vue {
+export default class Signup extends Vue {
     form = new LoginForm();
 
     changePhone(): void {
@@ -71,6 +71,12 @@ export default class Login extends Vue {
 
     submit(): boolean {
         this.form.submit(AuthStore.login);
+        // if (this.form.codeStep) {
+        //     AuthStore.login(this.form.getFormData());
+        // } else {
+        //     // AuthStore.getTwofaCode(this.form.phone);
+        //     this.form.codeStep = true;
+        // }
 
         return false;
     }

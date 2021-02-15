@@ -1,7 +1,9 @@
 <template>
-    <div id="app">
-        <router-view />
-    </div>
+    <v-app class="main-view">
+        <v-main class="main-view__container">
+            <router-view />
+        </v-main>
+    </v-app>
 </template>
 
 <script lang="ts">
@@ -10,8 +12,9 @@ import { AuthStore } from '@/store/modules/Auth';
 @Component
 export default class App extends Vue {
     created(): void {
+        console.log(this.$route);
         AuthStore.load();
     }
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss" scoped></style>

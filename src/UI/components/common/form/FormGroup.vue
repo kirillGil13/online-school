@@ -1,39 +1,55 @@
 <template>
-    <div>
-        <slot name="label"></slot>
-        <slot name="input" :attrs="{ errorMessages: allErrorsMessages, success: hasAnyErrors }" :hasErrors="hasAnyErrors"></slot>
-    </div>
+    <FormInput v-slot="attrs" :messages="form.getMessages(field)" :server-errors="serverErrors" :validator="validator">
+        <slot v-bind="attributes(attrs)" />
+        <div v-if="showCustomError">
+            <span v-for="(error, i) in attrs.errorMessages" :key="i" class="text-red"> {{ error }} </span>
+        </div>
+    </FormInput>
 </template>
 <script lang="ts">
-import { singleErrorExtractorMixin } from 'vuelidate-error-extractor';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import FormInput from '@/UI/components/common/form/FormInput.vue';
+import { Form } from '@/form/form';
+import { Validation } from 'vuelidate';
+
 @Component({
-    extends: singleErrorExtractorMixin,
+    components: { FormInput },
 })
 export default class extends Vue {
-    @Prop({
-        type: Array,
-        default: () => [],
-    })
-    serverErrors!: string[];
-
-    get allErrorsMessages(): string[] {
-        return this.serverErrors.concat(this.activeErrorMessages);
+    @Prop({ required: true }) readonly field!: string;
+    @Prop({ required: true }) readonly form!: Form;
+    @Prop({ type: Boolean, default: false }) readonly showCustomError!: boolean;
+    get validator(): Validation {
+        return this.form.$v[this.field];
     }
 
-    get hasAnyErrors(): boolean {
-        return this.isValid && !this.serverErrors.length;
+    get serverErrors(): string[] {
+        return this.form.getErrors(this.field);
+    }
+
+    attributes(attrs: any): any {
+        attrs.label = this.field;
+        attrs.name = this.field;
+        attrs.placeholder = this.field;
+        attrs.outlined = true;
+        attrs.autocomplete = 'off';
+        attrs.change = (): void => {
+            this.form.$v[this.field].$touch();
+        };
+
+        return attrs;
     }
 }
 </script>
 <style lang="scss">
 .input {
-  padding: 12px 16px 12px 16px;
-  border-style: solid;
-  border-radius: 5px 0 0 5px;
+    padding: 12px 16px 12px 16px;
+    border-style: solid;
+    border-radius: 5px 0 0 5px;
 
-  &__normal {
-    border-radius: 5px;
-  }
+    &__normal {
+        border-radius: 5px;
+    }
 }
 </style>

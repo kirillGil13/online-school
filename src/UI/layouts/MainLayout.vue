@@ -7,9 +7,9 @@
                     <Banner />
                 </div>
                 <div class="ml-7 content">
-                  <v-main>
-                    <router-view></router-view>
-                  </v-main>
+                    <v-main>
+                        <router-view></router-view>
+                    </v-main>
                 </div>
             </v-container>
         </v-main>
@@ -17,10 +17,10 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Banner from '../common/Banner.vue';
-import Sidebar from '../sidebar/Sidebar.vue';
-import { AuthStore } from '@/store/modules/Auth';
-import { IUser } from '@/entity/user';
+import Banner from '../components/common/Banner.vue';
+import Sidebar from '../components/sidebar/Sidebar.vue';
+import { AuthStore } from '../../store/modules/Auth';
+import { IUser } from '../../entity/user';
 
 @Component({
     components: {
@@ -34,15 +34,15 @@ export default class MainLayout extends Vue {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .main-view {
-  font-family: 'Ubuntu' !important;
-  width: 100%;
-  &__container{
-    max-width: 1440px;
-    background-color: #fbfcfe;
-    padding: 15px 0 0 0 !important;
-  }
+    font-family: 'Ubuntu' !important;
+    width: 100%;
+    &__container {
+        max-width: 1440px;
+        background-color: #fbfcfe;
+        padding: 15px 0 0 0 !important;
+    }
 }
 
 .aside-view {
@@ -53,7 +53,7 @@ export default class MainLayout extends Vue {
     padding-top: 10px !important;
     margin-left: 36px;
 }
-.fluid-container{
-  max-width: 1440px !important;
+.fluid-container {
+    max-width: 1440px !important;
 }
 </style>
