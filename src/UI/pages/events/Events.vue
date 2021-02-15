@@ -48,13 +48,6 @@
               @proceed="proceed"
           />
         </div>
-        <v-col class="events__all">
-          <EventItem
-              v-for="(event, index) in events"
-              :key="index"
-              :event="event"
-          />
-        </v-col>
       </v-row>
     </v-col>
   </v-col>
@@ -345,12 +338,15 @@ export default class Events extends Vue {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
+    width: 100%;
+    overflow-x: scroll;
   }
 
   .badge {
     margin-bottom: 0 !important;
     padding: 16px 0 8px 24px !important;
     background-color: #ffffff;
+    min-width: 230px;
 
     &__stats {
       margin-bottom: 5px;

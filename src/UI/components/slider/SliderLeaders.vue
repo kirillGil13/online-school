@@ -1,6 +1,6 @@
 <template>
-  <v-col class="slider-container">
-    <swiper class="swiper component" :options="swiperComponentOption" ref="swiper">
+  <v-col :class="['slider-container', isMobile ? 'pa-0' : '']">
+    <swiper :class="['swiper component', isMobile ? 'mx-0' : '']" :options="swiperComponentOption" ref="swiper">
       <swiper-slide v-for="(leader, index) in leaders" :key="index" :id="index">
         <!--<router-link
             :to="{ name: routerName.LeaderCourses, params: { id: leader.id } }"
@@ -14,10 +14,10 @@
         </div>
         <!--</router-link>-->
       </swiper-slide>
-      <div class="swiper-button-prev" @click="prev()" slot="button-prev">
+      <div class="swiper-button-prev" @click="prev()" slot="button-prev" v-if="!isMobile">
         <svg-icon name="Slider_Arrow"></svg-icon>
       </div>
-      <div class="swiper-button-next" @click="next()" slot="button-next">
+      <div class="swiper-button-next" @click="next()" slot="button-next" v-if="!isMobile">
         <svg-icon name="Slider_Arrow"></svg-icon>
       </div>
     </swiper>
@@ -29,6 +29,7 @@ import Rating from '../common/Rating.vue';
 import Leader from '@/entity/leader/leader';
 import {SwiperOptions} from 'swiper';
 import {RouterNameEnum} from '@/router/router.types';
+import {AdaptiveStore} from '@/store/modules/Adaptive';
 
 @Component({
   components: {
@@ -40,15 +41,13 @@ export default class SliderLeaders extends Vue {
   routerName = RouterNameEnum;
 
   swiperComponentOption: SwiperOptions = {
-    slidesPerView: 6,
+    slidesPerView: 'auto',
     spaceBetween: 8,
-    slidesPerGroup: 1,
     loop: false,
     navigation: {
       nextEl: 'swiper-button-next',
       prevEl: 'swiper-button-prev',
     },
-    simulateTouch: false,
   };
 
   proceed(id: number): void {
@@ -71,11 +70,14 @@ export default class SliderLeaders extends Vue {
     //     this.$refs.swiper.$swiper.params.el.children[1].style.display = 'flex';
     // } else this.$refs.swiper.$swiper.params.el.children[1].style.display = 'none';
   }
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
+  }
 }
 </script>
 <style lang="scss" scoped>
 .swiper {
-  width: 90%;
+  width: 100%;
   position: static;
 }
 
@@ -85,10 +87,11 @@ export default class SliderLeaders extends Vue {
 
 .slider-container {
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: 34px;
 }
 
 .swiper-slide {
+  width: 150px;
   display: flex;
   align-items: center;
   justify-content: center;

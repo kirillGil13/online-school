@@ -1,6 +1,5 @@
 <template>
-  <v-row>
-    <v-col class="candidates">
+  <v-col class="candidates">
       <Header
           :isBordered="false"
           title="Кандидаты"
@@ -8,7 +7,7 @@
           description="Здесь отображаются контактные данные всех людей, которые регистрировались по Вашим партнерским ссылкам"
       >
       </Header>
-      <v-row class="badges d-flex justify-space-between mt-6" no-gutters>
+      <v-row class="badges d-flex justify-space-between flex-nowrap mt-6" no-gutters>
         <Badge class="badges__container" :subs="true" :profit="true">
           <template v-slot:title>Просмотров инфопакетов</template>
           <template v-slot:default>172</template>
@@ -39,7 +38,8 @@
       </v-row>
       <v-row>
         <v-col class="mt-6">
-          <FilterComponent :isOnRight="false" :button="true" :search="true" :filter="filters.candidates" :defaultName="filters.defaultCandidate">
+          <FilterComponent :isOnRight="false" :button="true" :search="true" :filter="filters.candidates"
+                           :defaultName="filters.defaultCandidate">
             <template v-slot:search>
               <Search/>
             </template>
@@ -54,13 +54,12 @@
           <TableCandidates :candidates="candidates" :selects="selects"/>
         </v-col>
       </v-row>
-    </v-col>
-    <Modal :activator="activator" @activatorChange="activatorChange">
-      <template v-slot:content>
-        <CandidateFormComponent :form="candidateForm" @close="close"/>
-      </template>
-    </Modal>
-  </v-row>
+      <Modal :activator="activator" @activatorChange="activatorChange">
+        <template v-slot:content>
+          <CandidateFormComponent :form="candidateForm" @close="close"/>
+        </template>
+      </Modal>
+  </v-col>
 </template>
 
 <script lang="ts">
@@ -86,6 +85,7 @@ import {CandidateForm} from '@/form/candidate/candidateForm';
 import {RouterNameEnum} from '@/router/router.types';
 import {IInfoPackage} from '@/entity/infoPackage/infoPackage.types';
 import {InfoPackagesStore} from '@/store/modules/InfoPackages';
+import {AdaptiveStore} from '@/store/modules/Adaptive';
 
 @Component({
   components: {
@@ -122,6 +122,7 @@ export default class Candidates extends Vue {
   activatorChange(act: boolean): void {
     this.activator = act;
   }
+
   close(): void {
     this.activator = false;
   }
@@ -150,14 +151,21 @@ export default class Candidates extends Vue {
     return InfoPackagesStore.infoPackages;
   }
 
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
+  }
+
 }
 </script>
 
 <style lang="scss">
 .candidates {
   .badges {
+    width: 100%;
+    overflow-x: scroll;
     &__container {
       width: calc((100% / 4) - 12px);
+      min-width: 204px;
       margin-right: 12px;
       background-color: #FFFFFF;
       border: 1px solid rgba(87, 81, 183, 0.12);

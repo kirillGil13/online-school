@@ -141,6 +141,13 @@ const routes = [
                 path: '/partners',
                 name: RouterNameEnum.Partners,
                 component: () => import('../UI/pages/partners/Partners.vue'),
+                children: [
+                    {
+                        path: ':id',
+                        name: RouterNameEnum.PartnerPage,
+                        component: () => import('../UI/pages/partners/PartnerPage.vue')
+                    }
+                ]
             },
             {
                 path: '/calendar',
@@ -149,9 +156,30 @@ const routes = [
             },
             {
                 path: '/chat',
-                name: RouterNameEnum.Chat,
                 component: () => import('../UI/pages/chat/Chat.vue'),
+                children: [
+                    {
+                        path: '',
+                        component: () => import('../UI/components/chat/sections/ChatMain.vue'),
+                        name: RouterNameEnum.ChatMain
+                    },
+                    {
+                        path: 'notes',
+                        component: () => import('../UI/components/chat/sections/ChatNotes.vue'),
+                        name: RouterNameEnum.ChatNotes
+                    },
+                    {
+                        path: 'tasks',
+                        component: () => import('../UI/components/chat/sections/ChatTasks.vue'),
+                        name: RouterNameEnum.ChatTasks
+                    },
+                ]
             },
+            {
+                path: '/profile',
+                component: () => import('../UI/pages/profile/Profile.vue'),
+                name: RouterNameEnum.Profile
+            }
         ],
     },
 ];

@@ -1,10 +1,46 @@
 <template>
-  <div>Chat</div>
+  <v-col class="chat pa-0">
+    <ChatHeader/>
+    <v-row class="chat-main d-flex flex-row" no-gutters>
+      <Conversations/>
+      <router-view></router-view>
+    </v-row>
+  </v-col>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import {Vue, Component} from 'vue-property-decorator';
+import {AdaptiveStore} from '@/store/modules/Adaptive';
+import Conversations from '@/UI/components/chat/Conversations.vue';
+import ChatHeader from '@/UI/components/chat/ChatHeader.vue';
 
-@Component({})
-export default class Chat extends Vue {}
+@Component({
+  components: {ChatHeader, Conversations}
+})
+export default class Chat extends Vue {
+
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
+  }
+}
 </script>
+<style lang="scss">
+.chat {
+  background: #FBFCFE;
+  border: 1px solid rgba(66, 109, 246, 0.12);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+  height: 862px;
+
+  .chat-main {
+    height: 100%;
+    max-height: 812px;
+    box-shadow: 2px 0px 2px rgba(0, 0, 0, 0.04);
+    border-radius: 0px 0px 12px 12px;
+
+  }
+  .v-avatar {
+    border: 0.5px solid rgba(0, 0, 0, 0.08);
+  }
+}
+</style>

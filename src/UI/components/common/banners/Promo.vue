@@ -4,12 +4,12 @@
             <div class="banner__star-container">
                 <svg-icon name="Star" height="40" width="40" :color="`${variables.lightGreen} ${variables.green}`" />
             </div>
-            <p class="banner__descripton">
+            <p class="banner__description">
                 Подключите PRO аккаунт, чтобы <br />
                 получить доступ ко всем материалам
             </p>
             <!-- тут будет common/Button -->
-            <v-btn class="banner__button green" @click="subscribe">Оформить подписку</v-btn>
+            <Button @click="subscribe">Оформить подписку</Button>
             <!-- тут будет common/Button -->
         </div>
     </div>
@@ -18,7 +18,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import variables, { IScssVariables } from '@/UI/assets/scss/variables/_variables.scss';
-@Component
+import Button from '@/UI/components/common/Button.vue';
+@Component({
+  components: {Button}
+})
 export default class PromoBanner extends Vue {
     get variables(): IScssVariables {
         return variables;
@@ -35,9 +38,10 @@ export default class PromoBanner extends Vue {
     color: $white;
 }
 .banner {
+  padding: 24px 34px 16px 34px;
     &__promo {
-        background-color: #e1f2eb !important;
-        border: 1px solid rgba(39, 174, 96, 0.12);
+      background: rgba(39, 174, 96, 0.12);
+      border: 1px solid rgba(39, 174, 96, 0.12);
     }
     &__star-container {
         background-color: #cbeada;
@@ -48,5 +52,16 @@ export default class PromoBanner extends Vue {
         align-items: center;
         border-radius: $main_border_radius;
     }
+  &__description {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 12px;
+    margin-bottom: 0 !important;
+  }
+  button {
+    margin-top: 16px;
+    width: 100%;
+    background: #27AE60;
+  }
 }
 </style>
