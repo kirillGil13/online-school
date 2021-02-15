@@ -18,18 +18,18 @@
 </template>
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator';
-import Banner from '../common/Banner.vue';
-import Sidebar from '../sidebar/Sidebar.vue';
 import {AuthStore} from '@/store/modules/Auth';
 import {IUser} from '@/entity/user';
 import MobileBar from '@/UI/components/common/MobileBar.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
+import Banner from '../components/common/Banner.vue';
+import Sidebar from '../components/sidebar/Sidebar.vue';
 
 @Component({
   components: {
-    MobileBar,
-    Sidebar,
     Banner,
+    MobileBar,
+    Sidebar
   },
 })
 export default class MainLayout extends Vue {
