@@ -4,7 +4,7 @@
             <v-avatar color="primary" rounded tile :size="size">
                 <img
                     v-if="user.avatar"
-                    :src="imageSourse"
+                    :src="imageSource"
                     alt="Avatar"
                     class="avatar"
                 />
@@ -26,7 +26,7 @@ import { AuthStore } from '@/store/modules/Auth';
 
 @Component
 export default class Avatar extends Vue {
-    @Prop({ required: true }) readonly imageSourse!: string;
+    @Prop({ required: true }) readonly imageSource!: string;
     @Prop({ required: true }) readonly size!: number;
     @Prop({ required: false, default: false }) readonly smallStar!: boolean;
     @Prop({ required: false, default: false }) readonly mediumStar!: boolean;

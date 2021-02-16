@@ -21,10 +21,11 @@ import Logo from '../components/common/Logo.vue';
 })
 export default class AuthLayout extends Vue {}
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .auth {
     justify-content: center;
     align-items: center;
+    background-color: transparent !important;
 
     &__wrapper {
         padding: 24px;

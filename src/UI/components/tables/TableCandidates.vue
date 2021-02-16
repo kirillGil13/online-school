@@ -124,6 +124,7 @@ export default class TablePartners extends Vue {
 .select_content {
   margin-top: 30px !important;
   border-radius: 12px !important;
+  min-width: 190px !important;
 
   &.action {
     #select0 {

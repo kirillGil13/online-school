@@ -1,27 +1,12 @@
 import {Component} from 'vue-property-decorator';
-import {maxLength, minLength, required, email} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import {CandidateFormRequestType, ICandidateForm} from '@/form/candidate/candidateForm.types';
+import {Validate} from '@/plugins/Vuelidate/Decorators';
+import {required, sameAs, email} from 'vuelidate/lib/validators';
 
-@Component({
-    validations: {
-        phone: {
-            required,
-            minLength: minLength(12),
-            maxLength: maxLength(12),
-        },
-        name: {
-            required
-        },
-        email: {
-            email
-        }
-    },
-})
+@Component
 export class CandidateForm extends Form implements ICandidateForm{
-    public name = '';
-    public email = '';
-    public phone = '';
+    public phoneMask = '';
     public product = '';
     public status = '';
     public productList: string[] = [];
@@ -29,30 +14,28 @@ export class CandidateForm extends Form implements ICandidateForm{
 
     public serverErrors: { [key: string]: string[] } = {};
 
-    public messages = {
-        phone: {
-            required: 'Введите номер телефона',
-            minLength: 'Введите корректный номер телефона',
-            maxLength: 'Введите корректный номер телефона',
-        },
-        name: {
-            required: 'Введите имя',
-        },
-        email: {
-            email: 'Введите корректный email'
-        }
-    };
+    @Validate(sameAs(() => true), (form: CandidateForm): string => 'Введите номер в формате ' + form.phoneMask)
+    public phoneValid = true;
+
+    @Validate(required, 'Введите номер телефона')
+    public phone = '';
+
+    @Validate(required, 'Введите номер телефона')
+    public name = '';
+
+    @Validate(required, 'Введите email')
+    @Validate(email, 'Введите корректный Email')
+    public email = '';
 
     getFormData(): CandidateFormRequestType {
         return {
-            phone: this.phone.slice(1) ?? '',
+            phone: this.phone,
             name: this.name,
             email: this.email,
             product: this.product,
             status: this.status
         };
     }
-    getFullPhone(): string {
-        return '';
-    }
+
+
 }

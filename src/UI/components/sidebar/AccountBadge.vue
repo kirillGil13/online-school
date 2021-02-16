@@ -1,7 +1,7 @@
 <template>
     <div class="account-badge">
         <avatar
-            :imageSourse="userInfo.avatar"
+            :imageSource="userInfo.avatar"
             :imageClass="'account-badge__avatar'"
             :size="48"
             :starSize="AvatarSizeEnum.SMALL"
@@ -11,10 +11,10 @@
             <div class="account-badge__bottom">
                 <div class="account-badge__login-wrapper">
                     <span class="account-badge__login">{{
-                        userInfo.login
+                        userId
                     }}</span>
                 </div>
-                <svg-icon v-clipboard="userInfo.login" class="account-badge__copy-icon" name="Copy" />
+                <svg-icon v-clipboard="userId" class="account-badge__copy-icon" name="Copy" />
             </div>
         </div>
     </div>
@@ -32,6 +32,7 @@ import { AvatarSizeEnum } from '@/entity/common/avatar.types';
 })
 export default class AccountBadge extends Vue {
     @Prop({ required: true }) readonly userInfo!: IFakeUserInfo;
+    @Prop({required: true}) userId!: number;
     AvatarSizeEnum = AvatarSizeEnum;
 }
 </script>
@@ -46,6 +47,7 @@ export default class AccountBadge extends Vue {
     width: 100%;
     border-radius: $main_border_radius;
     &__account-info {
+      width: 100%;
         margin-left: 15px;
         display: flex;
         justify-content: center;
