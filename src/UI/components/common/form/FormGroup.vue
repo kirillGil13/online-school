@@ -33,7 +33,6 @@ export default class extends Vue {
     attributes(attrs: any): any {
         attrs.label = this.field;
         attrs.name = this.field;
-        attrs.placeholder = this.field;
         attrs.outlined = true;
         attrs.autocomplete = 'off';
         attrs.change = (): void => {

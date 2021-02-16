@@ -2,62 +2,33 @@ import {Component} from 'vue-property-decorator';
 import {email, maxLength, required} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import {IUser} from '@/entity/user';
-import {ProfileContactDataFormRequestType} from '@/form/profile/contactData/ProfileContactDataForm.types';
+import {ProfileContactDataRequestType} from '@/form/profile/contactData/ProfileContactDataForm.types';
+import {Validate} from '@/plugins/Vuelidate/Decorators';
 
-@Component({
-    validations: {
-        email: {
-            required,
-            email: email()
-        },
-        vk: {
-            maxLength: maxLength(30),
-        },
-        facebook: {
-            maxLength: maxLength(30),
-        },
-        instagram: {
-            maxLength: maxLength(30),
-        },
-        skype: {
-            maxLength: maxLength(30),
-        },
-        username: {
-            required,
-        },
-    },
-})
+@Component
 export class ProfileContactDataForm extends Form {
-    public email = '';
-    public vk = '';
-    public facebook = '';
-    public instagram = '';
-    public skype = '';
-    public username = '';
 
     public serverErrors: { [key: string]: string[] } = {};
 
-    public messages = {
-        email: {
-            required: 'Введите email',
-            email: 'Введите корректный email',
-        },
-        vk: {
-            maxLength: 'Ссылка на страницу vk не должна превышать 30 символов',
-        },
-        facebook: {
-            maxLength: 'Ссылка на страницу facebook не должна превышать 30 символов',
-        },
-        instagram: {
-            maxLength: 'Ссылка на страницу instagram не должна превышать 30 символов',
-        },
-        skype: {
-            maxLength: 'Ссылка на страницу skype не должна превышать 30 символов',
-        },
-        username: {
-            required: 'Введите номер телефона',
-        },
-    };
+    @Validate(maxLength(30), 'Ссылка на страницу vk не должна превышать 30 символов')
+    public vk = '';
+
+    @Validate(maxLength(30), 'Ссылка на страницу facebook не должна превышать 30 символов')
+    public facebook = '';
+
+    @Validate(maxLength(30), 'Ссылка на страницу instagram не должна превышать 30 символов')
+    public instagram = '';
+
+    @Validate(maxLength(30), 'Ссылка на страницу skype не должна превышать 30 символов')
+    public skype = '';
+
+    @Validate(required, 'Введите email')
+    @Validate(email, 'Введите корректный email')
+    public email = '';
+
+    @Validate(required, 'Введите номер телефона')
+    public username = '';
+
     setFormData(user: IUser): void {
         this.email = user.email;
         this.vk = user.vk;
@@ -66,7 +37,7 @@ export class ProfileContactDataForm extends Form {
         this.skype = user.skype;
         this.username = '+' + user.username;
     }
-    getFormData(): ProfileContactDataFormRequestType {
+    getFormData(): ProfileContactDataRequestType {
         return {
             email: this.email,
             vk: this.vk,
@@ -74,8 +45,5 @@ export class ProfileContactDataForm extends Form {
             instagram: this.instagram,
             skype: this.skype,
         };
-    }
-    getFullPhone(): string {
-        return '';
     }
 }

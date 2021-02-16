@@ -14,7 +14,6 @@
             autoDetectCountry
             flagSize="normal"
             inputClass="input"
-            placeholder="Введите номер телефона"
             showFlag
             wrapperClass="wrapper"
             ref="phoneMaskInput"
@@ -31,7 +30,6 @@
             id="code"
             v-model="form[attrs.name]"
             v-bind="attrs"
-            placeholder="Введите код"
             @input="attrs.change"
         >
       </FormGroup>

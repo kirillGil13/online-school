@@ -26,7 +26,6 @@
             id="name"
             v-model="form[attrs.name]"
             v-bind="attrs"
-            placeholder="Введите имя"
             @input="attrs.change"
         >
       </FormGroup>
@@ -39,7 +38,6 @@
             id="surname"
             v-model="form[attrs.name]"
             v-bind="attrs"
-            placeholder="Введите фамилию"
             @input="attrs.change"
         >
       </FormGroup>
@@ -52,7 +50,6 @@
             id="email"
             v-model="form[attrs.name]"
             v-bind="attrs"
-            placeholder="Введите email"
             @input="attrs.change"
         >
       </FormGroup>
@@ -65,7 +62,6 @@
             id="password"
             v-model="form[attrs.name]"
             v-bind="attrs"
-            placeholder="Введите пароль"
             @input="attrs.change"
         >
       </FormGroup>
@@ -78,7 +74,6 @@
             id="confirm_password"
             v-model="form[attrs.name]"
             v-bind="attrs"
-            placeholder="Повторите пароль"
             @input="attrs.change"
         >
       </FormGroup>

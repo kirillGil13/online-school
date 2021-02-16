@@ -1,9 +1,9 @@
-import {ProfileMainInfoFormRequestType} from '@/form/profile/mainInfo/ProfileMainInfoForm.types';
-import {ProfileContactDataFormRequestType} from '@/form/profile/contactData/ProfileContactDataForm.types';
+import {ProfileMainInfoRequestType} from '@/form/profile/mainInfo/ProfileMainInfoForm.types';
+import {ProfileContactDataRequestType} from '@/form/profile/contactData/ProfileContactDataForm.types';
 
 export interface IProfileEditForm {
-    mainInfoRequest: ProfileMainInfoFormRequestType;
-    contactDataRequest: ProfileContactDataFormRequestType;
+    mainInfoRequest: ProfileMainInfoRequestType;
+    contactDataRequest: ProfileContactDataRequestType;
     getFullRequest(): ProfileEditFormType;
 }
 export type ProfileEditFormType = {

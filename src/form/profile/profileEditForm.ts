@@ -1,12 +1,12 @@
 import {IProfileEditForm, ProfileEditFormType} from '@/form/profile/profileEditForm.types';
-import {ProfileMainInfoFormRequestType} from '@/form/profile/mainInfo/ProfileMainInfoForm.types';
-import {ProfileContactDataFormRequestType} from '@/form/profile/contactData/ProfileContactDataForm.types';
+import {ProfileMainInfoRequestType} from '@/form/profile/mainInfo/ProfileMainInfoForm.types';
+import {ProfileContactDataRequestType} from '@/form/profile/contactData/ProfileContactDataForm.types';
 
 export default class ProfileEditForm implements IProfileEditForm {
-    mainInfoRequest: ProfileMainInfoFormRequestType;
-    contactDataRequest: ProfileContactDataFormRequestType;
+    mainInfoRequest: ProfileMainInfoRequestType;
+    contactDataRequest: ProfileContactDataRequestType;
 
-    constructor(main: ProfileMainInfoFormRequestType, contact: ProfileContactDataFormRequestType) {
+    constructor(main: ProfileMainInfoRequestType, contact: ProfileContactDataRequestType) {
         this.mainInfoRequest = main;
         this.contactDataRequest = contact;
     }

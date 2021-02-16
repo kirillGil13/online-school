@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 class="form-title">Регистрация</h2>
-    <CodeFormVue v-if="registerStep" :form="codeForm" @submitCode="submitCode" @submitPhone="submitPhone"
+    <CodeFormVue v-if="!registerStep" :form="codeForm" @submitCode="submitCode" @submitPhone="submitPhone"
                  :code-step="codeStep"/>
     <RegisterFormVue v-else :form="registerForm" @submit="submitRegister"/>
   </div>
