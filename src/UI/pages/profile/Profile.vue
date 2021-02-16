@@ -15,7 +15,7 @@
             >
               <avatar
                   :size="!isMobile ? 143 : 70"
-                  :imageSourse="'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'"
+                  :imageSource="user.avatar"
                   :starSize="AvatarSizeEnum.MEDIUM"
               />
               <div class="badges">

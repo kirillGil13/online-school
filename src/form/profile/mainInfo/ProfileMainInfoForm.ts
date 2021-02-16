@@ -9,7 +9,6 @@ import {maxLength, required} from 'vuelidate/lib/validators';
 export class ProfileMainInfoForm extends Form {
     public id = 0;
     public login = '';
-    public description = '';
 
     public serverErrors: { [key: string]: string[] } = {};
 
@@ -20,7 +19,7 @@ export class ProfileMainInfoForm extends Form {
     public surname = '';
 
     @Validate(maxLength(50), 'Описание не должно превышать 50 символов')
-    public email = '';
+    public description = '';
 
     setFormData(user: IUser): void {
         this.id = user.id;

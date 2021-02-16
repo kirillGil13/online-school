@@ -10,25 +10,23 @@
             id="name"
             v-model="form[attrs.name]"
             v-bind="attrs"
-            placeholder="Введите имя"
             @input="attrs.change"
         >
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
-      <PhoneMaskInput
-          v-model="form.phone"
-          v-bind="attrs"
-          autoDetectCountryв
-          flagSize="normal"
-          inputClass="input"
-          placeholder="Введите номер телефона"
-          showFlag
-          wrapperClass="wrapper"
-          ref="phoneMaskInput"
-          @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
-          @input="changePhone"
-      />
-    </FormGroup>
+      <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
+        <PhoneMaskInput
+            v-model="form.phone"
+            v-bind="attrs"
+            autoDetectCountry
+            flagSize="normal"
+            inputClass="input"
+            showFlag
+            wrapperClass="wrapper"
+            ref="phoneMaskInput"
+            @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
+            @input="changePhone"
+        />
+      </FormGroup>
     <FormGroup
         class="mt-4"  v-slot="attrs" :form="form" field="email" show-custom-error label="Email"
     >
@@ -38,7 +36,6 @@
           id="email"
           v-model="form[attrs.name]"
           v-bind="attrs"
-          placeholder="Введите email"
           @input="attrs.change"
       >
     </FormGroup>

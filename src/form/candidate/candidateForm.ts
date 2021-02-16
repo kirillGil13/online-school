@@ -8,6 +8,7 @@ import {required, sameAs, email} from 'vuelidate/lib/validators';
 export class CandidateForm extends Form implements ICandidateForm{
     public phoneMask = '';
     public product = '';
+    public phone = '';
     public status = '';
     public productList: string[] = [];
     public statusList: string[] = [];
@@ -17,10 +18,7 @@ export class CandidateForm extends Form implements ICandidateForm{
     @Validate(sameAs(() => true), (form: CandidateForm): string => 'Введите номер в формате ' + form.phoneMask)
     public phoneValid = true;
 
-    @Validate(required, 'Введите номер телефона')
-    public phone = '';
-
-    @Validate(required, 'Введите номер телефона')
+    @Validate(required, 'Введите имя ')
     public name = '';
 
     @Validate(required, 'Введите email')

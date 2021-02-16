@@ -35,7 +35,7 @@ export class ProfileContactDataForm extends Form {
         this.facebook = user.facebook;
         this.instagram = user.instagram;
         this.skype = user.skype;
-        this.username = '+' + user.username;
+        this.username = user.username;
     }
     getFormData(): ProfileContactDataRequestType {
         return {
