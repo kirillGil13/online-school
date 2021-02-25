@@ -30,6 +30,7 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
+    background: none !important;
 }
 header {
     display: flex;
@@ -470,6 +471,12 @@ iframe {
         overflow: scroll;
     }
 }
-.v-menu__content {
-    min-width: 190px !important;
+.form-second-action {
+    font-weight: bold;
+    font-size: 14px !important;
+}
+.form-button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 12px;
 }

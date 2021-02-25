@@ -1,8 +1,6 @@
+import { RequestType } from '@/form/form.types';
 
-export interface ICodeForm{
+export type CodeRequestType = RequestType & {
+    phone: string;
     code: string;
-}
-
-export type CodeRequestType = {
-    code: string;
-}
+};

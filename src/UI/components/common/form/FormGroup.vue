@@ -1,8 +1,9 @@
 <template>
     <FormInput v-slot="attrs" :messages="form.getMessages(field)" :server-errors="serverErrors" :validator="validator">
+      <label v-if="label">{{label}}</label>
         <slot v-bind="attributes(attrs)" />
         <div v-if="showCustomError">
-            <span v-for="(error, i) in attrs.errorMessages" :key="i" class="text-red"> {{ error }} </span>
+            <span v-for="(error, i) in attrs.errorMessages" :key="i" class="red--text ml-4"> {{ error }} </span>
         </div>
     </FormInput>
 </template>
@@ -20,6 +21,7 @@ export default class extends Vue {
     @Prop({ required: true }) readonly field!: string;
     @Prop({ required: true }) readonly form!: Form;
     @Prop({ type: Boolean, default: false }) readonly showCustomError!: boolean;
+    @Prop() readonly label!: string;
     get validator(): Validation {
         return this.form.$v[this.field];
     }
@@ -31,13 +33,11 @@ export default class extends Vue {
     attributes(attrs: any): any {
         attrs.label = this.field;
         attrs.name = this.field;
-        attrs.placeholder = this.field;
         attrs.outlined = true;
         attrs.autocomplete = 'off';
         attrs.change = (): void => {
             this.form.$v[this.field].$touch();
         };
-
         return attrs;
     }
 }

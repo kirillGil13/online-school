@@ -1,10 +1,26 @@
-import { digit, maxLength, minLength, required } from '@rxweb/reactive-forms';
-import { ICodeForm } from './codeForm.types';
+import { Component } from 'vue-property-decorator';
+import { required, sameAs } from 'vuelidate/lib/validators';
+import { Form } from '@/form/form';
+import { Validate } from '@/plugins/Vuelidate/Decorators';
+import {CodeRequestType} from '@/form/code/codeForm.types';
 
-export class CodeForm implements ICodeForm {
-    @required()
-    @digit()
-    @minLength({ value: 4 })
-    @maxLength({ value: 4 })
-    code!: string;
+@Component
+export class CodeForm extends Form {
+    public phone = '';
+    public phoneMask = '';
+
+    @Validate(sameAs(() => true), (form: CodeForm): string => 'Введите номер в формате ' + form.phoneMask)
+    public phoneValid = true;
+
+    @Validate(required, 'Введите код')
+    public code = '';
+
+    public serverErrors: { [key: string]: string[] } = {};
+
+    getFormData(): CodeRequestType {
+        return {
+            phone: this.phone,
+            code: this.code,
+        };
+    }
 }

@@ -4,7 +4,7 @@
     <v-main class="main-view__container">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!isMobile">
-          <Sidebar :userInfo="user"/>
+          <Sidebar :userInfo="user" :userId="user.id"/>
           <Banner/>
         </div>
         <div class="content-main pt-0 mb-16">
@@ -64,7 +64,7 @@ export default class MainLayout extends Vue {
 }
 
 .aside-view {
-  width: 290px;
+  min-width: 290px;
 }
 
 .content-main {

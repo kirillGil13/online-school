@@ -21,7 +21,7 @@ const routes = [
             {
                 path: 'signup',
                 name: RouterNameEnum.AuthSignup,
-                component: () => import('@/UI/pages/auth/Login.vue'),
+                component: () => import('@/UI/pages/auth/Signup.vue'),
             },
         ],
     },

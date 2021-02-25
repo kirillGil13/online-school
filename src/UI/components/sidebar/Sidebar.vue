@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <Logo width="34px" height="34px" font-size="14px"/>
-    <account-badge :userInfo="userInfo"/>
+    <account-badge :userInfo="userInfo" :userId="userId"/>
     <Menu/>
   </div>
 </template>
@@ -23,6 +23,7 @@ import Logo from '@/UI/components/common/Logo.vue';
 })
 export default class extends Vue {
   @Prop({required: true}) userInfo!: IFakeUserInfo;
+  @Prop({required: true}) userId!: number;
 
 }
 </script>

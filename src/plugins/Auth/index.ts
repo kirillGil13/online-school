@@ -28,6 +28,11 @@ Vue.use(auth, {
         method: 'POST',
         redirect: '/',
     },
+    registerData: {
+        url: '/users/complete-registration',
+        method: 'POST',
+        redirect: '/'
+    },
     refreshData: {
         url: 'users/info',
         method: 'POST',

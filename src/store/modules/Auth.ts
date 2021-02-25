@@ -5,6 +5,9 @@ import store from '@/store';
 import { User, IUser, UserResponseType } from '@/entity/user';
 import { LoginRequestType } from '@/form/login';
 import Api from '@/repository/api';
+import {CodeRequestType} from '@/form/code/codeForm.types';
+import {RegisterRequestType} from '@/form/register/RegisterForm.types';
+import {RouterNameEnum} from '@/router/router.types';
 
 @Module({
     namespaced: true,
@@ -38,6 +41,21 @@ class AuthModule extends VuexModule {
         return response.data.phone;
     }
 
+    @Action({ rawError: true })
+    async checkPhone(data: CodeRequestType): Promise<any> {
+        const response = await Api.post('users/new-auth', data);
+        return response.data;
+    }
+
+    @Action({ rawError: true })
+    async register(data: RegisterRequestType): Promise<any> {
+        return await Vue.auth.register({
+            data: data,
+            fetchUser: true,
+            staySignedIn: true,
+        });
+    }
+
     //
     // @Action({ rawError: true })
     // async twofaRegistration(data: LoginRequestType) {
@@ -58,7 +76,7 @@ class AuthModule extends VuexModule {
 
     @Action
     logout(): void {
-        Vue.auth.logout({ redirect: { name: 'Login' } });
+        Vue.auth.logout({ redirect: { name: RouterNameEnum.AuthLogin } });
     }
 }
 

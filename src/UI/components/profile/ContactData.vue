@@ -1,135 +1,91 @@
 <template>
-  <v-row class="mt-3">
-    <v-col class="profile__col pt-0 pb-4" cols="12">
-      <FormGroup
-          :messages="form.messages.email"
-          :server-errors="form.getErrors('email')"
-          :validator="form.$v.email"
-      >
-        <template v-slot:label>
-          <label for="email">Email</label>
-        </template>
-        <template v-slot:input="{attrs}">
-          <input
-              class="input input__normal"
-              type="text" name="email"
-              id="email"
-              @input="form.$v.email.$touch()"
-              v-model="form.email"
-              v-bind="attrs"
-          >
-        </template>
+  <v-col class="mt-3 pa-0">
+    <v-alert
+        text
+        border="top"
+        type="info"
+        class="contact-info"
+    >
+      <div class="contact-info__text">Заполняйте контактные данные корректно! <br>
+        На основе этих данных вам будет создаваться персональный лендинг для привлечения новых партнеров.</div>
+    </v-alert>
+    <div class="mb-3">
+      <FormGroup v-slot="attrs" :form="form" field="email" show-custom-error label="Email">
+        <input
+            class="input input__normal"
+            type="email" name="email"
+            id="email"
+            v-model="form[attrs.name]"
+            v-bind="attrs"
+            @input="attrs.change"
+        >
       </FormGroup>
-    </v-col>
-    <v-col class="profile__col pt-0 pb-4" cols="12">
-      <FormGroup
-          :messages="form.messages.username"
-          :server-errors="form.getErrors('username')"
-          :validator="form.$v.username"
-      >
-        <template v-slot:label>
-          <label for="username">Телефон</label>
-        </template>
-        <template v-slot:input="{attrs}">
-          <input
-              class="input input__normal"
-              type="text" name="username"
-              id="username"
-              :disabled="true"
-              @input="form.$v.username.$touch()"
-              v-model="form.username"
-              v-bind="attrs"
-          >
-        </template>
+    </div>
+    <div class="mb-3">
+      <FormGroup v-slot="attrs" :form="form" field="username" show-custom-error label="Телефон">
+        <input
+            class="input input__normal"
+            type="text" name="username"
+            id="username"
+            v-model="form[attrs.name]"
+            v-bind="attrs"
+            @input="attrs.change"
+        >
       </FormGroup>
-    </v-col>
-    <v-col class="profile__col pt-0 pb-4" cols="12">
-      <FormGroup
-          :messages="form.messages.skype"
-          :server-errors="form.getErrors('skype')"
-          :validator="form.$v.skype"
-      >
-        <template v-slot:label>
-          <label for="skype">Логин в Skype</label>
-        </template>
-        <template v-slot:input>
-          <input
-              class="input input__normal"
-              type="text" name="skype"
-              id="skype"
-              @input="form.$v.skype.$touch()"
-              v-model="form.skype"
-          >
-        </template>
+    </div>
+    <div class="mb-3">
+      <FormGroup v-slot="attrs" :form="form" field="skype" show-custom-error label="Логин в Skype">
+        <input
+            class="input input__normal"
+            type="text" name="skype"
+            id="skype"
+            v-model="form[attrs.name]"
+            v-bind="attrs"
+            @input="attrs.change"
+        >
       </FormGroup>
-    </v-col>
-    <v-col class="profile__col pt-0 pb-4" cols="12">
-      <FormGroup
-          :messages="form.messages.vk"
-          :server-errors="form.getErrors('vk')"
-          :validator="form.$v.vk"
-      >
-        <template v-slot:label>
-          <label for="vk">Страница ВКонтакте</label>
-        </template>
-        <template v-slot:input="{attrs}">
-          <input
-              class="input input__normal"
-              type="text" name="vk"
-              id="vk"
-              @input="form.$v.vk.$touch()"
-              v-model="form.vk"
-              v-bind="attrs"
-          >
-        </template>
+    </div>
+    <div class="mb-3">
+      <FormGroup v-slot="attrs" :form="form" field="vk" show-custom-error label="Страница ВКонтакте">
+        <input
+            class="input input__normal"
+            type="text" name="vk"
+            id="vk"
+            v-model="form[attrs.name]"
+            v-bind="attrs"
+            @input="attrs.change"
+        >
       </FormGroup>
-    </v-col>
-    <v-col class="profile__col pt-0 pb-4" cols="12">
-      <FormGroup
-          :messages="form.messages.instagram"
-          :server-errors="form.getErrors('instagram')"
-          :validator="form.$v.instagram"
-      >
-        <template v-slot:label>
-          <label for="instagram">Страница Instagram</label>
-        </template>
-        <template v-slot:input="{attrs}">
-          <input
-              class="input input__normal"
-              type="text" name="instagram"
-              id="instagram"
-              @input="form.$v.instagram.$touch()"
-              v-model="form.instagram"
-              v-bind="attrs"
-          >
-        </template>
+    </div>
+    <div class="mb-3">
+      <FormGroup v-slot="attrs" :form="form" field="instagram" show-custom-error label="Страница Instagram">
+        <input
+            class="input input__normal"
+            type="text" name="instagram"
+            id="instagram"
+            v-model="form[attrs.name]"
+            v-bind="attrs"
+            @input="attrs.change"
+        >
       </FormGroup>
-    </v-col>
-    <v-col class="profile__col pt-0 pb-4" cols="12">
-      <FormGroup
-          :messages="form.messages.facebook"
-          :server-errors="form.getErrors('facebook')"
-          :validator="form.$v.facebook"
-      >
-        <template v-slot:label>
-          <label for="facebook">Страница Facebook</label>
-        </template>
-        <template v-slot:input="{attrs}">
-          <input
-              class="input input__normal"
-              type="text" name="facebook"
-              id="facebook"
-              @input="form.$v.facebook.$touch()"
-              v-model="form.facebook"
-              v-bind="attrs"
-          >
-        </template>
+    </div>
+    <div class="mb-3">
+      <FormGroup v-slot="attrs" :form="form" field="facebook" show-custom-error label="Страница Facebook">
+        <input
+            class="input input__normal"
+            type="text" name="facebook"
+            id="facebook"
+            v-model="form[attrs.name]"
+            v-bind="attrs"
+            @input="attrs.change"
+        >
       </FormGroup>
-    </v-col>
-    <v-col class="profile__col pt-0 pb-3" cols="12">
-      <Button class="py-3" :disabled="form.$v.$invalid" v-on="$listeners">Сохранить</Button>
-    </v-col>
-  </v-row>
+    </div>
+    <div>
+      <Button class="form-button" :disabled="form.disabled" v-on="$listeners">Сохранить
+      </Button>
+    </div>
+  </v-col>
 </template>
 
 <script lang="ts">
@@ -155,5 +111,12 @@ export default class ProfileContactData extends Vue {
 }
 .bg-purple {
     background: #d3dce6;
+}
+.contact-info {
+  border-radius: 12px !important;
+  &__text {
+    color: #4F4F4F;
+    font-size: 12px;
+  }
 }
 </style>

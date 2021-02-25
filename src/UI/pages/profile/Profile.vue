@@ -15,7 +15,7 @@
             >
               <avatar
                   :size="!isMobile ? 143 : 70"
-                  :imageSourse="'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'"
+                  :imageSource="user.avatar"
                   :starSize="AvatarSizeEnum.MEDIUM"
               />
               <div class="badges">
@@ -34,7 +34,7 @@
                 </Badge>
               </div>
 
-              <Button @click="logOut" class="btn secondary_blue py-3 mt-2">Выйти</Button>
+              <Button @submit="logOut" class="btn secondary_blue py-3 mt-2">Выйти</Button>
             </div>
           </v-col>
           <v-col class="profile__detail-info-container pa-6" :cols="!isMobile ? 10 : 12">
