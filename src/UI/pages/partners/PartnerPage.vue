@@ -1,9 +1,6 @@
 <template>
   <v-row class="profile">
     <v-col :cols="12">
-      <Header class="mb-3" title="Петров Иван"></Header>
-    </v-col>
-    <v-col :cols="12">
       <div class="profile__main-content">
         <v-row>
           <v-col class="pt-0" :cols="isMobile ? 12 : 2">
@@ -15,8 +12,9 @@
             >
               <avatar
                   :size="!isMobile ? 143 : 70"
-                  :imageSourse="'https://upload.wikimedia.org/wikipedia/en/4/48/Suzumiya_Haruhi.jpg'"
                   :starSize="AvatarSizeEnum.MEDIUM"
+                  :avatar-size="AvatarSizeEnum.MEDIUM"
+                  :image-source="''"
               />
               <div class="badges">
                 <Badge :subs="true">
@@ -29,15 +27,100 @@
                   <template v-slot:default>18</template>
                 </Badge>
                 <Badge>
-                  <template v-slot:title>Был на сайте</template>
-                  <template v-slot:default>Сегодня, 17:20</template>
+                  <template v-slot:title>Переходов</template>
+                  <template v-slot:default>291</template>
                 </Badge>
               </div>
 
               <Button class="btn secondary_blue py-3 mt-2">Написать</Button>
             </div>
           </v-col>
-          <v-col class="profile__detail-info-container pa-6" :cols="!isMobile ? 10 : 12">
+          <v-col class="pa-0">
+            <Header title="Петров Иван Сергеевич"></Header>
+            <v-col class="border-box px-6 py-4 mt-4">
+              <h4>Контактная информация</h4>
+              <v-row class="main-info d-flex flex-row justify-start flex-nowrap" no-gutters>
+                <div class="labels d-flex flex-column">
+                  <div class="mt-3">
+                    <label>Телефон:</label>
+                    <div>+7 (937) 928-11-02</div>
+                  </div>
+                  <div class="mt-2">
+                    <label >Email:</label>
+                    <div>mail@mail.ru</div>
+                  </div>
+                  <div class="mt-2">
+                    <label >Логин в Skype:</label>
+                    <div>ivanya</div>
+                  </div>
+                  <div class="mt-2">
+                    <label >Страница ВКонтакте:</label>
+                    <a href="#" >vk.com/larisa_pro</a>
+                  </div>
+                  <div class="show mt-2" @click="show = true" v-if="!show">Показать полностью</div>
+                  <div class="d-flex flex-column" v-else>
+                    <div class="mt-2">
+                      <label >Страница Instagram:</label>
+                      <a href="#" >instagram.com/larisa_pro</a>
+                    </div>
+                    <div class="mt-2">
+                      <label >Finiko School ID:</label>
+                      <a href="#" >instagram.com/larisa_pro</a>
+                    </div>
+                    <div class="mt-2">
+                      <label >Партнерская ссылка</label>
+                      <a href="#" >finikoschool.com/max100500</a>
+                    </div>
+                    <div class="mt-2">
+                      <label>Партнерская ссылка на thefiniko.com:</label>
+                      <a href="#">thefiniko.com/max100500</a>
+                    </div>
+                    <div class="mt-2">
+                      <label>О себе:</label>
+                      <div>ivanya</div>
+                    </div>
+                  </div>
+                </div>
+              </v-row>
+            </v-col>
+            <v-col class="profile__detail-info-container px-6 pt-4 pb-6 mt-3" :cols="isMobile ? 10 : 12">
+              <div class="grid-content">
+                <v-row>
+                  <v-col cols="12" class="profile__col">
+                    <v-tabs show-arrows class="mb-2" color="#426DF6" v-model="activeName">
+                      <v-tabs-slider color="#426DF6"></v-tabs-slider>
+                      <v-tab>
+                        Действия партнера
+                      </v-tab>
+                      <v-tab>
+                        Общие
+                      </v-tab>
+                      <v-tab>
+                        Обучение
+                      </v-tab>
+                    </v-tabs>
+                    <v-tabs-items v-model="activeName">
+                      <v-divider></v-divider>
+                      <v-tab-item>
+                        <keep-alive>
+                          <PartnerActions/>
+                        </keep-alive>
+                      </v-tab-item>
+                      <v-tab-item>
+                        <keep-alive>
+                          <PartnerCommon/>
+                        </keep-alive>
+                      </v-tab-item>
+                      <v-tab-item>
+                        <keep-alive>
+                          <PartnerTraining/>
+                        </keep-alive>
+                      </v-tab-item>
+                    </v-tabs-items>
+                  </v-col>
+                </v-row>
+              </div>
+            </v-col>
           </v-col>
         </v-row>
       </div>
@@ -53,9 +136,17 @@ import Button from '@/UI/components/common/Button.vue';
 import {AvatarSizeEnum} from '@/entity/common/avatar.types';
 import Header from '@/UI/components/common/Header.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
+import {IPartner} from '../../../entity/partners';
+import {PartnersStore} from '../../../store/modules/Partners';
+import PartnerActions from '../../components/partner/PartnerActions.vue';
+import PartnerTraining from '../../components/partner/PartnerTraining.vue';
+import PartnerCommon from '../../components/partner/PartnerCommon.vue';
 
 @Component({
   components: {
+    PartnerCommon,
+    PartnerTraining,
+    PartnerActions,
     Badge,
     Avatar,
     Button,
@@ -72,6 +163,14 @@ export default class PartnerPage extends Vue {
   get isMobile(): boolean {
     return AdaptiveStore.isMobile;
   }
+
+  get partners(): IPartner[] {
+    return PartnersStore.partners;
+  }
+
+  async created(): Promise<void> {
+    await PartnersStore.fetchAll();
+  }
 }
 </script>
 
@@ -84,8 +183,30 @@ export default class PartnerPage extends Vue {
   &__main-content {
     border-radius: $main_border_radius;
     background-color: $white;
-    padding: 24px;
+    padding: 36px 36px 36px 24px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+
+    .main-info {
+      .labels {
+        div {
+          display: flex;
+          flex-direction: row;
+          label {
+            margin-left: 0;
+            margin-right: 24px;
+            width: 150px;
+          }
+          a {
+            font-size: 14px;
+            text-decoration: underline;
+          }
+        }
+        .show {
+          color: #426DF6;
+          cursor: pointer;
+        }
+      }
+    }
   }
 
   .btn {
@@ -125,6 +246,10 @@ export default class PartnerPage extends Vue {
   &__detail-info-container {
     border: 1px solid rgba(66, 109, 246, 0.12);
     border-radius: $main_border_radius;
+
+    label {
+      border: none !important;
+    }
   }
 }
 
@@ -142,19 +267,5 @@ export default class PartnerPage extends Vue {
 
 .grid-conten {
   min-height: 32px;
-}
-
-label {
-  border: none !important;
-}
-
-.input {
-  padding: 12px 16px 12px 16px;
-  border-style: solid;
-  border-radius: 5px 0 0 5px;
-
-  &__normal {
-    border-radius: 5px;
-  }
 }
 </style>

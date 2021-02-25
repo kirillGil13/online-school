@@ -1,6 +1,7 @@
-import { getModule, Module, MutationAction, VuexModule } from 'vuex-module-decorators';
+import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import { ICandidate } from '@/entity/candidates';
+import {CandidateFormRequestType} from '@/form/candidate/candidateForm.types';
 
 @Module({
     namespaced: true,
@@ -15,6 +16,12 @@ class CandidatesModule extends VuexModule {
     async fetchAll(): Promise<{ candidates: ICandidate[] }> {
         const candidates = await store.$repository.candidates.fetchAll();
         return { candidates };
+    }
+
+    @Action
+    async create(data: CandidateFormRequestType): Promise<boolean> {
+        const response = await store.$repository.candidates.create(data);
+        return response;
     }
 }
 

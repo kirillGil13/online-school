@@ -63,7 +63,6 @@ import {Component, Vue} from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
 import Badge from '@/UI/components/common/Badge.vue';
 import {ISelect} from '@/entity/select/select.types';
-import Select from '@/entity/select/select';
 import {SelectsStore} from '@/store/modules/Selects';
 import {IUser} from '@/entity/user';
 import {AuthStore} from '@/store/modules/Auth';
@@ -77,15 +76,7 @@ export default class CandidatesStatistics extends Vue {
   selects: ISelect[] = [];
   value: number[] = [300,350,230,460,600,610,550,1000,200,1400]
 
-  constructor() {
-    super();
-    this.selects.push(new Select(this.selectsStatus), new Select(this.selectsActions))
-  }
-
-  get selectsStatus(): ISelect {
-    return SelectsStore.selectsStatus;
-  }
-  get selectsActions(): ISelect {
+  get selectsActions(): ISelect[] {
     return SelectsStore.selectsActions;
   }
 

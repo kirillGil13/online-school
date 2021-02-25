@@ -1,9 +1,9 @@
 <template>
   <v-form class="form mt-8" @submit.prevent enctype="multipart/form-data">
     <div class="d-flex align-center flex-column">
-      <v-avatar height="100" width="100" color="#F0F2F6">
-        <template v-slot:default v-if="form.avatar">
-          <img :src="form.avatar" alt="">
+      <v-avatar v-model="form.photoLink" width="100" height="100" color="#F0F2F6">
+        <template v-slot:default v-if="form.photoLink">
+          <v-img :src="form.photoLink" aspect-ratio="1"></v-img>
         </template>
         <template v-slot:default v-else>
           <svg-icon class="avatar-icon" name="Camera"></svg-icon>
@@ -31,11 +31,11 @@
       </FormGroup>
     </div>
     <div class="mb-3">
-      <FormGroup v-slot="attrs" :form="form" field="surname" show-custom-error label="Фамилия">
+      <FormGroup v-slot="attrs" :form="form" field="lastName" show-custom-error label="Фамилия">
         <input
             class="input input__normal"
-            type="surname" name="surname"
-            id="surname"
+            type="surname" name="lastName"
+            id="lastName"
             v-model="form[attrs.name]"
             v-bind="attrs"
             @input="attrs.change"
@@ -80,9 +80,9 @@
     </div>
 
     <div>
-      <FormGroup v-slot="attrs" :form="form" field="phone" label="Номер телефона">
+      <FormGroup v-slot="attrs" :form="form" field="phoneNumber" label="Номер телефона">
         <PhoneMaskInput
-            v-model="form.phone"
+            v-model="form.phoneNumber"
             v-bind="attrs"
             autoDetectCountry
             flagSize="normal"
@@ -95,8 +95,9 @@
       </FormGroup>
     </div>
     <div>
-      <Button class="form-button" full-width :disabled="form.disabled" type="submit" v-on="$listeners">Завершить регистрацию
+      <Button class="small" full-width :disabled="form.disabled" type="submit" v-on="$listeners">Завершить регистрацию
       </Button>
+      <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
     </div>
     <v-divider class="mt-6 mb-6"></v-divider>
     <div class="d-flex justify-center rules">
@@ -132,7 +133,7 @@ export default class RegisterFormVue extends Vue {
     const reader = new FileReader();
 
     reader.onload = (e: any): void => {
-      this.form.avatar = e.target.result;
+      this.form.photoLink = e.target.result;
     }
     reader.readAsDataURL(fileObject);
   }
@@ -145,6 +146,12 @@ export default class RegisterFormVue extends Vue {
     text-align: center;
     font-size: 12px;
   }
+}
+.avatar {
+  background: #F0F2F6 no-repeat;
+  width: 100px;
+  height: 100px;
+  background-size: cover;
 }
 .avatar-icon {
   width: 36px !important;

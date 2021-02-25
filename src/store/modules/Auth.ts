@@ -8,6 +8,7 @@ import Api from '@/repository/api';
 import {CodeRequestType} from '@/form/code/codeForm.types';
 import {RegisterRequestType} from '@/form/register/RegisterForm.types';
 import {RouterNameEnum} from '@/router/router.types';
+import {PhoneRequestType} from '@/form/phone/phoneForm.types';
 
 @Module({
     namespaced: true,
@@ -28,22 +29,31 @@ class AuthModule extends VuexModule {
 
     @Action({ rawError: true })
     async login(data: LoginRequestType): Promise<any> {
+        const formData = new FormData();
+        formData.append('username', data.username);
+        formData.append('password', data.password);
         return await Vue.auth.login({
-            data: data,
+            data: formData,
             fetchUser: true,
             staySignedIn: true,
         });
     }
 
-    @Action({ rawError: true })
+   /* @Action({ rawError: true })
     async getTwofaCode(phone: string): Promise<any> {
         const response = await Api.post('users/auth', {phone});
         return response.data.phone;
+    }*/
+
+    @Action({ rawError: true })
+    async sendCode(data: PhoneRequestType): Promise<any> {
+        const response = await Api.post('/accounts/send_code', data);
+        return response.data;
     }
 
     @Action({ rawError: true })
-    async checkPhone(data: CodeRequestType): Promise<any> {
-        const response = await Api.post('users/new-auth', data);
+    async checkCode(data: CodeRequestType): Promise<any> {
+        const response = await Api.post('/accounts/check_code', data);
         return response.data;
     }
 
@@ -55,19 +65,6 @@ class AuthModule extends VuexModule {
             staySignedIn: true,
         });
     }
-
-    //
-    // @Action({ rawError: true })
-    // async twofaRegistration(data: LoginRequestType) {
-    //     const response = await Api.post('users/2fa/registration', data);
-    //     return response.data;
-    // }
-    //
-    // @Action({ rawError: true })
-    // async twofaLogin(data: LoginRequestType) {
-    //     const response = await Api.post('users/2fa/login', data);
-    //     return response.data.phone;
-    // }
     //
     // @Action({ rawError: true })
     // async signup(data: SignupRequestType) {
@@ -75,8 +72,8 @@ class AuthModule extends VuexModule {
     // }
 
     @Action
-    logout(): void {
-        Vue.auth.logout({ redirect: { name: RouterNameEnum.AuthLogin } });
+    async logout(): Promise<void> {
+       await Vue.auth.logout({ redirect: { name: RouterNameEnum.AuthLogin } });
     }
 }
 

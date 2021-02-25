@@ -1,19 +1,15 @@
 <template>
     <v-form class="form" @submit.prevent="submit">
         <div class="mt-9 mb-3">
-            <FormGroup v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
-                <PhoneMaskInput
-                    v-model="form.phone"
-                    v-bind="attrs"
-                    autoDetectCountry
-                    flagSize="normal"
-                    inputClass="input"
-                    showFlag
-                    wrapperClass="wrapper"
-                    ref="phoneMaskInput"
-                    @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
-                    @input="changePhone"
-                />
+            <FormGroup v-slot="attrs" :form="form" field="username" show-custom-error label="Email">
+              <input
+                  class="input input__normal"
+                  type="email" name="username"
+                  id="username"
+                  v-model="form[attrs.name]"
+                  v-bind="attrs"
+                  @input="attrs.change"
+              >
             </FormGroup>
         </div>
         <div>
@@ -29,8 +25,8 @@
             </FormGroup>
         </div>
         <div>
-            <Button class="form-button" full-width :disabled="form.disabled" type="submit" @submit="submit">Войти</Button>
-            <div class="red--text mt-1 ml-4" v-if="form.getErrors('400')[0]">{{form.getErrors('400')[0]}}</div>
+            <Button class="small" full-width :disabled="form.disabled" type="submit" @submit="submit">Войти</Button>
+            <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
         </div>
         <div class="d-flex justify-center">
             <router-link class="form-second-action mt-6" :to="{ name: $routeRules.AuthSignup }">Зарегистрироваться</router-link>
@@ -63,14 +59,6 @@ import Button from '../../components/common/Button.vue';
 export default class Login extends Vue {
     form = new LoginForm();
 
-    changePhone(): void {
-        if (this.form.phoneMask) {
-            this.form.$v['phoneValid'].$touch();
-        }
-        //@ts-ignore
-        this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
-    }
-
     submit(): boolean {
       if (this.form.submit(AuthStore.login)) {
         return true;
@@ -82,26 +70,6 @@ export default class Login extends Vue {
 .v-input:not(.v-input--is-focused) {
     fieldset {
         border-color: #f2f2f2 !important;
-    }
-}
-
-.success--text {
-    fieldset {
-        border-color: #f2f2f2 !important;
-    }
-}
-
-.error--text {
-    color: rgba(255, 0, 0, 0.7) !important;
-}
-
-.input {
-    padding: 12px 16px 12px 16px;
-    border-style: solid;
-    border-radius: 5px 0 0 5px;
-
-    &__normal {
-        border-radius: 5px;
     }
 }
 </style>

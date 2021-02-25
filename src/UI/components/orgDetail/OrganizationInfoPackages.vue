@@ -13,10 +13,10 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {IInfoPackage, InfoPackageResponseType} from '@/entity/infoPackage/infoPackage.types';
+import {IInfoPackage, InfoPackageResponseType} from '@/entity/infoPackages/infoPackage.types';
 import {InfoPackagesStore} from '@/store/modules/InfoPackages';
 import InfoPackageComponent from '@/UI/components/infoPackage/InfoPackageComponent.vue';
-import InfoPackage from '@/entity/infoPackage/infoPackage';
+import InfoPackage from '@/entity/infoPackages/infoPackage';
 import Header from '@/UI/components/common/Header.vue';
 @Component({
   components: {Header, InfoPackageComponent}

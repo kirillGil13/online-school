@@ -1,7 +1,7 @@
 <template>
   <v-row class="profile">
     <v-col :cols="12">
-      <Header class="mb-3" :title="`${user.name} ${user.surname}`"></Header>
+      <Header class="mb-3" :title="`${user.name} ${user.lastName}`"></Header>
     </v-col>
     <v-col :cols="12">
       <div class="profile__main-content">
@@ -15,8 +15,9 @@
             >
               <avatar
                   :size="!isMobile ? 143 : 70"
-                  :imageSource="user.avatar"
+                  :imageSource="user.photoLink"
                   :starSize="AvatarSizeEnum.MEDIUM"
+                  :avatar-size="AvatarSizeEnum.MEDIUM"
               />
               <div class="badges">
                 <Badge :subs="user.activeSubscription">
@@ -37,7 +38,7 @@
               <Button @submit="logOut" class="btn secondary_blue py-3 mt-2">Выйти</Button>
             </div>
           </v-col>
-          <v-col class="profile__detail-info-container pa-6" :cols="!isMobile ? 10 : 12">
+          <v-col class="profile__detail-info-container pa-6" :cols="isMobile ? 12 : 10">
             <div class="grid-content">
               <v-row>
                 <v-col cols="12" class="profile__col">
@@ -176,6 +177,9 @@ export default class Profile extends Vue {
 
 <style lang="scss">
 .profile {
+  label {
+    border: none !important;
+  }
   .badges {
     margin-top: 24px;
   }
@@ -241,19 +245,5 @@ export default class Profile extends Vue {
 
 .grid-conten {
   min-height: 32px;
-}
-
-label {
-  border: none !important;
-}
-
-.input {
-  padding: 12px 16px 12px 16px;
-  border-style: solid;
-  border-radius: 5px 0 0 5px;
-
-  &__normal {
-    border-radius: 5px;
-  }
 }
 </style>

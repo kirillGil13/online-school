@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <Logo width="34px" height="34px" font-size="14px"/>
-    <account-badge :userInfo="userInfo" :userId="userId"/>
+    <account-badge :userInfo="userInfo" :userId="userId" v-on="$listeners"/>
     <Menu/>
   </div>
 </template>

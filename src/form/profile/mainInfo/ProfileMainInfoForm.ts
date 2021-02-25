@@ -24,9 +24,9 @@ export class ProfileMainInfoForm extends Form {
     setFormData(user: IUser): void {
         this.id = user.id;
         this.name = user.name;
-        this.surname = user.surname;
-        this.login = user.login;
-        this.description = user.description;
+        this.surname= user.lastName;
+        this.login = user.login!;
+        this.description = user.description!;
     }
     getFormData(): ProfileMainInfoRequestType {
         return {

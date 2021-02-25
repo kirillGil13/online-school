@@ -55,8 +55,8 @@ export abstract class Form extends Vue implements IForm {
             await callback(this.getFormData());
             return true;
         } catch (e) {
-            if (e.response.status === 400) {
-                this.setErrors(e.response.data.code, e.response.data.message);
+            if (e.response.status === 400 || e.response.status === 401) {
+                this.setErrors('0', e.response.data.detail);
             }
             return false;
         } finally {

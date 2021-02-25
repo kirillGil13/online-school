@@ -1,6 +1,6 @@
-import {Module, getModule, VuexModule} from 'vuex-module-decorators';
+import {Module, getModule, VuexModule, MutationAction} from 'vuex-module-decorators';
 import store from '@/store';
-import {InfoPackageResponseType} from '@/entity/infoPackage/infoPackage.types';
+import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 
 @Module({
     namespaced: true,
@@ -9,33 +9,18 @@ import {InfoPackageResponseType} from '@/entity/infoPackage/infoPackage.types';
     dynamic: true,
 })
 class InfoPackagesModule extends VuexModule {
-    infoPackages: InfoPackageResponseType[] = [
-        {
-            id: 0,
-            title: 'Инфопакет маркетинг план Finiko',
-            cover: 'https://lh3.googleusercontent.com/proxy/uHcx7uivb0egzBfH_f_F5uQ7v7TCU569nSjQZw4_Osp9OgnnyCrSHHmC_Eg_Szinb_fWlQ-DeVFn3Cg4DKntBFadZn2R24d_qQD1fUDhu0Q-xwz27nLf2_Pau_JEfJToRASFDA',
-            openCount: 23,
-            registerCount: 13,
-            link: ''
-        },
-        {
-            id: 1,
-            title: 'Недвижимость за 35%',
-            cover: 'https://lh3.googleusercontent.com/proxy/uHcx7uivb0egzBfH_f_F5uQ7v7TCU569nSjQZw4_Osp9OgnnyCrSHHmC_Eg_Szinb_fWlQ-DeVFn3Cg4DKntBFadZn2R24d_qQD1fUDhu0Q-xwz27nLf2_Pau_JEfJToRASFDA',
-            openCount: 23,
-            registerCount: 13,
-            link: ''
-        },
-        {
-            id: 2,
-            title: 'Авто за 35%',
-            cover: 'https://lh3.googleusercontent.com/proxy/uHcx7uivb0egzBfH_f_F5uQ7v7TCU569nSjQZw4_Osp9OgnnyCrSHHmC_Eg_Szinb_fWlQ-DeVFn3Cg4DKntBFadZn2R24d_qQD1fUDhu0Q-xwz27nLf2_Pau_JEfJToRASFDA',
-            openCount: 23,
-            registerCount: 13,
-            link: ''
-        },
+    infoPackages: IInfoPackage[] = [];
+    infoPackagesLoaded = false;
 
-    ]
+    @MutationAction
+    async fetchAll(): Promise<{ infoPackages: IInfoPackage[]; infoPackagesLoaded: boolean}> {
+        const infoPackages = await store.$repository.infoPackages.fetchAll();
+        let infoPackagesLoaded = false;
+        if (infoPackages.length !== 0) {
+            infoPackagesLoaded = true;
+        }
+        return {infoPackages, infoPackagesLoaded};
+    }
 }
 
 export const InfoPackagesStore = getModule(InfoPackagesModule)
