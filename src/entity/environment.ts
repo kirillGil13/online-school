@@ -1,8 +1,8 @@
 export interface IFakeUserInfo {
     name: string;
-    surname: string;
+    lastName: string;
     login: string;
-    avatar: string;
+    photoLink: string;
 }
 
 export interface IWindowSize {

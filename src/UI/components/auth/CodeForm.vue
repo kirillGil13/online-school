@@ -1,28 +1,12 @@
 <template>
   <v-form class="form code-form" @submit.prevent>
-    <div class="d-flex justify-center code-desc mt-9" v-if="codeStep">
+    <div class="d-flex justify-center code-desc mt-9">
       <div>
         Подтвердите номер телефона <br>
         {{ form.phone }} введите код из СМС
       </div>
     </div>
-    <div class="mt-9" v-if="!codeStep">
-      <FormGroup v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
-        <PhoneMaskInput
-            v-model="form.phone"
-            v-bind="attrs"
-            autoDetectCountry
-            flagSize="normal"
-            inputClass="input"
-            showFlag
-            wrapperClass="wrapper"
-            ref="phoneMaskInput"
-            @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
-            @input="changePhone"
-        />
-      </FormGroup>
-    </div>
-    <div v-else>
+    <div>
       <FormGroup v-slot="attrs" :form="form" field="code" show-custom-error label="Код">
         <input
             class="input input__normal"
@@ -35,14 +19,9 @@
       </FormGroup>
     </div>
     <div>
-      <Button class="form-button" v-if="!codeStep" full-width type="submit" :disabled="!form.phoneValid" @submit="$emit('submitPhone')">Продолжить
+      <Button class="small" full-width :disabled="form.disabled" type="submit" @submit="$emit('submitCode')">Подтвердить
       </Button>
-      <Button class="form-button" v-else full-width :disabled="form.disabled" type="submit" @submit="$emit('submitCode')">Подтвердить
-      </Button>
-      <div class="red--text mt-1 ml-4" v-if="form.getErrors('400')[0]">{{form.getErrors('400')[0]}}</div>
-    </div>
-    <div class="d-flex justify-center" v-if="!codeStep">
-      <router-link class="form-second-action mt-6" :to="{ name: $routeRules.AuthLogin }">Вернуться к входу</router-link>
+      <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
     </div>
   </v-form>
 </template>
@@ -62,15 +41,6 @@ import PhoneMaskInput from 'vue-phone-mask-input';
 })
 export default class CodeFormVue extends Vue {
   @Prop() readonly form!: CodeForm;
-  @Prop() readonly codeStep!: boolean;
-
-  changePhone(): void {
-    if (this.form.phoneMask) {
-      this.form.$v['phoneValid'].$touch();
-    }
-    //@ts-ignore
-    this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
-  }
 }
 </script>
 <style lang="scss">

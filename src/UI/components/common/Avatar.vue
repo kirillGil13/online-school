@@ -1,16 +1,19 @@
 <template>
     <div>
         <div class="avatar-wrapper">
-            <v-avatar color="primary" rounded tile :size="size">
-                <img
-                    v-if="user.avatar"
+            <v-avatar color="#F0F2F6" rounded tile :size="size">
+              <template v-slot:default v-if="false">
+                <v-img
                     :src="imageSource"
                     alt="Avatar"
+                    aspect-ratio="1"
                     class="avatar"
                 />
-                <span v-else class="white--text headline">{{ user.initials }}</span>
+              </template>
+              <template v-else v-slot:default>
+                <svg-icon :class="{'medium-size-icon': avatarSize === sizes.MEDIUM}" name="Camera" ></svg-icon>
+              </template>
             </v-avatar>
-
             <div v-if="showStar" :class="starClass" class="star">
                 <svg-icon name="Star" />
             </div>
@@ -21,8 +24,6 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { AvatarSizeEnum } from '@/entity/common/avatar.types';
-import { IUser } from '@/entity/user';
-import { AuthStore } from '@/store/modules/Auth';
 
 @Component
 export default class Avatar extends Vue {
@@ -32,10 +33,8 @@ export default class Avatar extends Vue {
     @Prop({ required: false, default: false }) readonly mediumStar!: boolean;
     @Prop({ required: false, default: AvatarSizeEnum.NONE })
     readonly starSize!: AvatarSizeEnum;
-
-    get user(): IUser {
-        return AuthStore.user;
-    }
+    @Prop({ default: AvatarSizeEnum.SMALL }) readonly avatarSize!: AvatarSizeEnum;
+    sizes = AvatarSizeEnum;
 
     get showStar(): boolean {
         return this.starSize !== AvatarSizeEnum.NONE;
@@ -81,6 +80,7 @@ export default class Avatar extends Vue {
 
 .avatar {
     border-radius: $main_border_radius;
+
 }
 
 .star {
@@ -99,6 +99,11 @@ export default class Avatar extends Vue {
     position: relative;
     .v-avatar {
       border-radius: 12px !important;
+      border: 1px solid rgba(0, 0, 0, 0.04);
     }
+}
+.medium-size-icon {
+  width: 36px !important;
+  height: 36px !important;
 }
 </style>

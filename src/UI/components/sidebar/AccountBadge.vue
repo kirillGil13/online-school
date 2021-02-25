@@ -1,22 +1,24 @@
 <template>
     <div class="account-badge">
         <avatar
-            :imageSource="userInfo.avatar"
+            :imageSource="userInfo.photoLink"
             :imageClass="'account-badge__avatar'"
             :size="48"
+            class="badge-avatar"
             :starSize="AvatarSizeEnum.SMALL"
         />
         <div class="account-badge__account-info">
-            <span class="user_name">{{ `${userInfo.name} ${userInfo.surname}` }}</span>
+            <span class="user_name" @click="$emit('proceed')">{{ `${userInfo.name} ${userInfo.lastName}` }}</span>
             <div class="account-badge__bottom">
                 <div class="account-badge__login-wrapper">
-                    <span class="account-badge__login">{{
-                        userId
-                    }}</span>
+                    <span class="account-badge__login">{{userId}}</span>
                 </div>
                 <svg-icon v-clipboard="userId" class="account-badge__copy-icon" name="Copy" />
             </div>
         </div>
+      <div class="proceed d-flex justify-end" @click="$emit('proceed')">
+        <svg-icon name="Arrow_Down"></svg-icon>
+      </div>
     </div>
 </template>
 
@@ -54,12 +56,14 @@ export default class AccountBadge extends Vue {
         flex-direction: column;
         align-items: flex-start;
         .user_name {
+          width: 100%;
+          max-width: 116px;
           font-weight: bold;
-          margin-bottom: 5px;
-          width: 90%;
+          cursor: pointer;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          margin-bottom: 5px;
         }
     }
     &__login-wrapper {
@@ -75,8 +79,9 @@ export default class AccountBadge extends Vue {
     }
     &__bottom {
         display: flex;
-        justify-content: center;
         align-items: center;
+      justify-content: space-between;
+      width: 100%;
     }
     &__copy-icon {
         margin-left: 10px;
@@ -85,5 +90,14 @@ export default class AccountBadge extends Vue {
         width: 16px !important;
         cursor: pointer;
     }
+  .proceed {
+    min-width: 45px;
+    cursor: pointer;
+    .svg-icon {
+      width: 16px !important;
+      height: 16px !important;
+      transform: rotate(-90deg);
+    }
+  }
 }
 </style>

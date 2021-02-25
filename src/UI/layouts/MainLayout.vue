@@ -1,10 +1,10 @@
 <template>
   <v-app class="main-view">
-    <MobileBar v-if="isMobile" :user-info="user"/>
-    <v-main class="main-view__container">
+    <MobileBar v-if="isMobile" :userId="user.id" :user-info="user"/>
+    <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!isMobile">
-          <Sidebar :userInfo="user" :userId="user.id"/>
+          <Sidebar :userInfo="user" :userId="user.id" @proceed="proceed"/>
           <Banner/>
         </div>
         <div class="content-main pt-0 mb-16">
@@ -24,6 +24,7 @@ import MobileBar from '@/UI/components/common/MobileBar.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
 import Banner from '../components/common/Banner.vue';
 import Sidebar from '../components/sidebar/Sidebar.vue';
+import {RouterNameEnum} from '../../router/router.types';
 
 @Component({
   components: {
@@ -46,6 +47,10 @@ export default class MainLayout extends Vue {
     AdaptiveStore.resolveAdaptive(this.$vuetify.breakpoint.name);
   }
 
+  proceed(): void {
+    this.$router.push({name: RouterNameEnum.Profile});
+  }
+
   get user(): IUser {
     return AuthStore.user;
   }
@@ -59,7 +64,6 @@ export default class MainLayout extends Vue {
   &__container {
     max-width: 1440px;
     background-color: #fbfcfe;
-    padding: 15px 0 0 0 !important;
   }
 }
 

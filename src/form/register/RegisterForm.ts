@@ -6,15 +6,14 @@ import {RegisterRequestType} from '@/form/register/RegisterForm.types';
 
 @Component
 export class RegisterForm extends Form {
-    public phone = '';
-    public code = '';
-    public avatar = '';
+    public phoneNumber = '';
+    public photoLink = '';
 
     @Validate(required, 'Введите имя')
     public name = '';
 
     @Validate(required, 'Введите фамилию')
-    public surname = '';
+    public lastName = '';
 
     @Validate(required, 'Введите email')
     @Validate(email, 'Введите корректный email')
@@ -31,17 +30,12 @@ export class RegisterForm extends Form {
 
     getFormData(): RegisterRequestType {
         return {
-            phone: this.phone,
-            code: this.code,
+            phoneNumber: this.phoneNumber,
             name: this.name,
-            surname: this.surname,
+            lastName: this.lastName,
             email: this.email,
             password: this.password,
-            /* eslint-disable */
-            /* tslint:disable */
-            // @ts-ignore
-            confirm_password: this.confirm_password,
-            avatar: this.avatar
+            photoLink: this.photoLink
         };
     }
 }

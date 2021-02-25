@@ -3,32 +3,32 @@ import {IUser, UserRequestType, UserResponseType} from './user.types';
 export class User implements IUser {
     id: number;
     email: string;
-    description: string;
-    username: string;
-    avatar: string;
-    login: string;
+    phoneNumber: string;
+    name: string;
+    lastName: string;
     vk: string;
     facebook: string;
     instagram: string;
     skype: string;
     activeSubscription: boolean;
-    name: string;
-    surname: string;
+    description: string;
+    photoLink: string;
+    login?: string;
 
     constructor(data: UserResponseType) {
         this.id = data.id;
         this.email = data.email;
-        this.description = data.description;
-        this.username = data.username;
-        this.avatar = data.avatar;
+        this.description = data.description!;
+        this.phoneNumber = data.phoneNumber;
+        this.photoLink = data.photoLink;
         this.login = data.login;
-        this.vk = data.vk;
-        this.facebook = data.facebook;
-        this.instagram = data.instagram;
-        this.skype = data.skype;
-        this.activeSubscription = data.activeSubscription;
+        this.vk = data.vk!;
+        this.facebook = data.facebook!;
+        this.instagram = data.instagram!;
+        this.skype = data.skype!;
+        this.activeSubscription = data.activeSubscription!;
         this.name = data.name;
-        this.surname = data.surname;
+        this.lastName = data.lastName;
     }
 
     get link(): string {
@@ -36,14 +36,14 @@ export class User implements IUser {
     }
 
     get initials(): string {
-        return this.surname[0].toUpperCase() + this.name[0].toUpperCase();
+        return this.lastName[0].toUpperCase() + this.name[0].toUpperCase();
     }
 
     getRequestData(): UserRequestType {
         return {
             name: this.name,
-            surname: this.surname,
-            login: this.login,
+            surname: this.lastName,
+            login: this.login!,
             email: this.email,
             vk: this.vk,
             facebook: this.facebook,

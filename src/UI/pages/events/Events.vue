@@ -1,7 +1,7 @@
 <template>
   <v-col class="events">
     <Header :isBordered="false" title="Кабинет лидера" class="top_bar_p_0"></Header>
-    <v-row>
+    <v-row class="mb-4">
       <v-col>
         <FilterComponent :isOnRight="false" :filter="filters.periods" :defaultName="filters.defaultPeriod"/>
       </v-col>
@@ -31,13 +31,9 @@
     <v-col class="events__content">
       <v-row class="events__titles">
         <h3>Мои курсы</h3>
-        <v-row class="events__myevents">
-          <h3>Мои события</h3>
-          <Button v-on="$listeners">Создать событие</Button>
-        </v-row>
       </v-row>
       <v-row class="events__blocks">
-        <div class="events__courses">
+        <div class="events__courses flex-wrap">
           <LeaderCourseItem
               v-for="(course, index) in courses"
               :key="index"
@@ -384,7 +380,7 @@ export default class Events extends Vue {
 
   &__courses {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     margin-top: 29px;
     margin-right: 24px;

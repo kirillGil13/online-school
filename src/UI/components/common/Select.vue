@@ -13,18 +13,19 @@
     </template>
     <v-list>
       <v-list-item
-          v-for="(item, index) in selects.items"
+          v-for="(item, index) in selects"
           :key="index"
           :id="`select${item.id}`"
           link
           class="selection"
           @click="$emit('select', item.id)"
       >
-        <v-list-item-icon v-if="item.icon">
-          <svg-icon :name="item.iconName"></svg-icon>
+        <v-list-item-icon v-if="item.photoLink">
+          <v-img :src="item.photoLink" max-width="22" max-height="22"></v-img>
         </v-list-item-icon>
-        <v-list-item-title v-text="item.title"></v-list-item-title>
+        <v-list-item-title v-text="item.name"></v-list-item-title>
       </v-list-item>
+      <slot name="action"></slot>
     </v-list>
   </v-menu>
 </template>
@@ -34,7 +35,7 @@ import {ISelect} from '@/entity/select/select.types';
 
 @Component
 export default class Select extends Vue {
-  @Prop() readonly selects!: ISelect;
+  @Prop() readonly selects!: ISelect[];
   @Prop() readonly className!: string;
 }
 </script>

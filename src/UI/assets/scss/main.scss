@@ -78,76 +78,6 @@ h5 {
 .container_a{
     margin-top: -4px !important;
 }
-// вот это я вообще не понял, зачем отдельные элементы сразу кастомить?
-// h1,
-// h2,
-// h3,
-// h4 {
-//     margin: 0;
-// }
-// h1,
-// h2 {
-//     font-size: 24px;
-// }
-// h1 {
-//     text-align: center;
-//     text-transform: uppercase;
-// }
-// h3 {
-//     font-size: 18px;
-// }
-// span {
-//     text-align: center;
-//     //   color: $link;
-//     width: 60%;
-//     margin-top: 20px;
-//     margin-bottom: 12px;
-// }
-// ul {
-//     width: 100%;
-//     padding: 0;
-//     list-style: none;
-//     font-style: normal;
-//     font-weight: normal;
-//     font-size: 16px;
-//     color: $link;
-// }
-.mr-10 {
-    margin-right: 10px;
-}
-.ml-mr-3 {
-    margin: 0 3px 0 3px;
-}
-.ml-8 {
-    margin-left: 8px;
-}
-.ml-12 {
-    margin-left: 12px;
-}
-.mt-45 {
-    margin-top: 45px;
-}
-.mt-16 {
-    margin-top: 16px;
-}
-.mt-12 {
-    margin-top: 12px;
-}
-.mt-30 {
-    margin-top: 32px;
-}
-.mb-36 {
-    margin-bottom: 36px;
-}
-.mr-14 {
-    margin-right: 14px;
-}
-.ml-36 {
-    margin-left: 36px;
-}
-.mb-8 {
-    margin-bottom: 8px;
-}
 
 .container-root {
     padding: 21px 22px 21px 36px !important;
@@ -475,8 +405,43 @@ iframe {
     font-weight: bold;
     font-size: 14px !important;
 }
-.form-button {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 12px;
+.success--text {
+    fieldset {
+        border-color: #f2f2f2 !important;
+    }
+}
+
+.error--text {
+    color: rgba(255, 0, 0, 0.7) !important;
+}
+.border-box {
+    border: 1px solid rgba(66, 109, 246, 0.12);
+    border-radius: 12px;
+}
+.status_radio {
+    .v-input__control {
+        .v-input__slot {
+            .v-input--radio-group__input {
+                legend {
+                    display: none !important;
+                }
+                .v-radio {
+                    .v-input--selection-controls__input {
+                        position: absolute;
+                        opacity: 0;
+                        width: 0;
+                        height: 0;
+                    }
+                    &.v-item--active {
+                        label {
+                            border: 1px solid #eb5757 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.status_img {
+    border-radius: 4px !important;
 }

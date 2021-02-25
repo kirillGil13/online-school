@@ -1,18 +1,31 @@
-import { Moment } from 'moment';
 
 export interface ICandidate {
     id: number;
+    createdAt: string;
+    status: ICandidateStatus;
     name: string;
-    phone: string;
+    phoneNumber: string;
     email: string;
-    createdAt: Moment;
-    status: string;
+    isFiction: boolean;
+    infoPackName: string;
+}
+export interface ICandidateStatus {
+    id: number;
+    photoLink: string;
+    name: string;
 }
 export type CandidateResponseType = {
     id: number;
+    created_at: number;
+    status: CandidateStatusResponseType;
     name: string;
-    phone: string;
+    phoneNumber: string;
     email: string;
-    createdAt: string;
-    status: string;
+    isFiction: boolean;
+    infoPackName: string;
 };
+export type CandidateStatusResponseType = {
+    id: number;
+    photoLink: string;
+    name: string;
+}

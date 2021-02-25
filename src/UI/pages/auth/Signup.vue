@@ -1,8 +1,10 @@
 <template>
   <div>
     <h2 class="form-title">Регистрация</h2>
-    <CodeFormVue v-if="!registerStep" :form="codeForm" @submitCode="submitCode" @submitPhone="submitPhone"
-                 :code-step="codeStep"/>
+    <template v-if="!registerStep" >
+      <PhoneFormVue v-if="!codeStep" :form="phoneForm" @submitPhone="submitPhone"/>
+      <CodeFormVue v-else :form="codeForm" @submitCode="submitCode"/>
+    </template>
     <RegisterFormVue v-else :form="registerForm" @submit="submitRegister"/>
   </div>
 </template>
@@ -19,9 +21,12 @@ import Button from '../../components/common/Button.vue';
 import {CodeForm} from '../../../form/code/codeForm';
 import RegisterFormVue from '../../components/auth/RegisterForm.vue';
 import {RegisterForm} from '../../../form/register/RegisterForm';
+import PhoneFormVue from '../../components/auth/PhoneForm.vue';
+import {PhoneForm} from '../../../form/phone/phoneForm';
 
 @Component({
   components: {
+    PhoneFormVue,
     RegisterFormVue,
     Button,
     FormGroup,
@@ -34,23 +39,17 @@ import {RegisterForm} from '../../../form/register/RegisterForm';
 })
 export default class Signup extends Vue {
   codeForm = new CodeForm();
+  phoneForm = new PhoneForm();
   registerForm = new RegisterForm();
   codeStep = false;
   registerStep = false;
 
-  changePhone(): void {
-    if (this.codeForm.phoneMask) {
-      this.codeForm.$v['phoneValid'].$touch();
-    }
-    //@ts-ignore
-    this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
-  }
-
   async submitPhone(): Promise<boolean> {
-    const res = await this.codeForm.submit(AuthStore.checkPhone);
+    const res = await this.phoneForm.submit(AuthStore.sendCode);
     if (res) {
-      this.codeForm.clearErrors();
+      this.phoneForm.clearErrors();
       this.codeStep = true;
+      this.codeForm.phone = this.phoneForm.phone;
       return true;
     } else {
       this.codeStep = false;
@@ -60,17 +59,16 @@ export default class Signup extends Vue {
 
 
   async submitCode(): Promise<boolean> {
-    const res = await this.codeForm.submit(AuthStore.checkPhone);
+    const res = await this.codeForm.submit(AuthStore.checkCode);
     if (res) {
-      this.registerForm.phone = this.codeForm.getFormData().phone;
-      this.registerForm.code = this.codeForm.getFormData().code;
+      this.registerForm.phoneNumber = this.codeForm.getFormData().phone_number;
       this.registerStep = true;
       return true;
     } else return false;
   }
 
-  submitRegister(): boolean {
-    if (this.registerForm.submit(AuthStore.register)) {
+ async submitRegister(): Promise<boolean> {
+    if (await this.registerForm.submit(AuthStore.register)) {
       return true;
     } else return false;
   }
@@ -80,26 +78,6 @@ export default class Signup extends Vue {
 .v-input:not(.v-input--is-focused) {
   fieldset {
     border-color: #f2f2f2 !important;
-  }
-}
-
-.success--text {
-  fieldset {
-    border-color: #f2f2f2 !important;
-  }
-}
-
-.error--text {
-  color: rgba(255, 0, 0, 0.7) !important;
-}
-
-.input {
-  padding: 12px 16px 12px 16px;
-  border-style: solid;
-  border-radius: 5px 0 0 5px;
-
-  &__normal {
-    border-radius: 5px;
   }
 }
 

@@ -49,14 +49,19 @@
           </FilterComponent>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="candidates.length !== 0">
         <v-col class="mt-6">
-          <TableCandidates :candidates="candidates" :selects="selects"/>
+          <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @addStatus="activatorStatus = true"/>
         </v-col>
       </v-row>
       <Modal :activator="activator" @activatorChange="activatorChange">
         <template v-slot:content>
-          <CandidateFormComponent :form="candidateForm" @close="close"/>
+          <CandidateFormComponent :form="candidateForm" v-if="destroy" :statuses="statuses" :info-packs="infoPackages" :account-id="user.id" @close="close" @add="add"/>
+        </template>
+      </Modal>
+      <Modal class="skddjk" :activator="activatorStatus" @activatorChange="activatorChangeStatus">
+        <template v-slot:content>
+          <StatusFormComponent :form="statusForm" v-if="destroy" @close="close" @createStatus="createStatus"/>
         </template>
       </Modal>
   </v-col>
@@ -67,7 +72,6 @@ import {Component, Vue} from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
 import Search from '@/UI/components/common/Search.vue';
 import TableCandidates from '@/UI/components/tables/TableCandidates.vue';
-
 import {ICandidate} from '@/entity/candidates/candidates.types';
 import {CandidatesStore} from '@/store/modules/Candidates';
 import {AuthStore} from '@/store/modules/Auth';
@@ -78,17 +82,21 @@ import Filters from '@/entity/filters/filters';
 import Button from '@/UI/components/common/Button.vue';
 import {ISelect} from '@/entity/select/select.types';
 import {SelectsStore} from '@/store/modules/Selects';
-import Select from '@/entity/select/select';
 import Modal from '@/UI/components/common/Modal.vue';
 import CandidateFormComponent from '@/UI/components/candidateForm/CandidateFormComponent.vue';
 import {CandidateForm} from '@/form/candidate/candidateForm';
 import {RouterNameEnum} from '@/router/router.types';
-import {IInfoPackage} from '@/entity/infoPackage/infoPackage.types';
+import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 import {InfoPackagesStore} from '@/store/modules/InfoPackages';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
+import {StatusesStore} from '../../../store/modules/Statuses';
+import {IStatuses} from '../../../entity/statuses/statuses.types';
+import {StatusForm} from '../../../form/status/statusForm';
+import StatusFormComponent from '../../components/statusForm/StatusFormComponent.vue';
 
 @Component({
   components: {
+    StatusFormComponent,
     CandidateFormComponent,
     Modal,
     Button,
@@ -101,29 +109,57 @@ import {AdaptiveStore} from '@/store/modules/Adaptive';
 })
 export default class Candidates extends Vue {
   filters: Filters;
-  selects: ISelect[] = [];
   activator = false;
+  activatorStatus = false;
   candidateForm: CandidateForm;
+  statusForm: StatusForm;
+  destroy = true;
   route = RouterNameEnum;
 
   constructor() {
     super();
     this.candidateForm = new CandidateForm();
-    for (let i = 0; i < this.selectsStatus.items.length; i++) {
-      this.candidateForm.statusList.push(this.selectsStatus.items[i].title);
-    }
-    for (let i = 0; i < this.infoPackages.length; i++) {
-      this.candidateForm.productList.push(this.infoPackages[i].title)
-    }
+    this.statusForm = new StatusForm();
     this.filters = new Filters();
-    this.selects.push(new Select(this.selectsStatus), new Select(this.selectsActions))
   }
 
   activatorChange(act: boolean): void {
+    this.destroy = true;
     this.activator = act;
   }
 
+  activatorChangeStatus(act: boolean): void {
+    this.destroy = true;
+    this.activatorStatus = act;
+  }
+
   close(): void {
+    this.activator = false;
+    this.activatorStatus = false;
+  }
+
+  rerender(): void {
+    this.destroy = false;
+    this.$nextTick(() => {
+      this.destroy = true;
+    });
+  }
+
+  async createStatus(): Promise<void> {
+    if (await this.statusForm.submit(StatusesStore.create)) {
+      await this.fetchData();
+    }
+    this.statusForm = new StatusForm();
+    this.rerender();
+    this.activatorStatus = false;
+  }
+
+  async add(): Promise<void> {
+    if (await this.candidateForm.submit(CandidatesStore.create)) {
+      await this.fetchData();
+    }
+    this.candidateForm = new CandidateForm();
+    this.rerender();
     this.activator = false;
   }
 
@@ -135,24 +171,38 @@ export default class Candidates extends Vue {
     return CandidatesStore.candidates;
   }
 
-  async created(): Promise<void> {
-    await CandidatesStore.fetchAll();
-  }
-
-  get selectsStatus(): ISelect {
-    return SelectsStore.selectsStatus;
-  }
-
-  get selectsActions(): ISelect {
+  get selectsActions(): ISelect[] {
     return SelectsStore.selectsActions;
+  }
+
+  get statuses(): IStatuses[] {
+    return StatusesStore.statuses;
+  }
+
+  get statusesLoaded(): boolean {
+    return StatusesStore.statusesLoaded;
   }
 
   get infoPackages(): IInfoPackage[] {
     return InfoPackagesStore.infoPackages;
   }
 
+  get infoPackagesLoaded(): boolean {
+    return InfoPackagesStore.infoPackagesLoaded;
+  }
+
   get isMobile(): boolean {
     return AdaptiveStore.isMobile;
+  }
+
+  async created(): Promise<void> {
+    await this.fetchData();
+  }
+
+  async fetchData(): Promise<void> {
+    await StatusesStore.fetchAll();
+    await CandidatesStore.fetchAll();
+    await InfoPackagesStore.fetchAll();
   }
 
 }

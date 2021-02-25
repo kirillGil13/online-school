@@ -141,13 +141,11 @@ const routes = [
                 path: '/partners',
                 name: RouterNameEnum.Partners,
                 component: () => import('../UI/pages/partners/Partners.vue'),
-                children: [
-                    {
-                        path: ':id',
-                        name: RouterNameEnum.PartnerPage,
-                        component: () => import('../UI/pages/partners/PartnerPage.vue')
-                    }
-                ]
+            },
+            {
+                path: '/partner/:id',
+                name: RouterNameEnum.PartnerPage,
+                component: () => import('../UI/pages/partners/PartnerPage.vue')
             },
             {
                 path: '/calendar',

@@ -1,12 +1,10 @@
 import { RequestType } from '@/form/form.types';
 
 export type RegisterRequestType = RequestType & {
-    phone: string;
-    code: string;
+    phoneNumber: string;
     name: string;
-    surname: string;
+    lastName: string;
     email: string;
     password: string;
-    confirm_password: string;
-    avatar: string;
+    photoLink: string;
 };

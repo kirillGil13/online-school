@@ -3,7 +3,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export default {
     request: function (req: AxiosRequestConfig, token: string): void {
-        // @ts-ignore
+        //@ts-ignore
         this.http.setHeaders.call(this, req, {
             Authorization: 'Bearer ' + token,
         });
@@ -15,7 +15,8 @@ export default {
         let token = headers.Authorization || headers.authorization;
 
         if (token === undefined && res.data !== null) {
-            token = res.data.token;
+            // @ts-ignore
+            token = res.data.access_token;
         }
 
         if (token) {

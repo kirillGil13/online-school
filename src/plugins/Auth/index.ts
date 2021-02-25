@@ -24,23 +24,23 @@ Vue.use(auth, {
     notFoundRedirect: { path: '/404' },
     // Http
     loginData: {
-        url: 'users/password-auth',
+        url: '/accounts/auth/base',
         method: 'POST',
         redirect: '/',
     },
     registerData: {
-        url: '/users/complete-registration',
+        url: '/accounts/register',
         method: 'POST',
         redirect: '/'
     },
     refreshData: {
-        url: 'users/info',
-        method: 'POST',
+        url: '/accounts/me',
+        method: 'GET',
         enabled: false,
         interval: 10,
     },
     fetchData: {
-        url: 'users/info',
+        url: '/accounts/me',
         enabled: true,
     },
 

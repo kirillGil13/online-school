@@ -18,7 +18,7 @@
         right
         class="pa-2 drawer"
     >
-      <account-badge :userInfo="userInfo"/>
+      <account-badge :userInfo="userInfo" :user-id="userId"/>
       <Menu/>
       <v-spacer></v-spacer>
       <div class="close d-flex flex-row justify-start align-center" @click="drawer = false">
@@ -39,6 +39,7 @@ import AccountBadge from '@/UI/components/sidebar/AccountBadge.vue';
 })
 export default class MobileBar extends Vue {
   @Prop({required: true}) userInfo!: IFakeUserInfo;
+  @Prop({required: true}) userId!: number;
   drawer = false;
 }
 </script>

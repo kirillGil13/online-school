@@ -1,13 +1,13 @@
-import {ISelect, ISelectItems} from '@/entity/select/select.types';
+import {ISelect} from '@/entity/select/select.types';
 
 export default class Select implements ISelect{
     id: number;
-    items: ISelectItems[] = [];
+    photoLink?: string;
+    name: string;
 
     constructor(data: ISelect) {
         this.id = data.id;
-        for (let i = 0; i < data.items.length; i++) {
-            this.items.push(data.items[i]);
-        }
+        this.photoLink = data.photoLink;
+        this.name = data.name
     }
 }

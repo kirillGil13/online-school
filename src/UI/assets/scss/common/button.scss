@@ -5,20 +5,25 @@ button{
     color: #ffffff !important;
     cursor: pointer;
     padding: 16px 24px;
-    background: linear-gradient(180deg, #4F79FF 0%, #2150E7 100%);
-    border-width: 1px;
-    border-color: #426DF6;
+    border: 1px solid #426DF6;
     border-radius: 12px;
     margin-top: 16px;
     outline: none;
+    transition: 0.4s all;
     &:disabled {
         background: #f2f2f2;
         border-color: rgba(87, 81, 183, 0.12);
         color: #5F739C !important;
     }
+    &:enabled {
+        background: #426DF6;
+    }
     &:hover {
-        background: linear-gradient(180deg, #7092FF 0%, #567EFF 100%);
+        background: #7092FF;
         box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    &:focus {
+        background: #426DF6;
     }
     &:disabled:hover {
         background: #f2f2f2;
@@ -39,5 +44,20 @@ button{
         background: rgba(66, 109, 246, 0.12);
         border: none;
         color: #426DF6 !important;
+        &:hover {
+            background: rgba(66, 109, 246, 0.24);
+        }
+        &:focus {
+            background: rgba(66, 109, 246, 0.24);
+        }
+        &:disabled:hover {
+            background: #f2f2f2;
+            cursor: not-allowed;
+        }
+    }
+    &.small {
+        border-radius: 8px;
+        font-size: 12px;
+        padding: 10px 16px;
     }
 }
