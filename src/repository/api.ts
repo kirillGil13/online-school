@@ -10,6 +10,10 @@ const Api = {
     post(url: string, data?: RequestType, config?: AxiosRequestConfig): AxiosPromise {
         return Vue.axios.post(url, data, config);
     },
+
+    patch(url: string, data?: RequestType, config?: AxiosRequestConfig): AxiosPromise {
+        return Vue.axios.patch(url, data, config);
+    }
 };
 
 export default Api;

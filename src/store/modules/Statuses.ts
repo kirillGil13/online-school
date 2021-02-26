@@ -1,7 +1,8 @@
 import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import {IStatuses} from '@/entity/statuses/statuses.types';
+import {IStatuses, StatusesRequestType} from '@/entity/statuses/statuses.types';
 import {StatusFormRequestType} from '@/form/status/statusForm.types';
+import {ICandidate} from '@/entity/candidates';
 
 @Module({
     namespaced: true,
@@ -23,12 +24,17 @@ class StatusesModule extends VuexModule {
         return { statuses, statusesLoaded };
     }
 
-    @Action
+    @Action({rawError: true})
     async create(data: StatusFormRequestType): Promise<IStatuses> {
         const response = await store.$repository.statuses.create(data);
         return response;
     }
 
+    @Action({rawError: true})
+    async set(data: {status: StatusesRequestType; candidateId: string}): Promise<ICandidate> {
+        const response = await store.$repository.statuses.set(data.status, data.candidateId);
+        return response;
+    }
 }
 
 export const StatusesStore = getModule(StatusesModule);

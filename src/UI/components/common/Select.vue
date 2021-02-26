@@ -15,10 +15,10 @@
       <v-list-item
           v-for="(item, index) in selects"
           :key="index"
-          :id="`select${item.id}`"
+          :id="`select${index}`"
           link
           class="selection"
-          @click="$emit('select', item.id)"
+          @click="item.extraAction ? $emit('extraAction', id) : $emit('select', {statusId: item.id, id: id})"
       >
         <v-list-item-icon v-if="item.photoLink">
           <v-img :src="item.photoLink" max-width="22" max-height="22"></v-img>
@@ -37,6 +37,7 @@ import {ISelect} from '@/entity/select/select.types';
 export default class Select extends Vue {
   @Prop() readonly selects!: ISelect[];
   @Prop() readonly className!: string;
+  @Prop() readonly id!: number;
 }
 </script>
 <style lang="scss">

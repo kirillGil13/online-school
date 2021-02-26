@@ -49,10 +49,12 @@ export abstract class Form extends Vue implements IForm {
         this.sendingRequest = false;
     }
 
-    async submit(callback: CallableFunction): Promise<boolean> {
+    async submit(callback: CallableFunction, route?: string): Promise<boolean> {
         try {
             this.startRequest();
-            await callback(this.getFormData());
+            if (route) {
+                await callback({data: this.getFormData(), route: route});
+            } else await callback(this.getFormData());
             return true;
         } catch (e) {
             if (e.response.status === 400 || e.response.status === 401) {
