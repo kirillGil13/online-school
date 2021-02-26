@@ -85,10 +85,6 @@ export default class Landing extends Vue {
     this.activator = false;
   }
 
-  get infoPackageItemLoaded(): boolean {
-    return InfoPackagesStore.infoPackageItemLoaded;
-  }
-
   get infoPackageItem(): IInfoPackageItem {
     return InfoPackagesStore.infoPackageItem!;
   }
