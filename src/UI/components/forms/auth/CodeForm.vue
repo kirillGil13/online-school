@@ -26,10 +26,10 @@
   </v-form>
 </template>
 <script lang="ts">
-import {CodeForm} from '../../../form/code/codeForm';
+import {CodeForm} from '../../../../form/code/codeForm';
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import Button from '../common/Button.vue';
-import FormGroup from '../common/form/FormGroup.vue';
+import Button from '../../common/Button.vue';
+import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 
 @Component({

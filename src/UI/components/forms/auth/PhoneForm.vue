@@ -29,9 +29,9 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {PhoneForm} from '../../../form/phone/phoneForm';
-import FormGroup from '../common/form/FormGroup.vue';
-import Button from '../common/Button.vue';
+import {PhoneForm} from '../../../../form/phone/phoneForm';
+import FormGroup from '../../common/form/FormGroup.vue';
+import Button from '../../common/Button.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 
 @Component({

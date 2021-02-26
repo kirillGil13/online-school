@@ -12,7 +12,7 @@ export class CandidateItemRepository implements ICandidateItemRepository {
     }
     async update(data: UpdateCandidateFormRequestType, candidateId: string): Promise<ICandidateItem> {
         const response = await Api.patch(`/candidates/${candidateId}`, data);
-        const respData = response.data;
-        return respData;
+        const respData = response.data as CandidateItemResponseType;
+        return new CandidateItem(respData);
     }
 }

@@ -26,7 +26,7 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import ProgressCircle from '@/UI/components/progress/ProgressCircle.vue';
 import Modal from '@/UI/components/common/Modal.vue';
 import TestingResultComponentReadOnly
-  from '@/UI/components/testing/TestingResultComponents/TestingResultComponentReadOnly.vue';
+  from '@/UI/components/forms/testing/TestingResultComponents/TestingResultComponentReadOnly.vue';
 
 @Component({
   components: {TestingResultComponentReadOnly, Modal, ProgressCircle}

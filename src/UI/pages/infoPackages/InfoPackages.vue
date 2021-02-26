@@ -19,6 +19,8 @@ import InfoPackageComponent from '../../components/infoPackage/InfoPackageCompon
 import Header from '../../components/common/Header.vue';
 import {InfoPackagesStore} from '../../../store/modules/InfoPackages';
 import {IInfoPackage} from '../../../entity/infoPackages/infoPackage.types';
+import {IUser} from '../../../entity/user';
+import {AuthStore} from '../../../store/modules/Auth';
 import {RouterNameEnum} from '../../../router/router.types';
 
 @Component({
@@ -33,8 +35,16 @@ export default class InfoPackages extends Vue {
     return InfoPackagesStore.infoPackages;
   }
 
+  get user(): IUser {
+    return AuthStore.user;
+  }
+
   proceed(id: number): void {
-    const routeData = this.$router.resolve({name: RouterNameEnum.Landing, params: { id: id.toString() }});
+    const routeData = this.$router.resolve({
+      name: RouterNameEnum.Landing,
+      params: {id: id.toString()},
+      query: {account_id: this.user.id.toString()}//eslint-disable-line
+    });
     window.open(routeData.href, '_blank');
   }
 }

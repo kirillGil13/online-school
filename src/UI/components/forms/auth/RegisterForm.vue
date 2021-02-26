@@ -110,9 +110,9 @@
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import Button from '../common/Button.vue';
-import {RegisterForm} from '../../../form/register/RegisterForm';
-import FormGroup from '../common/form/FormGroup.vue';
+import Button from '../../common/Button.vue';
+import {RegisterForm} from '../../../../form/register/RegisterForm';
+import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 
 @Component({

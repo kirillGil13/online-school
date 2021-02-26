@@ -82,12 +82,12 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {CandidateForm} from '@/form/candidate/candidateForm';
-import Button from '@/UI/components/common/Button.vue';
-import FormGroup from '@/UI/components/common/form/FormGroup.vue';
+import {CandidateForm} from '../../../../form/candidate/candidateForm';
+import Button from '../../common/Button.vue';
+import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
-import {IStatuses} from '../../../entity/statuses/statuses.types';
-import {IInfoPackage} from '../../../entity/infoPackages/infoPackage.types';
+import {IStatuses} from '../../../../entity/statuses/statuses.types';
+import {IInfoPackage} from '../../../../entity/infoPackages/infoPackage.types';
 
 @Component({
   components: {FormGroup, Button, PhoneMaskInput}

@@ -7,8 +7,8 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import TestingResult from '@/entity/testingResult/testingResult';
-import { TestingResultComponentsEnum } from '@/entity/testingResultComponents/testingResultComponents.types';
+import TestingResult from '../../../../../entity/testingResult/testingResult';
+import { TestingResultComponentsEnum } from '../../../../../entity/testingResultComponents/testingResultComponents.types';
 import SuccessComponent from './components/SuccessComponent.vue';
 import ProceedComponent from './components/ProceedComponent.vue';
 import FailComponent from './components/FailComponent.vue';

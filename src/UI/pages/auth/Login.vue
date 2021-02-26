@@ -35,8 +35,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import LoginFormVue from '../../components/auth/RegisterForm.vue';
-import CodeFormVue from '../../components/auth/CodeForm.vue';
+import LoginFormVue from '../../components/forms/auth/RegisterForm.vue';
+import CodeFormVue from '../../components/forms/auth/CodeForm.vue';
 import { LoginForm } from '@/form/login/LoginForm';
 import Profile from '../profile/Profile.vue';
 import FormGroup from '@/UI/components/common/form/FormGroup.vue';

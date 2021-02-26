@@ -3,7 +3,7 @@
       v-model="activatorChange"
       activator="activatorChange"
       :value="activator"
-      max-width="500"
+      :max-width="videoModal ? 600 : 500"
   >
     <v-card class="modal-content">
       <slot name="content"/>
@@ -17,6 +17,7 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 @Component
 export default class Modal extends Vue {
   @Prop({required: true}) readonly activator!: boolean;
+  @Prop() readonly videoModal!: boolean;
 
   set activatorChange(activator: boolean) {
     this.$emit('activatorChange', activator);

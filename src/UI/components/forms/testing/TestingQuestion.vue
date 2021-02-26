@@ -15,8 +15,8 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import RadioButton from '../common/RadioButton.vue';
-import Testing from '@/entity/testing/testing';
+import RadioButton from '../../common/RadioButton.vue';
+import Testing from '../../../../entity/testing/testing';
 
 @Component({
     components: {
