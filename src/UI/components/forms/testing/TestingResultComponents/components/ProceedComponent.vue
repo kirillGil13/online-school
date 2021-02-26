@@ -17,11 +17,11 @@
   </v-col>
 </template>
 <script lang="ts">
-import TestingResult from '@/entity/testingResult/testingResult';
-import ProgressCircleTesting from '@/UI/components/progress/ProgressCircleTesting.vue';
-import Button from '@/UI/components/common/Button.vue';
+import TestingResult from '../../../../../../entity/testingResult/testingResult';
+import ProgressCircleTesting from '../../../../progress/ProgressCircleTesting.vue';
+import Button from '../../../../common/Button.vue';
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import Timer from '@/UI/components/common/Timer.vue';
+import Timer from '../../../../common/Timer.vue';
 
 @Component({
   components: {

@@ -6,13 +6,13 @@
     </div>
 </template>
 <script lang="ts">
-import Button from '../common/Button.vue';
+import Button from '../../common/Button.vue';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TestingFormVue from './TestingForm.vue';
-import { TestingForm } from '@/form/testing/testingForm';
-import TestingResult from '@/entity/testingResult/testingResult';
+import { TestingForm } from '../../../../form/testing/testingForm';
+import TestingResult from '../../../../entity/testingResult/testingResult';
 import TestingResultComponent from './TestingResultComponents/TestingResultComponent.vue';
-import {ITesting} from '@/entity/testing/testing.types';
+import {ITesting} from '../../../../entity/testing/testing.types';
 
 @Component({
     components: {

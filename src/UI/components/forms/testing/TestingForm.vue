@@ -23,12 +23,12 @@
   </v-col>
 </template>
 <script lang="ts">
-import {TestingForm} from '@/form/testing/testingForm';
+import {TestingForm} from '../../../../form/testing/testingForm';
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import Button from '../common/Button.vue';
-import ProgressBar from '../common/ProgressBar.vue';
+import Button from '../../common/Button.vue';
+import ProgressBar from '../../common/ProgressBar.vue';
 import TestingQuestion from './TestingQuestion.vue';
-import {ITesting} from '@/entity/testing/testing.types';
+import {ITesting} from '../../../../entity/testing/testing.types';
 
 @Component({
   components: {

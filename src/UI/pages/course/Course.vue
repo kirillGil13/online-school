@@ -51,7 +51,7 @@
 <script lang="ts">
 import Header from '../../components/common/Header.vue';
 import Button from '../../components/common/Button.vue';
-import TestingComponent from '../../components/testing/TestingComponent.vue';
+import TestingComponent from '../../components/forms/testing/TestingComponent.vue';
 import {Component, Vue, Watch} from 'vue-property-decorator';
 import {HeaderRouteType} from '@/entity/common/header.types';
 import Relation from '../../components/common/Relation.vue';

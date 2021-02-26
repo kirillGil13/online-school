@@ -39,10 +39,10 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {StatusForm} from '../../../form/status/statusForm';
-import FormGroup from '../common/form/FormGroup.vue';
-import Button from '../common/Button.vue';
-import {IStatusIcons} from '../../../entity/statusIcons/statusIcons.types';
+import {StatusForm} from '../../../../form/status/statusForm';
+import FormGroup from '../../common/form/FormGroup.vue';
+import Button from '../../common/Button.vue';
+import {IStatusIcons} from '../../../../entity/statusIcons/statusIcons.types';
 @Component({
   components: {Button, FormGroup}
 })

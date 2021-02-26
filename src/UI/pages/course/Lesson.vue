@@ -144,7 +144,7 @@ import {LessonItemStore} from '@/store/modules/LessonItem';
 import {ILessonItem} from '@/entity/lessonItem/lessonItem.types';
 import Lessons from '../../components/lessons/Lessons.vue';
 import Button from '../../components/common/Button.vue';
-import TestingComponent from '../../components/testing/TestingComponent.vue';
+import TestingComponent from '../../components/forms/testing/TestingComponent.vue';
 import Relation from '../../components/common/Relation.vue';
 import {VideoStream} from 'stream-vue';
 import {QuestionsStore} from '@/store/modules/Questions';

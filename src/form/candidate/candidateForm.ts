@@ -5,8 +5,6 @@ import {Validate} from '@/plugins/Vuelidate/Decorators';
 import {required, sameAs, email} from 'vuelidate/lib/validators';
 import {IStatuses} from '@/entity/statuses/statuses.types';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
-import {ICandidate} from '@/entity/candidates';
-import {ICandidateItem} from '@/entity/candidateItem/candidateItem.types';
 /* eslint-disable */
 
 /* tslint:disable */

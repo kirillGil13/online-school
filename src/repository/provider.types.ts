@@ -10,6 +10,7 @@ import {IStatusesRepository} from '@/repository/statuses/Statuses.types';
 import {IInfoPackagesRepository} from '@/repository/infoPackages/InfoPackages.types';
 import {IStatusIconsRepository} from '@/repository/statusIcons/StatusIconsRepository.types';
 import {ICandidateItemRepository} from '@/repository/candidateItem/CandidateItemRepository.types';
+import {IVideoAccessRepository} from '@/repository/videoAccess/VideoAccessRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -24,4 +25,5 @@ export interface IProvider {
     infoPackages: IInfoPackagesRepository;
     statusIcons: IStatusIconsRepository;
     candidateItem: ICandidateItemRepository;
+    videoAccess: IVideoAccessRepository;
 }

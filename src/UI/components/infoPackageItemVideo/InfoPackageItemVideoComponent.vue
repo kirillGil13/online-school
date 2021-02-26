@@ -1,5 +1,5 @@
 <template>
-  <div class="course-block" @click="$emit('proceed', infoPackageItemVideo.id)">
+  <div class="course-block" @click="$emit('open', infoPackageItemVideo.id)">
     <div class="course-video-block" :style="{ backgroundImage: 'url(' + infoPackageItemVideo.coverLink + ')' }">
       <div class="course-info duration">1:12:20</div>
     </div>

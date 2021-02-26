@@ -20,8 +20,8 @@ export default class LandingLayout extends Vue {}
   background-color: transparent !important;
 
   &__wrapper {
+    max-width: 1038px;
     width: 100%;
-    padding: 24px;
   }
 }
 </style>

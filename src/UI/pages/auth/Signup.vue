@@ -10,8 +10,8 @@
 </template>
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import LoginFormVue from '../../components/auth/RegisterForm.vue';
-import CodeFormVue from '../../components/auth/CodeForm.vue';
+import LoginFormVue from '../../components/forms/auth/RegisterForm.vue';
+import CodeFormVue from '../../components/forms/auth/CodeForm.vue';
 import Profile from '../profile/Profile.vue';
 import FormGroup from '@/UI/components/common/form/FormGroup.vue';
 import {AuthStore} from '@/store/modules/Auth';
@@ -19,9 +19,9 @@ import Logo from '@/UI/components/common/Logo.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import Button from '../../components/common/Button.vue';
 import {CodeForm} from '../../../form/code/codeForm';
-import RegisterFormVue from '../../components/auth/RegisterForm.vue';
+import RegisterFormVue from '../../components/forms/auth/RegisterForm.vue';
 import {RegisterForm} from '../../../form/register/RegisterForm';
-import PhoneFormVue from '../../components/auth/PhoneForm.vue';
+import PhoneFormVue from '../../components/forms/auth/PhoneForm.vue';
 import {PhoneForm} from '../../../form/phone/phoneForm';
 
 @Component({
