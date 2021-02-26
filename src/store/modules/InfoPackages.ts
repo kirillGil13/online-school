@@ -1,6 +1,7 @@
 import {Module, getModule, VuexModule, MutationAction} from 'vuex-module-decorators';
 import store from '@/store';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
+import {IInfoPackageItem} from '@/entity/infoPackageItem/infoPackageItem.types';
 
 @Module({
     namespaced: true,
@@ -10,6 +11,8 @@ import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 })
 class InfoPackagesModule extends VuexModule {
     infoPackages: IInfoPackage[] = [];
+    infoPackageItem: IInfoPackageItem | null = null;
+    infoPackageItemLoaded = false;
     infoPackagesLoaded = false;
 
     @MutationAction
@@ -20,6 +23,15 @@ class InfoPackagesModule extends VuexModule {
             infoPackagesLoaded = true;
         }
         return {infoPackages, infoPackagesLoaded};
+    }
+    @MutationAction
+    async fetchData(route: string): Promise<{ infoPackageItem: IInfoPackageItem; infoPackageItemLoaded: boolean}> {
+        const infoPackageItem = await store.$repository.infoPackages.fetchData(route);
+        let infoPackageItemLoaded = false;
+        if (infoPackageItem !== null) {
+            infoPackageItemLoaded = true;
+        }
+        return {infoPackageItem, infoPackageItemLoaded};
     }
 }
 
