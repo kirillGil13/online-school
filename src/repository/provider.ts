@@ -9,6 +9,8 @@ import {QuestionsRepository} from '@/repository/questions';
 import {RightAnswersRepository} from '@/repository/rightAnswers/RightAnswers';
 import {StatusesRepository} from '@/repository/statuses/Statuses';
 import {InfoPackagesRepository} from '@/repository/infoPackages/InfoPackages';
+import {StatusIconsRepository} from '@/repository/statusIcons/StatusIconsRepository';
+import {CandidateItemRepository} from '@/repository/candidateItem/CandidateItemRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -21,5 +23,7 @@ export const provider = (): IProvider => ({
     rightAnswers: new RightAnswersRepository(),
     statuses: new StatusesRepository(),
     infoPackages: new InfoPackagesRepository(),
+    statusIcons: new StatusIconsRepository(),
+    candidateItem: new CandidateItemRepository(),
 });
 

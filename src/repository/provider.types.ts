@@ -8,6 +8,8 @@ import {IQuestionsItemRepository} from '@/repository/questions';
 import {IRightAnswersRepository} from '@/repository/rightAnswers/RightAnswers.types';
 import {IStatusesRepository} from '@/repository/statuses/Statuses.types';
 import {IInfoPackagesRepository} from '@/repository/infoPackages/InfoPackages.types';
+import {IStatusIconsRepository} from '@/repository/statusIcons/StatusIconsRepository.types';
+import {ICandidateItemRepository} from '@/repository/candidateItem/CandidateItemRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -20,4 +22,6 @@ export interface IProvider {
     rightAnswers: IRightAnswersRepository;
     statuses: IStatusesRepository;
     infoPackages: IInfoPackagesRepository;
+    statusIcons: IStatusIconsRepository;
+    candidateItem: ICandidateItemRepository;
 }

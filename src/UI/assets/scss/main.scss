@@ -419,6 +419,8 @@ iframe {
     border-radius: 12px;
 }
 .status_radio {
+    margin-top: 8px !important;
+    margin-left: 5px;
     .v-input__control {
         .v-input__slot {
             .v-input--radio-group__input {
@@ -426,15 +428,22 @@ iframe {
                     display: none !important;
                 }
                 .v-radio {
+                    margin-right: 8px !important;
                     .v-input--selection-controls__input {
                         position: absolute;
                         opacity: 0;
                         width: 0;
                         height: 0;
                     }
+                    label {
+                        margin-left: 0 !important;
+                        padding: 1px !important;
+                        border: 1px solid transparent !important;
+                        border-radius: 4px;
+                    }
                     &.v-item--active {
                         label {
-                            border: 1px solid #eb5757 !important;
+                            border: 1px solid #426DF6 !important;
                         }
                     }
                 }

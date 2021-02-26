@@ -51,7 +51,7 @@
       </v-row>
       <v-row v-if="candidates.length !== 0">
         <v-col class="mt-6">
-          <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @addStatus="activatorStatus = true"/>
+          <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus" @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
         </v-col>
       </v-row>
       <Modal :activator="activator" @activatorChange="activatorChange">
@@ -59,11 +59,16 @@
           <CandidateFormComponent :form="candidateForm" v-if="destroy" :statuses="statuses" :info-packs="infoPackages" :account-id="user.id" @close="close" @add="add"/>
         </template>
       </Modal>
-      <Modal class="skddjk" :activator="activatorStatus" @activatorChange="activatorChangeStatus">
+      <Modal :activator="activatorStatus" @activatorChange="activatorChangeStatus">
         <template v-slot:content>
-          <StatusFormComponent :form="statusForm" v-if="destroy" @close="close" @createStatus="createStatus"/>
+          <StatusFormComponent :form="statusForm" v-if="destroy" :status-icons="statusIcons" @close="close" @createStatus="createStatus"/>
         </template>
       </Modal>
+    <Modal :activator="activatorCandidate" @activatorChange="activatorChangeCandidate">
+      <template v-slot:content>
+        <UpdateCandidateFormComponent :form="updateCandidateForm" v-if="destroy" :account-id="user.id" @close="close" @update="update"/>
+      </template>
+    </Modal>
   </v-col>
 </template>
 
@@ -93,9 +98,16 @@ import {StatusesStore} from '../../../store/modules/Statuses';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 import {StatusForm} from '../../../form/status/statusForm';
 import StatusFormComponent from '../../components/statusForm/StatusFormComponent.vue';
+import {StatusIconsStore} from '../../../store/modules/StatusIcons';
+import {IStatusIcons} from '../../../entity/statusIcons/statusIcons.types';
+import {CandidateItemStore} from '../../../store/modules/CandidateItem';
+import UpdateCandidateFormComponent from '../../components/candidateForm/UpdateCandidateFormComponent.vue';
+import {ICandidateItem} from '../../../entity/candidateItem/candidateItem.types';
+import {UpdateCandidateForm} from '../../../form/updateCandidate/updateCandidateForm';
 
 @Component({
   components: {
+    UpdateCandidateFormComponent,
     StatusFormComponent,
     CandidateFormComponent,
     Modal,
@@ -111,7 +123,9 @@ export default class Candidates extends Vue {
   filters: Filters;
   activator = false;
   activatorStatus = false;
+  activatorCandidate = false;
   candidateForm: CandidateForm;
+  updateCandidateForm: UpdateCandidateForm;
   statusForm: StatusForm;
   destroy = true;
   route = RouterNameEnum;
@@ -120,6 +134,7 @@ export default class Candidates extends Vue {
     super();
     this.candidateForm = new CandidateForm();
     this.statusForm = new StatusForm();
+    this.updateCandidateForm = new UpdateCandidateForm();
     this.filters = new Filters();
   }
 
@@ -133,6 +148,11 @@ export default class Candidates extends Vue {
     this.activatorStatus = act;
   }
 
+  activatorChangeCandidate(act: boolean): void {
+    this.destroy = true;
+    this.activatorCandidate = act;
+  }
+
   close(): void {
     this.activator = false;
     this.activatorStatus = false;
@@ -143,6 +163,18 @@ export default class Candidates extends Vue {
     this.$nextTick(() => {
       this.destroy = true;
     });
+  }
+
+  async openUpdate(id: number): Promise<void> {
+   await CandidateItemStore.fetchData(id.toString());
+   this.updateCandidateForm.setFormData(this.candidateItem!, this.statuses, this.infoPackages, this.user.id);
+   this.activatorCandidate = true;
+  }
+
+  async selectStatus(data: {statusId: number; id: number}): Promise<void> {
+    if (await StatusesStore.set({status: {status_id: data.statusId}, candidateId: data.id.toString()})) {// eslint-disable-line
+      await this.fetchData();
+    }
   }
 
   async createStatus(): Promise<void> {
@@ -163,6 +195,15 @@ export default class Candidates extends Vue {
     this.activator = false;
   }
 
+  async update(): Promise<void> {
+    if (await this.updateCandidateForm.submit(CandidateItemStore.update, this.updateCandidateForm.candidateId.toString())) {
+      await this.fetchData();
+    }
+    this.updateCandidateForm = new UpdateCandidateForm();
+    this.rerender();
+    this.activatorCandidate = false;
+  }
+
   get user(): IUser {
     return AuthStore.user;
   }
@@ -171,7 +212,14 @@ export default class Candidates extends Vue {
     return CandidatesStore.candidates;
   }
 
+  get candidateItem(): ICandidateItem | null {
+    return CandidateItemStore.candidateItem;
+  }
+
   get selectsActions(): ISelect[] {
+    const data = SelectsStore.selectsActions;
+    data[0].id = 5;
+    data[data.length - 1].id = 4;
     return SelectsStore.selectsActions;
   }
 
@@ -191,6 +239,10 @@ export default class Candidates extends Vue {
     return InfoPackagesStore.infoPackagesLoaded;
   }
 
+  get statusIcons(): IStatusIcons[] {
+    return StatusIconsStore.statusIcons;
+  }
+
   get isMobile(): boolean {
     return AdaptiveStore.isMobile;
   }
@@ -203,6 +255,7 @@ export default class Candidates extends Vue {
     await StatusesStore.fetchAll();
     await CandidatesStore.fetchAll();
     await InfoPackagesStore.fetchAll();
+    await StatusIconsStore.fetchAll();
   }
 
 }

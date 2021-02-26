@@ -22,6 +22,7 @@ class SelectsModule extends VuexModule {
         {
             id: 2,
             name: 'Изменить',
+            extraAction: true
         },
         {
             id: 3,

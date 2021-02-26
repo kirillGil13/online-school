@@ -12,10 +12,10 @@
       </div>
       <div class="tr tbody" v-for="(candidate, index) in candidates" :key="index">
         <div>
-          <Select class-name="select_content" :selects="statuses">
+          <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="candidate.id">
             <template v-slot:act>
               <div class="d-flex flex-row">
-                <v-img :src="candidate.photoLink" max-width="22" max-height="22"></v-img>
+                <v-img :src="candidate.status.photoLink" max-width="22" max-height="22"></v-img>
                 <svg-icon name="Arrow_Down"></svg-icon>
               </div>
             </template>
@@ -35,7 +35,7 @@
         <div class="product">{{candidate.infoPackName}}</div>
         <div>{{ candidate.createdAt }}</div>
         <div>
-          <Select class-name="select_content action" :selects="selects">
+          <Select class-name="select_content action" :selects="selects" v-on="$listeners" :id="candidate.id">
             <template v-slot:act>
               <div class="d-flex justify-end">
                 <svg-icon
@@ -52,7 +52,7 @@
       <div class="tr tbody mb-3" v-for="(candidate, index) in candidates" :key="index">
         <div class="d-flex flex-row justify-space-between mb-3">
           <div class="d-flex flex-row">
-            <Select class-name="select_content" :selects="statuses">
+            <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="candidate.id">
               <template v-slot:act>
                 <div class="d-flex flex-row">
                   <v-img :src="candidate.photoLink" max-width="22" max-height="22"></v-img>
@@ -63,7 +63,7 @@
             <div class="ml-3 name">{{ candidate.name }}</div>
           </div>
           <div>
-            <Select class-name="select_content action" :selects="selects">
+            <Select class-name="select_content action" :selects="selects" v-on="$listeners" :id="candidate.id">
               <template v-slot:act>
                 <div class="d-flex justify-end">
                   <svg-icon

@@ -9,6 +9,10 @@ export type StatusesResponseType = {
     photoLink: string;
     name: string;
 }
+
+export type StatusesRequestType = {
+    status_id: number;
+}
 export enum StatusesNameEnum {
     Call = 'Call',
     Waiting = 'Waiting',

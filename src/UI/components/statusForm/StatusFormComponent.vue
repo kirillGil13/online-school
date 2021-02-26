@@ -2,16 +2,16 @@
   <v-col class="pa-6 d-flex justify-center flex-column status_form">
     <h1 class="mx-auto my-0">Добавить статус</h1>
     <FormGroup
-        class="mt-4" v-slot="attrs" :form="form" field="photoLink" show-custom-error label="Выберите иконку статуса"
+        class="mt-4 icons" v-slot="attrs" :form="form" field="photoLink" show-custom-error label="Выберите иконку статуса"
     >
       <v-radio-group row hide-details v-model="form[attrs.name]" v-bind="attrs" class="status_radio">
         <v-radio
-            v-for="n in 3"
-            :key="n"
-            :value="form[attrs.name]"
+            v-for="(icon, index) in statusIcons"
+            :key="index"
+            :value="icon.shortLink"
         >
           <template v-slot:label>
-            <v-img class="status_img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Hors_category_22px.svg/1024px-Hors_category_22px.svg.png" max-height="22" max-width="22"></v-img>
+            <v-img class="status_img" :src="icon.fullLink" height="24" width="24"></v-img>
           </template>
         </v-radio>
       </v-radio-group>
@@ -42,16 +42,23 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import {StatusForm} from '../../../form/status/statusForm';
 import FormGroup from '../common/form/FormGroup.vue';
 import Button from '../common/Button.vue';
+import {IStatusIcons} from '../../../entity/statusIcons/statusIcons.types';
 @Component({
   components: {Button, FormGroup}
 })
 export default class StatusFormComponent extends Vue{
   @Prop() readonly form!: StatusForm;
+  @Prop() readonly statusIcons!: IStatusIcons[];
 }
 </script>
 
 <style lang="scss">
 .status_form {
+  .icons {
+    label {
+      margin-left: 0 !important;
+    }
+  }
   button {
     width: 50%;
   }
