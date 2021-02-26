@@ -6,9 +6,9 @@
             src="http://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&origin=http://example.com"
             frameborder="0"/>
   </div>
-  <div class="d-flex flex-row justify-space-between">
-    <CourseComponent v-for="(course, index) in "/>
-  </div>
+<!--  <div class="d-flex flex-row justify-space-between">-->
+<!--    <CourseComponent v-for="(course, index) in 3" :key="index"/>-->
+<!--  </div>-->
 </v-col>
 </template>
 
