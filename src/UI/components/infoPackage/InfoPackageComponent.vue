@@ -1,20 +1,20 @@
 <template>
-  <div class="course-block" @click="$emit('proceed', infoPackage.id)">
-    <div class="course-video-block" :style="{ backgroundImage: 'url(' + infoPackage.cover + ')' }">
+  <div class="course-block">
+    <div class="course-video-block" @click="$emit('proceed', infoPackage.id)" :style="{ backgroundImage: 'url(' + infoPackage.coverLink + ')' }">
       <div class="course-info progress">
         <div class="text">
-          <svg-icon name="Chart"></svg-icon>{{infoPackage.openCount}}
-          <svg-icon name="Pack_Add_User"></svg-icon>{{infoPackage.registerCount}}
+          <svg-icon name="Chart"></svg-icon>{{infoPackage.countViews}}
+          <svg-icon name="Pack_Add_User"></svg-icon>{{infoPackage.countCandidates}}
         </div>
       </div>
       <div class="share">
-          <svg-icon name="Share"></svg-icon>
+          <svg-icon v-clipboard="infoPackage.sharedLink" name="Share"></svg-icon>
       </div>
     </div>
-    <div class="course-title">{{ infoPackage.title }}</div>
+    <div class="course-title">{{ infoPackage.name }}</div>
     <div class="course-download">
-      <svg-icon v-clipboard="infoPackage.link" class="svg-wh" name="Copy" />
-      <span v-clipboard="infoPackage.link">Скопировать ссылку</span>
+      <svg-icon v-clipboard="infoPackage.sharedLink" class="svg-wh" name="Copy" />
+      <span v-clipboard="infoPackage.sharedLink">Скопировать ссылку</span>
     </div>
   </div>
 </template>

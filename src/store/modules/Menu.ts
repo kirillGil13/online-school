@@ -17,16 +17,6 @@ class MenuModule extends VuexModule {
             route: RouterNameEnum.Main,
         },
         {
-            title: 'Обучение',
-            iconName: 'Education',
-            route: RouterNameEnum.TrainingMain,
-        },
-        {
-            title: 'События',
-            iconName: 'Calendar',
-            route: RouterNameEnum.Calendar,
-        },
-        {
             title: 'Чат',
             iconName: 'Chat',
             route: RouterNameEnum.ChatMain,
@@ -37,9 +27,19 @@ class MenuModule extends VuexModule {
             route: RouterNameEnum.Candidates,
         },
         {
-            title: 'Партнеры',
+            title: 'Инфопакеты',
             iconName: 'Users',
-            route: RouterNameEnum.Partners,
+            route: RouterNameEnum.InfoPackages,
+        },
+        {
+            title: 'Я изучаю',
+            iconName: 'Education',
+            route: RouterNameEnum.TrainingMain,
+        },
+        {
+            title: 'Избранное',
+            iconName: 'Chosen',
+            route: RouterNameEnum.Chosen,
         },
     ];
 }

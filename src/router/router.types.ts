@@ -9,11 +9,10 @@ export enum RouterNameEnum {
     PartnerPage = 'PartnerPage',
     MaterialPresentation = 'MaterialPresentation',
     MaterialDocuments = 'MaterialDocuments',
-    MaterialInfoPacks = 'MaterialInfoPacks',
+    InfoPackages = 'InfoPackages',
     Training = 'Training',
     LeaderCourses = 'LeaderCourses',
     Materials = 'Materials',
-    Calendar = 'Calendar',
     Chat = 'Chat',
     Course = 'Course',
     Lesson = 'Lesson',
@@ -33,5 +32,7 @@ export enum RouterNameEnum {
     ChatMain = 'ChatMain',
     ChatNotes = 'ChatNotes',
     ChatTasks = 'ChatTasks',
-    Profile = 'Profile'
+    Profile = 'Profile',
+    Chosen = 'Chosen',
+    Landing = 'Landing',
 }

@@ -12,7 +12,6 @@ import { AuthStore } from '@/store/modules/Auth';
 @Component
 export default class App extends Vue {
     created(): void {
-        console.log(this.$route);
         AuthStore.load();
     }
 }
