@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Vue from 'vue';
 import Router from 'vue-router';
-import { RouterNameEnum } from '@/router/router.types';
+import {RouterNameEnum} from '@/router/router.types';
 
 Vue.use(Router);
 Vue.prototype.$routeRules = RouterNameEnum;
@@ -40,53 +40,6 @@ const routes = [
                 name: RouterNameEnum.LeaderCourses,
                 component: () => import('../UI/pages/leader/LeaderCoursePage.vue'),
             },
-            {
-                path: '/organization',
-                component: () => import('../UI/pages/orgDetail/OrganizationDetail.vue'),
-                children: [
-                    {
-                        path: '',
-                        name: RouterNameEnum.OrganizationMain,
-                        component: () => import('../UI/components/orgDetail/OrganizationMain.vue'),
-                    },
-                    {
-                        path: 'training',
-                        name: RouterNameEnum.OrganizationTraining,
-                        component: () => import('../UI/components/orgDetail/OrganizationTraining.vue'),
-                    },
-                    {
-                        path: 'presentations',
-                        name: RouterNameEnum.OrganizationPresentations,
-                        component: () => import('../UI/components/orgDetail/OrganizationPresentations.vue'),
-                    },
-                    {
-                        path: 'info-packages',
-                        name: RouterNameEnum.OrganizationInfoPackages,
-                        component: () => import('../UI/components/orgDetail/OrganizationInfoPackages.vue'),
-                    },
-                    {
-                        path: 'documents',
-                        name: RouterNameEnum.OrganizationDocuments,
-                        component: () => import('../UI/components/orgDetail/OrganizationDocuments.vue'),
-                    },
-                    {
-                        path: 'instructions',
-                        name: RouterNameEnum.OrganizationInstructions,
-                        component: () => import('../UI/components/orgDetail/OrganizationInstructions.vue'),
-                    },
-                    {
-                        path: 'leaders',
-                        name: RouterNameEnum.OrganizationLeaders,
-                        component: () => import('../UI/components/orgDetail/OrganizationLeaders.vue'),
-                    },
-                    {
-                        path: 'group',
-                        name: RouterNameEnum.OrganizationGroup,
-                        component: () => import('../UI/components/orgDetail/OrganizationGroup.vue'),
-                    },
-                ],
-            },
-
             {
                 path: '/training',
                 redirect: '/training/main',
@@ -138,21 +91,6 @@ const routes = [
                 component: () => import('../UI/pages/candidates/CandidatesStatistics.vue')
             },
             {
-                path: '/partners',
-                name: RouterNameEnum.Partners,
-                component: () => import('../UI/pages/partners/Partners.vue'),
-            },
-            {
-                path: '/partner/:id',
-                name: RouterNameEnum.PartnerPage,
-                component: () => import('../UI/pages/partners/PartnerPage.vue')
-            },
-            {
-                path: '/calendar',
-                name: RouterNameEnum.Calendar,
-                component: () => import('../UI/pages/events/Events.vue'),
-            },
-            {
                 path: '/chat',
                 component: () => import('../UI/pages/chat/Chat.vue'),
                 children: [
@@ -174,12 +112,34 @@ const routes = [
                 ]
             },
             {
+                path: '/infoPackages',
+                component: () => import('../UI/pages/infoPackages/InfoPackages.vue'),
+                name: RouterNameEnum.InfoPackages
+            },
+            {
+                path: '/chosen',
+                component: () => import('../UI/pages/chosen/Chosen.vue'),
+                name: RouterNameEnum.Chosen
+            },
+
+            {
                 path: '/profile',
                 component: () => import('../UI/pages/profile/Profile.vue'),
                 name: RouterNameEnum.Profile
             }
         ],
     },
+    {
+        path: '/landing',
+        component: () => import('../UI/layouts/LandingLayout.vue'),
+        children: [
+            {
+                path: ':id',
+                name: RouterNameEnum.Landing,
+                component: () => import('@/UI/landing/Landing.vue'),
+            },
+        ],
+    }
 ];
 
 Vue.router = new Router({

@@ -1,10 +1,14 @@
 <template>
-  <v-col>
-  </v-col>
+  <div></div>
 </template>
+
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 
 @Component
-export default class Main extends Vue {}
+export default class Chosen extends Vue {}
 </script>
+
+<style lang="scss">
+
+</style>
