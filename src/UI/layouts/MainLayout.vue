@@ -5,7 +5,6 @@
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!isMobile">
           <Sidebar :userInfo="user" :userId="user.id" @proceed="proceed"/>
-          <Banner/>
         </div>
         <div class="content-main pt-0 mb-16">
           <v-main>

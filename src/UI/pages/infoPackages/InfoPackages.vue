@@ -7,9 +7,9 @@
         description="Здесь отображаются все инфопакеты компании"
     >
     </Header>
-    <div class="d-flex flex-row flex-wrap mt-6">
+    <v-col class="d-flex flex-row flex-wrap mt-6 pa-0">
       <InfoPackageComponent v-for="(item, index) in infoPackages" :key="index" :info-package="item" @proceed="proceed"/>
-    </div>
+    </v-col>
   </v-col>
 </template>
 

@@ -12,6 +12,7 @@ import {InfoPackagesRepository} from '@/repository/infoPackages/InfoPackages';
 import {StatusIconsRepository} from '@/repository/statusIcons/StatusIconsRepository';
 import {CandidateItemRepository} from '@/repository/candidateItem/CandidateItemRepository';
 import {VideoAccessRepository} from '@/repository/videoAccess/VideoAccessRepository';
+import {ProfilePictureRepository} from '@/repository/profilePicture/ProfilePicture';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -27,5 +28,6 @@ export const provider = (): IProvider => ({
     statusIcons: new StatusIconsRepository(),
     candidateItem: new CandidateItemRepository(),
     videoAccess: new VideoAccessRepository(),
+    profilePicture: new ProfilePictureRepository(),
 });
 
