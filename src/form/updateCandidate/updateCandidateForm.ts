@@ -6,10 +6,10 @@ import {IStatuses} from '@/entity/statuses/statuses.types';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 import {
     IUpdateCandidateForm,
-    IUpdateCandidateFormList,
     UpdateCandidateFormRequestType
 } from '@/form/updateCandidate/updateCandiadteForm.types';
 import {ICandidateItem} from '@/entity/candidateItem/candidateItem.types';
+import {ISelectList} from '@/entity/select/select.types';
 /* eslint-disable */
 
 /* tslint:disable */
@@ -22,8 +22,8 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
     public status = 0;
     public isFiction = true;
     public accountId = 0;
-    public productList: IUpdateCandidateFormList[] = [];
-    public statusList: IUpdateCandidateFormList[] = [];
+    public productList: ISelectList[] = [];
+    public statusList: ISelectList[] = [];
 
     public serverErrors: { [key: string]: string[] } = {};
 

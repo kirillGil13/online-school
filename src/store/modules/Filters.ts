@@ -17,28 +17,31 @@ class FiltersModule extends VuexModule {
     filters: IFilters[] = [
         {
             id: 0,
-            filter: [
-                'Все темы',
+            filterValue: [
+                {
+                    text: 'Все темы',
+                    value: null
+                }
             ],
             filterType: FiltersNameEnum.Theme
         },
         {
             id: 1,
-            filter: [
-                'Неважно',
-                'Стартовый',
-                'С опытом'
+            filterValue: [
+                {
+                    text: 'Не важно',
+                    value: null
+                }
             ],
             filterType: FiltersNameEnum.Level
         },
         {
             id: 2,
-            filter: [
-                'Неважно',
-                '50 - 5000 ₽',
-                '5000 - 20 000 ₽',
-                '20 000 - 50 000 ₽',
-                'выше 50 000 ₽'
+            filterValue: [
+                {
+                    text: 'Не важно',
+                    value: null
+                }
             ],
             filterType: FiltersNameEnum.Cost
         },
@@ -46,35 +49,41 @@ class FiltersModule extends VuexModule {
     courses: IFilters[] = [
         {
             id: 0,
-            filter: [
-                'Все курсы',
+            filterValue: [
+                {
+                    text: 'Все курсы',
+                    value: null
+                }
             ],
             filterType: FiltersCourseNameEnum.Course
         },
         {
             id: 1,
-            filter: [
-                'Все темы',
+            filterValue: [
+                {
+                    text: 'Все темы',
+                    value: null
+                }
             ],
             filterType: FiltersCourseNameEnum.Theme
         },
         {
             id: 2,
-            filter: [
-                'Неважно',
-                'Стартовый',
-                'С опытом'
+            filterValue: [
+                {
+                    text: 'Не важно',
+                    value: null
+                }
             ],
             filterType: FiltersCourseNameEnum.Level
         },
         {
             id: 3,
-            filter: [
-                'Неважно',
-                '50 - 5000 ₽',
-                '5000 - 20 000 ₽',
-                '20 000 - 50 000 ₽',
-                'выше 50 000 ₽'
+            filterValue: [
+                {
+                    text: 'Не важно',
+                    value: null
+                }
             ],
             filterType: FiltersCourseNameEnum.Cost
         },
@@ -83,10 +92,19 @@ class FiltersModule extends VuexModule {
     periods: IFilters[] = [
         {
             id: 0,
-            filter: [
-                'Последние 30 дней',
-                'Последние 15 дней',
-                'Последние 5 дней'
+            filterValue: [
+                {
+                    text: 'Последние 30 дней',
+                    value: 0
+                },
+                {
+                    text: 'Последние 15 дней',
+                    value: 1
+                },
+                {
+                    text: 'Последние 5 дней',
+                    value: 2
+                },
             ],
             filterType: FiltersNameEnum.Period
         },
@@ -94,27 +112,39 @@ class FiltersModule extends VuexModule {
     candidates: IFilters[] = [
         {
             id: 0,
-            filter: [
-                'Неважно',
-                'Новый клиент',
-                'В ожидании',
-                'Надо позвонить'
+            filterValue: [
+                {
+                    text: 'Не важно',
+                    value: null
+                }
             ],
             filterType: FiltersCandidatesNameEnum.Status
         },
         {
             id: 1,
-            filter: [
-                'Неважно',
+            filterValue: [
+                {
+                    text: 'Не важно',
+                    value: null
+                },
+                {
+                    text: 'С инфопакетов',
+                    value: 0
+                },
+                {
+                    text: 'Созданные вручную',
+                    value: 1
+                },
             ],
             filterType: FiltersCandidatesNameEnum.Type
         },
         {
             id: 2,
-            filter: [
-                'Неважно',
-                'Недвижимость за 35%',
-                'Авто за 35%'
+            filterValue: [
+                {
+                    text: 'Не важно',
+                    value: null
+                }
             ],
             filterType: FiltersCandidatesNameEnum.Product
         },

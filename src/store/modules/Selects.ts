@@ -13,7 +13,7 @@ class SelectsModule extends VuexModule {
     selectsActions: ISelect[] =[
         {
             id: 0,
-            name: 'Сделать партнером',
+            name: 'Стал клиентом',
         },
         {
             id: 1,

@@ -29,3 +29,11 @@ export type CandidateStatusResponseType = {
     photoLink: string;
     name: string;
 }
+export type CandidateRequestType = {
+    statusId?: number[] |  null[];
+    isFiction?: boolean | null;
+    infoPackId?: number | null;
+    search?: string | null;
+    limit?: number | null;
+    skip?: number | null;
+}

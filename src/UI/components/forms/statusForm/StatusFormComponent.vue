@@ -11,7 +11,7 @@
             :value="icon.shortLink"
         >
           <template v-slot:label>
-            <v-img class="status_img" :src="icon.fullLink" height="24" width="24"></v-img>
+            <v-img class="status_img" :src="icon.fullLink" :width="isMobile ? 32 : 24"></v-img>
           </template>
         </v-radio>
       </v-radio-group>
@@ -43,12 +43,17 @@ import {StatusForm} from '../../../../form/status/statusForm';
 import FormGroup from '../../common/form/FormGroup.vue';
 import Button from '../../common/Button.vue';
 import {IStatusIcons} from '../../../../entity/statusIcons/statusIcons.types';
+import {AdaptiveStore} from '../../../../store/modules/Adaptive';
 @Component({
   components: {Button, FormGroup}
 })
 export default class StatusFormComponent extends Vue{
   @Prop() readonly form!: StatusForm;
   @Prop() readonly statusIcons!: IStatusIcons[];
+
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
+  }
 }
 </script>
 
