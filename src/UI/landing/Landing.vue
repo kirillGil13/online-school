@@ -1,7 +1,7 @@
 <template>
   <v-col class="infoPackageItem" v-if="infoPackageItemLoaded">
     <div class="main-video-wrapper">
-      <InfoPackageItemVideoComponent :class="['main-video', isMobile ? 'mobile' : '']" :info-package-item-video="infoPackageItem.mainVideo" @open="activatorVideo = true; mainVideo = true"/>
+      <InfoPackageItemVideoComponent class="main-video" :info-package-item-video="infoPackageItem.mainVideo" @open="activatorMainVideo = true"/>
     </div>
     <div class="videos" v-if="infoPackageItemLoaded">
       <InfoPackageItemVideoComponent :class="['secondary-video', isMobile ? 'mobile' : '']" v-for="(item, index) in infoPackageItem.videos" :key="index"
@@ -12,13 +12,15 @@
         <VideoAccessFormComponent :form="accessForm"  @close="close" @access="access" :account-id="+$route.query.account_id" :info-pack-id="+$route.params.id"/>
       </template>
     </Modal>
-    <Modal :video-modal="true" :activator="activatorVideo" @activatorChange="activatorVideoChange">
-      <template v-slot:content v-if="mainVideo">
+    <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorMainVideo" @activatorChange="activatorMainVideoChange">
+      <template v-slot:content>
         <iframe id="ytplayer1" width="100%" height="340"
                 :src="infoPackageItemLoaded ? infoPackageItem.mainVideo.videoLink : ''"
                 frameborder="0"/>
       </template>
-      <template v-slot:content v-else>
+    </Modal>
+    <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorVideo" @activatorChange="activatorVideoChange">
+      <template v-slot:content>
         <iframe id="ytplayer2" type="text/html" width="100%" height="340"
                 :src="infoPackageItemLoaded ? infoPackageItem.videos.find(item => item.id === secondaryVideoId).videoLink : ''"
                 frameborder="0"/>
@@ -44,9 +46,9 @@ import {AdaptiveStore} from '../../store/modules/Adaptive';
 })
 export default class Landing extends Vue {
   activator = false;
+  activatorMainVideo = false;
   activatorVideo = false;
   destroy = true;
-  mainVideo = false;
   secondaryVideoId = 1;
   accessForm: VideoAccessForm;
 
@@ -71,7 +73,9 @@ export default class Landing extends Vue {
   }
   activatorVideoChange(act: boolean): void {
     this.activatorVideo = act;
-    this.mainVideo = false;
+  }
+  activatorMainVideoChange(act: boolean): void {
+    this.activatorMainVideo = act;
   }
   async access(): Promise<void> {
     if (await this.accessForm.submit(AccessVideoStore.getAccess)) {

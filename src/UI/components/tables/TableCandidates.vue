@@ -56,7 +56,7 @@
             <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="candidate.id">
               <template v-slot:act>
                 <div class="d-flex flex-row">
-                  <v-img :src="candidate.photoLink" max-width="22" max-height="22"></v-img>
+                  <v-img :src="candidate.status.photoLink" max-width="22" max-height="22"></v-img>
                   <svg-icon name="Arrow_Down"></svg-icon>
                 </div>
               </template>
