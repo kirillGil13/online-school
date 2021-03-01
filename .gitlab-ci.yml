@@ -1,32 +1,13 @@
-variables:
-  DOCKER_IMAGE_TEST: "node:12"
-
 stages:
-  - test-build
   - deploy
-
-test:
-  stage: test-build
-  image:
-    name: $DOCKER_IMAGE_TEST
-    entrypoint: [""]
-  variables:
-    APP_ENV: prod
-  before_script:
-    - yarn global add @vue/cli @vue/cli-service
-    - yarn
-  script:
-    - yarn run build
-  tags:
-    - test
-
 
 deploy:
   stage: deploy
   script:
     - cd /var/www/onelinks.frontend
     - git pull
-    - docker-compose -f docker-compose.prod.yml up -d --build
+    - yarn
+    - yarn run build
   only:
     - master
   tags:
