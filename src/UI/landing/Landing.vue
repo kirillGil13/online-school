@@ -45,8 +45,8 @@ import {AccessVideoStore} from '../../store/modules/AccessVideo';
 })
 export default class Landing extends Vue {
   activator = false;
-  activatorVideo = false;
   activatorMainVideo = false;
+  activatorVideo = false;
   destroy = true;
   secondaryVideoId = 1;
   accessForm: VideoAccessForm;
