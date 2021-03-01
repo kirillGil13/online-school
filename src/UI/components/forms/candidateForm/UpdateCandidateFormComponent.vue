@@ -105,6 +105,9 @@ export default class UpdateCandidateFormComponent extends Vue {
 
 <style lang="scss">
 .candidate_form {
+  h1 {
+    text-align: center;
+  }
   .select {
     border: 1px solid #f2f2f2 !important;
     padding: 4px !important;

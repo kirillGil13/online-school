@@ -10,7 +10,6 @@
         <div>Дата</div>
         <div></div>
       </div>
-      {{candidates[0].status.photoLink}}
       <div class="tr tbody" v-for="(candidate, index) in candidates" :key="index">
         <div>
           <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="candidate.id">
@@ -59,6 +58,14 @@
                   <v-img :src="candidate.status.photoLink" max-width="22" max-height="22"></v-img>
                   <svg-icon name="Arrow_Down"></svg-icon>
                 </div>
+              </template>
+              <template v-slot:action>
+                <v-list-item class="selection" @click="$emit('addStatus')">
+                  <v-list-item-icon>
+                    <svg-icon name="Add_Status"></svg-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title class="status_action">Добавить статус</v-list-item-title>
+                </v-list-item>
               </template>
             </Select>
             <div class="ml-3 name">{{ candidate.name }}</div>

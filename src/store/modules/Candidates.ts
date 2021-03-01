@@ -1,6 +1,6 @@
 import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import { ICandidate } from '@/entity/candidates';
+import {CandidateRequestType, ICandidate} from '@/entity/candidates';
 import {CandidateFormRequestType} from '@/form/candidate/candidateForm.types';
 
 @Module({
@@ -13,8 +13,35 @@ class CandidatesModule extends VuexModule {
     candidates: ICandidate[] = [];
 
     @MutationAction
-    async fetchAll(): Promise<{ candidates: ICandidate[] }> {
-        const candidates = await store.$repository.candidates.fetchAll();
+    async fetchAll(data?: CandidateRequestType): Promise<{ candidates: ICandidate[] }> {
+        const formData = new FormData();
+        if(data) {
+            if (data.statusId) {
+                formData.append('statusId', data.statusId.toString());
+            }
+            else formData.delete('statusId');
+            if (data.infoPackId) {
+                formData.append('infoPackId', data.infoPackId.toString());
+            }
+            else formData.delete('infoPackId');
+            if (data.isFiction) {
+                formData.append('isFiction', data.isFiction.toString());
+            }
+            else formData.delete('isFiction');
+            if (data.limit) {
+                formData.append('limit', data.limit.toString());
+            }
+            else formData.delete('limit');
+            if (data.search) {
+                formData.append('search', data.search);
+            }
+            else formData.delete('search');
+            if (data.skip) {
+                formData.append('skip', data.skip.toString());
+            }
+            else formData.delete('skip');
+        }
+        const candidates = await store.$repository.candidates.fetchAll(formData);
         return { candidates };
     }
 

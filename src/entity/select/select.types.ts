@@ -4,3 +4,7 @@ export interface ISelect {
     photoLink?: string;
     extraAction?: boolean;
 }
+export interface ISelectList {
+    text: string;
+    value: number | null;
+}

@@ -1,7 +1,7 @@
 <template>
   <v-col class="infoPackageItem" v-if="infoPackageItemLoaded">
     <div class="main-video-wrapper">
-      <InfoPackageItemVideoComponent class="main-video" :info-package-item-video="infoPackageItem.mainVideo" @open="activatorMainVideo = true"/>
+      <InfoPackageItemVideoComponent :class="['main-video', isMobile ? 'mobile' : '']" :info-package-item-video="infoPackageItem.mainVideo" @open="activatorMainVideo = true"/>
     </div>
     <div class="videos" v-if="infoPackageItemLoaded">
       <InfoPackageItemVideoComponent :class="['secondary-video', isMobile ? 'mobile' : '']" v-for="(item, index) in infoPackageItem.videos" :key="index"

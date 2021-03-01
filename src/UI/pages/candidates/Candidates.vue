@@ -34,15 +34,15 @@
 <!--          <template v-slot:link>Посмотреть</template>-->
 <!--        </Badge>-->
 <!--      </v-row>-->
-      <v-row no-gutters>
-        <span class="desc mt-2">Данные за последние 30 дней</span>
-      </v-row>
+<!--      <v-row no-gutters>-->
+<!--        <span class="desc mt-2">Данные за последние 30 дней</span>-->
+<!--      </v-row>-->
       <v-row>
         <v-col class="mt-6">
-          <FilterComponent :isOnRight="false" :button="true" :search="true" :filter="filters.candidates"
-                           :defaultName="filters.defaultCandidate">
+          <FilterComponent :isOnRight="false" :button="true" :search="true" :filterItem="filtersCandidates"
+                           :filters="filters" @filter="onFilter">
             <template v-slot:search>
-              <Search/>
+              <Search @search="search"/>
             </template>
             <template v-slot:button>
               <Button @submit="activator = true">Добавить кандидата</Button>
@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import Header from '@/UI/components/common/Header.vue';
 import Search from '@/UI/components/common/Search.vue';
 import TableCandidates from '@/UI/components/tables/TableCandidates.vue';
@@ -105,6 +105,8 @@ import {CandidateItemStore} from '../../../store/modules/CandidateItem';
 import UpdateCandidateFormComponent from '../../components/forms/candidateForm/UpdateCandidateFormComponent.vue';
 import {ICandidateItem} from '../../../entity/candidateItem/candidateItem.types';
 import {UpdateCandidateForm} from '../../../form/updateCandidate/updateCandidateForm';
+import {IFilters} from '../../../entity/filters/filters.types';
+import {FiltersStore} from '../../../store/modules/Filters';
 
 @Component({
   components: {
@@ -130,13 +132,79 @@ export default class Candidates extends Vue {
   statusForm: StatusForm;
   destroy = true;
   route = RouterNameEnum;
+  searchBody = '';
 
   constructor() {
     super();
     this.candidateForm = new CandidateForm();
     this.statusForm = new StatusForm();
     this.updateCandidateForm = new UpdateCandidateForm();
-    this.filters = new Filters();
+    this.filters = new Filters(this.filtersCandidates);
+  }
+
+  @Watch('statusesLoaded', {immediate: true})
+  onFilterStatusChange(): void {
+    for (let i = 0; i < this.statuses.length; i++) {
+      this.filtersCandidates[0].filterValue.push({text: this.statuses[i].name, value: this.statuses[i].id});
+    }
+  }
+
+  @Watch('infoPackagesLoaded', {immediate: true})
+  onFilterInfoPackagesChange(): void {
+    for (let i = 0; i < this.infoPackages.length; i++) {
+      this.filtersCandidates[2].filterValue.push({text: this.infoPackages[i].name, value: this.infoPackages[i].id});
+    }
+  }
+
+  get user(): IUser {
+    return AuthStore.user;
+  }
+
+  get candidates(): ICandidate[] {
+    return CandidatesStore.candidates;
+  }
+
+  get candidateItem(): ICandidateItem | null {
+    return CandidateItemStore.candidateItem;
+  }
+
+  get selectsActions(): ISelect[] {
+    const data = SelectsStore.selectsActions;
+    data[0].id = 5;
+    data[data.length - 1].id = 4;
+    return data;
+  }
+
+  get statuses(): IStatuses[] {
+    return StatusesStore.statuses;
+  }
+
+  get statusesLoaded(): boolean {
+    return StatusesStore.statusesLoaded;
+  }
+
+  get infoPackages(): IInfoPackage[] {
+    return InfoPackagesStore.infoPackages;
+  }
+
+  get infoPackagesLoaded(): boolean {
+    return InfoPackagesStore.infoPackagesLoaded;
+  }
+
+  get statusIcons(): IStatusIcons[] {
+    return StatusIconsStore.statusIcons;
+  }
+
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
+  }
+
+  get filtersCandidates(): IFilters[] {
+    return FiltersStore.candidates;
+  }
+
+  async onFilter(): Promise<void> {
+    await CandidatesStore.fetchAll({statusId: [this.filters.default[0]], infoPackId: this.filters.default[2], search: this.searchBody});
   }
 
   activatorChange(act: boolean): void {
@@ -157,6 +225,7 @@ export default class Candidates extends Vue {
   close(): void {
     this.activator = false;
     this.activatorStatus = false;
+    this.activatorCandidate = false;
   }
 
   rerender(): void {
@@ -164,6 +233,11 @@ export default class Candidates extends Vue {
     this.$nextTick(() => {
       this.destroy = true;
     });
+  }
+
+  async search(searchBody: string): Promise<void> {
+    this.searchBody = searchBody;
+    await CandidatesStore.fetchAll({statusId: [this.filters.default[0]], infoPackId: this.filters.default[2], search: this.searchBody});
   }
 
   async openUpdate(id: number): Promise<void> {
@@ -203,49 +277,6 @@ export default class Candidates extends Vue {
     this.updateCandidateForm = new UpdateCandidateForm();
     this.rerender();
     this.activatorCandidate = false;
-  }
-
-  get user(): IUser {
-    return AuthStore.user;
-  }
-
-  get candidates(): ICandidate[] {
-    return CandidatesStore.candidates;
-  }
-
-  get candidateItem(): ICandidateItem | null {
-    return CandidateItemStore.candidateItem;
-  }
-
-  get selectsActions(): ISelect[] {
-    const data = SelectsStore.selectsActions;
-    data[0].id = 5;
-    data[data.length - 1].id = 4;
-    return SelectsStore.selectsActions;
-  }
-
-  get statuses(): IStatuses[] {
-    return StatusesStore.statuses;
-  }
-
-  get statusesLoaded(): boolean {
-    return StatusesStore.statusesLoaded;
-  }
-
-  get infoPackages(): IInfoPackage[] {
-    return InfoPackagesStore.infoPackages;
-  }
-
-  get infoPackagesLoaded(): boolean {
-    return InfoPackagesStore.infoPackagesLoaded;
-  }
-
-  get statusIcons(): IStatusIcons[] {
-    return StatusIconsStore.statusIcons;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 
   async created(): Promise<void> {

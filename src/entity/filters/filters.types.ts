@@ -1,6 +1,8 @@
+import {ISelectList} from '@/entity/select/select.types';
+
 export interface IFilters {
     id: number;
-    filter: string[];
+    filterValue: ISelectList[];
     filterType: string;
 }
 export enum FiltersNameEnum{
