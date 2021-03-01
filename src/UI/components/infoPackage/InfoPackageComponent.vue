@@ -1,5 +1,5 @@
 <template>
-  <div class="course-block">
+  <div :class="['course-block', isMobile ? 'course-mobile' : '']">
     <div class="course-video-block" @click="$emit('proceed', infoPackage.id)" :style="{ backgroundImage: 'url(' + infoPackage.coverLink + ')' }">
       <div class="course-info progress">
         <div class="text">
@@ -21,10 +21,15 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator'
 import {IInfoPackage} from '../../../entity/infoPackages/infoPackage.types';
+import {AdaptiveStore} from '../../../store/modules/Adaptive';
 
 @Component
 export default class InfoPackageComponent extends Vue {
   @Prop() readonly infoPackage!: IInfoPackage;
+
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
+  }
 }
 </script>
 <style lang="scss">

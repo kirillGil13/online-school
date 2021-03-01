@@ -4,7 +4,7 @@
       <InfoPackageItemVideoComponent class="main-video" :info-package-item-video="infoPackageItem.mainVideo" @open="activatorMainVideo = true"/>
     </div>
     <div class="videos" v-if="infoPackageItemLoaded">
-      <InfoPackageItemVideoComponent v-for="(item, index) in infoPackageItem.videos" :key="index"
+      <InfoPackageItemVideoComponent :class="['secondary-video', isMobile ? 'mobile' : '']" v-for="(item, index) in infoPackageItem.videos" :key="index"
                                      :info-package-item-video="item" @open="open"/>
     </div>
     <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
@@ -15,14 +15,14 @@
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorMainVideo" @activatorChange="activatorMainVideoChange">
       <template v-slot:content>
         <iframe id="ytplayer1" width="100%" height="340"
-                :src="infoPackageItem.mainVideo.videoLink"
+                :src="infoPackageItemLoaded ? infoPackageItem.mainVideo.videoLink : ''"
                 frameborder="0"/>
       </template>
     </Modal>
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorVideo" @activatorChange="activatorVideoChange">
       <template v-slot:content>
         <iframe id="ytplayer2" type="text/html" width="100%" height="340"
-                :src="infoPackageItem.videos.find(item => item.id === secondaryVideoId).videoLink"
+                :src="infoPackageItemLoaded ? infoPackageItem.videos.find(item => item.id === secondaryVideoId).videoLink : ''"
                 frameborder="0"/>
       </template>
     </Modal>
@@ -39,6 +39,7 @@ import {VideoAccessForm} from '../../form/videoAccess/videoAccessForm';
 import Modal from '../components/common/Modal.vue';
 import VideoAccessFormComponent from '../components/forms/videoAccessForm/VideoAccessFormComponent.vue';
 import {AccessVideoStore} from '../../store/modules/AccessVideo';
+import {AdaptiveStore} from '../../store/modules/Adaptive';
 
 @Component({
   components: {VideoAccessFormComponent, Modal, InfoPackageItemVideoComponent, CourseComponent}
@@ -93,6 +94,10 @@ export default class Landing extends Vue {
     return InfoPackagesStore.infoPackageItem!;
   }
 
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
+  }
+
   get infoPackageItemLoaded(): boolean {
     return InfoPackagesStore.infoPackageItemLoaded;
   }
@@ -109,9 +114,16 @@ export default class Landing extends Vue {
     display: flex;
     justify-content: center;
     .main-video {
-      width: 80% !important;
+      margin-right: 0;
+      width: 80%;
         .course-video-block {
-          height: 425px !important;
+          height: 425px;
+      }
+      &.mobile {
+        width: 100%;
+        .course-video-block {
+          height: 225px !important;
+        }
       }
       .course-title {
         font-size: 36px !important;
@@ -123,6 +135,16 @@ export default class Landing extends Vue {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    flex-wrap: wrap;
+    .secondary-video {
+      &.mobile {
+        margin-right: 0;
+        width: 100%;
+        .course-video-block {
+          height: 225px !important;
+        }
+      }
+    }
   }
 }
 </style>

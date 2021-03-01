@@ -10,6 +10,7 @@
         <div>Дата</div>
         <div></div>
       </div>
+      {{candidates[0].status.photoLink}}
       <div class="tr tbody" v-for="(candidate, index) in candidates" :key="index">
         <div>
           <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="candidate.id">
