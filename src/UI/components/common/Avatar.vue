@@ -2,7 +2,7 @@
     <div>
         <div class="avatar-wrapper">
             <v-avatar color="#F0F2F6" rounded tile :size="size">
-              <template v-slot:default v-if="false">
+              <template v-slot:default v-if="imageSource">
                 <v-img
                     :src="imageSource"
                     alt="Avatar"

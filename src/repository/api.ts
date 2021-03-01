@@ -13,6 +13,10 @@ const Api = {
 
     patch(url: string, data?: RequestType, config?: AxiosRequestConfig): AxiosPromise {
         return Vue.axios.patch(url, data, config);
+    },
+
+    postFile(fileURL: {url: string; baseURL: string}, data?: any): AxiosPromise {
+        return Vue.axios({url: fileURL.url, baseURL: fileURL.baseURL, method: 'POST', data: data});
     }
 };
 

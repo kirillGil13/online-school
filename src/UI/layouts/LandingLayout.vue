@@ -1,16 +1,28 @@
 <template>
-  <div class="content landing">
-    <div class="pa-6 landing__wrapper">
-      <router-view />
+  <v-app>
+    <div class="content landing">
+      <div class="landing__wrapper">
+        <router-view />
+      </div>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
+import {AdaptiveStore} from '../../store/modules/Adaptive';
 
 @Component
-export default class LandingLayout extends Vue {}
+export default class LandingLayout extends Vue {
+  @Watch('$vuetify.breakpoint.name')
+  onBreakpointChange(): void {
+    AdaptiveStore.resolveAdaptive(this.$vuetify.breakpoint.name);
+  }
+
+  created(): void {
+    AdaptiveStore.resolveAdaptive(this.$vuetify.breakpoint.name);
+  }
+}
 </script>
 
 <style lang="scss">

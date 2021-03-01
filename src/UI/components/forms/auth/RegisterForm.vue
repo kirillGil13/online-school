@@ -1,9 +1,9 @@
 <template>
   <v-form class="form mt-8" @submit.prevent enctype="multipart/form-data">
     <div class="d-flex align-center flex-column">
-      <v-avatar v-model="form.photoLink" width="100" height="100" color="#F0F2F6">
-        <template v-slot:default v-if="form.photoLink">
-          <v-img :src="form.photoLink" aspect-ratio="1"></v-img>
+      <v-avatar width="100" height="100" color="#F0F2F6">
+        <template v-slot:default v-if="link">
+          <v-img :src="link" aspect-ratio="1"></v-img>
         </template>
         <template v-slot:default v-else>
           <svg-icon class="avatar-icon" name="Camera"></svg-icon>
@@ -13,7 +13,7 @@
         <FormGroup :form="form" field="file">
           <template v-slot:default>
             <label class="upload-label" for="upload">Фото профиля</label>
-            <input type="file" accept="image/*" id="upload" @change="handleImage($event)">
+            <input type="file" accept="image/*" id="upload" @change="$emit('handleImage', $event)">
           </template>
         </FormGroup>
       </div>
@@ -114,7 +114,6 @@ import Button from '../../common/Button.vue';
 import {RegisterForm} from '../../../../form/register/RegisterForm';
 import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
-
 @Component({
   components: {
     FormGroup,
@@ -124,19 +123,7 @@ import PhoneMaskInput from 'vue-phone-mask-input';
 })
 export default class RegisterFormVue extends Vue {
   @Prop() readonly form!: RegisterForm;
-
-  handleImage(e: any): void {
-    const selectedImage = e.target.files[0];
-    this.createBase64Image(selectedImage);
-  }
-  createBase64Image(fileObject: Blob): void {
-    const reader = new FileReader();
-
-    reader.onload = (e: any): void => {
-      this.form.photoLink = e.target.result;
-    }
-    reader.readAsDataURL(fileObject);
-  }
+  @Prop({default: ''}) readonly link!: string;
 }
 </script>
 <style lang="scss">

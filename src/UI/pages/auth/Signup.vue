@@ -5,7 +5,7 @@
       <PhoneFormVue v-if="!codeStep" :form="phoneForm" @submitPhone="submitPhone"/>
       <CodeFormVue v-else :form="codeForm" @submitCode="submitCode"/>
     </template>
-    <RegisterFormVue v-else :form="registerForm" @submit="submitRegister"/>
+    <RegisterFormVue v-else :form="registerForm" :link="pictureLoaded ? picture.fullLink : ''" @handleImage="handleImage" @submit="submitRegister"/>
   </div>
 </template>
 <script lang="ts">
@@ -23,6 +23,8 @@ import RegisterFormVue from '../../components/forms/auth/RegisterForm.vue';
 import {RegisterForm} from '../../../form/register/RegisterForm';
 import PhoneFormVue from '../../components/forms/auth/PhoneForm.vue';
 import {PhoneForm} from '../../../form/phone/phoneForm';
+import {ProfilePictureStore} from '../../../store/modules/ProfilePicture';
+import {IProfilePicture} from '../../../entity/common/profilePicture.types';
 
 @Component({
   components: {
@@ -43,6 +45,19 @@ export default class Signup extends Vue {
   registerForm = new RegisterForm();
   codeStep = false;
   registerStep = false;
+
+  get picture(): IProfilePicture | null {
+    return ProfilePictureStore.profilePicture;
+  }
+
+  get pictureLoaded(): boolean {
+    return ProfilePictureStore.profilePictureLoaded;
+  }
+
+  async handleImage(e: any): Promise<void> {
+    const selectedImage = e.target.files[0];
+    await ProfilePictureStore.set({file: selectedImage});
+  }
 
   async submitPhone(): Promise<boolean> {
     const res = await this.phoneForm.submit(AuthStore.sendCode);
@@ -68,6 +83,9 @@ export default class Signup extends Vue {
   }
 
  async submitRegister(): Promise<boolean> {
+    if (this.picture !== null) {
+      this.registerForm.photoLink = this.picture!.shortLink;
+    }
     if (await this.registerForm.submit(AuthStore.register)) {
       return true;
     } else return false;
