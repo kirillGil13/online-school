@@ -16,9 +16,14 @@
               <avatar
                   :size="!isMobile ? 143 : 70"
                   :imageSource="user.photoLink"
+                  :link="pictureLoaded ? picture.fullLink : ''"
                   :starSize="AvatarSizeEnum.MEDIUM"
                   :avatar-size="AvatarSizeEnum.MEDIUM"
-              />
+              >
+                <template v-slot:inputFile>
+                  <input class="input-file" type="file" accept="image/*" id="upload" @change="pickPhoto($event)">
+                </template>
+              </avatar>
               <div class="badges">
                 <Badge :subs="user.activeSubscription">
                   <template v-slot:title>Подписка</template>
@@ -113,6 +118,8 @@ import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactD
 import ProfileEditForm from '@/form/profile/profileEditForm';
 import Alert from '@/UI/components/common/Alert.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
+import {ProfilePictureStore} from '../../../store/modules/ProfilePicture';
+import {IProfilePicture} from '../../../entity/common/profilePicture.types';
 
 @Component({
   components: {
@@ -169,6 +176,19 @@ export default class Profile extends Vue {
     if (resp) {
       this.changeAlert(true, true);
     } else this.changeAlert(true, false);
+  }
+
+  async pickPhoto(e: any): Promise<void> {
+    const selectedImage = e.target.files[0];
+    await ProfilePictureStore.set({file: selectedImage});
+  }
+
+  get picture(): IProfilePicture | null {
+    return ProfilePictureStore.profilePicture;
+  }
+
+  get pictureLoaded(): boolean {
+    return ProfilePictureStore.profilePictureLoaded;
   }
 
 

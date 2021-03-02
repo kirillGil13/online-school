@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="avatar-wrapper">
+          <slot name="inputFile"></slot>
             <v-avatar color="#F0F2F6" rounded tile :size="size">
               <template v-slot:default v-if="imageSource">
                 <v-img
@@ -32,6 +33,7 @@ export default class Avatar extends Vue {
     @Prop({ required: false, default: false }) readonly smallStar!: boolean;
     @Prop({ required: false, default: false }) readonly mediumStar!: boolean;
     @Prop({ required: false, default: AvatarSizeEnum.NONE })
+    @Prop() readonly link!: string;
     readonly starSize!: AvatarSizeEnum;
     @Prop({ default: AvatarSizeEnum.SMALL }) readonly avatarSize!: AvatarSizeEnum;
     sizes = AvatarSizeEnum;
@@ -101,6 +103,13 @@ export default class Avatar extends Vue {
       border-radius: 12px !important;
       border: 1px solid rgba(0, 0, 0, 0.04);
     }
+  .input-file {
+    z-index: 99999999 !important;
+    cursor: pointer;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
 }
 .medium-size-icon {
   width: 36px !important;

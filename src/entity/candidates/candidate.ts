@@ -9,6 +9,7 @@ export class Candidate implements ICandidate {
     email: string;
     isFiction: boolean;
     infoPackName: string;
+    callTime: string;
 
     constructor(data: CandidateResponseType) {
         this.id = data.id;
@@ -19,10 +20,13 @@ export class Candidate implements ICandidate {
         this.status = data.status;
         this.isFiction = data.isFiction;
         this.infoPackName = data.infoPackName;
+        this.callTime = this.getTime(data.callTime);
     }
 
-    getTime(createdAt: number): string {
-        const date = new Date(createdAt * 1000)
-        return date.toLocaleString().slice(0,5) + date.toLocaleString().slice(10,17)
+    getTime(seconds: number): string {
+        if (seconds) {
+            const date = new Date(seconds * 1000)
+            return date.toLocaleString().slice(0,5) + date.toLocaleString().slice(10,17);
+        } else return '';
     }
 }

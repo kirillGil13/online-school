@@ -20,17 +20,12 @@ export class VideoAccessForm extends Form {
     @Validate(required, 'Введите имя')
     public name = '';
 
-    @Validate(required, 'Введите email')
-    @Validate(email, 'Введите корректный email')
-    public email = '';
-
     public serverErrors: { [key: string]: string[] } = {};
 
     getFormData(): VideoAccessFormRequestType {
         return {
             phoneNumber: this.phone,
             name: this.name,
-            email: this.email,
             account_id: this.accountId,
             status_id: this.statusId,
             is_fiction: this.isFiction,

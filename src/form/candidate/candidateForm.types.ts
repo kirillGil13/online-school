@@ -2,8 +2,9 @@ import { RequestType } from '@/form/form.types';
 
 export type CandidateFormRequestType = RequestType & {
     name: string;
-    phoneNumber: string;
+    phoneNumber?: string;
     email?: string;
+    callTime?: number;
     is_fiction: boolean;
     status_id: number;
     account_id: number;

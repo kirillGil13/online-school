@@ -13,17 +13,18 @@
           @input="attrs.change"
       >
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" show-custom-error label="Номер телефона">
+    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
       <PhoneMaskInput
           v-model="form.phone"
           v-bind="attrs"
-          autoDetectCountry
           flagSize="normal"
           inputClass="input"
           showFlag
+          autoDetectCountry
           wrapperClass="wrapper"
           ref="phoneMaskInput"
-          @input="attrs.change"
+          @onValidate="(e) => {if (form.phone.length > 2) form.phoneValid = e.isValidByLibPhoneNumberJs; else form.phoneValid = true}"
+          @input="changePhone"
       />
     </FormGroup>
     <FormGroup
@@ -70,44 +71,65 @@
       >
       </v-select>
     </FormGroup>
+    <FormGroup v-if="activatorDate"
+        class="mt-4 date-time-wrapper" :form="form" field="callTimeFake" label="Укажите время звонка" v-slot="attrs"
+    >
+      <datetime :phrases="{ok: 'Далее', cancel: 'Закрыть'}" class="date-time input input__normal" type="datetime"
+                v-model="form[attrs.name]" v-bind="attrs"/>
+      <svg-icon @click="clear" class="delete_content" name="Close"></svg-icon>
+    </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
       <Button class="secondary_blue mr-3" @submit="$emit('close')">Отмена</Button>
       <Button :disabled="form.disabled" @submit="$emit('add')">Добавить кандидата</Button>
     </div>
-    <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
+    <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div>
   </v-col>
 
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import {CandidateForm} from '../../../../form/candidate/candidateForm';
 import Button from '../../common/Button.vue';
 import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {IStatuses} from '../../../../entity/statuses/statuses.types';
 import {IInfoPackage} from '../../../../entity/infoPackages/infoPackage.types';
+import Modal from '../../common/Modal.vue';
+import {Datetime} from 'vue-datetime';
 
 @Component({
-  components: {FormGroup, Button, PhoneMaskInput}
+  components: {Modal, FormGroup, Button, PhoneMaskInput, Datetime}
 })
 export default class CandidateFormComponent extends Vue {
   @Prop() readonly form!: CandidateForm;
   @Prop() readonly statuses!: IStatuses[];
   @Prop() readonly infoPacks!: IInfoPackage[];
   @Prop() readonly accountId!: number;
+  activatorDate = false;
 
   constructor() {
     super();
     this.form.setFormData(this.statuses, this.infoPacks, this.accountId);
   }
 
+  @Watch('form.status', {immediate: true})
+  onStatusChange(): void {
+    if (this.form.status === 3) {
+      this.activatorDate = true;
+    } else this.activatorDate = false;
+  }
+
   changePhone(): void {
     if (this.form.phoneMask) {
       this.form.$v['phoneValid'].$touch();
+      this.form.$v['phone'].$touch();
     }
     //@ts-ignore
     this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
+  }
+  clear(): void {
+    this.form.callTimeFake = '';
   }
 }
 </script>
@@ -131,7 +153,21 @@ export default class CandidateFormComponent extends Vue {
   button {
     width: 50%;
   }
+  .date-time-wrapper {
+    position: relative;
+    .date-time {
+      border: 1px solid #F2F2F2;
+      position: relative;
+    }
+    .delete_content {
+      position: absolute;
+      cursor: pointer;
+      right: 10px;
+      bottom: 15px;
+      width: 20px !important;
+      height: 20px !important;
+    }
+  }
 }
-
 
 </style>

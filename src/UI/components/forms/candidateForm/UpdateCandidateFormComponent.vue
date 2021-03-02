@@ -23,7 +23,7 @@
           showFlag
           wrapperClass="wrapper"
           ref="phoneMaskInput"
-          @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
+          @onValidate="(e) => {if (form.phone.length > 2) form.phoneValid = e.isValidByLibPhoneNumberJs; else form.phoneValid = true}"
           @input="changePhone"
       />
     </FormGroup>
@@ -34,7 +34,7 @@
           class="input input__normal"
           type="email" name="email"
           id="email"
-          v-model="form[attrs.name]"
+          v-model="form.email"
           v-bind="attrs"
           @input="attrs.change"
       >
@@ -96,6 +96,7 @@ export default class UpdateCandidateFormComponent extends Vue {
   changePhone(): void {
     if (this.form.phoneMask) {
       this.form.$v['phoneValid'].$touch();
+      this.form.$v['phone'].$touch();
     }
     //@ts-ignore
     this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;

@@ -3,7 +3,7 @@ import {ISelectList} from '@/entity/select/select.types';
 
 export type UpdateCandidateFormRequestType = RequestType & {
     name: string;
-    phoneNumber: string;
+    phoneNumber?: string;
     email?: string;
     is_fiction: boolean;
     status_id: number;

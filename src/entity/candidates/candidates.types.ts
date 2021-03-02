@@ -2,6 +2,7 @@
 export interface ICandidate {
     id: number;
     createdAt: string;
+    callTime: string;
     status: ICandidateStatus;
     name: string;
     phoneNumber: string;
@@ -19,6 +20,7 @@ export type CandidateResponseType = {
     created_at: number;
     status: CandidateStatusResponseType;
     name: string;
+    callTime: number;
     phoneNumber: string;
     email: string;
     isFiction: boolean;

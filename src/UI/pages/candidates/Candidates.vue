@@ -56,7 +56,7 @@
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
       </v-col>
     </v-row>
-    <Modal :activator="activator" @activatorChange="activatorChange">
+    <Modal v-if="statusesLoaded && infoPackagesLoaded" :activator="activator" @activatorChange="activatorChange">
       <template v-slot:content>
         <CandidateFormComponent :form="candidateForm" v-if="destroy" :statuses="statuses" :info-packs="infoPackages"
                                 :account-id="user.id" @close="close" @add="add"/>
@@ -72,6 +72,12 @@
       <template v-slot:content>
         <UpdateCandidateFormComponent :form="updateCandidateForm" v-if="destroy" :account-id="user.id" @close="close"
                                       @update="update"/>
+      </template>
+    </Modal>
+    <Modal :activator="activatorCallTime" @activatorChange="activatorChangeCallTime">
+      <template v-slot:content>
+        <CallTimeFormComponent :form="callTimeForm" v-if="destroy" @close="close" :candidate="candidates.find(item => item.id === candidateId)"
+                                      @save="saveCallTime"/>
       </template>
     </Modal>
   </v-col>
@@ -111,9 +117,12 @@ import {ICandidateItem} from '../../../entity/candidateItem/candidateItem.types'
 import {UpdateCandidateForm} from '../../../form/updateCandidate/updateCandidateForm';
 import {IFilters} from '../../../entity/filters/filters.types';
 import {FiltersStore} from '../../../store/modules/Filters';
+import {CallTimeForm} from '../../../form/callTime/callTimeForm';
+import CallTimeFormComponent from '../../components/forms/callTimeForm/CallTimeFormComponent.vue';
 
 @Component({
   components: {
+    CallTimeFormComponent,
     UpdateCandidateFormComponent,
     StatusFormComponent,
     CandidateFormComponent,
@@ -131,11 +140,14 @@ export default class Candidates extends Vue {
   activator = false;
   activatorStatus = false;
   activatorCandidate = false;
+  activatorCallTime = false;
   candidateForm: CandidateForm;
   updateCandidateForm: UpdateCandidateForm;
   statusForm: StatusForm;
+  callTimeForm: CallTimeForm;
   destroy = true;
   route = RouterNameEnum;
+  candidateId = 0;
   searchBody = '';
 
   constructor() {
@@ -143,6 +155,7 @@ export default class Candidates extends Vue {
     this.candidateForm = new CandidateForm();
     this.statusForm = new StatusForm();
     this.updateCandidateForm = new UpdateCandidateForm();
+    this.callTimeForm = new CallTimeForm();
     this.filters = new Filters(this.filtersCandidates);
   }
 
@@ -222,10 +235,16 @@ export default class Candidates extends Vue {
     this.activatorCandidate = act;
   }
 
+  activatorChangeCallTime(act: boolean): void {
+    this.destroy = true;
+    this.activatorCallTime = act;
+  }
+
   close(): void {
     this.activator = false;
     this.activatorStatus = false;
     this.activatorCandidate = false;
+    this.activatorCallTime = false;
   }
 
   rerender(): void {
@@ -260,6 +279,16 @@ export default class Candidates extends Vue {
   }
 
   async selectStatus(data: { statusId: number; id: number }): Promise<void> {
+    this.candidateId = data.id
+    if (data.statusId !== 3) {
+      await this.setStatus(data);
+    } else {
+      await this.setStatus(data);
+      this.activatorCallTime = true;
+    }
+  }
+
+  async setStatus(data: { statusId: number; id: number }): Promise<void> {
     if (await StatusesStore.set({status: {status_id: data.statusId}, candidateId: data.id.toString()})) {// eslint-disable-line
       await this.fetchData();
     }
@@ -275,6 +304,9 @@ export default class Candidates extends Vue {
   }
 
   async add(): Promise<void> {
+    const date = new Date(this.candidateForm.callTimeFake);
+    const seconds = date.getTime() / 1000;
+    this.candidateForm.callTime = seconds;
     if (await this.candidateForm.submit(CandidatesStore.create)) {
       await this.fetchData();
     }
@@ -290,6 +322,18 @@ export default class Candidates extends Vue {
     this.updateCandidateForm = new UpdateCandidateForm();
     this.rerender();
     this.activatorCandidate = false;
+  }
+
+  async saveCallTime(): Promise<void> {
+    const date = new Date(this.callTimeForm.callTimeFake);
+    const seconds = date.getTime() / 1000;
+    this.callTimeForm.callTime = seconds;
+    if (await this.callTimeForm.submit(CandidateItemStore.setCallTime, this.candidateId.toString())) {
+      await this.fetchData();
+    }
+    this.callTimeForm = new CallTimeForm();
+    this.rerender();
+    this.activatorCallTime = false;
   }
 
   async created(): Promise<void> {
