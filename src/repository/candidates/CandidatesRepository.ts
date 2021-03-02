@@ -1,16 +1,13 @@
 import Api from '@/repository/api';
 import { ICandidatesRepository } from '@/repository/candidates';
-import { Candidate, CandidateResponseType, ICandidate } from '@/entity/candidates';
+import {Candidate, CandidateResponseType, ICandidate} from '@/entity/candidates';
 import {CandidateFormRequestType} from '@/form/candidate/candidateForm.types';
 
 export class CandidatesRepository implements ICandidatesRepository {
-    async fetchAll(): Promise<ICandidate[]> {
-        const response = await Api.get('/candidates');
-        const respData = response.data as CandidateResponseType[];
-        return respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
-    }
-    async fetchFilteredData(data?: FormData): Promise<ICandidate[]> {
-        const response = await Api.getData({url: '/candidates', baseURL: process.env.VUE_APP_API_URL!}, data);
+    async fetchAll(data?: FormData): Promise<ICandidate[]> {
+        const response = await Api.get('/candidates', {params: data, paramsSerializer: function paramsSerializer(params) {
+                return new URLSearchParams(params).toString()
+            }});
         const respData = response.data as CandidateResponseType[];
         return respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
     }
