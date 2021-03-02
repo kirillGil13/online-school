@@ -19,12 +19,12 @@ const Api = {
         return Vue.axios({url: fileURL.url, baseURL: fileURL.baseURL, method: 'POST', data: data});
     },
 
-    getData(url: string, data?: any): AxiosPromise {
+    getData(fileURL: { url: string; baseURL: string }, data?: any): AxiosPromise {
         const formData = [...data.entries()];
         const asString = formData
             .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
             .join('&');
-        return Vue.axios.get(`${url}/?${asString}`);
+        return Vue.axios({url: `${fileURL.url}/?${asString}`, baseURL: fileURL.baseURL, method: 'GET'});
     }
 };
 

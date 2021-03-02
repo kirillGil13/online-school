@@ -10,7 +10,7 @@ export class CandidatesRepository implements ICandidatesRepository {
         return respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
     }
     async fetchFilteredData(data?: FormData): Promise<ICandidate[]> {
-        const response = await Api.getData('/candidates', data);
+        const response = await Api.getData({url: '/candidates', baseURL: process.env.VUE_APP_URL!}, data);
         const respData = response.data as CandidateResponseType[];
         return respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
     }
