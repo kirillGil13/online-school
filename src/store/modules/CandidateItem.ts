@@ -2,6 +2,7 @@ import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module
 import store from '@/store';
 import {ICandidateItem} from '@/entity/candidateItem/candidateItem.types';
 import {UpdateCandidateFormRequestType} from '@/form/updateCandidate/updateCandiadteForm.types';
+import {CallTimeFormRequestType} from '@/form/callTime/callTimeForm.types';
 
 @Module({
     namespaced: true,
@@ -21,6 +22,12 @@ class CandidateItemModule extends VuexModule {
     @Action({rawError: true})
     async update(data: {data: UpdateCandidateFormRequestType; route: string}): Promise<ICandidateItem> {
         const response = await store.$repository.candidateItem.update(data.data, data.route);
+        return response;
+    }
+
+    @Action({rawError: true})
+    async setCallTime(data: {data: CallTimeFormRequestType; route: string}): Promise<ICandidateItem> {
+        const response = await store.$repository.candidateItem.setCallTime(data.data, data.route);
         return response;
     }
 }

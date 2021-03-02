@@ -2,6 +2,7 @@ import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module
 import store from '@/store';
 import {CandidateRequestType, ICandidate} from '@/entity/candidates';
 import {CandidateFormRequestType} from '@/form/candidate/candidateForm.types';
+import {CallTimeFormRequestType} from '@/form/callTime/callTimeForm.types';
 
 @Module({
     namespaced: true,
@@ -14,11 +15,9 @@ class CandidatesModule extends VuexModule {
 
     @MutationAction
     async fetchAll(data?: CandidateRequestType): Promise<{ candidates: ICandidate[] }> {
-        console.log(data);
         const formData = new FormData();
         if(data) {
             if (data.statusId) {
-                console.log(1);
                 formData.append('statusId', data.statusId.toString());
             }
             else formData.delete('statusId');

@@ -29,7 +29,10 @@
             </template>
           </Select>
         </div>
-        <div class="name">{{ candidate.name }}</div>
+        <div class="name">
+          {{ candidate.name }}
+          <div class="call-time" v-if="candidate.callTime">Позвонить {{candidate.callTime}}</div>
+        </div>
         <div class="link">{{ candidate.phoneNumber }}</div>
         <div class="email link">{{ candidate.email }}</div>
         <div class="product">{{candidate.infoPackName}}</div>
@@ -68,7 +71,10 @@
                 </v-list-item>
               </template>
             </Select>
-            <div class="ml-3 name">{{ candidate.name }}</div>
+            <div class="name">
+              {{ candidate.name }}
+              <div class="call-time" v-if="candidate.callTime">Позвонить {{candidate.callTime}}</div>
+            </div>
           </div>
           <div>
             <Select class-name="select_content action" :selects="selects" v-on="$listeners" :id="candidate.id">

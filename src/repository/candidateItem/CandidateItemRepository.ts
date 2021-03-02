@@ -3,6 +3,7 @@ import {ICandidateItemRepository} from '@/repository/candidateItem/CandidateItem
 import {CandidateItemResponseType, ICandidateItem} from '@/entity/candidateItem/candidateItem.types';
 import {CandidateItem} from '@/entity/candidateItem/candidateItem';
 import {UpdateCandidateFormRequestType} from '@/form/updateCandidate/updateCandiadteForm.types';
+import {CallTimeFormRequestType} from '@/form/callTime/callTimeForm.types';
 
 export class CandidateItemRepository implements ICandidateItemRepository {
     async fetchData(candidateId: string): Promise<ICandidateItem> {
@@ -11,6 +12,11 @@ export class CandidateItemRepository implements ICandidateItemRepository {
         return new CandidateItem(data);
     }
     async update(data: UpdateCandidateFormRequestType, candidateId: string): Promise<ICandidateItem> {
+        const response = await Api.patch(`/candidates/${candidateId}`, data);
+        const respData = response.data as CandidateItemResponseType;
+        return new CandidateItem(respData);
+    }
+    async setCallTime(data: CallTimeFormRequestType, candidateId: string): Promise<ICandidateItem> {
         const response = await Api.patch(`/candidates/${candidateId}`, data);
         const respData = response.data as CandidateItemResponseType;
         return new CandidateItem(respData);

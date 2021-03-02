@@ -27,18 +27,6 @@
           @input="changePhone"
       />
     </FormGroup>
-    <FormGroup
-        class="mt-4" v-slot="attrs" :form="form" field="email" show-custom-error label="Email"
-    >
-      <input
-          class="input input__normal"
-          type="email" name="email"
-          id="email"
-          v-model="form[attrs.name]"
-          v-bind="attrs"
-          @input="attrs.change"
-      >
-    </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
       <Button class="secondary_blue mr-3" @submit="$emit('close')">Отмена</Button>
       <Button :disabled="form.disabled" @submit="$emit('access')">Продолжить</Button>
