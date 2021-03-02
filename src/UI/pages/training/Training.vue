@@ -12,7 +12,7 @@
     <SliderLeaders :leaders="leaders"/>
     <v-row>
       <v-col class="py-0">
-        <FilterComponent :search="true" :is-on-right="true" :filter="filters.filters" :defaultName="filters.default">
+        <FilterComponent :search="true" :is-on-right="true" :filter="filtersTraining" :defaultName="filters.default">
           <template v-slot:search>
             <Search/>
           </template>
@@ -69,6 +69,8 @@ import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
 import CoursesListItem from '@/entity/courses/courses';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 import FilterComponent from '@/UI/components/filter/FilterComponent.vue';
+import {IFilters} from '../../../entity/filters/filters.types';
+import {FiltersStore} from '../../../store/modules/Filters';
 
 @Component({
   components: {
@@ -89,7 +91,7 @@ export default class Training extends Vue {
 
   constructor() {
     super();
-    this.filters = new Filters();
+    this.filters = new Filters(this.filtersTraining);
     for (let i = 0; i < this.leadersTest.length; i++) {
       this.leaders.push(new Leader(this.leadersTest[i]));
     }
@@ -120,6 +122,10 @@ export default class Training extends Vue {
 
   get leadersCoursesTest(): LeaderCoursesResponseType[] {
     return LeadersCoursesTestStore.leadersCourses;
+  }
+
+  get filtersTraining(): IFilters[] {
+    return FiltersStore.filters;
   }
 }
 </script>

@@ -2,8 +2,8 @@
   <v-col class="py-0">
     <v-row class="tab-controls d-flex flex-row flex-wrap">
       <div class="filter-tabs d-flex flex-row justify-center mt-2" :style="{order: isOnRight ? '2' : '1'}">
-        <v-col v-for="(item, index) in filterItem" id="select" :key="index" cols="auto"
-               :class="['pa-0 d-flex flex-column', index + 1 === filterItem.length && isMobile ? 'mr-0' : '']">
+        <v-col v-for="(item, index) in filters.filterBody" id="select" :key="index" cols="auto"
+               :class="['pa-0 d-flex flex-column', index + 1 === filters.filterBody.length && isMobile ? 'mr-0' : '']">
           <label :for="index">{{ item.filterType }}</label>
           <v-select
               :items="item.filterValue"
@@ -34,7 +34,6 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
-import {IFilters} from '../../../entity/filters/filters.types';
 import Filters from '../../../entity/filters/filters';
 
 @Component({
@@ -43,7 +42,6 @@ import Filters from '../../../entity/filters/filters';
 export default class FilterComponent extends Vue {
   @Prop() readonly search!: boolean;
   @Prop() readonly button!: boolean;
-  @Prop() readonly filterItem!: IFilters[];
   @Prop() readonly filters!: Filters;
   @Prop() readonly isOnRight: boolean | undefined;
   get isMobile(): boolean {

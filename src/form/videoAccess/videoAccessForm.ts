@@ -11,7 +11,7 @@ export class VideoAccessForm extends Form {
     public phoneMask = '';
     public accountId = 0;
     public statusId = 1;
-    public isFiction = false;
+    public isFiction = true;
     public infoPackId = 0;
 
     @Validate(sameAs(() => true), (form: VideoAccessForm): string => 'Введите номер в формате ' + form.phoneMask)

@@ -25,7 +25,7 @@
         </v-col>
         <v-col class="box-container mt-6">
           <Header class="top_bar_small" title="Курсы">
-            <FilterComponent :isOnRight="true" :filter="filters.filters" :defaultName="filters.default"/>
+            <FilterComponent :isOnRight="true" :filter="filters" :defaultName="filters.default"/>
           </Header>
           <div class="d-flex flex-wrap flex-row mt-6">
             <LeaderCourseItem
@@ -60,6 +60,8 @@ import Filters from '@/entity/filters/filters';
 import FilterComponent from '@/UI/components/filter/FilterComponent.vue';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
+import {IFilters} from '../../../entity/filters/filters.types';
+import {FiltersStore} from '../../../store/modules/Filters';
 
 @Component({
   components: {
@@ -77,7 +79,7 @@ export default class LeaderCoursePage extends Vue {
   filters: Filters;
   constructor() {
     super();
-    this.filters = new Filters();
+    this.filters = new Filters(this.filterTraining);
     this.leader = new Leader(this.leaderTest.filter(item => item.id.toString() === this.$route.params.id)[0]);
     for (let i = 0; i < this.leadersCoursesTest.length; i++) {
       this.leaderCourses.push(new CoursesListItem(this.leadersCoursesTest[i]));
@@ -91,6 +93,10 @@ export default class LeaderCoursePage extends Vue {
   }
   get isMobile(): boolean {
     return AdaptiveStore.isMobile;
+  }
+
+  get filterTraining(): IFilters[] {
+    return FiltersStore.filters;
   }
 }
 </script>

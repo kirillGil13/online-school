@@ -6,5 +6,6 @@ export interface ISelect {
 }
 export interface ISelectList {
     text: string;
-    value: number | null;
+    value: number;
+    isFiction?: boolean;
 }
