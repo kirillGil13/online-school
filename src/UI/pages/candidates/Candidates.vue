@@ -245,7 +245,7 @@ export default class Candidates extends Vue {
   }
 
   async filtration(): Promise<void> {
-    await CandidatesStore.fetchAll({
+    await CandidatesStore.fetchFilteredData({
       statusId: this.filters.default[0],
       infoPackId: this.filters.default[2],
       search: this.searchBody,
