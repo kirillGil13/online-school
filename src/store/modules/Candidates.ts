@@ -13,10 +13,12 @@ class CandidatesModule extends VuexModule {
     candidates: ICandidate[] = [];
 
     @MutationAction
-    async fetchFilteredData(data?: CandidateRequestType): Promise<{ candidates: ICandidate[] }> {
+    async fetchAll(data?: CandidateRequestType): Promise<{ candidates: ICandidate[] }> {
+        console.log(data);
         const formData = new FormData();
         if(data) {
             if (data.statusId) {
+                console.log(1);
                 formData.append('statusId', data.statusId.toString());
             }
             else formData.delete('statusId');
@@ -41,12 +43,7 @@ class CandidatesModule extends VuexModule {
             }
             else formData.delete('skip');
         }
-        const candidates = await store.$repository.candidates.fetchFilteredData(formData);
-        return { candidates };
-    }
-    @MutationAction
-    async fetchAll(): Promise<{ candidates: ICandidate[] }> {
-        const candidates = await store.$repository.candidates.fetchAll();
+        const candidates = await store.$repository.candidates.fetchAll(formData);
         return { candidates };
     }
 
