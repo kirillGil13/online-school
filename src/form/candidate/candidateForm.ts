@@ -2,7 +2,7 @@ import {Component} from 'vue-property-decorator';
 import {Form} from '@/form/form';
 import {CandidateFormRequestType, ICandidateForm, ICandidateFormList} from '@/form/candidate/candidateForm.types';
 import {Validate} from '@/plugins/Vuelidate/Decorators';
-import {required, sameAs, email} from 'vuelidate/lib/validators';
+import {required, sameAs, email, requiredIf} from 'vuelidate/lib/validators';
 import {IStatuses} from '@/entity/statuses/statuses.types';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 /* eslint-disable */
@@ -12,22 +12,24 @@ import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 export class CandidateForm extends Form implements ICandidateForm {
     public phoneMask = '';
     public product = 0;
-    public phone = '';
     public status = 0;
-    public isFiction = true;
+    public isFiction = false;
     public accountId = 0;
     public productList: ICandidateFormList[] = [];
     public statusList: ICandidateFormList[] = [];
 
     public serverErrors: { [key: string]: string[] } = {};
 
-    @Validate(sameAs(() => true), (form: CandidateForm): string => 'Введите номер в формате ' + form.phoneMask)
-    public phoneValid = true;
+    // @Validate(sameAs(() => true), (form: CandidateForm): string => 'Введите номер в формате ' + form.phoneMask)
+    // public phoneValid = true;
 
     @Validate(required, 'Введите имя ')
     public name = '';
 
-    @Validate(required, 'Введите email')
+    @Validate(requiredIf('email'), 'Введите имя ')
+    public phone = '';
+
+    @Validate(requiredIf('phone'), 'Введите email')
     @Validate(email, 'Введите корректный Email')
     public email = '';
 

@@ -5,8 +5,7 @@ import {CandidateFormRequestType} from '@/form/candidate/candidateForm.types';
 
 export class CandidatesRepository implements ICandidatesRepository {
     async fetchAll(data?: FormData): Promise<ICandidate[]> {
-        console.log(data?.get('statusId'));
-        const response = await Api.getData('/candidates', data);
+        const response = await Api.get('/candidates', data);
         const respData = response.data as CandidateResponseType[];
         return respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
     }

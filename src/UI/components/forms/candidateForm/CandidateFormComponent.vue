@@ -13,7 +13,7 @@
           @input="attrs.change"
       >
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
+    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" show-custom-error label="Номер телефона">
       <PhoneMaskInput
           v-model="form.phone"
           v-bind="attrs"
@@ -23,8 +23,7 @@
           showFlag
           wrapperClass="wrapper"
           ref="phoneMaskInput"
-          @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
-          @input="changePhone"
+          @input="attrs.change"
       />
     </FormGroup>
     <FormGroup

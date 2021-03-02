@@ -20,7 +20,7 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Все темы',
-                    value: null
+                    value: 0
                 }
             ],
             filterType: FiltersNameEnum.Theme
@@ -30,7 +30,7 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Не важно',
-                    value: null
+                    value: 0
                 }
             ],
             filterType: FiltersNameEnum.Level
@@ -40,7 +40,7 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Не важно',
-                    value: null
+                    value: 0
                 }
             ],
             filterType: FiltersNameEnum.Cost
@@ -52,7 +52,7 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Все курсы',
-                    value: null
+                    value: 0
                 }
             ],
             filterType: FiltersCourseNameEnum.Course
@@ -62,7 +62,7 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Все темы',
-                    value: null
+                    value: 0
                 }
             ],
             filterType: FiltersCourseNameEnum.Theme
@@ -72,7 +72,7 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Не важно',
-                    value: null
+                    value: 0
                 }
             ],
             filterType: FiltersCourseNameEnum.Level
@@ -82,7 +82,7 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Не важно',
-                    value: null
+                    value: 0
                 }
             ],
             filterType: FiltersCourseNameEnum.Cost
@@ -115,7 +115,7 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Не важно',
-                    value: null
+                    value: 0
                 }
             ],
             filterType: FiltersCandidatesNameEnum.Status
@@ -125,15 +125,17 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Не важно',
-                    value: null
-                },
-                {
-                    text: 'С инфопакетов',
                     value: 0
                 },
                 {
+                    text: 'С инфопакетов',
+                    value: 1,
+                    isFiction: true,
+                },
+                {
                     text: 'Созданные вручную',
-                    value: 1
+                    value: 2,
+                    isFiction: false
                 },
             ],
             filterType: FiltersCandidatesNameEnum.Type
@@ -143,7 +145,7 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Не важно',
-                    value: null
+                    value: 0
                 }
             ],
             filterType: FiltersCandidatesNameEnum.Product

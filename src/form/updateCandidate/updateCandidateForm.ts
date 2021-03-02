@@ -20,7 +20,7 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
     public product = 0;
     public phone = '';
     public status = 0;
-    public isFiction = true;
+    public isFiction = false;
     public accountId = 0;
     public productList: ISelectList[] = [];
     public statusList: ISelectList[] = [];
