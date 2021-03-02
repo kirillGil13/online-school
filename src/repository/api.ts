@@ -3,14 +3,7 @@ import {AxiosPromise, AxiosRequestConfig} from 'axios';
 import {RequestType} from '@/form/form.types';
 
 const Api = {
-    get(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
-        if (data) {
-            const formData = [...data.entries()];
-            const asString = formData
-                .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
-                .join('&');
-            return Vue.axios.get(`${url}/?${asString}`);
-        }
+    get(url: string, config?: AxiosRequestConfig): AxiosPromise {
         return Vue.axios.get(url, config);
     },
 
@@ -25,6 +18,14 @@ const Api = {
     postFile(fileURL: {url: string; baseURL: string}, data?: any): AxiosPromise {
         return Vue.axios({url: fileURL.url, baseURL: fileURL.baseURL, method: 'POST', data: data});
     },
+
+    getData(url: string, data?: any): AxiosPromise {
+        const formData = [...data.entries()];
+        const asString = formData
+            .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+            .join('&');
+        return Vue.axios.get(`${url}/?${asString}`);
+    }
 };
 
 export default Api;
