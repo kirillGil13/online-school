@@ -143,7 +143,7 @@ export default class TableCandidates extends Vue {
   margin-top: 30px !important;
   border-radius: 12px !important;
   min-width: 190px !important;
-
+  max-height: 296px !important;
   &.action {
     #select0 {
       font-weight: 600;

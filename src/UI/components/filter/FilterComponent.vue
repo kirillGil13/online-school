@@ -157,10 +157,4 @@ export default class FilterComponent extends Vue {
     }
   }
 }
-
-.v-menu__content {
-  margin-top: 45px;
-  width: 13.5% !important;
-  max-width: 200px !important;
-}
 </style>
