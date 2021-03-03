@@ -32,8 +32,8 @@ import Filters from '@/entity/filters/filters';
 import FilterCourses from '@/UI/components/filter/FilterComponent.vue';
 import Leader from '@/entity/leader/leader';
 import CoursesListItem from '@/entity/courses/courses';
-import {LeaderTestStore} from '@/store/modules/LeadersTest';
-import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
+import {LeaderTestStore} from '../../../store/modules/Leaders';
+import {LeadersCoursesTestStore} from '../../../store/modules/LeadersCourses';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 
 @Component({

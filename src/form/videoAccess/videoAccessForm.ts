@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import { required, sameAs, email } from 'vuelidate/lib/validators';
+import { required, sameAs } from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {VideoAccessFormRequestType} from '@/form/videoAccess/videoAccessForm.types';
@@ -11,7 +11,7 @@ export class VideoAccessForm extends Form {
     public phoneMask = '';
     public accountId = 0;
     public statusId = 1;
-    public isFiction = true;
+    public isFiction = false;
     public infoPackId = 0;
 
     @Validate(sameAs(() => true), (form: VideoAccessForm): string => 'Введите номер в формате ' + form.phoneMask)

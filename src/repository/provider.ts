@@ -13,6 +13,9 @@ import {StatusIconsRepository} from '@/repository/statusIcons/StatusIconsReposit
 import {CandidateItemRepository} from '@/repository/candidateItem/CandidateItemRepository';
 import {VideoAccessRepository} from '@/repository/videoAccess/VideoAccessRepository';
 import {ProfilePictureRepository} from '@/repository/profilePicture/ProfilePicture';
+import {LeadersRepository} from '@/repository/leaders/LeadersRepository';
+import {LeaderCoursesRepository} from '@/repository/leaderCourses/LeaderCoursesRepository';
+import {CourseLevelsRepository} from '@/repository/courseLevels/CourseLevels';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -29,5 +32,8 @@ export const provider = (): IProvider => ({
     candidateItem: new CandidateItemRepository(),
     videoAccess: new VideoAccessRepository(),
     profilePicture: new ProfilePictureRepository(),
+    leaders: new LeadersRepository(),
+    leaderCourses: new LeaderCoursesRepository(),
+    courseLevels: new CourseLevelsRepository(),
 });
 

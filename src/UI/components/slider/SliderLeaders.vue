@@ -2,17 +2,12 @@
   <v-col :class="['slider-container', isMobile ? 'pa-0' : '']">
     <swiper :class="['swiper component', isMobile ? 'mx-0' : '']" :options="swiperComponentOption" ref="swiper">
       <swiper-slide v-for="(leader, index) in leaders" :key="index" :id="index">
-        <!--<router-link
-            :to="{ name: routerName.LeaderCourses, params: { id: leader.id } }"
-            active-class="active_leader" @click="back">-->
         <div :class=" ['slide', $route.params.id === leader.id.toString() ? 'active_leader' : '' ]" @click="proceed(leader.id)">
-          <div class="leader-photo" :style="{ backgroundImage: 'url(' + leader.userInfo.avatar + ')' }">
-            <Rating :rating="leader.rating" class="master-rating"/>
+          <div class="leader-photo" :style="{ backgroundImage: 'url(' + leader.photoLink + ')' }">
+            <Rating v-if="leader.rating" :rating="leader.rating" class="master-rating"/>
           </div>
           <h4>{{ leader.fullName }}</h4>
-          <span class="desc">{{ leader.direction }}</span>
         </div>
-        <!--</router-link>-->
       </swiper-slide>
       <div class="swiper-button-prev" @click="prev()" slot="button-prev" v-if="!isMobile">
         <svg-icon name="Slider_Arrow"></svg-icon>
@@ -26,10 +21,10 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import Rating from '../common/Rating.vue';
-import Leader from '@/entity/leader/leader';
 import {SwiperOptions} from 'swiper';
 import {RouterNameEnum} from '@/router/router.types';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
+import {ILeadersListItem} from '../../../entity/leader';
 
 @Component({
   components: {
@@ -37,7 +32,7 @@ import {AdaptiveStore} from '@/store/modules/Adaptive';
   },
 })
 export default class SliderLeaders extends Vue {
-  @Prop() readonly leaders!: Leader[];
+  @Prop() readonly leaders!: ILeadersListItem[];
   routerName = RouterNameEnum;
 
   swiperComponentOption: SwiperOptions = {

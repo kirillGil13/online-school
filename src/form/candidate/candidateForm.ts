@@ -13,7 +13,7 @@ export class CandidateForm extends Form implements ICandidateForm {
     public phoneMask = '';
     public product = 0;
     public status = 0;
-    public isFiction = false;
+    public isFiction = true;
     public accountId = 0;
     public callTimeFake = '';
     public callTime = 0;

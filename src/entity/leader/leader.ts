@@ -1,29 +1,17 @@
-import { ILeader, ILeaderCourses, ILeaderUserInfo, LeaderResponseType } from './leader.types';
+import {ILeadersListItem, LeadersListItemResponseType} from '@/entity/leader/leader.types';
 
-export default class Leader implements ILeader {
+export default class LeadersListItem implements ILeadersListItem {
     id: number;
-    direction: string;
-    rating: string;
-    createdAt: string;
-    updatedAt: string;
-    userInfo: ILeaderUserInfo;
-    courses: ILeaderCourses[] = [];
-    balance: string;
-    totalCoursesViewsCount: number;
-    constructor(data: LeaderResponseType) {
+    name: string;
+    lastName: string;
+    photoLink: string;
+    constructor(data: LeadersListItemResponseType) {
         this.id = data.id;
-        this.direction = data.direction;
-        this.rating = data.rating;
-        this.createdAt = data.createdAt;
-        this.updatedAt = data.updatedAt;
-        this.userInfo = data.userInfo;
-        for (let i = 0; i < data.courses.length; i++) {
-            this.courses.push(data.courses[i]);
-        }
-        this.balance = data.balance;
-        this.totalCoursesViewsCount = data.totalCoursesViewsCount;
+        this.name = data.name;
+        this.lastName = data.lastName;
+        this.photoLink = data.photoLink;
     }
     get fullName(): string {
-        return this.userInfo.name + ' ' + this.userInfo.surname;
+        return this.name + ' ' + this.lastName;
     }
 }

@@ -24,7 +24,7 @@ import {CoursesListItemResponseType, ICoursesListItem} from '@/entity/courses/co
 import Button from '@/UI/components/common/Button.vue';
 import Leader from '@/entity/leader/leader';
 import CoursesListItem from '@/entity/courses/courses';
-import {LeaderTestStore} from '@/store/modules/LeadersTest';
+import {LeaderTestStore} from '../../../store/modules/Leaders';
 import {CoursesTestStore} from '@/store/modules/CoursesTest';
 @Component({
   components: {

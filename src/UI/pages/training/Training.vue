@@ -12,65 +12,49 @@
     <SliderLeaders :leaders="leaders"/>
     <v-row>
       <v-col class="py-0">
-        <FilterComponent :search="true" :is-on-right="true" :filter="filtersTraining" :defaultName="filters.default">
+        <FilterComponent :search="true" :is-on-right="true" :filters="filters">
           <template v-slot:search>
             <Search/>
           </template>
         </FilterComponent>
       </v-col>
     </v-row>
-    <v-col>
-      <v-row class="mt-10">
-        <div class="hash-tag__wrapper mr-3">
-          <span class="hash-tag__content">#finiko</span>
-        </div>
-        <div class="hash-tag__wrapper mr-3">
-          <span class="hash-tag__content">#vexel</span>
-        </div>
-        <div class="hash-tag__wrapper">
-          <span class="hash-tag__content">#fnk</span>
-        </div>
-      </v-row>
-    </v-col>
-    <v-col class="py-0">
-      <v-row class="mt-7">
-        <div class="d-flex flex-row flex-wrap">
-          <LeaderCourseItem v-for="(course, index) in leaderCourses"
-                            :key="index"
-                            :course="course"
-                            :leader-avatar="leaders[index].userInfo.avatar"
-                            :leader-full-name="leaders[index].fullName"
-                            v-on="$listeners"
-                            class="course-block-s"
-          />
-        </div>
-      </v-row>
-    </v-col>
+<!--todo-->
+<!--    <v-col>-->
+<!--      <v-row class="mt-10">-->
+<!--        <div class="hash-tag__wrapper mr-3">-->
+<!--          <span class="hash-tag__content">#finiko</span>-->
+<!--        </div>-->
+<!--        <div class="hash-tag__wrapper mr-3">-->
+<!--          <span class="hash-tag__content">#vexel</span>-->
+<!--        </div>-->
+<!--        <div class="hash-tag__wrapper">-->
+<!--          <span class="hash-tag__content">#fnk</span>-->
+<!--        </div>-->
+<!--      </v-row>-->
+<!--    </v-col>-->
+    <router-view :leaderCourses="leadersCourses"/>
   </v-col>
 </template>
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import Header from '../../components/common/Header.vue';
 import SliderLeaders from '../../components/slider/SliderLeaders.vue';
 import Search from '../../components/common/Search.vue';
-import Leader from '@/entity/leader/leader';
-import {LeaderResponseType} from '@/entity/leader/leader.types';
 import Tabs from '../../components/common/tabs/Tabs.vue';
 import TabsContent from '../../components/common/tabs/TabsContent.vue';
-import {ICoursesListItem} from '@/entity/courses/courses.types';
-import {ITabs} from '@/entity/tabs/tabs.types';
-import {TabsStore} from '@/store/modules/Tabs';
-import {CoursesStore} from '@/store/modules/Courses';
 import Filters from '@/entity/filters/filters';
-import {LeaderTestStore} from '@/store/modules/LeadersTest';
 import Button from '@/UI/components/common/Button.vue';
-import {ILeaderCourses, LeaderCoursesResponseType} from '@/entity/leaderCourses/leaderCourses.types';
-import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
-import CoursesListItem from '@/entity/courses/courses';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 import FilterComponent from '@/UI/components/filter/FilterComponent.vue';
 import {IFilters} from '../../../entity/filters/filters.types';
 import {FiltersStore} from '../../../store/modules/Filters';
+import {LeadersStore} from '../../../store/modules/Leaders';
+import {ILeadersListItem} from '../../../entity/leader';
+import {LeadersCoursesStore} from '../../../store/modules/LeadersCourses';
+import {ILeaderCourses} from '../../../entity/leaderCourses/leaderCourses.types';
+import {CourseLevelsStore} from '../../../store/modules/CourseLevels';
+import {ICourseLevels} from '../../../entity/courseLevels/courseLevels.types';
 
 @Component({
   components: {
@@ -85,18 +69,17 @@ import {FiltersStore} from '../../../store/modules/Filters';
   },
 })
 export default class Training extends Vue {
-  leaders: Leader[] = [];
-  leaderCourses: ILeaderCourses[] = [];
   filters: Filters;
 
   constructor() {
     super();
     this.filters = new Filters(this.filtersTraining);
-    for (let i = 0; i < this.leadersTest.length; i++) {
-      this.leaders.push(new Leader(this.leadersTest[i]));
-    }
-    for (let i = 0; i < this.leadersCoursesTest.length; i++) {
-      this.leaderCourses.push(new CoursesListItem(this.leadersCoursesTest[i]));
+  }
+
+  @Watch('courseLevelsLoaded', {immediate: true})
+  onFilterStatusChange(): void {
+    for (let i = 1; i < this.courseLevels.length; i++) {
+      this.$set(this.filters.filterBody[0].filterValue, i, {text: this.courseLevels[i].name, value: this.courseLevels[i].id});
     }
   }
 
@@ -104,28 +87,34 @@ export default class Training extends Vue {
     this.$router.push({path: `/course/${id}`});
   }
 
-  get tabs(): ITabs[] {
-    return TabsStore.trainingTabs;
+  get filtersTraining(): IFilters[] {
+    return FiltersStore.filters;
   }
 
-  get courses(): ICoursesListItem[] {
-    return CoursesStore.courses;
+  get leaders(): ILeadersListItem[] {
+    return LeadersStore.leaders;
+  }
+
+  get leadersCourses(): ILeaderCourses[] {
+    return LeadersCoursesStore.leadersCourses;
+  }
+
+  get courseLevels(): ICourseLevels[] {
+    return CourseLevelsStore.courseLevels;
+  }
+
+  get courseLevelsLoaded(): boolean {
+    return CourseLevelsStore.courseLevelsLoaded;
   }
 
   async created(): Promise<void> {
-    await CoursesStore.fetchAll();
+    await this.fetchData();
   }
 
-  get leadersTest(): LeaderResponseType[] {
-    return LeaderTestStore.leader;
-  }
-
-  get leadersCoursesTest(): LeaderCoursesResponseType[] {
-    return LeadersCoursesTestStore.leadersCourses;
-  }
-
-  get filtersTraining(): IFilters[] {
-    return FiltersStore.filters;
+  async fetchData(): Promise<void> {
+    await LeadersStore.fetchAll();
+    await LeadersCoursesStore.fetchAll();
+    await CourseLevelsStore.fetchAll();
   }
 }
 </script>

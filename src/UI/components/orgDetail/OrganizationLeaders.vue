@@ -42,10 +42,10 @@
 import {Component, Vue} from 'vue-property-decorator';
 import {ILeader, LeaderResponseType} from '@/entity/leader';
 import Leader from '@/entity/leader/leader';
-import {LeaderTestStore} from '@/store/modules/LeadersTest';
+import {LeaderTestStore} from '../../../store/modules/Leaders';
 import {ILeaderCourses, LeaderCoursesResponseType} from '@/entity/leaderCourses/leaderCourses.types';
 import CoursesListItem from '@/entity/courses/courses';
-import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
+import {LeadersCoursesTestStore} from '../../../store/modules/LeadersCourses';
 import SliderLeaders from '@/UI/components/slider/SliderLeaders.vue';
 import Header from '@/UI/components/common/Header.vue';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';

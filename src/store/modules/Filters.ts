@@ -19,16 +19,6 @@ class FiltersModule extends VuexModule {
             id: 0,
             filterValue: [
                 {
-                    text: 'Все темы',
-                    value: 0
-                }
-            ],
-            filterType: FiltersNameEnum.Theme
-        },
-        {
-            id: 1,
-            filterValue: [
-                {
                     text: 'Не важно',
                     value: 0
                 }
@@ -36,7 +26,7 @@ class FiltersModule extends VuexModule {
             filterType: FiltersNameEnum.Level
         },
         {
-            id: 2,
+            id: 1,
             filterValue: [
                 {
                     text: 'Не важно',
@@ -130,12 +120,12 @@ class FiltersModule extends VuexModule {
                 {
                     text: 'С инфопакетов',
                     value: 1,
-                    isFiction: true,
+                    isFiction: false,
                 },
                 {
                     text: 'Созданные вручную',
                     value: 2,
-                    isFiction: false,
+                    isFiction: true,
                 },
             ],
             filterType: FiltersCandidatesNameEnum.Type
