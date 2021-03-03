@@ -42,7 +42,7 @@ export class User implements IUser {
     getRequestData(): UserRequestType {
         return {
             name: this.name,
-            surname: this.lastName,
+            lastName: this.lastName,
             login: this.login!,
             email: this.email,
             vk: this.vk,

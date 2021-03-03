@@ -1,5 +1,5 @@
-import {IUser, UserRequestType} from '@/entity/user';
+import {IUser, UserUpdateRequestType} from '@/entity/user';
 
 export interface IUserUpdateRepository {
-    updateUser(user: UserRequestType): Promise<IUser>;
+    updateUser(user: UserUpdateRequestType): Promise<IUser>;
 }

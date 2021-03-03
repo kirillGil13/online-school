@@ -23,6 +23,11 @@ class AuthModule extends VuexModule {
     }
 
     @Action
+    async fetch(): Promise<any> {
+        return await Vue.auth.fetch({});
+    }
+
+    @Action
     async load(): Promise<any> {
         return await Vue.auth.load();
     }
@@ -65,11 +70,6 @@ class AuthModule extends VuexModule {
             staySignedIn: true,
         });
     }
-    //
-    // @Action({ rawError: true })
-    // async signup(data: SignupRequestType) {
-    //     return await Vue.auth.register({ data });
-    // }
 
     @Action
     async logout(): Promise<void> {

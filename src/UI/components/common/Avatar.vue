@@ -32,9 +32,7 @@ export default class Avatar extends Vue {
     @Prop({ required: true }) readonly size!: number;
     @Prop({ required: false, default: false }) readonly smallStar!: boolean;
     @Prop({ required: false, default: false }) readonly mediumStar!: boolean;
-    @Prop({ required: false, default: AvatarSizeEnum.NONE })
-    @Prop() readonly link!: string;
-    readonly starSize!: AvatarSizeEnum;
+    @Prop({ required: false, default: AvatarSizeEnum.NONE }) readonly starSize!: AvatarSizeEnum;
     @Prop({ default: AvatarSizeEnum.SMALL }) readonly avatarSize!: AvatarSizeEnum;
     sizes = AvatarSizeEnum;
 

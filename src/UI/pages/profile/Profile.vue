@@ -13,33 +13,33 @@
                             'profile__info-low-size': isMobile,
                         }"
             >
-              <avatar
-                  :size="!isMobile ? 143 : 70"
-                  :imageSource="user.photoLink"
-                  :link="pictureLoaded ? picture.fullLink : ''"
-                  :starSize="AvatarSizeEnum.MEDIUM"
-                  :avatar-size="AvatarSizeEnum.MEDIUM"
-              >
-                <template v-slot:inputFile>
-                  <input class="input-file" type="file" accept="image/*" id="upload" @change="pickPhoto($event)">
-                </template>
-              </avatar>
-              <div class="badges">
-                <Badge :subs="user.activeSubscription">
-                  <template v-slot:title>Подписка</template>
-                  <template v-if="user.activeSubscription" v-slot:sub>Оформлена</template>
-                  <template v-else v-slot:sub>Не оформлена</template>
-                </Badge>
-                <Badge>
-                  <template v-slot:title>Партнеров</template>
-                  <template v-slot:default>18</template>
-                </Badge>
-                <Badge>
-                  <template v-slot:title>Переходов</template>
-                  <template v-slot:default>291</template>
-                </Badge>
+              <div :class="[isMobile ? 'avatar_mobile_container' : '']">
+                <avatar
+                    :size="isMobile ? 73 : 143"
+                    :imageSource="user.photoLink"
+                    :starSize="AvatarSizeEnum.MEDIUM"
+                    :avatar-size="AvatarSizeEnum.MEDIUM"
+                >
+                  <template v-slot:inputFile>
+                    <input class="input-file" type="file" accept="image/*" id="upload" @change="pickPhoto($event)">
+                  </template>
+                </avatar>
+                <div :class="['badges', isMobile ? 'd-flex flex-row mobile' : '']">
+                  <Badge :subs="user.activeSubscription">
+                    <template v-slot:title>Подписка</template>
+                    <template v-if="user.activeSubscription" v-slot:sub>Оформлена</template>
+                    <template v-else v-slot:sub>Не оформлена</template>
+                  </Badge>
+                  <Badge>
+                    <template v-slot:title>Партнеров</template>
+                    <template v-slot:default>18</template>
+                  </Badge>
+                  <Badge>
+                    <template v-slot:title>Переходов</template>
+                    <template v-slot:default>291</template>
+                  </Badge>
+                </div>
               </div>
-
               <Button @submit="logOut" class="btn secondary_blue py-3 mt-2">Выйти</Button>
             </div>
           </v-col>
@@ -69,12 +69,12 @@
                     <v-divider></v-divider>
                     <v-tab-item>
                       <keep-alive>
-                        <profile-main-info @submit="submit()" :form="mainInfoForm"/>
+                        <profile-main-info :form="mainInfoForm"/>
                       </keep-alive>
                     </v-tab-item>
                     <v-tab-item>
                       <keep-alive>
-                        <profile-contact-data @submit="submit()" :form="contactDataForm"/>
+                        <profile-contact-data :form="contactDataForm"/>
                       </keep-alive>
                     </v-tab-item>
                     <v-tab-item>
@@ -112,7 +112,6 @@ import {AvatarSizeEnum} from '@/entity/common/avatar.types';
 import {AuthStore} from '@/store/modules/Auth';
 import {IUser} from '@/entity/user';
 import Header from '@/UI/components/common/Header.vue';
-import {UserUpdateStore} from '@/store/modules/UserUpdate';
 import {ProfileMainInfoForm} from '@/form/profile/mainInfo/ProfileMainInfoForm';
 import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactDataForm';
 import ProfileEditForm from '@/form/profile/profileEditForm';
@@ -120,6 +119,7 @@ import Alert from '@/UI/components/common/Alert.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {ProfilePictureStore} from '../../../store/modules/ProfilePicture';
 import {IProfilePicture} from '../../../entity/common/profilePicture.types';
+import {UserUpdateStore} from '../../../store/modules/UserUpdate';
 
 @Component({
   components: {
@@ -170,17 +170,23 @@ export default class Profile extends Vue {
     AuthStore.logout()
   }
 
-  private submit(): void {
-    this.editForm = new ProfileEditForm(this.mainInfoForm.getFormData(), this.contactDataForm.getFormData());
-    const resp = UserUpdateStore.updateUser(this.editForm.getFullRequest());
-    if (resp) {
-      this.changeAlert(true, true);
-    } else this.changeAlert(true, false);
-  }
+  // todo
+  // private submit(): void {
+  //   this.editForm = new ProfileEditForm(this.mainInfoForm.getFormData(), this.contactDataForm.getFormData());
+  //   const resp = UserUpdateStore.updateUser(this.editForm.getFullRequest());
+  //   if (resp) {
+  //     this.changeAlert(true, true);
+  //   } else this.changeAlert(true, false);
+  // }
 
   async pickPhoto(e: any): Promise<void> {
     const selectedImage = e.target.files[0];
     await ProfilePictureStore.set({file: selectedImage});
+    if (this.pictureLoaded) {
+      if (await UserUpdateStore.updateUser({shortPhotoLink: this.picture!.shortLink})) {
+        await AuthStore.fetch();
+      }
+    }
   }
 
   get picture(): IProfilePicture | null {
@@ -200,8 +206,19 @@ export default class Profile extends Vue {
   label {
     border: none !important;
   }
+  .avatar_mobile_container {
+    width: 100%;
+  }
   .badges {
     margin-top: 24px;
+    &.mobile {
+      width: 100%;
+      .badge {
+        &:nth-last-child(1) {
+          margin-bottom: 8px;
+        }
+      }
+    }
   }
 
   &__main-content {
@@ -241,7 +258,8 @@ export default class Profile extends Vue {
 
   &__info-low-size {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-direction: column;
     align-items: center;
   }
 
