@@ -6,7 +6,7 @@
       class="selection"
   >
     <template v-slot:activator="{ attrs, on }">
-      <div class="pos" v-bind="attrs"
+      <div class="pos pr-0" v-bind="attrs"
            v-on="on">
         <slot name="act"/>
       </div>

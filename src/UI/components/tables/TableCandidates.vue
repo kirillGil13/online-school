@@ -29,18 +29,18 @@
             </template>
           </Select>
         </div>
-        <div class="name">
-          {{ candidate.name }}
+        <div class="name d-flex align-start justify-center flex-column">
+          <div class="name_text">{{ candidate.name }}</div>
           <div class="call-time" v-if="candidate.callTime">Позвонить {{candidate.callTime}}</div>
         </div>
         <div class="link">{{ candidate.phoneNumber }}</div>
         <div class="email link">{{ candidate.email }}</div>
         <div class="product">{{candidate.infoPackName}}</div>
         <div>{{ candidate.createdAt }}</div>
-        <div>
+        <div class="pr-0">
           <Select class-name="select_content action" :selects="selects" v-on="$listeners" :id="candidate.id">
             <template v-slot:act>
-              <div class="d-flex justify-end">
+              <div class="d-flex justify-end pr-0">
                 <svg-icon
                     name="Dots"
                 >
@@ -53,7 +53,7 @@
     </div>
     <div class="table mobile" v-if="isMobile">
       <div class="tr tbody mb-3" v-for="(candidate, index) in candidates" :key="index">
-        <div class="d-flex flex-row justify-space-between mb-3">
+        <div class="d-flex flex-row justify-space-between mb-3 pr-0">
           <div class="d-flex flex-row">
             <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="candidate.id">
               <template v-slot:act>
@@ -71,15 +71,15 @@
                 </v-list-item>
               </template>
             </Select>
-            <div class="name">
-              {{ candidate.name }}
+            <div class="name d-flex flex-column align-start justify-center">
+              <div class="name_text">{{ candidate.name }}</div>
               <div class="call-time" v-if="candidate.callTime">Позвонить {{candidate.callTime}}</div>
             </div>
           </div>
-          <div>
+          <div class="pr-0">
             <Select class-name="select_content action" :selects="selects" v-on="$listeners" :id="candidate.id">
               <template v-slot:act>
-                <div class="d-flex justify-end">
+                <div class="d-flex justify-end pr-0">
                   <svg-icon
                       name="Dots"
                   >
