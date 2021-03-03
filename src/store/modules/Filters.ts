@@ -135,7 +135,7 @@ class FiltersModule extends VuexModule {
                 {
                     text: 'Созданные вручную',
                     value: 2,
-                    isFiction: false
+                    isFiction: false,
                 },
             ],
             filterType: FiltersCandidatesNameEnum.Type

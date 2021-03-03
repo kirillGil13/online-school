@@ -9,7 +9,7 @@
               :items="item.filterValue"
               v-model="filters.default[index]"
               @change="$emit('filter')"
-              class="filter pa-0"
+              :class="['filter pa-0', isMobile ? 'filter-mobile' : '']"
               :menu-props="{ left: true}"
               flat
               dense
@@ -64,7 +64,18 @@ export default class FilterComponent extends Vue {
   .filter {
     font-size: 14px !important;
     max-height: 38px !important;
-
+    &.filter-mobile {
+      .v-input__control {
+        .v-input__slot {
+          .v-select__selections {
+            .v-select__selection--comma {
+              margin: 0;
+              max-width: 76px !important;
+            }
+          }
+        }
+      }
+    }
     input {
       max-width: 0;
     }
@@ -105,6 +116,10 @@ export default class FilterComponent extends Vue {
         .v-select__selections {
           .v-select__selection--comma {
             margin: 0;
+            max-width: 130px !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }

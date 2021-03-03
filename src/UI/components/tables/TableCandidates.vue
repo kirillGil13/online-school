@@ -10,8 +10,8 @@
         <div>Дата</div>
         <div></div>
       </div>
-      <div class="tr tbody" v-for="(candidate, index) in candidates" :key="index">
-        <div>
+      <div :class="['tr tbody', candidate.callTime ? 'py-3' : '']" v-for="(candidate, index) in candidates" :key="index">
+        <div class="status_select">
           <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="candidate.id">
             <template v-slot:act>
               <div class="d-flex flex-row">
@@ -126,7 +126,7 @@ import {IStatuses} from '../../../entity/statuses/statuses.types';
     Button,
   },
 })
-export default class TablePartners extends Vue {
+export default class TableCandidates extends Vue {
   @Prop() readonly candidates!: Candidate[];
   @Prop() readonly statuses!: IStatuses[];
   @Prop() readonly selects!: ISelect[];

@@ -35,7 +35,7 @@ export type UserResponseType = {
 };
 export type UserRequestType = {
     name: string;
-    surname: string;
+    lastName: string;
     login: string;
     email: string;
     vk: string;
@@ -43,4 +43,9 @@ export type UserRequestType = {
     instagram: string;
     skype: string;
     description: string;
+}
+export type UserUpdateRequestType = {
+    name?: string;
+    lastName?: string;
+    shortPhotoLink?: string;
 }

@@ -318,12 +318,17 @@ h5 {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                padding-right: 8px;
+            }
+            .status_select {
+                padding-right: 0;
             }
             .v-col:nth-child(2), .v-col:nth-child(3) {
                 color: #426DF6;
             }
             .name {
                 font-size: 16px;
+                line-height: 100%;
                 .call-time {
                     color: #5F739C;
                     font-size: 12px;
@@ -347,7 +352,7 @@ h5 {
         line-height: 150%;
     }
 
-    svg {
+    .svg-icon {
         width: 24px !important;
         height: 24px !important;
         cursor: pointer;
