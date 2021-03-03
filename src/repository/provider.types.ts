@@ -12,6 +12,9 @@ import {IStatusIconsRepository} from '@/repository/statusIcons/StatusIconsReposi
 import {ICandidateItemRepository} from '@/repository/candidateItem/CandidateItemRepository.types';
 import {IVideoAccessRepository} from '@/repository/videoAccess/VideoAccessRepository.types';
 import {IProfilePictureRepository} from '@/repository/profilePicture/ProfilePicture.types';
+import {ILeadersRepository} from '@/repository/leaders/LeadersRepository.types';
+import {ILeaderCoursesRepository} from '@/repository/leaderCourses/LeaderCoursesRepository.types';
+import {ICourseLevelsRepository} from '@/repository/courseLevels/CourseLevels.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -28,4 +31,7 @@ export interface IProvider {
     candidateItem: ICandidateItemRepository;
     videoAccess: IVideoAccessRepository;
     profilePicture: IProfilePictureRepository;
+    leaders: ILeadersRepository;
+    leaderCourses: ILeaderCoursesRepository;
+    courseLevels: ICourseLevelsRepository;
 }

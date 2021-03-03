@@ -27,17 +27,18 @@
           <Header class="top_bar_small" title="Курсы">
             <FilterComponent :isOnRight="true" :filter="filters" :defaultName="filters.default"/>
           </Header>
-          <div class="d-flex flex-wrap flex-row mt-6">
-            <LeaderCourseItem
-                v-for="(course, index) in leaderCourses"
-                :key="index"
-                :course="course"
-                :leader-avatar="leader.userInfo.avatar"
-                :leader-full-name="leader.fullName"
-                v-on="$listeners"
-                class="course-block-s"
-            />
-          </div>
+<!--todo-->
+<!--          <div class="d-flex flex-wrap flex-row mt-6">-->
+<!--            <LeaderCourseItem-->
+<!--                v-for="(course, index) in leaderCourses"-->
+<!--                :key="index"-->
+<!--                :course="course"-->
+<!--                :leader-avatar="leader.userInfo.avatar"-->
+<!--                :leader-full-name="leader.fullName"-->
+<!--                v-on="$listeners"-->
+<!--                class="course-block-s"-->
+<!--            />-->
+<!--          </div>-->
         </v-col>
       </v-col>
     </v-row>
@@ -49,13 +50,7 @@ import {Component, Vue} from 'vue-property-decorator';
 import Header from '../../components/common/Header.vue';
 import SliderLeaders from '../../components/slider/SliderLeaders.vue';
 import Search from '../../components/common/Search.vue';
-import Leader from '@/entity/leader/leader';
-import {ILeader, LeaderResponseType} from '@/entity/leader/leader.types';
 import LeaderCourseComponent from '@/UI/components/leaderCourse/LeaderCourseComponent.vue';
-import {ILeaderCourses, LeaderCoursesResponseType} from '@/entity/leaderCourses/leaderCourses.types';
-import CoursesListItem from '@/entity/courses/courses';
-import {LeaderTestStore} from '@/store/modules/LeadersTest';
-import {LeadersCoursesTestStore} from '@/store/modules/LeadersCoursesTest';
 import Filters from '@/entity/filters/filters';
 import FilterComponent from '@/UI/components/filter/FilterComponent.vue';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
@@ -73,24 +68,13 @@ import {FiltersStore} from '../../../store/modules/Filters';
     LeaderCourseComponent,
   },
 })
-export default class LeaderCoursePage extends Vue {
-  leaderCourses: ILeaderCourses[] = [];
-  leader: ILeader;
+export default class LeaderPage extends Vue {
   filters: Filters;
   constructor() {
     super();
     this.filters = new Filters(this.filterTraining);
-    this.leader = new Leader(this.leaderTest.filter(item => item.id.toString() === this.$route.params.id)[0]);
-    for (let i = 0; i < this.leadersCoursesTest.length; i++) {
-      this.leaderCourses.push(new CoursesListItem(this.leadersCoursesTest[i]));
-    }
   }
-  get leaderTest(): LeaderResponseType[] {
-    return LeaderTestStore.leader;
-  }
-  get leadersCoursesTest(): LeaderCoursesResponseType[] {
-    return LeadersCoursesTestStore.leadersCourses;
-  }
+
   get isMobile(): boolean {
     return AdaptiveStore.isMobile;
   }

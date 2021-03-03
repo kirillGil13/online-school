@@ -1,14 +1,14 @@
 <template>
   <div :class="['course-block', isMobile ? 'course-mobile' : '']" @click="$emit('proceed', course.id)">
-    <div class="course-video-block" :style="{ backgroundImage: 'url(' + course.cover + ')' }">
-      <Rating :rating="course.rating"/>
-      <div class="course-info duration">{{ course.totalLesson }} уроков</div>
+    <div class="course-video-block" :style="{ backgroundImage: 'url(' + course.photoLink + ')' }">
+      <Rating v-if="course.rating" :rating="course.rating"/>
+      <div class="course-info duration">{{ course.countLessons }} уроков</div>
     </div>
     <div class="leader">
-      <div class="course-avatar" :style="{ backgroundImage: 'url(' + leaderAvatar + ')' }"></div>
-      <span class="desc">{{ leaderFullName }}</span>
+      <div class="course-avatar" :style="{ backgroundImage: 'url(' + course.account.photoLink + ')' }"></div>
+      <span class="desc">{{ course.fullName}}</span>
     </div>
-    <div class="course-title">{{ course.title }}</div>
+    <div class="course-title">{{ course.name }}</div>
   </div>
 </template>
 
@@ -24,9 +24,7 @@ import {AdaptiveStore} from '@/store/modules/Adaptive';
   },
 })
 export default class LeaderCourseItem extends Vue {
-  @Prop() readonly leaderFullName!: string;
-  @Prop() readonly leaderAvatar!: string;
-  @Prop() readonly course!: ILeaderCourses;
+  @Prop({required: true}) readonly course!: ILeaderCourses;
 
   get isMobile(): boolean {
     return AdaptiveStore.isMobile;

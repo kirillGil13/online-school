@@ -38,33 +38,22 @@ const routes = [
             {
                 path: '/leader/:id',
                 name: RouterNameEnum.LeaderCourses,
-                component: () => import('../UI/pages/leader/LeaderCoursePage.vue'),
+                component: () => import('../UI/pages/leader/LeaderPage.vue'),
             },
             {
                 path: '/training',
-                redirect: '/training/main',
                 component: () => import('../UI/pages/training/Training.vue'),
                 children: [
                     {
-                        path: '/training/main',
+                        path: '',
                         name: RouterNameEnum.TrainingMain,
-                        component: () => import('../UI/components/training/TrainingMain.vue')
+                        component: () => import('../UI/pages/training/TrainingMain.vue')
                     },
                     {
-                        path: '/training/courses',
-                        name: RouterNameEnum.TrainingCourses,
-                        component: () => import('../UI/components/training/TrainingCourses.vue')
+                        path: ':hashtag',
+                        name: RouterNameEnum.TrainingHashTag,
+                        component: () => import('../UI/pages/training/TrainingMain.vue')
                     },
-                    {
-                        path: '/training/leaders',
-                        name: RouterNameEnum.TrainingLeaders,
-                        component: () => import('../UI/components/training/TrainingLeaders.vue')
-                    },
-                    {
-                        path: '/training/club',
-                        name: RouterNameEnum.TrainingClub,
-                        component: () => import('../UI/components/training/TrainingClub.vue')
-                    }
                 ]
             },
             {
@@ -89,6 +78,11 @@ const routes = [
                 path: '/candidates/statistics',
                 name: RouterNameEnum.CandidatesStatistics,
                 component: () => import('../UI/pages/candidates/CandidatesStatistics.vue')
+            },
+            {
+                path: '/my-studies',
+                name: RouterNameEnum.MyStudies,
+                component: () => import('../UI/pages/myStudies/MyStudies.vue')
             },
             {
                 path: '/chat',

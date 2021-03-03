@@ -161,15 +161,18 @@ export default class Candidates extends Vue {
 
   @Watch('statusesLoaded', {immediate: true})
   onFilterStatusChange(): void {
-    for (let i = 0; i < this.statuses.length; i++) {
-      this.filtersCandidates[0].filterValue.push({text: this.statuses[i].name, value: this.statuses[i].id});
+    console.log(1);
+    for (let i = 1; i < this.statuses.length; i++) {
+      this.$set(this.filters.filterBody[0].filterValue, i, {text: this.statuses[i].name, value: this.statuses[i].id});
+      //this.filtersCandidates[0].filterValue.push({text: this.statuses[i].name, value: this.statuses[i].id});
     }
   }
 
   @Watch('infoPackagesLoaded', {immediate: true})
   onFilterInfoPackagesChange(): void {
-    for (let i = 0; i < this.infoPackages.length; i++) {
-      this.filtersCandidates[2].filterValue.push({text: this.infoPackages[i].name, value: this.infoPackages[i].id});
+    for (let i = 1; i < this.infoPackages.length; i++) {
+      this.$set(this.filters.filterBody[2].filterValue, i, {text: this.infoPackages[i].name, value: this.infoPackages[i].id});
+      //this.filtersCandidates[2].filterValue.push({text: this.infoPackages[i].name, value: this.infoPackages[i].id});
     }
   }
 
@@ -297,6 +300,9 @@ export default class Candidates extends Vue {
   async createStatus(): Promise<void> {
     if (await this.statusForm.submit(StatusesStore.create)) {
       await this.fetchData();
+      for (let i = 1; i < this.statuses.length; i++) {
+        this.$set(this.filters.filterBody[0].filterValue, i, {text: this.statuses[i].name, value: this.statuses[i].id});
+      }
     }
     this.statusForm = new StatusForm();
     this.rerender();
