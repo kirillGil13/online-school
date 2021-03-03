@@ -329,6 +329,12 @@ h5 {
             .name {
                 font-size: 16px;
                 line-height: 100%;
+                .name_text {
+                    width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
                 .call-time {
                     color: #5F739C;
                     font-size: 12px;
