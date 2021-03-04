@@ -1,12 +1,12 @@
-import Testing from '../testing/testing';
 import { TestingResultComponentsEnum } from '../testingResultComponents/testingResultComponents.types';
 import { ITestingResult, TestingResultResponseType } from './testingResult.types';
+import {ITestingQuestions} from '@/entity/testing/testing.types';
 
 export default class TestingResult implements ITestingResult {
     questionLength: number;
     totalRightAnswers: number;
     testingResult!: TestingResultComponentsEnum;
-    constructor(questions: Testing[], data: TestingResultResponseType) {
+    constructor(questions: ITestingQuestions[], data: TestingResultResponseType) {
         this.questionLength = questions.length;
         this.totalRightAnswers = data.totalRightAnswers;
     }

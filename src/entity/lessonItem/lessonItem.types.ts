@@ -6,6 +6,8 @@ export interface ILessonItem {
     m3u8FileLink: string;
     description: string;
     photoLink: string;
+    homeworkId: number;
+    timeCode: number;
     files: ILessonItemFiles[];
 }
 export interface ILessonItemFiles {
@@ -20,6 +22,8 @@ export type LessonItemResponseType = {
     m3u8FileLink: string;
     description: string;
     photoLink: string;
+    homeworkId: number;
+    time_code: number;
     files: LessonItemFilesResponseType[];
 }
 export type LessonItemFilesResponseType = {

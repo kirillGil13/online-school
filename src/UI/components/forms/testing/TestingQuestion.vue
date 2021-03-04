@@ -3,10 +3,10 @@
         <div class="question">{{ question.question }}</div>
         <div>
             <RadioButton
-                v-for="answer in question.answers"
+                v-for="answer in question.variants"
                 :key="answer.id"
                 :id="answer.id"
-                :value="answer.answerOption"
+                :value="answer.answer"
                 v-on="$listeners"
                 :resultsAnswerId="resultsAnswerId"
             />
@@ -17,6 +17,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import RadioButton from '../../common/RadioButton.vue';
 import Testing from '../../../../entity/testing/testing';
+import {ITestingQuestions} from '../../../../entity/testing/testing.types';
 
 @Component({
     components: {
@@ -24,7 +25,7 @@ import Testing from '../../../../entity/testing/testing';
     },
 })
 export default class TestingQuestion extends Vue {
-    @Prop() readonly question!: Testing;
+    @Prop() readonly question!: ITestingQuestions;
     @Prop({ default: false }) readonly active!: boolean;
     @Prop({ default: null }) readonly resultsAnswerId!: number;
 }

@@ -29,9 +29,9 @@ export default class CourseItem implements ICourseItem {
     resolveType(index: number, routeParam: string): string {
         let type = '';
         switch (this.lessons[index].status) {
-            case LessonsTypesEnum.DONE: type = LessonsTypesEnum.DONE;
-            case LessonsTypesEnum.UN_DONE: type = LessonsTypesEnum.UN_DONE;
-            case LessonsTypesEnum.LOCKED: type = LessonsTypesEnum.LOCKED;
+            case LessonsTypesEnum.DONE: type = LessonsTypesEnum.DONE; break;
+            case LessonsTypesEnum.UN_DONE: type = LessonsTypesEnum.UN_DONE; break;
+            case LessonsTypesEnum.LOCKED: type = LessonsTypesEnum.LOCKED; break;
         }
         if (type !== LessonsTypesEnum.LOCKED && this.lessons[index].id.toString() === routeParam.toString()) {
             type = LessonsTypesEnum.IN_PROGRESS;

@@ -1,7 +1,6 @@
  <template>
   <v-col>
     <v-row>
-      {{course}}
       <v-col v-if="courseLoaded" :class="[isMobile ? 'pa-6' : '']">
         <Header :isBordered="true" :route="route" :title="course.name"></Header>
         <v-row :class="['mt-6', isMobile ? 'd-flex flex-column' : '']">

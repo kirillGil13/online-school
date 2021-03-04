@@ -1,18 +1,34 @@
 export interface ITesting {
     id: number;
+    homeworkType: string;
+    lessonId: number;
     question: string;
-    answers: ITestingAnswers[];
+    tests: ITestingQuestions[];
 }
-export interface ITestingAnswers {
+export interface ITestingQuestions {
     id: number;
-    answerOption: string;
+    question: string;
+    variants: ITestingAnswers[];
+}
+export interface ITestingAnswers{
+    id: number;
+    answer: string;
+    isRight: boolean;
 }
 export type TestingResponseType = {
     id: number;
+    homeworkType: string;
+    lessonId: number;
     question: string;
-    answers: TestingAnswersResponseType[];
+    tests: TestingQuestionsResponseType[];
+}
+export type TestingQuestionsResponseType = {
+    question: string;
+    id: number;
+    variants: TestingAnswersResponseType[];
 }
 export type TestingAnswersResponseType = {
     id: number;
-    answerOption: string;
+    answer: string;
+    isRight: boolean;
 }

@@ -23,7 +23,6 @@
     <v-col v-if="questionsLoaded && questions" :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
       <TestingComponent
           :form="testingForm"
-          :questions="questions"
           :result="result"
           :active-result="activeResult"
           @send="send()"
@@ -171,13 +170,13 @@ export default class Lesson extends Vue {
 
   constructor() {
     super();
-    this.testingForm = new TestingForm(this.questions);
+    this.testingForm = new TestingForm(this.questions!.tests);
   }
 
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
     await this.fetchData();
-    this.testingForm = new TestingForm(this.questions);
+    this.testingForm = new TestingForm(this.questions!.tests);
     this.activeResult = false;
     if (this.questionsLoaded === true) {
       this.testingForm.activeStep[0].active = true;
@@ -187,7 +186,7 @@ export default class Lesson extends Vue {
   @Watch('questionsLoaded')
   onChangeLoad(): void {
     if (this.questionsLoaded === true) {
-      this.testingForm = new TestingForm(this.questions);
+      this.testingForm = new TestingForm(this.questions!.tests);
       this.testingForm.activeStep[0].active = true;
       this.activeResult = false;
     }
@@ -202,14 +201,16 @@ export default class Lesson extends Vue {
 
   async fetchData(): Promise<void> {
     await LessonItemStore.fetchData(this.$route.params.lessonId);
-    await QuestionsStore.fetchAll(this.$route.params.lessonId);
+    if (this.lessonLoaded) {
+      await QuestionsStore.fetchAll(this.lesson!.homeworkId.toString());
+    }
   }
 
   get lesson(): ILessonItem | null {
     return LessonItemStore.lessonItem;
   }
 
-  get questions(): ITesting[] {
+  get questions(): ITesting | null {
     return QuestionsStore.questions;
   }
 
@@ -249,7 +250,7 @@ export default class Lesson extends Vue {
       const response = RightAnswersStore.rightAnswers;
       if (response) {
         this.activeResult = true;
-        this.result = new TestingResult(this.questions, response as TestingResultResponseType);
+        this.result = new TestingResult(this.questions!.tests, response as TestingResultResponseType);
       }
     }
   }
