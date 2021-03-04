@@ -76,8 +76,9 @@
     </Modal>
     <Modal :activator="activatorCallTime" @activatorChange="activatorChangeCallTime">
       <template v-slot:content>
-        <CallTimeFormComponent :form="callTimeForm" v-if="destroy" @close="close" :candidate="candidates.find(item => item.id === candidateId)"
-                                      @save="saveCallTime"/>
+        <CallTimeFormComponent :form="callTimeForm" v-if="destroy" @close="close"
+                               :candidate="candidates.find(item => item.id === candidateId)"
+                               @save="saveCallTime"/>
       </template>
     </Modal>
   </v-col>
@@ -115,7 +116,7 @@ import {CandidateItemStore} from '../../../store/modules/CandidateItem';
 import UpdateCandidateFormComponent from '../../components/forms/candidateForm/UpdateCandidateFormComponent.vue';
 import {ICandidateItem} from '../../../entity/candidateItem/candidateItem.types';
 import {UpdateCandidateForm} from '../../../form/updateCandidate/updateCandidateForm';
-import {IFilters} from '../../../entity/filters/filters.types';
+import {FiltersCandidatesNameEnum, IFilters} from '../../../entity/filters/filters.types';
 import {FiltersStore} from '../../../store/modules/Filters';
 import {CallTimeForm} from '../../../form/callTime/callTimeForm';
 import CallTimeFormComponent from '../../components/forms/callTimeForm/CallTimeFormComponent.vue';
@@ -161,18 +162,18 @@ export default class Candidates extends Vue {
 
   @Watch('statusesLoaded', {immediate: true})
   onFilterStatusChange(): void {
-    console.log(1);
     for (let i = 1; i < this.statuses.length; i++) {
       this.$set(this.filters.filterBody[0].filterValue, i, {text: this.statuses[i].name, value: this.statuses[i].id});
-      //this.filtersCandidates[0].filterValue.push({text: this.statuses[i].name, value: this.statuses[i].id});
     }
   }
 
   @Watch('infoPackagesLoaded', {immediate: true})
   onFilterInfoPackagesChange(): void {
     for (let i = 1; i < this.infoPackages.length; i++) {
-      this.$set(this.filters.filterBody[2].filterValue, i, {text: this.infoPackages[i].name, value: this.infoPackages[i].id});
-      //this.filtersCandidates[2].filterValue.push({text: this.infoPackages[i].name, value: this.infoPackages[i].id});
+      this.$set(this.filters.filterBody[2].filterValue, i, {
+        text: this.infoPackages[i].name,
+        value: this.infoPackages[i].id
+      });
     }
   }
 
@@ -271,7 +272,7 @@ export default class Candidates extends Vue {
       statusId: this.filters.default[0],
       infoPackId: this.filters.default[2],
       search: this.searchBody,
-      isFiction: this.filters.filterBody[1].filterValue.find(item => item.value === this.filters.default[1])?.isFiction
+      isFiction: this.filters.filterBody.find(item => item.filterType === FiltersCandidatesNameEnum.Type)?.filterValue.find(item => item.value === this.filters.default[1])?.isFiction
     });
   }
 

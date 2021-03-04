@@ -9,30 +9,30 @@
       <h5>Топ лидеры</h5>
       <router-link :to="''">Показать все</router-link>
     </div>
-    <SliderLeaders :leaders="leaders"/>
+    <SliderLeaders v-if="leaders" :leaders="leaders"/>
     <v-row>
       <v-col class="py-0">
-        <FilterComponent :search="true" :is-on-right="true" :filters="filters">
+        <FilterComponent :search="true" :is-on-right="true" :filters="filters" @filter="onFilter">
           <template v-slot:search>
-            <Search/>
+            <Search @search="search"/>
           </template>
         </FilterComponent>
       </v-col>
     </v-row>
-<!--todo-->
-<!--    <v-col>-->
-<!--      <v-row class="mt-10">-->
-<!--        <div class="hash-tag__wrapper mr-3">-->
-<!--          <span class="hash-tag__content">#finiko</span>-->
-<!--        </div>-->
-<!--        <div class="hash-tag__wrapper mr-3">-->
-<!--          <span class="hash-tag__content">#vexel</span>-->
-<!--        </div>-->
-<!--        <div class="hash-tag__wrapper">-->
-<!--          <span class="hash-tag__content">#fnk</span>-->
-<!--        </div>-->
-<!--      </v-row>-->
-<!--    </v-col>-->
+    <!--todo-->
+    <!--    <v-col>-->
+    <!--      <v-row class="mt-10">-->
+    <!--        <div class="hash-tag__wrapper mr-3">-->
+    <!--          <span class="hash-tag__content">#finiko</span>-->
+    <!--        </div>-->
+    <!--        <div class="hash-tag__wrapper mr-3">-->
+    <!--          <span class="hash-tag__content">#vexel</span>-->
+    <!--        </div>-->
+    <!--        <div class="hash-tag__wrapper">-->
+    <!--          <span class="hash-tag__content">#fnk</span>-->
+    <!--        </div>-->
+    <!--      </v-row>-->
+    <!--    </v-col>-->
     <router-view :leaderCourses="leadersCourses"/>
   </v-col>
 </template>
@@ -47,7 +47,7 @@ import Filters from '@/entity/filters/filters';
 import Button from '@/UI/components/common/Button.vue';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 import FilterComponent from '@/UI/components/filter/FilterComponent.vue';
-import {IFilters} from '../../../entity/filters/filters.types';
+import {FiltersNameEnum, IFilters} from '../../../entity/filters/filters.types';
 import {FiltersStore} from '../../../store/modules/Filters';
 import {LeadersStore} from '../../../store/modules/Leaders';
 import {ILeadersListItem} from '../../../entity/leader';
@@ -70,6 +70,7 @@ import {ICourseLevels} from '../../../entity/courseLevels/courseLevels.types';
 })
 export default class Training extends Vue {
   filters: Filters;
+  searchBody = '';
 
   constructor() {
     super();
@@ -79,7 +80,10 @@ export default class Training extends Vue {
   @Watch('courseLevelsLoaded', {immediate: true})
   onFilterStatusChange(): void {
     for (let i = 1; i < this.courseLevels.length; i++) {
-      this.$set(this.filters.filterBody[0].filterValue, i, {text: this.courseLevels[i].name, value: this.courseLevels[i].id});
+      this.$set(this.filters.filterBody[0].filterValue, i, {
+        text: this.courseLevels[i].name,
+        value: this.courseLevels[i].id
+      });
     }
   }
 
@@ -105,6 +109,24 @@ export default class Training extends Vue {
 
   get courseLevelsLoaded(): boolean {
     return CourseLevelsStore.courseLevelsLoaded;
+  }
+
+  async search(searchBody: string): Promise<void> {
+    this.searchBody = searchBody;
+    await this.filtration();
+  }
+
+  async onFilter(): Promise<void> {
+    await this.filtration();
+  }
+
+  async filtration(): Promise<void> {
+    await LeadersCoursesStore.fetchAll({
+      minCost: this.filters.filterBody.find(item => item.filterType === FiltersNameEnum.Cost)?.filterValue.find(item => item.value === this.filters.default[1])?.minCost,
+      maxCost: this.filters.filterBody.find(item => item.filterType === FiltersNameEnum.Cost)?.filterValue.find(item => item.value === this.filters.default[1])?.maxCost,
+      courseLevelId: this.filters.default[0],
+      name: this.searchBody,
+    });
   }
 
   async created(): Promise<void> {

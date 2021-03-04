@@ -8,4 +8,6 @@ export interface ISelectList {
     text: string;
     value: number;
     isFiction?: boolean;
+    minCost?: number;
+    maxCost?: number;
 }
