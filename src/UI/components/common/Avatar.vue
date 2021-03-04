@@ -11,11 +11,11 @@
                 >
                   <v-progress-circular
                       indeterminate
-                      color="grey lighten-5"
+                      color="black"
                   ></v-progress-circular>
                 </v-row>
               </template>
-              <template v-slot:default v-if="imageSource">
+              <template v-slot:default v-else-if="imageSource && !pictureChanged">
                 <v-img
                     :src="imageSource"
                     alt="Avatar"
