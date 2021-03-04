@@ -27,3 +27,12 @@ export type LeaderCoursesAccountResponseType = {
     lastName: string;
     photoLink: string;
 }
+export type LeaderCoursesRequestType = {
+    name?: string;
+    minCost?: number;
+    maxCost?: number;
+    accountId?: number;
+    courseLevelId?: number;
+    limit?: number;
+    skip?: number;
+}

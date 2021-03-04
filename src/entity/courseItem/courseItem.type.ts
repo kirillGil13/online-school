@@ -1,42 +1,36 @@
+import {CourseLevelsResponseType, ICourseLevels} from '@/entity/courseLevels/courseLevels.types';
+
 export interface ICourseItem {
     id: number;
-    title: string;
+    name: string;
     description: string;
-    isTestingRequire: boolean;
-    createdAt: string;
+    cost: number;
+    account_id: number;
     lessons: ICourseLessons[];
     currentLessonId: number;
-    materials: ICourseMaterials[];
+    level: ICourseLevels;
     resolveType(index: number, routeParam: string): string;
 }
 export interface ICourseLessons {
     id: number;
-    title: string;
-    lessonPassed: boolean;
-    available: boolean;
-}
-export interface ICourseMaterials {
     name: string;
-    filename: string;
+    status: string;
+    number: number;
 }
 
 export type CourseItemResponseType = {
     id: number;
-    title: string;
+    name: string;
     description: string;
-    isTestingRequire: boolean;
-    createdAt: string;
+    cost: number;
+    account_id: number;
     lessons: CourseLessonsResponseType[];
     currentLessonId: number;
-    materials: CourseMaterialsResponseType[];
+    level: CourseLevelsResponseType;
 }
 export type CourseLessonsResponseType = {
     id: number;
-    title: string;
-    lessonPassed: boolean;
-    available: boolean;
-}
-export type CourseMaterialsResponseType = {
     name: string;
-    filename: string;
+    status: string;
+    number: number;
 }

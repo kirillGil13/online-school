@@ -9,11 +9,10 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {ICourseMaterials} from '../../../entity/courseItem/courseItem.type';
 
 @Component
 export default class Doc extends Vue {
-  @Prop() readonly material!: ICourseMaterials;
+  @Prop() readonly material!: string;
 }
 </script>
 
