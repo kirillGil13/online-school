@@ -1,10 +1,11 @@
  <template>
   <v-col>
     <v-row>
+      {{course}}
       <v-col v-if="courseLoaded" :class="[isMobile ? 'pa-6' : '']">
-        <Header :isBordered="true" :route="route" :title="course.title"></Header>
+        <Header :isBordered="true" :route="route" :title="course.name"></Header>
         <v-row :class="['mt-6', isMobile ? 'd-flex flex-column' : '']">
-          <router-view :isPlaying="isPlaying" @onPlayerPlay="onPlayerPlay" :course="course"></router-view>
+          <router-view :isPlaying="isPlaying" @onPlayerPlay="onPlayerPlay" @passFile="passFile"></router-view>
           <div :class="['lessons', isMobile ? 'mb-3' : 'ml-4']" :style="{width: isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course"/>
             <div class="contacts" v-if="!isMobile">
@@ -30,9 +31,9 @@
                 </div>
               </div>
             </div>
-            <v-col class="box-container pa-6 pb-8 materials" v-if="!isMobile">
+            <v-col class="box-container pa-6 pb-8 materials" v-if="!isMobile && files === []">
               <h5>МАТЕРИАЛЫ К УРОКУ</h5>
-              <Doc v-for="(item, index) in course.materials" :key="index" :material="item"/>
+              <Doc v-for="(item, index) in files" :key="index" :material="item"/>
             </v-col>
           </div>
         </v-row>
@@ -55,13 +56,15 @@ import TestingComponent from '../../components/forms/testing/TestingComponent.vu
 import {Component, Vue, Watch} from 'vue-property-decorator';
 import {HeaderRouteType} from '@/entity/common/header.types';
 import Relation from '../../components/common/Relation.vue';
-import {ICourseItem} from '@/entity/courseItem/courseItem.type';
+import {ICourseItem, ICourseLessons} from '@/entity/courseItem/courseItem.type';
 import Lessons from '@/UI/components/lessons/Lessons.vue';
 import {RouterNameEnum} from '@/router/router.types';
 import {CourseItemStore} from '@/store/modules/CourseItem';
 import {VideoStream} from 'stream-vue'
 import Doc from '@/UI/components/common/Doc.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
+import {LessonsTypesEnum} from '../../../entity/common/lessons.types';
+import {ILessonItemFiles} from '../../../entity/lessonItem/lessonItem.types';
 
 @Component({
   components: {
@@ -80,11 +83,22 @@ export default class Course extends Vue {
     name: RouterNameEnum.TrainingMain,
     label: 'Вернуться к списку курсов',
   };
+  files: ILessonItemFiles[] = [];
+
+  findCurrent(lessons: ICourseLessons[]): number {
+    return lessons.find((el) => el.status === LessonsTypesEnum.UN_DONE || el.status === LessonsTypesEnum.LOCKED)!.id;
+  }
+
+  passFile(files: ILessonItemFiles[]): void {
+    for (let i = 0; i < files.length; i++) {
+      this.files.push(files[i]);
+    }
+  }
 
   async created(): Promise<void> {
     await this.fetchData();
     if (!this.$route.params.lessonId) {
-      await this.$router.push({name: RouterNameEnum.Lesson, params: {lessonId: this.course!.currentLessonId.toString()}});
+      await this.$router.push({name: RouterNameEnum.Lesson, params: {lessonId: this.findCurrent(this.course!.lessons).toString()}});
     }
   }
 
@@ -97,7 +111,7 @@ export default class Course extends Vue {
   }
 
   async fetchData(): Promise<void> {
-    await CourseItemStore.fetchData({courseId: this.$route.params.id, lessonId: this.$route.params.lessonId});
+    await CourseItemStore.fetchData(this.$route.params.id);
   }
 
   get course(): ICourseItem | null {

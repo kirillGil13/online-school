@@ -1,8 +1,8 @@
 <template>
   <div class="course" :style="{width: isMobile ? '100%' : '', order: isMobile ? 2 : ''}">
     <v-responsive :aspect-ratio="16/9" content-class="course-container">
-      <h1 v-if="!isPlaying && lessonLoaded" class="abs">{{ lesson.title }}</h1>
-      <VideoStream v-if="lessonLoaded" controls :src="lesson.videoUid" id="player"
+      <h1 v-if="!isPlaying && lessonLoaded" class="abs">{{ lesson.name }}</h1>
+      <VideoStream v-if="lessonLoaded" controls :src="lesson.m3u8FileLink" id="player"
                    :class="['player', !isPlaying ? 'shadow' : '']"
                    style="border-radius: 12px;position: absolute; top: 0; height: 100%; width: 100%;"
                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -18,7 +18,7 @@
     </v-row>
     <v-col :class="['box-container', isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
       <h5>ОПИСАНИЕ</h5>
-      <span class="desc">{{ course.description }}</span>
+      <span class="desc">{{ lesson.description }}</span>
     </v-col>
     <v-col v-if="questionsLoaded && questions" :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
       <TestingComponent
@@ -149,7 +149,6 @@ import Relation from '../../components/common/Relation.vue';
 import {VideoStream} from 'stream-vue';
 import {QuestionsStore} from '@/store/modules/Questions';
 import {ITesting} from '@/entity/testing/testing.types';
-import {ICourseItem} from '@/entity/courseItem/courseItem.type';
 import {RightAnswersStore} from '@/store/modules/RightAnswers';
 import TestingResult from '@/entity/testingResult/testingResult';
 import {TestingResultResponseType} from '@/entity/testingResult/testingResult.types';
@@ -166,7 +165,6 @@ import {AdaptiveStore} from '@/store/modules/Adaptive';
 })
 export default class Lesson extends Vue {
   @Prop() readonly isPlaying!: boolean;
-  @Prop() readonly course!: ICourseItem;
   result: TestingResult | null = null;
   testingForm: TestingForm;
   activeResult = false;
@@ -192,6 +190,13 @@ export default class Lesson extends Vue {
       this.testingForm = new TestingForm(this.questions);
       this.testingForm.activeStep[0].active = true;
       this.activeResult = false;
+    }
+  }
+
+  @Watch('lessonLoaded')
+  onLessonLoaded(): void {
+    if (this.lessonLoaded === true) {
+      this.passFiles();
     }
   }
 
@@ -232,6 +237,10 @@ export default class Lesson extends Vue {
 
   reviewLesson(): void {
     window.location.reload();
+  }
+
+  passFiles(): void {
+    this.$emit('passFile', this.lesson!.files);
   }
 
   async send(): Promise<void> {

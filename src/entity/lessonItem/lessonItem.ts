@@ -1,18 +1,24 @@
-import { ILessonItem, LessonItemResponseType } from '@/entity/lessonItem/lessonItem.types';
+import {ILessonItem, ILessonItemFiles, LessonItemResponseType} from '@/entity/lessonItem/lessonItem.types';
 
 export default class LessonItem implements ILessonItem {
-    title: string;
-    videoPath: string;
-    videoUid: string;
+    id: number;
+    name: string;
+    number: number;
+    status: string;
+    m3u8FileLink: string;
     description: string;
-    available: true;
-    userViewingVideoDuration: number;
+    photoLink: string;
+    files: ILessonItemFiles[] = [];
     constructor(data: LessonItemResponseType) {
-        this.title = data.title;
-        this.videoPath = data.videoPath;
-        this.videoUid = data.videoUid;
+        this.id = data.id;
+        this.name = data.name;
+        this.number = data.number;
+        this.status = data.status;
         this.description = data.description;
-        this.available = data.available;
-        this.userViewingVideoDuration = data.userViewingVideoDuration;
+        this.m3u8FileLink = data.m3u8FileLink;
+        this.photoLink = data.photoLink;
+        for (let i = 0; i < data.files.length; i++) {
+            this.files.push(data.files[i]);
+        }
     }
 }

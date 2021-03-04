@@ -9,7 +9,7 @@
       <h5>Топ лидеры</h5>
       <router-link :to="''">Показать все</router-link>
     </div>
-    <SliderLeaders v-if="leaders" :leaders="leaders"/>
+    <SliderLeaders v-if="leaders !== []" :leaders="leaders"/>
     <v-row>
       <v-col class="py-0">
         <FilterComponent :search="true" :is-on-right="true" :filters="filters" @filter="onFilter">
@@ -85,10 +85,6 @@ export default class Training extends Vue {
         value: this.courseLevels[i].id
       });
     }
-  }
-
-  proceed(id: number): void {
-    this.$router.push({path: `/course/${id}`});
   }
 
   get filtersTraining(): IFilters[] {

@@ -3,13 +3,38 @@
         <div class="avatar-wrapper">
           <slot name="inputFile"></slot>
             <v-avatar color="#F0F2F6" rounded tile :size="size">
+              <template v-slot:default v-if="pictureChanged">
+                <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                >
+                  <v-progress-circular
+                      indeterminate
+                      color="grey lighten-5"
+                  ></v-progress-circular>
+                </v-row>
+              </template>
               <template v-slot:default v-if="imageSource">
                 <v-img
                     :src="imageSource"
                     alt="Avatar"
                     aspect-ratio="1"
                     class="avatar"
-                />
+                >
+                  <template v-slot:placeholder>
+                    <v-row
+                        class="fill-height ma-0"
+                        align="center"
+                        justify="center"
+                    >
+                      <v-progress-circular
+                          indeterminate
+                          color="grey lighten-5"
+                      ></v-progress-circular>
+                    </v-row>
+                  </template>
+                </v-img>
               </template>
               <template v-else v-slot:default>
                 <svg-icon :class="{'medium-size-icon': avatarSize === sizes.MEDIUM}" name="Camera" ></svg-icon>
@@ -35,6 +60,7 @@ export default class Avatar extends Vue {
     @Prop({ required: false, default: AvatarSizeEnum.NONE }) readonly starSize!: AvatarSizeEnum;
     @Prop({ default: AvatarSizeEnum.SMALL }) readonly avatarSize!: AvatarSizeEnum;
     sizes = AvatarSizeEnum;
+    @Prop() readonly pictureChanged!: boolean;
 
     get showStar(): boolean {
         return this.starSize !== AvatarSizeEnum.NONE;
