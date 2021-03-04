@@ -1,14 +1,18 @@
-import { ITesting, ITestingAnswers, TestingResponseType } from './testing.types';
+import {ITesting, ITestingQuestions, TestingResponseType} from './testing.types';
 
 export default class Testing implements ITesting{
     id: number;
+    homeworkType: string;
+    lessonId: number;
     question: string;
-    answers: ITestingAnswers[] = []
+    tests: ITestingQuestions[] = [];
     constructor(data: TestingResponseType) {
         this.id = data.id;
         this.question = data.question;
-        for(let i = 0; i < data.answers.length; i++) {
-            this.answers.push(data.answers[i]);
+        this.homeworkType = data.homeworkType;
+        this.lessonId = data.lessonId;
+        for(let i = 0; i < data.tests.length; i++) {
+            this.tests.push(data.tests[i]);
         }
     }
 }

@@ -1,7 +1,7 @@
-import { ITesting } from '@/entity/testing/testing.types';
+import {ITestingQuestions} from '@/entity/testing/testing.types';
 
 export interface ITestingForm {
-    questions: ITesting[];
+    questions: ITestingQuestions[];
     results: TestingFormRequestType[];
     activeStep: ITestingFormActiveStep[];
 }
