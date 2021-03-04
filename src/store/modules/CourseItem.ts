@@ -13,8 +13,8 @@ class CourseItemModule extends VuexModule {
     courseLoaded = false;
 
     @MutationAction
-    async fetchData(data: {courseId: string; lessonId: string}): Promise<{ courseItem: ICourseItem; courseLoaded: boolean }> {
-        const courseItem = await store.$repository.courseItem.fetchData(data.courseId);
+    async fetchData(courseId: string): Promise<{ courseItem: ICourseItem; courseLoaded: boolean }> {
+        const courseItem = await store.$repository.courseItem.fetchData(courseId);
         let courseLoaded = false;
         if (courseItem) {
             courseLoaded = true;

@@ -1,5 +1,5 @@
 <template>
-  <a class="file-link" :href="`https://static.onelinks.com/admin/course/materials/${material.filename}`" target="_blank">
+  <a class="file-link" :href="`${material.fileLink}`" target="_blank">
     <v-row class="course-container material align-center mt-4 pa-3">
       <svg-icon class="svg-wh" name="Doc"></svg-icon>
       {{material.name}}
@@ -9,10 +9,11 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import {ILessonItemFiles} from '../../../entity/lessonItem/lessonItem.types';
 
 @Component
 export default class Doc extends Vue {
-  @Prop() readonly material!: string;
+  @Prop() readonly material!: ILessonItemFiles;
 }
 </script>
 

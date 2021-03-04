@@ -5,7 +5,7 @@ import {ICourseItemRepository} from '@/repository/courseItem/CourseItemRepositor
 
 export class CourseItemRepository implements ICourseItemRepository {
     async fetchData(courseId: string): Promise<ICourseItem> {
-        const response = await Api.get(`/courses/${courseId}/`);
+        const response = await Api.get(`/courses/${courseId}`);
         const data = response.data as CourseItemResponseType;
         return new CourseItem(data);
     }

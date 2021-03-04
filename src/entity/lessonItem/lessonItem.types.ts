@@ -1,16 +1,28 @@
 export interface ILessonItem {
-    title: string;
-    videoUid: string;
-    videoPath: string;
+    id: number;
+    name: string;
+    number: number;
+    status: string;
+    m3u8FileLink: string;
     description: string;
-    available: boolean;
-    userViewingVideoDuration: number;
+    photoLink: string;
+    files: ILessonItemFiles[];
+}
+export interface ILessonItemFiles {
+    name: string;
+    fileLink: string;
 }
 export type LessonItemResponseType = {
-    title: string;
-    videoUid: string;
-    videoPath: string;
+    id: number;
+    name: string;
+    number: number;
+    status: string;
+    m3u8FileLink: string;
     description: string;
-    available: true;
-    userViewingVideoDuration: number;
+    photoLink: string;
+    files: LessonItemFilesResponseType[];
+}
+export type LessonItemFilesResponseType = {
+    name: string;
+    fileLink: string;
 }

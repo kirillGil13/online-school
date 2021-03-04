@@ -9,7 +9,6 @@ export default class CourseItem implements ICourseItem {
     cost: number;
     account_id: number;
     lessons: ICourseLessons[] = [];
-    currentLessonId: number;
     level: ICourseLevels;
     constructor(data: CourseItemResponseType) {
         this.id = data.id;
@@ -17,7 +16,6 @@ export default class CourseItem implements ICourseItem {
         this.description = data.description;
         this.cost = data.cost;
         this.account_id = data.account_id;//eslint-disable-line
-        this.currentLessonId = data.currentLessonId;
         this.level = data.level;
         for (let i = 0; i < data.lessons.length; i++) {
             this.lessons.push({
@@ -29,15 +27,15 @@ export default class CourseItem implements ICourseItem {
         }
     }
     resolveType(index: number, routeParam: string): string {
-        const type = '';
-        // if (this.lessons[index].lessonPassed) {
-        //     type = LessonsTypesEnum.DONE;
-        // } else if (!this.lessons[index].lessonPassed && this.lessons[index].available) {
-        //     type = LessonsTypesEnum.UN_DONE;
-        // } else type = LessonsTypesEnum.LOCKED;
-        // if (this.lessons[index].available && this.lessons[index].id.toString() === routeParam.toString()) {
-        //     type = LessonsTypesEnum.IN_PROGRESS;
-        // }
+        let type = '';
+        switch (this.lessons[index].status) {
+            case LessonsTypesEnum.DONE: type = LessonsTypesEnum.DONE;
+            case LessonsTypesEnum.UN_DONE: type = LessonsTypesEnum.UN_DONE;
+            case LessonsTypesEnum.LOCKED: type = LessonsTypesEnum.LOCKED;
+        }
+        if (type !== LessonsTypesEnum.LOCKED && this.lessons[index].id.toString() === routeParam.toString()) {
+            type = LessonsTypesEnum.IN_PROGRESS;
+        }
         return type;
     }
 }

@@ -7,7 +7,6 @@ export interface ICourseItem {
     cost: number;
     account_id: number;
     lessons: ICourseLessons[];
-    currentLessonId: number;
     level: ICourseLevels;
     resolveType(index: number, routeParam: string): string;
 }
@@ -25,7 +24,6 @@ export type CourseItemResponseType = {
     cost: number;
     account_id: number;
     lessons: CourseLessonsResponseType[];
-    currentLessonId: number;
     level: CourseLevelsResponseType;
 }
 export type CourseLessonsResponseType = {

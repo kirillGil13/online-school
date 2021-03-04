@@ -11,8 +11,8 @@
                          :class="[ course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED ? 'lesson-locked' : '']">
               <svg-icon class="svg-wh" :name="course.resolveType(index, $route.params.lessonId)"></svg-icon>
               <div class="lesson_name">
-                <span class="desc">Урок {{ index + 1 }}</span>
-                {{ lesson.title }}
+                <span class="desc">Урок {{ lesson.number }}</span>
+                {{ lesson.name }}
               </div>
             </router-link>
           </li>

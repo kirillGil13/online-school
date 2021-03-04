@@ -19,6 +19,7 @@
                     :imageSource="user.photoLink"
                     :starSize="AvatarSizeEnum.MEDIUM"
                     :avatar-size="AvatarSizeEnum.MEDIUM"
+                    :picture-changed="pictureChanged"
                 >
                   <template v-slot:inputFile>
                     <input class="input-file" type="file" accept="image/*" id="upload" @change="pickPhoto($event)">
@@ -99,7 +100,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import Badge from '@/UI/components/common/Badge.vue';
 import Avatar from '@/UI/components/common/Avatar.vue';
 import Button from '@/UI/components/common/Button.vue';
@@ -139,10 +140,16 @@ export default class Profile extends Vue {
   mainInfoForm!: ProfileMainInfoForm;
   contactDataForm: ProfileContactDataForm;
   editForm!: ProfileEditForm;
+  pictureChanged = false;
   show = false;
   success = false;
   activeName = 0;
   AvatarSizeEnum = AvatarSizeEnum;
+
+  @Watch('user.photoLink')
+  onPhotoChanged(): void {
+    this.pictureChanged = false;
+  }
 
   get user(): IUser {
     return AuthStore.user;
@@ -180,6 +187,7 @@ export default class Profile extends Vue {
   // }
 
   async pickPhoto(e: any): Promise<void> {
+    this.pictureChanged = true;
     const selectedImage = e.target.files[0];
     await ProfilePictureStore.set({file: selectedImage});
     if (this.pictureLoaded) {
