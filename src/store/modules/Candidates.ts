@@ -11,10 +11,12 @@ import {CandidateFormRequestType} from '@/form/candidate/candidateForm.types';
 })
 class CandidatesModule extends VuexModule {
     candidates: ICandidate[] = [];
+    candidatesLoaded = false;
 
     @MutationAction
-    async fetchAll(data?: CandidateRequestType): Promise<{ candidates: ICandidate[] }> {
+    async fetchAll(data?: CandidateRequestType): Promise<{ candidates: ICandidate[]; candidatesLoaded: boolean }> {
         const formData = new FormData();
+        let candidatesLoaded = false;
         if(data) {
             if (data.statusId) {
                 formData.append('statusId', data.statusId.toString());
@@ -42,7 +44,10 @@ class CandidatesModule extends VuexModule {
             else formData.delete('skip');
         }
         const candidates = await store.$repository.candidates.fetchAll(formData);
-        return { candidates };
+        if (candidates) {
+            candidatesLoaded = true;
+        }
+        return { candidates, candidatesLoaded };
     }
 
     @Action

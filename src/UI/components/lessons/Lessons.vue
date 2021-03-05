@@ -7,7 +7,7 @@
               v-for="(lesson, index) in course.lessons"
               :key="index"
           >
-            <router-link :to="{name: routeName.Lesson, params: {lessonId: lesson.id}}" active-class="lesson-current" :id="`lesson${index}`"
+            <router-link :to="{name: routeName.Lesson, params: {lessonId: lesson.id.toString()}}" active-class="lesson-current" :id="`lesson${index}`"
                          :class="[ course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED ? 'lesson-locked' : '']">
               <svg-icon class="svg-wh" :name="course.resolveType(index, $route.params.lessonId)"></svg-icon>
               <div class="lesson_name">

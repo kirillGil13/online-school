@@ -480,3 +480,78 @@ iframe {
     min-width: 190px !important;
     max-width: 200px !important;
 }
+.video-player {
+    border-radius: 12px;
+
+    div {
+        border-radius: 12px;
+    }
+
+    .vjs-poster {
+        border-radius: 12px;
+    }
+}
+
+.video-js {
+    font-size: 10px !important;
+    border-radius: 12px;
+
+    video {
+        border-radius: 12px;
+    }
+
+    .vjs-control-bar {
+        .vjs-control {
+            button {
+                width: 2em !important;
+                background-color: transparent !important;
+                padding: 0 !important;
+            }
+            width: 2em !important;
+            background-color: transparent !important;
+            padding: 0 !important;
+
+            .vjs-icon-placeholder {
+                font-size: 10px;
+
+                &::before {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+
+        .vjs-play-control {
+            margin-left: 20px !important;
+        }
+        .vjs-volume-panel {
+            margin-right: 10px !important;
+            .vjs-volume-control {
+                margin-right: 0 !important;
+                margin-left: 20px !important;
+            }
+        }
+        .vjs-progress-control {
+            .vjs-slider {
+                background: rgba(255, 255, 255, 0.3);
+
+                .vjs-load-progress {
+                    background-color: #F2F2F2;
+                }
+
+                .vjs-play-progress {
+                    background-color: #FF4D2C;
+                }
+            }
+
+            .vjs-progress-holder {
+                height: 0.4em;
+            }
+        }
+
+        .vjs-fullscreen-control {
+            margin-right: 20px !important;
+        }
+    }
+}

@@ -6,11 +6,13 @@ export class TestingForm implements ITestingForm {
     results: TestingFormRequestType[] = [];
     activeStep: ITestingFormActiveStep[] = [];
 
-    constructor(data: ITestingQuestions[]) {
-        for (let i = 0; i < data.length; i++) {
-            this.questions.push({id: data[i].id, question: data[i].question, variants: data[i].variants});
-            this.results.push({questionId: data[i].id, answerId: null});
-            this.activeStep.push({questionId: data[i].id, active: false});
+    constructor(data?: ITestingQuestions[]) {
+        if (data) {
+            for (let i = 0; i < data.length; i++) {
+                this.questions.push({id: data[i].id, question: data[i].question, variants: data[i].variants});
+                this.results.push({questionId: data[i].id, answerId: null});
+                this.activeStep.push({questionId: data[i].id, active: false});
+            }
         }
     }
 

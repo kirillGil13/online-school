@@ -2,12 +2,12 @@
   <div class="course" :style="{width: isMobile ? '100%' : '', order: isMobile ? 2 : ''}">
     <v-responsive :aspect-ratio="16/9" content-class="course-container">
       <h1 v-if="!isPlaying && lessonLoaded" class="abs">{{ lesson.name }}</h1>
-      <VideoStream v-if="lessonLoaded" controls :src="lesson.m3u8FileLink" id="player"
-                   :class="['player', !isPlaying ? 'shadow' : '']"
-                   style="border-radius: 12px;position: absolute; top: 0; height: 100%; width: 100%;"
-                   allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                   allowFullScreen
-                   @play="$emit('onPlayerPlay')"
+      <video-player
+          ref="videoPlayer"
+          class="video-player vjs-custom-skin"
+          :playsinline="true"
+          :options="options"
+          v-if="lessonLoaded"
       />
     </v-responsive>
     <v-row class="course-video-row" v-if="lessonLoaded">
@@ -20,18 +20,18 @@
       <h5>ОПИСАНИЕ</h5>
       <span class="desc">{{ lesson.description }}</span>
     </v-col>
-    <v-col v-if="questionsLoaded && questions" :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
-      <TestingComponent
-          :form="testingForm"
-          :result="result"
-          :active-result="activeResult"
-          @send="send()"
-          @moveToNextLesson="moveToNextLesson()"
-          @passTestAgain="passTestAgain()"
-          @reviewLesson="reviewLesson()"
-          @writeMaster="writeMaster()"
-      />
-    </v-col>
+        <v-col v-if="questionsLoaded && questions" :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
+          <TestingComponent
+              :form="testingForm"
+              :result="result"
+              :active-result="activeResult"
+              @send="send()"
+              @moveToNextLesson="moveToNextLesson()"
+              @passTestAgain="passTestAgain()"
+              @reviewLesson="reviewLesson()"
+              @writeMaster="writeMaster()"
+          />
+        </v-col>
     <!-- todo logic and connection plus components -->
     <h2 class="discussion-title mt-6" v-if="!isMobile">Обсуждение</h2>
     <v-row no-gutters v-if="!isMobile">
@@ -115,7 +115,8 @@
                     <div class="desc">25 Января, 16:20</div>
                   </v-row>
                   <v-row no-gutters>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat orci varius molestie facilisis sed diam.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat orci varius molestie facilisis sed
+                    diam.
                     Orci habitasse in dolor in diam. Ac at mauris diam lobortis varius convallis metus sed. Cursus lorem
                     hendrerit sed etiam.
                   </v-row>
@@ -145,13 +146,13 @@ import Lessons from '../../components/lessons/Lessons.vue';
 import Button from '../../components/common/Button.vue';
 import TestingComponent from '../../components/forms/testing/TestingComponent.vue';
 import Relation from '../../components/common/Relation.vue';
-import {VideoStream} from 'stream-vue';
 import {QuestionsStore} from '@/store/modules/Questions';
 import {ITesting} from '@/entity/testing/testing.types';
 import {RightAnswersStore} from '@/store/modules/RightAnswers';
 import TestingResult from '@/entity/testingResult/testingResult';
 import {TestingResultResponseType} from '@/entity/testingResult/testingResult.types';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
+import {VideoOptionsStore} from '../../../store/modules/VideoOptions';
 
 @Component({
   components: {
@@ -159,34 +160,28 @@ import {AdaptiveStore} from '@/store/modules/Adaptive';
     Button,
     TestingComponent,
     Relation,
-    VideoStream,
   },
 })
 export default class Lesson extends Vue {
   @Prop() readonly isPlaying!: boolean;
   result: TestingResult | null = null;
-  testingForm: TestingForm;
+  testingForm = new TestingForm();
   activeResult = false;
-
-  constructor() {
-    super();
-    this.testingForm = new TestingForm(this.questions!.tests);
-  }
 
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
     await this.fetchData();
-    this.testingForm = new TestingForm(this.questions!.tests);
-    this.activeResult = false;
-    if (this.questionsLoaded === true) {
+    if (this.questionsLoaded === true && this.questions) {
+      this.testingForm = new TestingForm(this.questions.tests);
+      this.activeResult = false;
       this.testingForm.activeStep[0].active = true;
     }
   }
 
   @Watch('questionsLoaded')
   onChangeLoad(): void {
-    if (this.questionsLoaded === true) {
-      this.testingForm = new TestingForm(this.questions!.tests);
+    if (this.questionsLoaded === true && this.questions) {
+      this.testingForm = new TestingForm(this.questions.tests);
       this.testingForm.activeStep[0].active = true;
       this.activeResult = false;
     }
@@ -200,9 +195,10 @@ export default class Lesson extends Vue {
   }
 
   async fetchData(): Promise<void> {
-    await LessonItemStore.fetchData(this.$route.params.lessonId);
-    if (this.lessonLoaded) {
-      await QuestionsStore.fetchAll(this.lesson!.homeworkId.toString());
+    await LessonItemStore.fetchData(this.$route.params.lessonId.toString());
+    if (this.lessonLoaded && this.lesson) {
+      VideoOptionsStore.handleVideo({src: this.lesson.m3u8FileLink, poster: this.lesson.photoLink});
+      await QuestionsStore.fetchAll(this.lesson.homeworkId.toString());
     }
   }
 
@@ -226,6 +222,10 @@ export default class Lesson extends Vue {
     return AdaptiveStore.isMobile;
   }
 
+  get options(): any {
+    return VideoOptionsStore.options;
+  }
+
   async mounted(): Promise<void> {
     if (this.$route.params.lessonId) {
       await this.fetchData();
@@ -244,16 +244,16 @@ export default class Lesson extends Vue {
     this.$emit('passFile', this.lesson!.files);
   }
 
-  async send(): Promise<void> {
-    await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.$route.params.lessonId});
-    if (RightAnswersStore.answersLoaded) {
-      const response = RightAnswersStore.rightAnswers;
-      if (response) {
-        this.activeResult = true;
-        this.result = new TestingResult(this.questions!.tests, response as TestingResultResponseType);
-      }
-    }
-  }
+  // async send(): Promise<void> {
+  //   await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.$route.params.lessonId});
+  //   if (RightAnswersStore.answersLoaded) {
+  //     const response = RightAnswersStore.rightAnswers;
+  //     if (response) {
+  //       this.activeResult = true;
+  //       this.result = new TestingResult(this.questions!.tests, response as TestingResultResponseType);
+  //     }
+  //   }
+  // }
 }
 </script>
 
@@ -318,9 +318,11 @@ export default class Lesson extends Vue {
     background: rgba(66, 109, 246, 0.12);
     border-radius: 2px 16px 16px 16px;
     max-width: 570px;
+
     &.child {
       max-width: 490px;
     }
+
     .desc {
       font-size: 12px;
     }
@@ -361,59 +363,5 @@ export default class Lesson extends Vue {
 
 .materials {
   margin-top: 66px;
-}
-
-.video-js {
-  font-size: 22px !important;
-  border-radius: 12px;
-
-  video {
-    border-radius: 12px;
-  }
-
-  .vjs-control-bar {
-    bottom: 10px;
-    background-color: transparent !important;
-
-    .vjs-control {
-      width: 8em !important;
-
-      .vjs-icon-placeholder {
-        font-size: 15px;
-
-        &::before {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-      }
-    }
-
-    .vjs-play-control {
-      margin-left: 20px !important;
-    }
-
-    .vjs-progress-control {
-      .vjs-slider {
-        background: rgba(255, 255, 255, 0.3);
-
-        .vjs-load-progress {
-          background-color: #F2F2F2;
-        }
-
-        .vjs-play-progress {
-          background-color: #FF4D2C;
-        }
-      }
-
-      .vjs-progress-holder {
-        height: 0.4em;
-      }
-    }
-
-    .vjs-fullscreen-control {
-      margin-right: 20px !important;
-    }
-  }
 }
 </style>
