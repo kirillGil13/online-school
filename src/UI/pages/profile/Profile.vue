@@ -198,6 +198,10 @@ export default class Profile extends Vue {
     return ProfilePictureStore.profilePictureLoaded;
   }
 
+  created(): void {
+      document.title = this.user.fullName + ' - ' + 'OneLinks';
+  }
+
 
 }
 </script>

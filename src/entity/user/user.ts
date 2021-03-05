@@ -38,6 +38,9 @@ export class User implements IUser {
     get initials(): string {
         return this.lastName[0].toUpperCase() + this.name[0].toUpperCase();
     }
+    get fullName(): string {
+        return this.lastName + ' ' + this.name;
+    }
 
     getRequestData(): UserRequestType {
         return {

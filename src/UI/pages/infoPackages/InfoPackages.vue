@@ -8,8 +8,9 @@
     >
     </Header>
     <v-col class="d-flex flex-row flex-wrap mt-6 pa-0">
-      <InfoPackageComponent v-for="(item, index) in infoPackages" :key="index" :info-package="item" @proceed="proceed"/>
+      <InfoPackageComponent v-for="(item, index) in infoPackages" :key="index" :info-package="item" @proceed="proceed" @copied="copied"/>
     </v-col>
+    <Alert :show="show" :type="alertType.Success" text="Скопировано в буфер обмена" @show="showAlert"/>
   </v-col>
 </template>
 
@@ -23,13 +24,31 @@ import {IUser} from '../../../entity/user';
 import {AuthStore} from '../../../store/modules/Auth';
 import {RouterNameEnum} from '../../../router/router.types';
 import Api from '../../../repository/api';
+import Alert from '../../components/common/Alert.vue';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
 
 @Component({
-  components: {Header, InfoPackageComponent}
+  components: {Alert, Header, InfoPackageComponent}
 })
 export default class InfoPackages extends Vue {
-  async created(): Promise<void> {
-    await InfoPackagesStore.fetchAll();
+  show = false;
+  alertType = AlertTypeEnum;
+
+  proceed(id: number): void {
+    const routeData = this.$router.resolve({
+      name: RouterNameEnum.Landing,
+      params: {id: id.toString()},
+      query: {account_id: this.user.id.toString()}//eslint-disable-line
+    });
+    window.open(routeData.href, '_blank');
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
+  }
+
+  copied(): void {
+    this.show = true;
   }
 
   get infoPackages(): IInfoPackage[] {
@@ -38,6 +57,10 @@ export default class InfoPackages extends Vue {
 
   get user(): IUser {
     return AuthStore.user;
+  }
+
+  async created(): Promise<void> {
+    await InfoPackagesStore.fetchAll();
   }
 
   async addLessons(): Promise<void> {
@@ -52,15 +75,6 @@ export default class InfoPackages extends Vue {
     if (response) {
       console.log(response);
     }
-  }
-
-  proceed(id: number): void {
-    const routeData = this.$router.resolve({
-      name: RouterNameEnum.Landing,
-      params: {id: id.toString()},
-      query: {account_id: this.user.id.toString()}//eslint-disable-line
-    });
-    window.open(routeData.href, '_blank');
   }
 }
 </script>

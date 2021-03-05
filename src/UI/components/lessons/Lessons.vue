@@ -1,5 +1,5 @@
 <template>
-  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="39/23">
+  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="42/44">
     <div class="lessons-block box-container">
       <div class="lesson-container">
         <ul class="lesson-list">
@@ -69,7 +69,7 @@ export default class Lessons extends Vue {
     .lesson-container {
       width: 100%;
       overflow: scroll;
-      height: 65%;
+      height: 80%;
 
       ul {
         padding: 0;
