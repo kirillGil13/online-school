@@ -95,7 +95,6 @@
         </v-row>
       </div>
     </v-col>
-    <Alert :success="success" :show="show" @change="changeAlert"/>
   </v-row>
 </template>
 
@@ -141,7 +140,6 @@ export default class Profile extends Vue {
   contactDataForm: ProfileContactDataForm;
   editForm!: ProfileEditForm;
   pictureChanged = false;
-  show = false;
   success = false;
   activeName = 0;
   AvatarSizeEnum = AvatarSizeEnum;
@@ -166,11 +164,6 @@ export default class Profile extends Vue {
     this.contactDataForm = new ProfileContactDataForm();
     this.contactDataForm.setFormData(this.user);
 
-  }
-
-  changeAlert(show: boolean, success: boolean): void {
-    this.show = show;
-    this.success = success;
   }
 
   private logOut(): void {

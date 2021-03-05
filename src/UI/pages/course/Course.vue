@@ -59,7 +59,6 @@ import {ICourseItem, ICourseLessons} from '@/entity/courseItem/courseItem.type';
 import Lessons from '@/UI/components/lessons/Lessons.vue';
 import {RouterNameEnum} from '@/router/router.types';
 import {CourseItemStore} from '@/store/modules/CourseItem';
-import {VideoStream} from 'stream-vue'
 import Doc from '@/UI/components/common/Doc.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {LessonsTypesEnum} from '../../../entity/common/lessons.types';
@@ -72,7 +71,6 @@ import {ILessonItemFiles} from '../../../entity/lessonItem/lessonItem.types';
     Button,
     TestingComponent,
     Relation,
-    VideoStream,
     Doc
   },
 })

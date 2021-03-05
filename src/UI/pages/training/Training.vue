@@ -33,7 +33,12 @@
     <!--        </div>-->
     <!--      </v-row>-->
     <!--    </v-col>-->
-    <router-view :leaderCourses="leadersCourses"/>
+    <router-view v-if="leadersCourses.length !== 0" :leaderCourses="leadersCourses"/>
+    <v-row v-else-if="leadersCoursesLoaded">
+      <v-col class="mt-10 d-flex justify-center align-center">
+        К сожалению данные не найдены
+      </v-col>
+    </v-row>
   </v-col>
 </template>
 <script lang="ts">
@@ -55,9 +60,12 @@ import {LeadersCoursesStore} from '../../../store/modules/LeadersCourses';
 import {ILeaderCourses} from '../../../entity/leaderCourses/leaderCourses.types';
 import {CourseLevelsStore} from '../../../store/modules/CourseLevels';
 import {ICourseLevels} from '../../../entity/courseLevels/courseLevels.types';
+import Alert from '../../components/common/Alert.vue';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
 
 @Component({
   components: {
+    Alert,
     FilterComponent,
     LeaderCourseItem,
     Button,
@@ -71,6 +79,7 @@ import {ICourseLevels} from '../../../entity/courseLevels/courseLevels.types';
 export default class Training extends Vue {
   filters: Filters;
   searchBody = '';
+  alertType = AlertTypeEnum;
 
   constructor() {
     super();
@@ -97,6 +106,10 @@ export default class Training extends Vue {
 
   get leadersCourses(): ILeaderCourses[] {
     return LeadersCoursesStore.leadersCourses;
+  }
+
+  get leadersCoursesLoaded(): boolean {
+    return LeadersCoursesStore.leadersCoursesLoaded;
   }
 
   get courseLevels(): ICourseLevels[] {

@@ -56,6 +56,11 @@
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
       </v-col>
     </v-row>
+    <v-row v-else-if="candidatesLoaded">
+      <v-col class="mt-10 d-flex justify-center align-center">
+        К сожалению данные не найдены
+      </v-col>
+    </v-row>
     <Modal v-if="statusesLoaded && infoPackagesLoaded" :activator="activator" @activatorChange="activatorChange">
       <template v-slot:content>
         <CandidateFormComponent :form="candidateForm" v-if="destroy" :statuses="statuses" :info-packs="infoPackages"
@@ -183,6 +188,10 @@ export default class Candidates extends Vue {
 
   get candidates(): ICandidate[] {
     return CandidatesStore.candidates;
+  }
+
+  get candidatesLoaded(): boolean {
+    return CandidatesStore.candidatesLoaded;
   }
 
   get candidateItem(): ICandidateItem | null {

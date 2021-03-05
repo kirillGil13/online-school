@@ -11,3 +11,4 @@ export * from './Moment';
 export * from './ClipBoard';
 export * from './Cookie';
 export * from './DateTime';
+export * from './VueVideoPlayer';

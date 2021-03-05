@@ -2,7 +2,7 @@
     <div>
         <h5>Тестирование</h5>
         <TestingFormVue :form="form" v-if="!activeResult" v-on="$listeners"/>
-        <TestingResultComponent v-else v-on="$listeners" :result="result" :buttonType="result.result()" />
+      <TestingResultComponent v-else v-on="$listeners" :result="result" :buttonType="result.result()" />
     </div>
 </template>
 <script lang="ts">
