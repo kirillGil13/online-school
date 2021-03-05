@@ -12,9 +12,9 @@
       </div>
     </div>
     <div class="course-title">{{ infoPackage.name }}</div>
-    <div class="course-download">
-      <svg-icon v-clipboard="infoPackage.sharedLink" class="svg-wh" name="Copy" />
-      <span v-clipboard="infoPackage.sharedLink">Скопировать ссылку</span>
+    <div class="course-download" v-clipboard="infoPackage.sharedLink" @click="$emit('copied')">
+      <svg-icon class="svg-wh" name="Copy" />
+      <span>Скопировать ссылку</span>
     </div>
   </div>
 </template>

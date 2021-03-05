@@ -171,24 +171,24 @@ export default class Lesson extends Vue {
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
     await this.fetchData();
-    if (this.questionsLoaded === true && this.questions) {
-      this.testingForm = new TestingForm(this.questions.tests);
-      this.activeResult = false;
-      this.testingForm.activeStep[0].active = true;
-    }
+    // //this.testingForm = new TestingForm(this.questions.tests);
+    // this.activeResult = false;
+    // if (this.questionsLoaded === true) {
+    //   this.testingForm.activeStep[0].active = true;
+    // }
   }
 
   @Watch('questionsLoaded')
   onChangeLoad(): void {
-    if (this.questionsLoaded === true && this.questions) {
-      this.testingForm = new TestingForm(this.questions.tests);
+    if (this.questionsLoaded === true) {
+      this.testingForm = new TestingForm(this.questions!.tests);
       this.testingForm.activeStep[0].active = true;
       this.activeResult = false;
     }
   }
 
   @Watch('lessonLoaded')
-  onLessonLoaded(): void {
+  async onLessonLoaded(): Promise<void> {
     if (this.lessonLoaded === true) {
       this.passFiles();
     }
@@ -196,9 +196,9 @@ export default class Lesson extends Vue {
 
   async fetchData(): Promise<void> {
     await LessonItemStore.fetchData(this.$route.params.lessonId.toString());
-    if (this.lessonLoaded && this.lesson) {
-      VideoOptionsStore.handleVideo({src: this.lesson.m3u8FileLink, poster: this.lesson.photoLink});
-      await QuestionsStore.fetchAll(this.lesson.homeworkId.toString());
+    if (this.lessonLoaded) {
+      VideoOptionsStore.handleVideo({src: this.lesson!.m3u8FileLink, poster: this.lesson!.photoLink});
+      await QuestionsStore.fetchAll(this.lesson!.homeworkId);
     }
   }
 

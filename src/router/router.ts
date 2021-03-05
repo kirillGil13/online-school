@@ -33,6 +33,9 @@ const routes = [
             {
                 path: '/main',
                 name: 'Main',
+                meta: {
+                    title: 'Главная -  OneLinks'
+                },
                 component: () => import('../UI/pages/main/Main.vue'),
             },
             {
@@ -42,6 +45,9 @@ const routes = [
             },
             {
                 path: '/training',
+                meta: {
+                    title: 'Обучение -  OneLinks'
+                },
                 component: () => import('../UI/pages/training/Training.vue'),
                 children: [
                     {
@@ -70,22 +76,34 @@ const routes = [
             },
             {
                 path: '/candidates',
+                meta: {
+                    title: 'Кандидаты -  OneLinks'
+                },
                 name: RouterNameEnum.Candidates,
                 component: () => import('../UI/pages/candidates/Candidates.vue'),
 
             },
             {
                 path: '/candidates/statistics',
+                meta: {
+                    title: 'Кандидаты статистика -  OneLinks'
+                },
                 name: RouterNameEnum.CandidatesStatistics,
                 component: () => import('../UI/pages/candidates/CandidatesStatistics.vue')
             },
             {
                 path: '/my-studies',
+                meta: {
+                    title: 'Я изучаю -  OneLinks'
+                },
                 name: RouterNameEnum.MyStudies,
                 component: () => import('../UI/pages/myStudies/MyStudies.vue')
             },
             {
                 path: '/chat',
+                meta: {
+                    title: 'Чат -  OneLinks'
+                },
                 component: () => import('../UI/pages/chat/Chat.vue'),
                 children: [
                     {
@@ -107,11 +125,17 @@ const routes = [
             },
             {
                 path: '/infoPackages',
+                meta: {
+                    title: 'Инфопакеты -  OneLinks'
+                },
                 component: () => import('../UI/pages/infoPackages/InfoPackages.vue'),
                 name: RouterNameEnum.InfoPackages
             },
             {
                 path: '/chosen',
+                meta: {
+                    title: 'Избранное -  OneLinks'
+                },
                 component: () => import('../UI/pages/chosen/Chosen.vue'),
                 name: RouterNameEnum.Chosen
             },
@@ -142,3 +166,21 @@ Vue.router = new Router({
     routes,
 });
 export const router = Vue.router;
+
+router.beforeEach((to, from, next) => {
+    const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+    const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+    if(nearestWithTitle) document.title = nearestWithTitle.meta.title;
+    Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode?.removeChild(el));
+    if(!nearestWithMeta) return next();
+    nearestWithMeta.meta.metaTags.map((tagDef: any) => {
+        const tag = document.createElement('meta');
+        Object.keys(tagDef).forEach(key => {
+            tag.setAttribute(key, tagDef[key]);
+        });
+        tag.setAttribute('data-vue-router-controlled', '');
+        return tag;
+    })
+        .forEach((tag: any) => document.head.appendChild(tag));
+    next();
+});

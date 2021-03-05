@@ -7,29 +7,30 @@
           <router-view :isPlaying="isPlaying" @onPlayerPlay="onPlayerPlay" @passFile="passFile"></router-view>
           <div :class="['lessons', isMobile ? 'mb-3' : 'ml-4']" :style="{width: isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course"/>
-            <div class="contacts" v-if="!isMobile">
-              <div class="contacts__content">
-                <div class="contacts__item d-flex flex-row">
-                  <v-avatar class="mr-3">
-                    <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">
-                  </v-avatar>
-                  <div class="details d-flex flex-column justify-center">
-                    <h3 class="ma-0">Ильгиз Шакиров</h3>
-                    <div class="details-desc">Автор курса</div>
-                  </div>
-                </div>
-                <v-divider class="mt-4 mb-4"></v-divider>
-                <div class="contacts__item d-flex flex-row">
-                  <v-avatar class="mr-3">
-                    <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">
-                  </v-avatar>
-                  <div class="details d-flex flex-column justify-center">
-                    <h3 class="ma-0">Ильгиз Шакиров</h3>
-                    <div class="details-desc">Ваш лидер</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+<!--todo or not ?-->
+<!--            <div class="contacts" v-if="!isMobile">-->
+<!--              <div class="contacts__content">-->
+<!--                <div class="contacts__item d-flex flex-row">-->
+<!--                  <v-avatar class="mr-3">-->
+<!--                    <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">-->
+<!--                  </v-avatar>-->
+<!--                  <div class="details d-flex flex-column justify-center">-->
+<!--                    <h3 class="ma-0">Ильгиз Шакиров</h3>-->
+<!--                    <div class="details-desc">Автор курса</div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <v-divider class="mt-4 mb-4"></v-divider>-->
+<!--                <div class="contacts__item d-flex flex-row">-->
+<!--                  <v-avatar class="mr-3">-->
+<!--                    <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">-->
+<!--                  </v-avatar>-->
+<!--                  <div class="details d-flex flex-column justify-center">-->
+<!--                    <h3 class="ma-0">Ильгиз Шакиров</h3>-->
+<!--                    <div class="details-desc">Ваш лидер</div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
             <v-col class="box-container pa-6 pb-8 materials" v-if="!isMobile && files === []">
               <h5>МАТЕРИАЛЫ К УРОКУ</h5>
               <Doc v-for="(item, index) in files" :key="index" :material="item"/>
@@ -94,6 +95,9 @@ export default class Course extends Vue {
 
   async created(): Promise<void> {
     await this.fetchData();
+    if (this.courseLoaded) {
+      document.title = this.course!.name + ' - ' + 'OneLinks';
+    }
     if (!this.$route.params.lessonId) {
       await this.$router.push({name: RouterNameEnum.Lesson, params: {lessonId: this.findCurrent(this.course!.lessons).toString()}});
     }
