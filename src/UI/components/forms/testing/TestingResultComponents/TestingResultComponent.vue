@@ -1,14 +1,14 @@
 <template>
     <v-row>
-        <SuccessComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.SUCCESS" />
-        <ProceedComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.PROCEED" />
-        <FailComponent :result="result" v-on="$listeners" v-if="buttonType === buttonTypes.FAIL" />
+        <SuccessComponent :result="result" v-on="$listeners" v-if="resultType.GOOD === result.result" />
+        <ProceedComponent :result="result" v-on="$listeners" v-if="resultType.MIDDLE === result.result" />
+        <FailComponent :result="result" v-on="$listeners" v-if="resultType.BAD === result.result" />
     </v-row>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TestingResult from '../../../../../entity/testingResult/testingResult';
-import { TestingResultComponentsEnum } from '../../../../../entity/testingResultComponents/testingResultComponents.types';
+import { TestingResultComponentsEnum } from '../../../../../entity/common/testingResultComponents.types';
 import SuccessComponent from './components/SuccessComponent.vue';
 import ProceedComponent from './components/ProceedComponent.vue';
 import FailComponent from './components/FailComponent.vue';
@@ -22,10 +22,7 @@ import FailComponent from './components/FailComponent.vue';
 })
 export default class TestingResultComponent extends Vue {
     @Prop() readonly result!: TestingResult;
-    @Prop() readonly buttonType!: string;
-    get buttonTypes(): typeof TestingResultComponentsEnum {
-        return TestingResultComponentsEnum;
-    }
+    resultType = TestingResultComponentsEnum;
 }
 </script>
 <style lang="scss">

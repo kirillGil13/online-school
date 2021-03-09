@@ -1,37 +1,42 @@
 <template>
   <div class="course" :style="{width: isMobile ? '100%' : '', order: isMobile ? 2 : ''}">
-    <v-responsive :aspect-ratio="16/9" content-class="course-container">
-      <h1 v-if="!isPlaying && lessonLoaded" class="abs">{{ lesson.name }}</h1>
+    <v-responsive v-if="lessonLoaded" :aspect-ratio="16/9" content-class="course-container">
+      <h1 v-if="!isPlaying" class="abs">{{ lesson.name }}</h1>
       <video-player
           ref="videoPlayer"
           class="video-player vjs-custom-skin"
           :playsinline="true"
           :options="options"
-          v-if="lessonLoaded"
+          @timeupdate="onPlayerTimeupdate($event)"
+          @ready="playerReadied"
+          @play="onPlayerPlay"
+          @pause="onPlayerPause"
+          @loadeddata="onPlayerLoadeddata"
       />
     </v-responsive>
+    <v-btn @click="play = true"></v-btn>
     <v-row class="course-video-row" v-if="lessonLoaded">
-      <Relation svg-name="Finger" :title="isMobile ? '' : 'Нравится'"/>
-      <Relation svg-class="svg-down" svg-name="Finger" :title="isMobile ? '' : 'Не нравится'"/>
-      <Relation svg-name="Chosen" :title="isMobile ? '' : 'В избранное'"/>
+      <Relation svg-name="Finger" :title="isMobile ? '' : 'Нравится'" @click="$emit('handleLike', true)"/>
+      <Relation svg-class="svg-down" svg-name="Finger" :title="isMobile ? '' : 'Не нравится'" @click="$emit('handleLike', false)"/>
+      <Relation svg-name="Chosen" :title="isMobile ? '' : 'В избранное'" @click="$emit('handleFavourite')"/>
       <Relation svg-name="Message" :title="isMobile ? '' : 'Обсудить'"/>
     </v-row>
     <v-col :class="['box-container', isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
       <h5>ОПИСАНИЕ</h5>
       <span class="desc">{{ lesson.description }}</span>
     </v-col>
-        <v-col v-if="questionsLoaded && questions" :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
-          <TestingComponent
-              :form="testingForm"
-              :result="result"
-              :active-result="activeResult"
-              @send="send()"
-              @moveToNextLesson="moveToNextLesson()"
-              @passTestAgain="passTestAgain()"
-              @reviewLesson="reviewLesson()"
-              @writeMaster="writeMaster()"
-          />
-        </v-col>
+    <v-col v-if="lessonLoaded && (questions !== null || result !== null) && lesson.homeworkId" :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
+      <TestingComponent
+          :form="testingForm"
+          :result="result"
+          :homework-is-done="lesson.homeworkIsDone"
+          @send="send()"
+          @moveToNextLesson="moveToNextLesson()"
+          @passTestAgain="passTestAgain()"
+          @reviewLesson="reviewLesson()"
+          @writeMaster="writeMaster()"
+      />
+    </v-col>
     <!-- todo logic and connection plus components -->
     <h2 class="discussion-title mt-6" v-if="!isMobile">Обсуждение</h2>
     <v-row no-gutters v-if="!isMobile">
@@ -144,38 +149,38 @@ import {LessonItemStore} from '@/store/modules/LessonItem';
 import {ILessonItem} from '@/entity/lessonItem/lessonItem.types';
 import Lessons from '../../components/lessons/Lessons.vue';
 import Button from '../../components/common/Button.vue';
-import TestingComponent from '../../components/forms/testing/TestingComponent.vue';
 import Relation from '../../components/common/Relation.vue';
 import {QuestionsStore} from '@/store/modules/Questions';
 import {ITesting} from '@/entity/testing/testing.types';
 import {RightAnswersStore} from '@/store/modules/RightAnswers';
-import TestingResult from '@/entity/testingResult/testingResult';
-import {TestingResultResponseType} from '@/entity/testingResult/testingResult.types';
+import {ITestingResult} from '@/entity/testingResult/testingResult.types';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {VideoOptionsStore} from '../../../store/modules/VideoOptions';
+import TestingResultComponent from '../../components/forms/testing/TestingResultComponents/TestingResultComponent.vue';
+import TestingFormComponent from '../../components/forms/testing/TestingFormComponent.vue'
+import TestingComponent from '../../components/forms/testing/TestingResultComponents/TestingComponent.vue';
 
 @Component({
   components: {
+    TestingComponent,
+    TestingResultComponent,
     Lessons,
     Button,
-    TestingComponent,
+    TestingFormComponent,
     Relation,
   },
 })
 export default class Lesson extends Vue {
-  @Prop() readonly isPlaying!: boolean;
-  result: TestingResult | null = null;
+  @Prop() readonly isLiked!: boolean;
+  @Prop() readonly isDisliked!: boolean;
+  @Prop() readonly isFavourite!: boolean;
   testingForm = new TestingForm();
-  activeResult = false;
+  isPlaying = false;
+  play = false;
 
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
     await this.fetchData();
-    // //this.testingForm = new TestingForm(this.questions.tests);
-    // this.activeResult = false;
-    // if (this.questionsLoaded === true) {
-    //   this.testingForm.activeStep[0].active = true;
-    // }
   }
 
   @Watch('questionsLoaded')
@@ -183,7 +188,6 @@ export default class Lesson extends Vue {
     if (this.questionsLoaded === true) {
       this.testingForm = new TestingForm(this.questions!.tests);
       this.testingForm.activeStep[0].active = true;
-      this.activeResult = false;
     }
   }
 
@@ -197,8 +201,16 @@ export default class Lesson extends Vue {
   async fetchData(): Promise<void> {
     await LessonItemStore.fetchData(this.$route.params.lessonId.toString());
     if (this.lessonLoaded) {
-      VideoOptionsStore.handleVideo({src: this.lesson!.m3u8FileLink, poster: this.lesson!.photoLink});
-      await QuestionsStore.fetchAll(this.lesson!.homeworkId);
+      VideoOptionsStore.handleVideo({
+        src: this.lesson!.m3u8FileLink,
+        poster: this.lesson!.photoLink,
+        currentTime: this.lesson!.timeCode
+      });
+      if (this.lesson!.homeworkIsDone) {
+        await RightAnswersStore.fetchAll(this.lesson!.homeworkId);
+      } else {
+        await QuestionsStore.fetchAll(this.lesson!.homeworkId);
+      }
     }
   }
 
@@ -226,34 +238,66 @@ export default class Lesson extends Vue {
     return VideoOptionsStore.options;
   }
 
-  async mounted(): Promise<void> {
+  get result(): ITestingResult | null {
+    return RightAnswersStore.rightAnswers;
+  }
+
+  get resultLoaded(): boolean {
+    return RightAnswersStore.answersLoaded;
+  }
+
+  async created(): Promise<void> {
     if (this.$route.params.lessonId) {
       await this.fetchData();
     }
   }
 
-  passTestAgain(): void {
-    window.location.reload();
+  async onPlayerTimeupdate(e: any): Promise<void> {
+    if (parseInt(e.cache_.currentTime) % 5 === 0 && e.cache_.currentTime % 1 > 0.75 && parseInt(e.cache_.currentTime) !== 0) {
+      await LessonItemStore.setTimeCode({
+        lessonId: this.$route.params.lessonId,
+        timeCode: {time_code: parseInt(e.cache_.currentTime)}//eslint-disable-line
+      });
+    }
   }
 
-  reviewLesson(): void {
-    window.location.reload();
+  async passTestAgain(): Promise<void> {
+    await QuestionsStore.fetchAll(this.lesson!.homeworkId);
+    this.$set(this.lesson!, 'homeworkIsDone', false);
+  }
+
+  async reviewLesson(): Promise<void> {
+    await LessonItemStore.setTimeCode({
+      lessonId: this.$route.params.lessonId,
+      timeCode: {time_code: 0}//eslint-disable-line
+    });
   }
 
   passFiles(): void {
     this.$emit('passFile', this.lesson!.files);
   }
 
-  // async send(): Promise<void> {
-  //   await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.$route.params.lessonId});
-  //   if (RightAnswersStore.answersLoaded) {
-  //     const response = RightAnswersStore.rightAnswers;
-  //     if (response) {
-  //       this.activeResult = true;
-  //       this.result = new TestingResult(this.questions!.tests, response as TestingResultResponseType);
-  //     }
-  //   }
-  // }
+  playerReadied(player: any): void {
+    this.isPlaying = false;
+    player.currentTime(this.lesson!.timeCode);
+  }
+
+  onPlayerPlay(): void {
+    this.isPlaying = true;
+  }
+
+  onPlayerPause(): void {
+    this.isPlaying = false;
+  }
+
+  onPlayerLoadeddata(): void {
+    console.log('player loadedData');
+  }
+
+  async send(): Promise<void> {
+    await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.$route.params.lessonId});
+    this.$set(this.lesson!, 'homeworkIsDone', true);
+  }
 }
 </script>
 

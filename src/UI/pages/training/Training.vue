@@ -5,11 +5,13 @@
         <Button class="mt-0">Добавить свой курс</Button>
       </div>
     </Header>
-    <div class="slider-title d-flex flex-row justify-space-between align-end mb-4">
-      <h5>Топ лидеры</h5>
-      <router-link :to="''">Показать все</router-link>
-    </div>
-    <SliderLeaders v-if="leaders !== []" :leaders="leaders"/>
+    <template v-if="leaders.length !== 0 && leadersCoursesLoaded">
+      <div class="slider-title d-flex flex-row justify-space-between align-end mb-4">
+        <h5>Топ лидеры</h5>
+        <router-link :to="''">Показать все</router-link>
+      </div>
+      <SliderLeaders :leaders="leaders"/>
+    </template>
     <v-row>
       <v-col class="py-0">
         <FilterComponent :search="true" :is-on-right="true" :filters="filters" @filter="onFilter">
@@ -33,8 +35,8 @@
     <!--        </div>-->
     <!--      </v-row>-->
     <!--    </v-col>-->
-    <router-view v-if="leadersCourses.length !== 0" :leaderCourses="leadersCourses"/>
-    <v-row v-else-if="leadersCoursesLoaded">
+    <router-view v-if="leadersCourses.length !== 0 || !leadersCoursesLoaded" :leaderCourses="leadersCourses"/>
+    <v-row v-else>
       <v-col class="mt-10 d-flex justify-center align-center">
         К сожалению данные не найдены
       </v-col>
@@ -88,8 +90,8 @@ export default class Training extends Vue {
 
   @Watch('courseLevelsLoaded', {immediate: true})
   onFilterStatusChange(): void {
-    for (let i = 1; i < this.courseLevels.length; i++) {
-      this.$set(this.filters.filterBody[0].filterValue, i, {
+    for (let i = 0; i < this.courseLevels.length; i++) {
+      this.$set(this.filters.filterBody[0].filterValue, i + 1, {
         text: this.courseLevels[i].name,
         value: this.courseLevels[i].id
       });
@@ -138,14 +140,14 @@ export default class Training extends Vue {
     });
   }
 
-  async created(): Promise<void> {
-    await this.fetchData();
+  created(): void {
+    this.fetchData();
   }
 
-  async fetchData(): Promise<void> {
-    await LeadersStore.fetchAll();
-    await LeadersCoursesStore.fetchAll();
-    await CourseLevelsStore.fetchAll();
+  fetchData(): void {
+    LeadersStore.fetchAll();
+    CourseLevelsStore.fetchAll();
+    LeadersCoursesStore.fetchAll();
   }
 }
 </script>

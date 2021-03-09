@@ -1,10 +1,10 @@
 <template>
     <div class="circle">
         <div class="legend-value">
-            <div ref="legend" class="legend">{{ result.totalRightAnswers }} из {{ result.questionLength }}</div>
+            <div ref="legend" class="legend">{{ result.rightAnswers }} из {{ result.totalAnswers }}</div>
         </div>
         <vue-ellipse-progress
-            :progress="result.progress"
+            :progress="result.percent"
             :size="120"
             :color="color()"
             emptyColor="#f2f2f2"
@@ -21,31 +21,30 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TestingResult from '@/entity/testingResult/testingResult';
+import {TestingResultComponentsEnum} from '../../../entity/common/testingResultComponents.types';
 
 @Component
 export default class ProgressCircleTesting extends Vue {
     @Prop() readonly result!: TestingResult;
 
     myFormatter(): string {
-        return Math.ceil(this.result.progress).toString() + '%';
+        return Math.ceil(this.result.percent).toString() + '%';
     }
     color(): string {
-        if (this.result.progress <= 75 && this.result.progress > 20) {
-            return '#F2994A';
-        } else if (this.result.progress <= 20) {
-            return '#EB5757';
-        } else {
-            return '#27AE60';
-        }
+      let color = '';
+      switch (this.result.result) {
+        case TestingResultComponentsEnum.MIDDLE: color = '#F2994A'; break;
+        case TestingResultComponentsEnum.BAD: color = '#EB5757'; break;
+        case TestingResultComponentsEnum.GOOD: color = '#27AE60'; break;
+      }
+      return color;
     }
     colorLegend(): void {
-        if (this.result.progress <= 75 && this.result.progress > 20) {
-            (this.$refs.legend as HTMLElement).style.color = '#F2994A';
-        } else if (this.result.progress <= 20) {
-            (this.$refs.legend as HTMLElement).style.color = '#EB5757';
-        } else {
-            (this.$refs.legend as HTMLElement).style.color = '#27AE60';
-        }
+      switch (this.result.result) {
+        case TestingResultComponentsEnum.MIDDLE: (this.$refs.legend as HTMLElement).style.color = '#F2994A'; break;
+        case TestingResultComponentsEnum.BAD: (this.$refs.legend as HTMLElement).style.color = '#EB5757'; break;
+        case TestingResultComponentsEnum.GOOD: (this.$refs.legend as HTMLElement).style.color = '#27AE60'; break;
+      }
     }
     mounted(): void {
         this.colorLegend();

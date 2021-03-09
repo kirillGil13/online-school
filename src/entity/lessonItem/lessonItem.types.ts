@@ -8,6 +8,8 @@ export interface ILessonItem {
     photoLink: string;
     homeworkId: number;
     timeCode: number;
+    duration: number;
+    homeworkIsDone: boolean;
     files: ILessonItemFiles[];
 }
 export interface ILessonItemFiles {
@@ -23,10 +25,15 @@ export type LessonItemResponseType = {
     description: string;
     photoLink: string;
     homeworkId: number;
-    time_code: number;
+    timeCode: number;
+    duration: number;
+    homeworkIsDone: boolean;
     files: LessonItemFilesResponseType[];
 }
 export type LessonItemFilesResponseType = {
     name: string;
     fileLink: string;
+}
+export type LessonItemTimeCodeRequestType = {
+    time_code: number;
 }
