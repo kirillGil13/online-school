@@ -1,6 +1,6 @@
-import { getModule, Module, MutationAction, VuexModule } from 'vuex-module-decorators';
+import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import {ILessonItem} from '@/entity/lessonItem/lessonItem.types';
+import {ILessonItem, LessonItemTimeCodeRequestType} from '@/entity/lessonItem/lessonItem.types';
 
 @Module({
     namespaced: true,
@@ -17,6 +17,12 @@ class LessonItemModule extends VuexModule {
         const lessonItem = await store.$repository.lessonItem.fetchData(lessonId);
         const lessonLoaded = true;
         return { lessonItem, lessonLoaded };
+    }
+
+    @Action({rawError: true})
+    async setTimeCode(data: {lessonId: string; timeCode: LessonItemTimeCodeRequestType}): Promise<boolean> {
+        const response = await store.$repository.lessonItem.setTimeCode(data.lessonId, data.timeCode);
+        return response;
     }
 }
 

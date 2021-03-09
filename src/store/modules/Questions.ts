@@ -14,15 +14,18 @@ class QuestionsModule extends VuexModule {
 
     @MutationAction
     async fetchAll(homeworkId: number | null): Promise<{ questions: ITesting | null; questionsLoaded: boolean }> {
-        this.questionsLoaded = false;
-        if (homeworkId) {
+        if (homeworkId !== null) {
             const questions = await store.$repository.questions.fetchAll(homeworkId.toString());
             let questionsLoaded = false;
             if (questions) {
                 questionsLoaded = true;
             }
             return {questions, questionsLoaded};
-        } else return {questions: null, questionsLoaded: false};
+        } else {
+            const questions = null;
+            const questionsLoaded = false;
+            return {questions, questionsLoaded};
+        }
     }
 }
 

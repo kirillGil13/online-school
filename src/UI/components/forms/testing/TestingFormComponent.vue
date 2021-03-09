@@ -52,7 +52,7 @@ export default class TestingFormVue extends Vue {
   }
 
   change(id: number): void {
-    this.form.results[this.step - 1].answerId = id;
+    this.form.results[this.step - 1].testVariantId = id;
   }
 
   mounted(): void {

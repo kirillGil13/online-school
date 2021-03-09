@@ -6,6 +6,9 @@ export interface ICourseItem {
     description: string;
     cost: number;
     account_id: number;
+    isLiked: boolean;
+    isDisliked: boolean;
+    isFavourite: boolean;
     lessons: ICourseLessons[];
     level: ICourseLevels;
     resolveType(index: number, routeParam: string): string;
@@ -23,6 +26,9 @@ export type CourseItemResponseType = {
     description: string;
     cost: number;
     account_id: number;
+    is_liked: boolean;
+    is_disliked: boolean;
+    is_favourite: boolean;
     lessons: CourseLessonsResponseType[];
     level: CourseLevelsResponseType;
 }

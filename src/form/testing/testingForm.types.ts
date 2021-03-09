@@ -11,8 +11,5 @@ export interface ITestingFormActiveStep {
 }
 export type TestingFormRequestType = {
     questionId: number;
-    answerId?: number | null;
-}
-export type TestingFormResponseType = {
-    totalRightAnswers: number;
+    testVariantId?: number | null;
 }

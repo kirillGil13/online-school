@@ -62,20 +62,6 @@ export default class InfoPackages extends Vue {
   async created(): Promise<void> {
     await InfoPackagesStore.fetchAll();
   }
-
-  async addLessons(): Promise<void> {
-    const response = await Api.post('/lessons', {
-      name: 'Вступительный урок',
-      description: 'У каждого из нас найдутся дела, которые требуют периодических финансовых вложений: ЖКХ, детский сад, ремонт, хобби и т.д.',
-      shortPhotoLink: '',
-      m3u8FileLink: '',
-      files: [],
-      courseId: 3
-    });
-    if (response) {
-      console.log(response);
-    }
-  }
 }
 </script>
 

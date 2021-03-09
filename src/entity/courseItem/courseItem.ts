@@ -8,6 +8,9 @@ export default class CourseItem implements ICourseItem {
     description: string;
     cost: number;
     account_id: number;
+    isLiked: boolean;
+    isDisliked: boolean;
+    isFavourite: boolean;
     lessons: ICourseLessons[] = [];
     level: ICourseLevels;
     constructor(data: CourseItemResponseType) {
@@ -17,6 +20,9 @@ export default class CourseItem implements ICourseItem {
         this.cost = data.cost;
         this.account_id = data.account_id;//eslint-disable-line
         this.level = data.level;
+        this.isLiked = data.is_liked;
+        this.isDisliked = data.is_disliked;
+        this.isFavourite = data.is_favourite;
         for (let i = 0; i < data.lessons.length; i++) {
             this.lessons.push({
                 id: data.lessons[i].id,

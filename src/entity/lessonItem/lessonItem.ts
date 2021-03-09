@@ -10,6 +10,8 @@ export default class LessonItem implements ILessonItem {
     photoLink: string;
     homeworkId: number;
     timeCode: number;
+    duration: number;
+    homeworkIsDone: boolean;
     files: ILessonItemFiles[] = [];
     constructor(data: LessonItemResponseType) {
         this.id = data.id;
@@ -20,7 +22,9 @@ export default class LessonItem implements ILessonItem {
         this.m3u8FileLink = data.m3u8FileLink;
         this.photoLink = data.photoLink;
         this.homeworkId = data.homeworkId;
-        this.timeCode = data.time_code;
+        this.timeCode = data.timeCode;
+        this.duration = data.duration;
+        this.homeworkIsDone = data.homeworkIsDone;
         for (let i = 0; i < data.files.length; i++) {
             this.files.push(data.files[i]);
         }

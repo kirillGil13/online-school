@@ -38,6 +38,7 @@
     <!--        <span class="desc mt-2">Данные за последние 30 дней</span>-->
     <!--      </v-row>-->
     <v-row>
+      {{candidatesLoaded}}
       <v-col class="mt-6">
         <FilterComponent :isOnRight="false" :button="true" :search="true"
                          :filters="filters" @filter="onFilter">
@@ -50,13 +51,13 @@
         </FilterComponent>
       </v-col>
     </v-row>
-    <v-row v-if="candidates.length !== 0">
+    <v-row v-if="candidates.length !== 0 || !candidatesLoaded">
       <v-col class="mt-6">
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
       </v-col>
     </v-row>
-    <v-row v-else-if="candidatesLoaded">
+    <v-row v-else>
       <v-col class="mt-10 d-flex justify-center align-center">
         К сожалению данные не найдены
       </v-col>
@@ -167,15 +168,15 @@ export default class Candidates extends Vue {
 
   @Watch('statusesLoaded', {immediate: true})
   onFilterStatusChange(): void {
-    for (let i = 1; i < this.statuses.length; i++) {
-      this.$set(this.filters.filterBody[0].filterValue, i, {text: this.statuses[i].name, value: this.statuses[i].id});
+    for (let i = 0; i < this.statuses.length; i++) {
+      this.$set(this.filters.filterBody[0].filterValue, i + 1, {text: this.statuses[i].name, value: this.statuses[i].id});
     }
   }
 
   @Watch('infoPackagesLoaded', {immediate: true})
   onFilterInfoPackagesChange(): void {
-    for (let i = 1; i < this.infoPackages.length; i++) {
-      this.$set(this.filters.filterBody[2].filterValue, i, {
+    for (let i = 0; i < this.infoPackages.length; i++) {
+      this.$set(this.filters.filterBody[2].filterValue, i + 1, {
         text: this.infoPackages[i].name,
         value: this.infoPackages[i].id
       });
@@ -352,15 +353,15 @@ export default class Candidates extends Vue {
     this.activatorCallTime = false;
   }
 
-  async created(): Promise<void> {
-    await this.fetchData();
+  created(): void {
+    this.fetchData();
   }
 
-  async fetchData(): Promise<void> {
-    await StatusesStore.fetchAll();
-    await CandidatesStore.fetchAll();
-    await InfoPackagesStore.fetchAll();
-    await StatusIconsStore.fetchAll();
+  fetchData(): void {
+    StatusesStore.fetchAll();
+    CandidatesStore.fetchAll();
+    InfoPackagesStore.fetchAll();
+    StatusIconsStore.fetchAll();
   }
 
 }

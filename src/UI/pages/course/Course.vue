@@ -1,36 +1,42 @@
- <template>
+<template>
   <v-col>
     <v-row>
       <v-col v-if="courseLoaded" :class="[isMobile ? 'pa-6' : '']">
         <Header :isBordered="true" :route="route" :title="course.name"></Header>
         <v-row :class="['mt-6', isMobile ? 'd-flex flex-column' : '']">
-          <router-view :isPlaying="isPlaying" @onPlayerPlay="onPlayerPlay" @passFile="passFile"></router-view>
+          <router-view @passFile="passFile"
+                       @handleLike="handleLike"
+                       @handleFavourite="handleFavourite"
+                       :isFavourite="course.isFavourite"
+                       :isDisliked="course.isDisliked"
+                       :isLiked="course.isLiked"
+          ></router-view>
           <div :class="['lessons', isMobile ? 'mb-3' : 'ml-4']" :style="{width: isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course"/>
-<!--todo or not ?-->
-<!--            <div class="contacts" v-if="!isMobile">-->
-<!--              <div class="contacts__content">-->
-<!--                <div class="contacts__item d-flex flex-row">-->
-<!--                  <v-avatar class="mr-3">-->
-<!--                    <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">-->
-<!--                  </v-avatar>-->
-<!--                  <div class="details d-flex flex-column justify-center">-->
-<!--                    <h3 class="ma-0">Ильгиз Шакиров</h3>-->
-<!--                    <div class="details-desc">Автор курса</div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <v-divider class="mt-4 mb-4"></v-divider>-->
-<!--                <div class="contacts__item d-flex flex-row">-->
-<!--                  <v-avatar class="mr-3">-->
-<!--                    <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">-->
-<!--                  </v-avatar>-->
-<!--                  <div class="details d-flex flex-column justify-center">-->
-<!--                    <h3 class="ma-0">Ильгиз Шакиров</h3>-->
-<!--                    <div class="details-desc">Ваш лидер</div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
+            <!--todo or not ?-->
+            <!--            <div class="contacts" v-if="!isMobile">-->
+            <!--              <div class="contacts__content">-->
+            <!--                <div class="contacts__item d-flex flex-row">-->
+            <!--                  <v-avatar class="mr-3">-->
+            <!--                    <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">-->
+            <!--                  </v-avatar>-->
+            <!--                  <div class="details d-flex flex-column justify-center">-->
+            <!--                    <h3 class="ma-0">Ильгиз Шакиров</h3>-->
+            <!--                    <div class="details-desc">Автор курса</div>-->
+            <!--                  </div>-->
+            <!--                </div>-->
+            <!--                <v-divider class="mt-4 mb-4"></v-divider>-->
+            <!--                <div class="contacts__item d-flex flex-row">-->
+            <!--                  <v-avatar class="mr-3">-->
+            <!--                    <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">-->
+            <!--                  </v-avatar>-->
+            <!--                  <div class="details d-flex flex-column justify-center">-->
+            <!--                    <h3 class="ma-0">Ильгиз Шакиров</h3>-->
+            <!--                    <div class="details-desc">Ваш лидер</div>-->
+            <!--                  </div>-->
+            <!--                </div>-->
+            <!--              </div>-->
+            <!--            </div>-->
             <v-col class="box-container pa-6 pb-8 materials" v-if="!isMobile && files === []">
               <h5>МАТЕРИАЛЫ К УРОКУ</h5>
               <Doc v-for="(item, index) in files" :key="index" :material="item"/>
@@ -52,7 +58,6 @@
 <script lang="ts">
 import Header from '../../components/common/Header.vue';
 import Button from '../../components/common/Button.vue';
-import TestingComponent from '../../components/forms/testing/TestingComponent.vue';
 import {Component, Vue, Watch} from 'vue-property-decorator';
 import {HeaderRouteType} from '@/entity/common/header.types';
 import Relation from '../../components/common/Relation.vue';
@@ -64,19 +69,18 @@ import Doc from '@/UI/components/common/Doc.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {LessonsTypesEnum} from '../../../entity/common/lessons.types';
 import {ILessonItemFiles} from '../../../entity/lessonItem/lessonItem.types';
+import {RelationStore} from '../../../store/modules/Relation';
 
 @Component({
   components: {
     Lessons,
     Header,
     Button,
-    TestingComponent,
     Relation,
     Doc
   },
 })
 export default class Course extends Vue {
-  isPlaying = false;
   route: HeaderRouteType = {
     name: RouterNameEnum.TrainingMain,
     label: 'Вернуться к списку курсов',
@@ -99,7 +103,10 @@ export default class Course extends Vue {
       document.title = this.course!.name + ' - ' + 'OneLinks';
     }
     if (!this.$route.params.lessonId) {
-      await this.$router.push({name: RouterNameEnum.Lesson, params: {lessonId: this.findCurrent(this.course!.lessons).toString()}});
+      await this.$router.push({
+        name: RouterNameEnum.Lesson,
+        params: {lessonId: this.findCurrent(this.course!.lessons).toString()}
+      });
     }
   }
 
@@ -107,12 +114,23 @@ export default class Course extends Vue {
   async onChangeRoute(val: string, oldVal: string): Promise<void> {
     if (oldVal) {
       await this.fetchData();
-      this.isPlaying = false;
     }
   }
 
   async fetchData(): Promise<void> {
     await CourseItemStore.fetchData(this.$route.params.id);
+  }
+
+  async handleLike(like: boolean): Promise<void> {
+    if (!this.course!.isLiked) {
+      await RelationStore.postLikeDislike({param: this.$route.params.id, relation: {is_like: like}}); //eslint-disable-line
+    } else await RelationStore.deleteLikeDislike(this.$route.params.id);
+  }
+
+  async handleFavourite(): Promise<void> {
+    if (!this.course!.isFavourite) {
+      await RelationStore.postFavourite(this.$route.params.id); //eslint-disable-line
+    } else await RelationStore.deleteFavourite(this.$route.params.id);
   }
 
   get course(): ICourseItem | null {
@@ -127,9 +145,6 @@ export default class Course extends Vue {
     return AdaptiveStore.isMobile;
   }
 
-  onPlayerPlay(): void {
-    this.isPlaying = true;
-  }
   // reviewLesson() {}
   //
   // moveToNextLesson() {}
@@ -143,6 +158,7 @@ export default class Course extends Vue {
 .container_b {
   padding: 0 36px 96px 0;
 }
+
 .course-container {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -157,9 +173,11 @@ export default class Course extends Vue {
   position: relative;
   width: calc(100% - 64% - 16px);
 }
+
 .contacts {
   margin-top: 12px;
   width: 100%;
+
   &__content {
     border: 1px solid #F2F2F2;
     position: relative;
@@ -167,6 +185,7 @@ export default class Course extends Vue {
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 4px 32px rgba(0, 0, 0, 0.16);
     border-radius: 8px;
+
     &:before {
       z-index: 9999999;
       content: "";
@@ -177,8 +196,10 @@ export default class Course extends Vue {
       border-bottom-color: #FFFFFF;
     }
   }
+
   &__item {
     cursor: pointer;
+
     .details {
       .details-desc {
         font-size: 12px;

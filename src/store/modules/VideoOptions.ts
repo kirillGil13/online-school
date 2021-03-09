@@ -19,6 +19,9 @@ class VideoOptionsModule extends VuexModule {
         fluid: true,
         hls: true,
         poster: '',
+        cache_: {
+            currentTime: 0,
+        },
         width: document.documentElement.clientWidth, // Player width
         notSupportedMessage: 'This video cannot be played for the time being. Please try again later.',
         controlBar: {
@@ -37,9 +40,10 @@ class VideoOptionsModule extends VuexModule {
     };
 
     @Mutation
-    handleVideo(data: {src: string; poster: string}): void {
+    handleVideo(data: {src: string; poster: string; currentTime: number}): void {
         this.options.sources[0].src = data.src;
         this.options.poster = data.poster;
+        this.options.cache_.currentTime = data.currentTime;
     }
 }
 
