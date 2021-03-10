@@ -75,7 +75,7 @@
     </Modal>
     <Modal :activator="activatorCandidate" @activatorChange="activatorChangeCandidate">
       <template v-slot:content>
-        <UpdateCandidateFormComponent :form="updateCandidateForm" v-if="destroy" :account-id="user.id" @close="close"
+        <UpdateCandidateFormComponent :form="updateCandidateForm" v-if="destroyUpdateForm" :account-id="user.id" @close="close"
                                       @update="update"/>
       </template>
     </Modal>
@@ -151,6 +151,7 @@ export default class Candidates extends Vue {
   updateCandidateForm: UpdateCandidateForm;
   statusForm: StatusForm;
   callTimeForm: CallTimeForm;
+  destroyUpdateForm = true;
   destroy = true;
   route = RouterNameEnum;
   candidateId = 0;
@@ -246,8 +247,8 @@ export default class Candidates extends Vue {
   activatorChangeCandidate(act: boolean): void {
     this.activatorCandidate = act;
     if (act) {
-      this.destroy = true;
-    } else this.destroy = false;
+      this.destroyUpdateForm = true;
+    } else this.destroyUpdateForm = false;
   }
 
   activatorChangeCallTime(act: boolean): void {
@@ -290,7 +291,7 @@ export default class Candidates extends Vue {
   async openUpdate(id: number): Promise<void> {
     await CandidateItemStore.fetchData(id.toString());
     await this.updateCandidateForm.setFormData(this.candidateItem!, this.statuses, this.infoPackages, this.user.id);
-    this.destroy = true;
+    this.destroyUpdateForm = true;
     this.activatorCandidate = true;
   }
 
@@ -343,7 +344,7 @@ export default class Candidates extends Vue {
     }
     this.updateCandidateForm = new UpdateCandidateForm();
     this.activatorCandidate = false;
-    this.destroy = false;
+    this.destroyUpdateForm = false;
   }
 
   async saveCallTime(): Promise<void> {
