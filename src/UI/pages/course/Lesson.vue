@@ -179,7 +179,6 @@ export default class Lesson extends Vue {
   @Prop() readonly isLiked!: boolean;
   @Prop() readonly isDisliked!: boolean;
   @Prop() readonly isFavourite!: boolean;
-  @Prop() readonly lessons!: ICourseLessons[];
   testingForm = new TestingForm();
   isPlaying = false;
   play = false;
@@ -304,7 +303,7 @@ export default class Lesson extends Vue {
   }
 
   async send(): Promise<void> {
-    await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.$route.params.lessonId});
+    await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.lesson.homeworkId.toString()});
     this.$set(this.lesson!, 'homeworkIsDone', true);
   }
 }
