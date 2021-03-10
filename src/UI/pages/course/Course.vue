@@ -12,7 +12,6 @@
                        :isFavourite="course.isFavourite"
                        :isDisliked="course.isDisliked"
                        :isLiked="course.isLiked"
-                       :lessons="course.lessons"
           ></router-view>
           <div :class="['lessons', isMobile ? 'mb-3' : 'ml-4']" :style="{width: isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course"/>
