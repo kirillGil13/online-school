@@ -6,10 +6,13 @@
         <v-row :class="['mt-6', isMobile ? 'd-flex flex-column' : '']">
           <router-view @passFile="passFile"
                        @handleLike="handleLike"
+                       @handleDisLike="handleDisLike"
                        @handleFavourite="handleFavourite"
+                       @moveToNextLesson="moveToNextLesson()"
                        :isFavourite="course.isFavourite"
                        :isDisliked="course.isDisliked"
                        :isLiked="course.isLiked"
+                       :lessons="course.lessons"
           ></router-view>
           <div :class="['lessons', isMobile ? 'mb-3' : 'ml-4']" :style="{width: isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course"/>
@@ -97,6 +100,19 @@ export default class Course extends Vue {
     }
   }
 
+  getNextLessonId(lessons: ICourseLessons[]): number {
+    return lessons.find(item => item.number === lessons.find(item => item.id.toString() === this.$route.params.lessonId)!.number + 1)!.id;
+  }
+
+  moveToNextLesson(): void {
+    this.$router.push({
+      name: RouterNameEnum.Lesson,
+      params: {
+        lessonId: this.getNextLessonId(this.course!.lessons).toString()
+      }
+    })
+  }
+
   async created(): Promise<void> {
     await this.fetchData();
     if (this.courseLoaded) {
@@ -124,13 +140,31 @@ export default class Course extends Vue {
   async handleLike(like: boolean): Promise<void> {
     if (!this.course!.isLiked) {
       await RelationStore.postLikeDislike({param: this.$route.params.id, relation: {is_like: like}}); //eslint-disable-line
-    } else await RelationStore.deleteLikeDislike(this.$route.params.id);
+      await this.fetchData();
+    } else {
+      await RelationStore.deleteLikeDislike(this.$route.params.id);
+      await this.fetchData();
+    }
+  }
+
+  async handleDisLike(dislike: boolean): Promise<void> {
+    if (!this.course!.isDisliked) {
+      await RelationStore.postLikeDislike({param: this.$route.params.id, relation: {is_like: dislike}}); //eslint-disable-line
+      await this.fetchData();
+    } else {
+      await RelationStore.deleteLikeDislike(this.$route.params.id);
+      await this.fetchData();
+    }
   }
 
   async handleFavourite(): Promise<void> {
     if (!this.course!.isFavourite) {
       await RelationStore.postFavourite(this.$route.params.id); //eslint-disable-line
-    } else await RelationStore.deleteFavourite(this.$route.params.id);
+      await this.fetchData();
+    } else {
+      await RelationStore.deleteFavourite(this.$route.params.id);
+      await this.fetchData();
+    }
   }
 
   get course(): ICourseItem | null {

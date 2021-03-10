@@ -2,7 +2,7 @@
   <div :class="['course-block', isMobile ? 'course-mobile' : '']" @click="$emit('proceed', course.id)">
     <div class="course-video-block" :style="{ backgroundImage: 'url(' + course.photoLink + ')' }">
       <Rating v-if="course.rating" :rating="course.rating"/>
-      <div class="course-info duration">{{ course.countLessons }} уроков</div>
+      <div class="course-info duration">{{ course.lessonsCount() }}</div>
     </div>
     <div class="leader">
       <div class="course-avatar" :style="{ backgroundImage: 'url(' + course.account.photoLink + ')' }"></div>

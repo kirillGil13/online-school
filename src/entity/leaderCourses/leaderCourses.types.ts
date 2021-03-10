@@ -6,6 +6,7 @@ export interface ILeaderCourses {
     countLessons: number;
     rating: number;
     fullName: string;
+    lessonsCount(): string;
 }
 export interface ILeaderCoursesAccount {
     id: number;

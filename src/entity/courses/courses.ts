@@ -1,4 +1,4 @@
-import { CoursesListItemResponseType, ICoursesListItem } from './courses.types';
+import {CoursesListItemResponseType, ICoursesListItem} from './courses.types';
 
 export default class CoursesListItem implements ICoursesListItem {
     id: number
@@ -18,9 +18,11 @@ export default class CoursesListItem implements ICoursesListItem {
         this.duration = data.duration;
         this.rating = data.rating;
     }
+
     get progress(): number {
-        return ( this.lessonPassed / this.totalLesson ) * 100;
+        return (this.lessonPassed / this.totalLesson) * 100;
     }
+
     fullDuration(): string {
         let h = 0;
         let m = 0;

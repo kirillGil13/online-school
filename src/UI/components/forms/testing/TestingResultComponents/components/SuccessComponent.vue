@@ -13,7 +13,7 @@
         <svg-icon class="svg" name="Return"></svg-icon>
         Пересмотреть урок
       </Button>
-      <Button class="with_icon" @sumbit="$emit('moveToNextLesson')">
+      <Button class="with_icon" @submit="$emit('moveToNextLesson')">
         <svg-icon class="svg next" name="Next"></svg-icon>
         Перейти к следующему уроку
       </Button>

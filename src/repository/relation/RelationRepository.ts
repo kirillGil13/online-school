@@ -12,7 +12,7 @@ export class RelationRepository implements IRelationRepository {
         return response.data;
     }
     async deleteFavourite(param: string): Promise<boolean> {
-        const response = await Api.delete(`/core/v1/courses/${param}/favourites`);
+        const response = await Api.delete(`/courses/${param}/favourites`);
         return response.data;
     }
     async deleteLikeDislike(param: string): Promise<boolean> {
