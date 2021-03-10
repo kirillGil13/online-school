@@ -38,7 +38,6 @@
     <!--        <span class="desc mt-2">Данные за последние 30 дней</span>-->
     <!--      </v-row>-->
     <v-row>
-      {{candidatesLoaded}}
       <v-col class="mt-6">
         <FilterComponent :isOnRight="false" :button="true" :search="true"
                          :filters="filters" @filter="onFilter">

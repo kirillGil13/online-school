@@ -17,6 +17,7 @@ import {LeadersRepository} from '@/repository/leaders/LeadersRepository';
 import {LeaderCoursesRepository} from '@/repository/leaderCourses/LeaderCoursesRepository';
 import {CourseLevelsRepository} from '@/repository/courseLevels/CourseLevels';
 import {RelationRepository} from '@/repository/relation/RelationRepository';
+import {CoursesFavouriteRepository} from '@/repository/corsesFavourite/CoursesFavouriteRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -36,6 +37,7 @@ export const provider = (): IProvider => ({
     leaders: new LeadersRepository(),
     leaderCourses: new LeaderCoursesRepository(),
     courseLevels: new CourseLevelsRepository(),
-    relation: new RelationRepository()
+    relation: new RelationRepository(),
+    coursesFavourite: new CoursesFavouriteRepository(),
 });
 

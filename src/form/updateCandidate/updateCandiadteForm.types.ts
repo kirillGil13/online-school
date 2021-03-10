@@ -1,5 +1,4 @@
 import { RequestType } from '@/form/form.types';
-import {ISelectList} from '@/entity/select/select.types';
 
 export type UpdateCandidateFormRequestType = RequestType & {
     name: string;
@@ -8,16 +7,20 @@ export type UpdateCandidateFormRequestType = RequestType & {
     is_fiction: boolean;
     status_id: number;
     account_id: number;
-    info_pack_id: number;
+    info_pack_id: number | null;
 };
 export interface IUpdateCandidateForm {
     candidateId: number;
     name: string;
     phone: string;
     email: string;
-    product: number;
+    product: number | null;
     status: number;
-    statusList: ISelectList[];
-    productList: ISelectList[];
+    statusList: IUpdateCandidateFormList[];
+    productList: IUpdateCandidateFormList[];
+}
+export interface IUpdateCandidateFormList {
+    text: string;
+    value: number | null;
 }
 

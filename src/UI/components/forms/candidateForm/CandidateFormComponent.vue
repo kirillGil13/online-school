@@ -48,6 +48,7 @@
           v-bind="attrs"
           class="select"
           no-data-text="Данные не найдены"
+          full-width
           flat
           dense
           hide-details
@@ -64,6 +65,7 @@
           v-bind="attrs"
           class="select"
           no-data-text="Данные не найдены"
+          full-width
           flat
           dense
           hide-details

@@ -5,11 +5,11 @@ export class Candidate implements ICandidate {
     createdAt: string;
     status: ICandidateStatus;
     name: string;
-    phoneNumber: string;
-    email: string;
+    phoneNumber: string | null;
+    email: string | null;
     isFiction: boolean;
-    infoPackName: string;
-    callTime: string;
+    infoPackName: string | null;
+    callTime: string | null;
 
     constructor(data: CandidateResponseType) {
         this.id = data.id;
@@ -23,7 +23,7 @@ export class Candidate implements ICandidate {
         this.callTime = this.getTime(data.callTime);
     }
 
-    getTime(seconds: number): string {
+    getTime(seconds: number | null): string {
         if (seconds) {
             const date = new Date(seconds * 1000)
             return date.toLocaleString().slice(0,5) + date.toLocaleString().slice(10,17);

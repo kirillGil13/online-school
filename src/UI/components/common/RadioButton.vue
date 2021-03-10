@@ -34,6 +34,7 @@ export default class RadioButton extends Vue {
 </script>
 <style lang="scss">
 .radio_row {
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;

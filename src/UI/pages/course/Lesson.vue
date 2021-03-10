@@ -162,8 +162,6 @@ import {VideoOptionsStore} from '../../../store/modules/VideoOptions';
 import TestingResultComponent from '../../components/forms/testing/TestingResultComponents/TestingResultComponent.vue';
 import TestingFormComponent from '../../components/forms/testing/TestingFormComponent.vue'
 import TestingComponent from '../../components/forms/testing/TestingResultComponents/TestingComponent.vue';
-import {RouterNameEnum} from '../../../router/router.types';
-import {ICourseLessons} from '../../../entity/courseItem/courseItem.type';
 
 @Component({
   components: {
@@ -268,7 +266,10 @@ export default class Lesson extends Vue {
 
   async passTestAgain(): Promise<void> {
     await QuestionsStore.fetchAll(this.lesson!.homeworkId);
+    this.testingForm = new TestingForm(this.questions!.tests);
+    this.testingForm.activeStep[0].active = true;
     this.$set(this.lesson!, 'homeworkIsDone', false);
+    this.$set(this.lesson!, 'homeworkId', this.questions!.id);
   }
 
   async reviewLesson(): Promise<void> {
@@ -303,8 +304,10 @@ export default class Lesson extends Vue {
   }
 
   async send(): Promise<void> {
-    await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.lesson.homeworkId.toString()});
-    this.$set(this.lesson!, 'homeworkIsDone', true);
+    await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.lesson!.homeworkId.toString()});
+    await this.fetchData();
+    // this.$set(this.lesson!, 'homeworkIsDone', true);
+    // this.$set(this.lesson!, 'homeworkId', this.questions!.id);
   }
 }
 </script>

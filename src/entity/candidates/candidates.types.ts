@@ -2,13 +2,13 @@
 export interface ICandidate {
     id: number;
     createdAt: string;
-    callTime: string;
+    callTime: string | null;
     status: ICandidateStatus;
     name: string;
-    phoneNumber: string;
-    email: string;
+    phoneNumber: string | null;
+    email: string | null;
     isFiction: boolean;
-    infoPackName: string;
+    infoPackName: string | null;
 }
 export interface ICandidateStatus {
     id: number;
@@ -20,11 +20,11 @@ export type CandidateResponseType = {
     created_at: number;
     status: CandidateStatusResponseType;
     name: string;
-    callTime: number;
-    phoneNumber: string;
-    email: string;
+    callTime: number | null;
+    phoneNumber: string | null;
+    email: string | null;
     isFiction: boolean;
-    infoPackName: string;
+    infoPackName: string | null;
 };
 export type CandidateStatusResponseType = {
     id: number;
