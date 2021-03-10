@@ -22,6 +22,13 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
     public accountId = 0;
     public productList: IUpdateCandidateFormList[] = [];
     public statusList: IUpdateCandidateFormList[] = [];
+    public callTime: number | null = 0;
+    public callTimeFake = '';
+
+    constructor() {
+        super();
+        console.log(1);
+    }
 
     public serverErrors: { [key: string]: string[] } = {};
 
@@ -44,13 +51,14 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
 
     getFormData(): UpdateCandidateFormRequestType {
         return {
-            phoneNumber: this.phone.length === 2 ? undefined : this.phone,
+            phoneNumber: this.phone.length === 2 ? null : this.phone,
             name: this.name,
-            email: this.email === '' ? undefined : this.email,
+            email: this.email === '' ? null : this.email,
             account_id: this.accountId,
             status_id: this.status,
             info_pack_id: this.product,
-            is_fiction: this.isFiction
+            is_fiction: this.isFiction,
+            callTime: this.callTime === 0 ? null : this.callTime
         };
     }
 
@@ -70,6 +78,7 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
         this.name = data.name;
         this.email = data.email ? data.email : '';
         this.phone = data.phoneNumber ? data.phoneNumber : '';
+        this.callTime = data.callTime;
         this.candidateId = data.id;
     }
 

@@ -49,5 +49,7 @@ export default class Chosen extends Vue {
 </script>
 
 <style lang="scss">
-
+.leader-courses {
+  width: 100%;
+}
 </style>

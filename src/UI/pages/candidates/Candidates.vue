@@ -160,8 +160,8 @@ export default class Candidates extends Vue {
     super();
     this.candidateForm = new CandidateForm();
     this.statusForm = new StatusForm();
-    this.updateCandidateForm = new UpdateCandidateForm();
     this.callTimeForm = new CallTimeForm();
+    this.updateCandidateForm = new UpdateCandidateForm();
     this.filters = new Filters(this.filtersCandidates);
   }
 
@@ -244,8 +244,10 @@ export default class Candidates extends Vue {
   }
 
   activatorChangeCandidate(act: boolean): void {
-    this.destroy = true;
     this.activatorCandidate = act;
+    if (act) {
+      this.destroy = true;
+    } else this.destroy = false;
   }
 
   activatorChangeCallTime(act: boolean): void {
@@ -287,7 +289,8 @@ export default class Candidates extends Vue {
 
   async openUpdate(id: number): Promise<void> {
     await CandidateItemStore.fetchData(id.toString());
-    this.updateCandidateForm.setFormData(this.candidateItem!, this.statuses, this.infoPackages, this.user.id);
+    await this.updateCandidateForm.setFormData(this.candidateItem!, this.statuses, this.infoPackages, this.user.id);
+    this.destroy = true;
     this.activatorCandidate = true;
   }
 
@@ -332,6 +335,9 @@ export default class Candidates extends Vue {
   }
 
   async update(): Promise<void> {
+    const date = new Date(this.updateCandidateForm.callTimeFake);
+    const seconds = date.getTime() / 1000;
+    this.updateCandidateForm.callTime = seconds;
     if (await this.updateCandidateForm.submit(CandidateItemStore.update, this.updateCandidateForm.candidateId.toString())) {
       await this.fetchData();
     }
