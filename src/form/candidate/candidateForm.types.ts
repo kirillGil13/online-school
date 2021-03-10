@@ -8,18 +8,18 @@ export type CandidateFormRequestType = RequestType & {
     is_fiction: boolean;
     status_id: number;
     account_id: number;
-    info_pack_id: number;
+    info_pack_id: number | null;
 };
 export interface ICandidateForm {
     name: string;
     phone: string;
     email: string;
-    product: number;
+    product: number | null;
     status: number;
     statusList: ICandidateFormList[];
     productList: ICandidateFormList[];
 }
 export interface ICandidateFormList {
     text: string;
-    value: number;
+    value: number | null;
 }

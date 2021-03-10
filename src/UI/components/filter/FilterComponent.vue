@@ -10,7 +10,7 @@
               v-model="filters.default[index]"
               @change="$emit('filter')"
               :class="['filter pa-0', isMobile ? 'filter-mobile' : '']"
-              :menu-props="{ left: true}"
+              :menu-props="{ left: true, minWidth: 190}"
               flat
               dense
               solo

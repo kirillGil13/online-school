@@ -2,7 +2,7 @@
   <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="42/44">
     <div class="lessons-block box-container">
       <div class="lesson-container">
-        <ul class="lesson-list">
+        <ul class="lesson-list" v-if="$route.params.lessonId">
           <li
               v-for="(lesson, index) in course.lessons"
               :key="index"

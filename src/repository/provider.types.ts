@@ -16,6 +16,7 @@ import {ILeadersRepository} from '@/repository/leaders/LeadersRepository.types';
 import {ILeaderCoursesRepository} from '@/repository/leaderCourses/LeaderCoursesRepository.types';
 import {ICourseLevelsRepository} from '@/repository/courseLevels/CourseLevels.types';
 import {IRelationRepository} from '@/repository/relation/RelationRepository.types';
+import {ICoursesFavouriteRepository} from '@/repository/corsesFavourite/CoursesFavouriteRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -35,5 +36,6 @@ export interface IProvider {
     leaders: ILeadersRepository;
     leaderCourses: ILeaderCoursesRepository;
     courseLevels: ICourseLevelsRepository;
-    relation: IRelationRepository,
+    relation: IRelationRepository;
+    coursesFavourite: ICoursesFavouriteRepository;
 }

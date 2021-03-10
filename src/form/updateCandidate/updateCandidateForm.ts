@@ -5,11 +5,10 @@ import {required, sameAs, email, requiredIf} from 'vuelidate/lib/validators';
 import {IStatuses} from '@/entity/statuses/statuses.types';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 import {
-    IUpdateCandidateForm,
+    IUpdateCandidateForm, IUpdateCandidateFormList,
     UpdateCandidateFormRequestType
 } from '@/form/updateCandidate/updateCandiadteForm.types';
 import {ICandidateItem} from '@/entity/candidateItem/candidateItem.types';
-import {ISelectList} from '@/entity/select/select.types';
 /* eslint-disable */
 
 /* tslint:disable */
@@ -17,12 +16,12 @@ import {ISelectList} from '@/entity/select/select.types';
 export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
     public candidateId = 0;
     public phoneMask = '';
-    public product = 0;
+    public product: number | null = 0;
     public status = 0;
     public isFiction = false;
     public accountId = 0;
-    public productList: ISelectList[] = [];
-    public statusList: ISelectList[] = [];
+    public productList: IUpdateCandidateFormList[] = [];
+    public statusList: IUpdateCandidateFormList[] = [];
 
     public serverErrors: { [key: string]: string[] } = {};
 
@@ -60,14 +59,17 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
             this.statusList.push({text: statuses[i].name, value: statuses[i].id});
         }
         for (let i = 0; i < infoPacks.length; i++) {
+            if (i === 0) {
+                this.productList.push({text: 'Не важно', value: null});
+            }
             this.productList.push({text: infoPacks[i].name, value: infoPacks[i].id})
         }
         this.status = data.status.id;
-        this.product = data.infoPack.id;
+        this.product = data.infoPack ? data.infoPack.id : null;
         this.accountId = accountId;
         this.name = data.name;
-        this.email = data.email;
-        this.phone = data.phoneNumber;
+        this.email = data.email ? data.email : '';
+        this.phone = data.phoneNumber ? data.phoneNumber : '';
         this.candidateId = data.id;
     }
 

@@ -11,7 +11,7 @@ import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 @Component
 export class CandidateForm extends Form implements ICandidateForm {
     public phoneMask = '';
-    public product = 0;
+    public product: number | null = 0;
     public status = 0;
     public isFiction = true;
     public accountId = 0;
@@ -57,10 +57,13 @@ export class CandidateForm extends Form implements ICandidateForm {
             this.statusList.push({text: statuses[i].name, value: statuses[i].id});
         }
         for (let i = 0; i < infoPacks.length; i++) {
+            if (i === 0) {
+                this.productList.push({text: 'Не важно', value: null});
+            }
             this.productList.push({text: infoPacks[i].name, value: infoPacks[i].id})
         }
-        this.status = this.statusList[0].value;
-        this.product = this.productList[0].value;
+        this.status = this.statusList[0].value!;
+        this.product = this.productList[0].value!;
         this.accountId = accountId;
     }
 

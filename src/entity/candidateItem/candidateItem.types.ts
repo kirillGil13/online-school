@@ -3,9 +3,9 @@ export interface ICandidateItem {
     createdAt: string;
     status: ICandidateItemStatus;
     name: string;
-    phoneNumber: string;
-    email: string;
-    infoPack: ICandidateItemInfoPack;
+    phoneNumber: string | null;
+    email: string | null;
+    infoPack: ICandidateItemInfoPack | null;
 }
 export interface ICandidateItemStatus {
     id: number;
@@ -21,9 +21,9 @@ export type CandidateItemResponseType = {
     created_at: number;
     status: CandidateItemStatusResponseType;
     name: string;
-    phoneNumber: string;
-    email: string;
-    info_pack: CandidateItemInfoPackResponseType;
+    phoneNumber: string | null;
+    email: string | null;
+    info_pack: CandidateItemInfoPackResponseType | null;
 };
 export type CandidateItemInfoPackResponseType = {
     id: number;

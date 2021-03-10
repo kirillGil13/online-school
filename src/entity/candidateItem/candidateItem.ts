@@ -10,9 +10,9 @@ export class CandidateItem implements ICandidateItem {
     createdAt: string;
     status: ICandidateItemStatus;
     name: string;
-    phoneNumber: string;
-    email: string;
-    infoPack: CandidateItemInfoPackResponseType
+    phoneNumber: string | null;
+    email: string | null;
+    infoPack: CandidateItemInfoPackResponseType | null;
 
     constructor(data: CandidateItemResponseType) {
         this.id = data.id;
