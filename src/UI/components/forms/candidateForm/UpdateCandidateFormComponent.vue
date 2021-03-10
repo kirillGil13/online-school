@@ -27,6 +27,18 @@
           @input="changePhone"
       />
     </FormGroup>
+<!--    <FormGroup-->
+<!--        class="mt-4" v-slot="attrs" :form="form" field="phone" show-custom-error label="Email"-->
+<!--    >-->
+<!--      <input-->
+<!--          class="input input__normal"-->
+<!--          type="phone" name="phone"-->
+<!--          id="phone"-->
+<!--          v-model="form.phone"-->
+<!--          v-bind="attrs"-->
+<!--          @input="attrs.change"-->
+<!--      >-->
+<!--    </FormGroup>-->
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="email" show-custom-error label="Email"
     >
@@ -71,6 +83,13 @@
       >
       </v-select>
     </FormGroup>
+    <FormGroup v-if="form.status === 3"
+               class="mt-4 date-time-wrapper" :form="form" field="callTimeFake" label="Укажите время звонка" v-slot="attrs"
+    >
+      <datetime :phrases="{ok: 'Далее', cancel: 'Закрыть'}" class="date-time input input__normal" type="datetime"
+                v-model="form[attrs.name]" v-bind="attrs"/>
+      <svg-icon @click="clear" class="delete_content" name="Close"></svg-icon>
+    </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
       <Button class="secondary_blue mr-3" @submit="$emit('close')">Отмена</Button>
       <Button :disabled="form.disabled" @submit="$emit('update')">Изменить</Button>
@@ -82,15 +101,16 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {CandidateForm} from '../../../../form/candidate/candidateForm';
 import Button from '../../common/Button.vue';
 import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
+import {UpdateCandidateForm} from '../../../../form/updateCandidate/updateCandidateForm';
+import {Datetime} from 'vue-datetime';
 @Component({
-  components: {FormGroup, Button, PhoneMaskInput}
+  components: {FormGroup, Button, PhoneMaskInput, Datetime}
 })
 export default class UpdateCandidateFormComponent extends Vue {
-  @Prop() readonly form!: CandidateForm;
+  @Prop() readonly form!: UpdateCandidateForm;
   @Prop() readonly accountId!: number;
 
   changePhone(): void {
@@ -100,6 +120,9 @@ export default class UpdateCandidateFormComponent extends Vue {
     }
     //@ts-ignore
     this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
+  }
+  clear(): void {
+    this.form.callTimeFake = '';
   }
 }
 </script>

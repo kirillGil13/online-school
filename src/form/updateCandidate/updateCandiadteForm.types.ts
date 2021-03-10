@@ -2,8 +2,9 @@ import { RequestType } from '@/form/form.types';
 
 export type UpdateCandidateFormRequestType = RequestType & {
     name: string;
-    phoneNumber?: string;
-    email?: string;
+    phoneNumber: string | null;
+    email: string | null;
+    callTime: number | null;
     is_fiction: boolean;
     status_id: number;
     account_id: number;
@@ -12,7 +13,7 @@ export type UpdateCandidateFormRequestType = RequestType & {
 export interface IUpdateCandidateForm {
     candidateId: number;
     name: string;
-    phone: string;
+    phone: string | null;
     email: string;
     product: number | null;
     status: number;
