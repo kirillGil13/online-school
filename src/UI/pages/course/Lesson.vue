@@ -14,24 +14,27 @@
           @loadeddata="onPlayerLoadeddata"
       />
     </v-responsive>
-    <v-btn @click="play = true"></v-btn>
     <v-row class="course-video-row" v-if="lessonLoaded">
-      <Relation svg-name="Finger" :title="isMobile ? '' : 'Нравится'" @click="$emit('handleLike', true)"/>
-      <Relation svg-class="svg-down" svg-name="Finger" :title="isMobile ? '' : 'Не нравится'" @click="$emit('handleLike', false)"/>
-      <Relation svg-name="Chosen" :title="isMobile ? '' : 'В избранное'" @click="$emit('handleFavourite')"/>
+      <Relation svg-name="Finger" :active="isLiked" :title="isMobile ? '' : 'Нравится'"
+                @click="$emit('handleLike', true)"/>
+      <Relation svg-class="svg-down" :active="isDisliked" svg-name="Finger" :title="isMobile ? '' : 'Не нравится'"
+                @click="$emit('handleDisLike', false)"/>
+      <Relation svg-name="Chosen" :active="isFavourite" :title="isMobile ? '' : 'В избранное'"
+                @click="$emit('handleFavourite')"/>
       <Relation svg-name="Message" :title="isMobile ? '' : 'Обсудить'"/>
     </v-row>
     <v-col :class="['box-container', isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
       <h5>ОПИСАНИЕ</h5>
       <span class="desc">{{ lesson.description }}</span>
     </v-col>
-    <v-col v-if="lessonLoaded && (questions !== null || result !== null) && lesson.homeworkId" :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
+    <v-col v-if="lessonLoaded && (questions !== null || result !== null) && lesson.homeworkId"
+           :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
       <TestingComponent
           :form="testingForm"
           :result="result"
           :homework-is-done="lesson.homeworkIsDone"
           @send="send()"
-          @moveToNextLesson="moveToNextLesson()"
+          @moveToNextLesson="$emit('moveToNextLesson')"
           @passTestAgain="passTestAgain()"
           @reviewLesson="reviewLesson()"
           @writeMaster="writeMaster()"
@@ -159,6 +162,8 @@ import {VideoOptionsStore} from '../../../store/modules/VideoOptions';
 import TestingResultComponent from '../../components/forms/testing/TestingResultComponents/TestingResultComponent.vue';
 import TestingFormComponent from '../../components/forms/testing/TestingFormComponent.vue'
 import TestingComponent from '../../components/forms/testing/TestingResultComponents/TestingComponent.vue';
+import {RouterNameEnum} from '../../../router/router.types';
+import {ICourseLessons} from '../../../entity/courseItem/courseItem.type';
 
 @Component({
   components: {
@@ -174,6 +179,7 @@ export default class Lesson extends Vue {
   @Prop() readonly isLiked!: boolean;
   @Prop() readonly isDisliked!: boolean;
   @Prop() readonly isFavourite!: boolean;
+  @Prop() readonly lessons!: ICourseLessons[];
   testingForm = new TestingForm();
   isPlaying = false;
   play = false;
@@ -271,6 +277,9 @@ export default class Lesson extends Vue {
       lessonId: this.$route.params.lessonId,
       timeCode: {time_code: 0}//eslint-disable-line
     });
+    await LessonItemStore.fetchData(this.$route.params.lessonId);
+    (this.$refs.videoPlayer as any).player.currentTime(this.lesson!.timeCode);
+    (this.$refs.videoPlayer as any).player.play();
   }
 
   passFiles(): void {
