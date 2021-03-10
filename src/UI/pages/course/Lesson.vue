@@ -1,18 +1,29 @@
 <template>
   <div class="course" :style="{width: isMobile ? '100%' : '', order: isMobile ? 2 : ''}">
     <v-responsive v-if="lessonLoaded" :aspect-ratio="16/9" content-class="course-container">
-      <h1 v-if="!isPlaying" class="abs">{{ lesson.name }}</h1>
-      <video-player
-          ref="videoPlayer"
-          class="video-player vjs-custom-skin"
-          :playsinline="true"
-          :options="options"
-          @timeupdate="onPlayerTimeupdate($event)"
-          @ready="playerReadied"
-          @play="onPlayerPlay"
-          @pause="onPlayerPause"
-          @loadeddata="onPlayerLoadeddata"
-      />
+      <div v-if="lesson.status === lessonTypes.LOCKED"
+           class="course-locked"
+           :style="{backgroundImage: 'url(' + lesson.photoLink + ')'}">
+        <div class="background d-flex flex-column align-center justify-center">
+          <h1>Вы не можете просмотреть этот урок</h1>
+          <h3 class="mt-4">Выполните задания из предыдущего урока, чтобы получить доступ к этому</h3>
+          <Button>Перейти к предыдущему</Button>
+        </div>
+      </div>
+      <div v-else>
+        <h1 v-if="!isPlaying" class="abs">{{ lesson.name }}</h1>
+        <video-player
+            ref="videoPlayer"
+            class="video-player vjs-custom-skin"
+            :playsinline="true"
+            :options="options"
+            @timeupdate="onPlayerTimeupdate($event)"
+            @ready="playerReadied"
+            @play="onPlayerPlay"
+            @pause="onPlayerPause"
+            @loadeddata="onPlayerLoadeddata"
+        />
+      </div>
     </v-responsive>
     <v-row class="course-video-row" v-if="lessonLoaded">
       <Relation svg-name="Finger" :active="isLiked" :title="isMobile ? '' : 'Нравится'"
@@ -162,6 +173,7 @@ import {VideoOptionsStore} from '../../../store/modules/VideoOptions';
 import TestingResultComponent from '../../components/forms/testing/TestingResultComponents/TestingResultComponent.vue';
 import TestingFormComponent from '../../components/forms/testing/TestingFormComponent.vue'
 import TestingComponent from '../../components/forms/testing/TestingResultComponents/TestingComponent.vue';
+import {LessonsTypesEnum} from '../../../entity/common/lessons.types';
 
 @Component({
   components: {
@@ -177,6 +189,7 @@ export default class Lesson extends Vue {
   @Prop() readonly isLiked!: boolean;
   @Prop() readonly isDisliked!: boolean;
   @Prop() readonly isFavourite!: boolean;
+  lessonTypes = LessonsTypesEnum;
   testingForm = new TestingForm();
   isPlaying = false;
   play = false;
@@ -318,11 +331,32 @@ export default class Lesson extends Vue {
   display: flex;
   flex-direction: column;
 
-  .course-container {
-  }
-
   .desc {
     color: #818c99;
+  }
+  .course-locked {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+      h1 {
+        font-size: 24px;
+        color: #FFFFFF;
+      }
+      h3 {
+        font-size: 16px;
+        color: #FFFFFF;
+      }
+    }
   }
 
   .abs {
