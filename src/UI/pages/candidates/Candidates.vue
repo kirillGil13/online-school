@@ -342,8 +342,8 @@ export default class Candidates extends Vue {
       await this.fetchData();
     }
     this.updateCandidateForm = new UpdateCandidateForm();
-    this.rerender();
     this.activatorCandidate = false;
+    this.destroy = false;
   }
 
   async saveCallTime(): Promise<void> {
