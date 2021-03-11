@@ -10,6 +10,7 @@
                        @handleFavourite="handleFavourite"
                        @moveToNextLesson="moveToNextLesson()"
                        @send="send"
+                       @moveToPrevious="moveToPrevious"
                        :isFavourite="course.isFavourite"
                        :isDisliked="course.isDisliked"
                        :isLiked="course.isLiked"
@@ -99,15 +100,26 @@ export default class Course extends Vue {
     }
   }
 
-  getNextLessonId(lessons: ICourseLessons[]): number {
-    return lessons.find(item => item.number === lessons.find(item => item.id.toString() === this.$route.params.lessonId)!.number + 1)!.id;
+  getLessonId(lessons: ICourseLessons[], number: number, next: boolean): number {
+    if (next) {
+      return lessons.find(item => item.number === number + 1)!.id;
+    } else return lessons.find(item => item.number === number - 1)!.id;
   }
 
-  moveToNextLesson(): void {
+  moveToNextLesson(number: number): void {
     this.$router.push({
       name: this.$routeRules.Lesson,
       params: {
-        lessonId: this.getNextLessonId(this.course!.lessons).toString()
+        lessonId: this.getLessonId(this.course!.lessons, number, true).toString()
+      }
+    })
+  }
+
+  moveToPrevious(number: number): void {
+    this.$router.push({
+      name: this.$routeRules.Lesson,
+      params: {
+        lessonId: this.getLessonId(this.course!.lessons, number, false).toString()
       }
     })
   }
