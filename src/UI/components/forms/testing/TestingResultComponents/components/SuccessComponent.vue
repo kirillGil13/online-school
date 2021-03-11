@@ -4,7 +4,7 @@
       <ProgressCircleTesting :result="result"/>
       <v-col>
         <h3>Поздравляем - вы выполнили задание!</h3>
-        <span class="success_info">Теперь вы можете перейти к следующему уроку.</span>
+        <div class="success_info">Теперь вы можете перейти к следующему уроку.</div>
       </v-col>
     </v-row>
     <v-divider></v-divider>

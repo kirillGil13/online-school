@@ -4,10 +4,10 @@
       <ProgressCircleTesting :result="result"/>
       <v-col>
         <h3>К сожалению, вы не прошли тестирование.</h3>
-        <span class="success_info"
+        <div class="success_info"
         >Внимательно пересмотрите видео для того, чтобы повторно пройти тестирование и перейти к следующему
-                    уроку</span>
-        <Timer v-if="!showButton" :currentTime="60" @stop="stop"/>
+                    уроку</div>
+        <Timer v-if="!showButton" :currentTime="5" @stop="stop"/>
         <Button v-if="showButton" class="again pa-3" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
       </v-col>
     </v-row>
@@ -22,9 +22,11 @@ import TestingResult from '../../../../../../entity/testingResult/testingResult'
 import ProgressCircleTesting from '../../../../progress/ProgressCircleTesting.vue';
 import Button from '../../../../common/Button.vue';
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import Timer from '../../../../common/Timer.vue';
 
 @Component({
   components: {
+    Timer,
     ProgressCircleTesting,
     Button,
   },
@@ -41,6 +43,5 @@ export default class Fail extends Vue {
 <style lang="scss">
 .again {
   font-size: 12px;
-  float: left;
 }
 </style>
