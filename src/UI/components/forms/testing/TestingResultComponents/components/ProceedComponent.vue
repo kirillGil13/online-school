@@ -4,7 +4,7 @@
       <ProgressCircleTesting :result="result"/>
       <v-col>
         <h3>К сожалению, вы не прошли тестирование.</h3>
-        <span class="success_info">Ничего страшного - вы можете пройти повторно тест через</span>
+        <div class="success_info">Ничего страшного - вы можете пройти повторно тест через</div>
         <Timer v-if="!showButton" :currentTime="60" @stop="stop"/>
         <Button v-if="showButton" class="again pa-3" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
       </v-col>
@@ -42,6 +42,5 @@ export default class Proceed extends Vue {
 <style lang="scss">
 .again {
   font-size: 12px;
-  float: left;
 }
 </style>

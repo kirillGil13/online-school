@@ -8,7 +8,7 @@
           :active="step === index + 1"
           :question="question"
           @change="change"
-          :resultsAnswerId="form.results[index].answerId"
+          :resultsAnswerId="form.results[index].testVariantId"
       />
       <v-row class="ma-0 justify-end">
         <Button class="secondary_blue mr-3" v-if="step > 1" @submit="previous()">Назад</Button>
