@@ -7,7 +7,7 @@
         <div class="background d-flex flex-column align-center justify-center">
           <h1>Вы не можете просмотреть этот урок</h1>
           <h3 class="mt-4">Выполните задания из предыдущего урока, чтобы получить доступ к этому</h3>
-          <Button>Перейти к предыдущему</Button>
+          <Button @submit="$emit('moveToPrevious', lesson.number)">Перейти к предыдущему</Button>
         </div>
       </div>
       <div v-else>
@@ -46,7 +46,7 @@
           :result="result"
           :homework-is-done="lesson.homeworkIsDone"
           @send="send()"
-          @moveToNextLesson="$emit('moveToNextLesson')"
+          @moveToNextLesson="$emit('moveToNextLesson', lesson.number)"
           @passTestAgain="passTestAgain()"
           @reviewLesson="reviewLesson()"
           @writeMaster="writeMaster()"
