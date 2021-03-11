@@ -31,7 +31,7 @@
       <Relation svg-class="svg-down" :active="isDisliked" svg-name="Finger" :title="isMobile ? '' : 'Не нравится'"
                 @click="$emit('handleDisLike', false)"/>
       <Relation svg-name="Chosen" :active="isFavourite" :title="isMobile ? '' : 'В избранное'"
-                @click="$emit('handleFavourite')"/>
+                @click="$emit('handleFavourite'); show = true"/>
       <Relation svg-name="Message" :title="isMobile ? '' : 'Обсудить'"/>
     </v-row>
     <v-col :class="['box-container', isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
@@ -153,6 +153,7 @@
         </div>
       </v-row>
     </v-col>
+    <Alert :show="show" :type="alertType.Success" text="Курс успешно добавлен в избранное" @show="showAlert"/>
   </div>
 </template>
 
@@ -174,9 +175,12 @@ import TestingResultComponent from '../../components/forms/testing/TestingResult
 import TestingFormComponent from '../../components/forms/testing/TestingFormComponent.vue'
 import TestingComponent from '../../components/forms/testing/TestingResultComponents/TestingComponent.vue';
 import {LessonsTypesEnum} from '../../../entity/common/lessons.types';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
+import Alert from '../../components/common/Alert.vue';
 
 @Component({
   components: {
+    Alert,
     TestingComponent,
     TestingResultComponent,
     Lessons,
@@ -189,6 +193,8 @@ export default class Lesson extends Vue {
   @Prop() readonly isLiked!: boolean;
   @Prop() readonly isDisliked!: boolean;
   @Prop() readonly isFavourite!: boolean;
+  alertType = AlertTypeEnum;
+  show = false;
   lessonTypes = LessonsTypesEnum;
   testingForm = new TestingForm();
   isPlaying = false;
@@ -314,6 +320,10 @@ export default class Lesson extends Vue {
 
   onPlayerLoadeddata(): void {
     console.log('player loadedData');
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
   }
 
   async send(): Promise<void> {

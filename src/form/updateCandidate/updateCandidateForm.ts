@@ -27,7 +27,6 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
 
     constructor() {
         super();
-        console.log(1);
     }
 
     public serverErrors: { [key: string]: string[] } = {};
