@@ -139,12 +139,20 @@ const routes = [
                 component: () => import('../UI/pages/chosen/Chosen.vue'),
                 name: RouterNameEnum.Chosen
             },
-
             {
                 path: 'profile',
                 component: () => import('../UI/pages/profile/Profile.vue'),
                 name: RouterNameEnum.Profile
-            }
+            },
+            {
+                path: 'cabinet',
+                component: () => import('../UI/pages/cabinet/Cabinet.vue'),
+                name: RouterNameEnum.Cabinet,
+                meta: {
+                    isLeader: true
+                }
+            },
+
         ],
     },
     {
@@ -167,12 +175,18 @@ Vue.router = new Router({
 });
 export const router = Vue.router;
 
+const isLeader = () => false;
+
 router.beforeEach((to, from, next) => {
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
     const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
-    if(nearestWithTitle) document.title = nearestWithTitle.meta.title;
+    if(nearestWithTitle) {
+        document.title = nearestWithTitle.meta.title;
+    }
     Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode?.removeChild(el));
-    if(!nearestWithMeta) return next();
+    if(!nearestWithMeta) {
+        return next();
+    }
     nearestWithMeta.meta.metaTags.map((tagDef: any) => {
         const tag = document.createElement('meta');
         Object.keys(tagDef).forEach(key => {
@@ -183,4 +197,16 @@ router.beforeEach((to, from, next) => {
     })
         .forEach((tag: any) => document.head.appendChild(tag));
     next();
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((route) => route.meta?.isLeader)) {
+        if (!isLeader()) {
+            next();
+        } else {
+            next({name: RouterNameEnum.Main});
+        }
+    } else {
+        next();
+    }
 });

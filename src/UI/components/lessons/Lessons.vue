@@ -7,7 +7,7 @@
               v-for="(lesson, index) in course.lessons"
               :key="index"
           >
-            <router-link :to="{name: routeName.Lesson, params: {lessonId: lesson.id.toString()}}" active-class="lesson-current" :id="`lesson${index}`"
+            <router-link :to="{name: $routeRules.Lesson, params: {lessonId: lesson.id.toString()}}" active-class="lesson-current" :id="`lesson${index}`"
                          :class="[ course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED ? 'lesson-locked' : '']">
               <svg-icon class="svg-wh" :name="course.resolveType(index, $route.params.lessonId)"></svg-icon>
               <div class="lesson_name">
@@ -37,7 +37,6 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import Button from '@/UI/components/common/Button.vue';
 import {LessonsTypesEnum} from '@/entity/common/lessons.types';
 import {ICourseItem} from '@/entity/courseItem/courseItem.type';
-import {RouterNameEnum} from '@/router/router.types';
 
 @Component({
   components: {
@@ -47,7 +46,6 @@ import {RouterNameEnum} from '@/router/router.types';
 export default class Lessons extends Vue {
   @Prop() readonly course!: ICourseItem;
   lessonType = LessonsTypesEnum;
-  routeName = RouterNameEnum;
 }
 </script>
 
@@ -105,6 +103,9 @@ export default class Lessons extends Vue {
               height: 24px !important;
               width: 24px !important;
               margin-right: 14px;
+              display: flex;
+              justify-content: center;
+              align-content: center;
             }
 
             .lesson_name {

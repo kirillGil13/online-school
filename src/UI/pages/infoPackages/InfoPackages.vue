@@ -22,7 +22,6 @@ import {InfoPackagesStore} from '../../../store/modules/InfoPackages';
 import {IInfoPackage} from '../../../entity/infoPackages/infoPackage.types';
 import {IUser} from '../../../entity/user';
 import {AuthStore} from '../../../store/modules/Auth';
-import {RouterNameEnum} from '../../../router/router.types';
 import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 
@@ -35,7 +34,7 @@ export default class InfoPackages extends Vue {
 
   proceed(id: number): void {
     const routeData = this.$router.resolve({
-      name: RouterNameEnum.Landing,
+      name: this.$routeRules.Landing,
       params: {id: id.toString()},
       query: {account_id: this.user.id.toString()}//eslint-disable-line
     });

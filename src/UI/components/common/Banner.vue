@@ -13,7 +13,6 @@ import PromoBanner from './banners/Promo.vue';
 import QrCodeBanner from './banners/QrCode.vue';
 import InviteBanner from './banners/Invite.vue';
 import { Route } from 'vue-router';
-import { RouterNameEnum } from '@/router/router.types';
 
 @Component({
     components: {
@@ -46,10 +45,10 @@ export default class Banner extends Vue {
 
     getBannerFromRoute(route: Route): void {
         switch (route.name) {
-            case RouterNameEnum.Candidates:
+            case this.$routeRules.Candidates:
                 this.bannerType = BannerTypeEnum.QRCODE;
                 break;
-            case RouterNameEnum.Partners:
+            case this.$routeRules.Partners:
                 this.bannerType = BannerTypeEnum.PRO_ACCOUNT_PROMO;
                 break;
             default:

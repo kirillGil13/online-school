@@ -6,6 +6,7 @@ export class User implements IUser {
     phoneNumber: string;
     name: string;
     lastName: string;
+    isLeader: boolean;
     vk: string;
     facebook: string;
     instagram: string;
@@ -29,6 +30,7 @@ export class User implements IUser {
         this.activeSubscription = data.activeSubscription!;
         this.name = data.name;
         this.lastName = data.lastName;
+        this.isLeader = data.isLeader;
     }
 
     get link(): string {

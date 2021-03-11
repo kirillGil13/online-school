@@ -7,8 +7,8 @@ import { LoginRequestType } from '@/form/login';
 import Api from '@/repository/api';
 import {CodeRequestType} from '@/form/code/codeForm.types';
 import {RegisterRequestType} from '@/form/register/RegisterForm.types';
-import {RouterNameEnum} from '@/router/router.types';
 import {PhoneRequestType} from '@/form/phone/phoneForm.types';
+import {RouterNameEnum} from '@/router/router.types';
 
 @Module({
     namespaced: true,

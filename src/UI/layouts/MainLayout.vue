@@ -23,7 +23,6 @@ import MobileBar from '@/UI/components/common/MobileBar.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
 import Banner from '../components/common/Banner.vue';
 import Sidebar from '../components/sidebar/Sidebar.vue';
-import {RouterNameEnum} from '../../router/router.types';
 
 @Component({
   components: {
@@ -47,7 +46,7 @@ export default class MainLayout extends Vue {
   }
 
   proceed(): void {
-    this.$router.push({name: RouterNameEnum.Profile});
+    this.$router.push({name: this.$routeRules.Profile});
   }
 
   get user(): IUser {

@@ -9,6 +9,7 @@
                        @handleDisLike="handleDisLike"
                        @handleFavourite="handleFavourite"
                        @moveToNextLesson="moveToNextLesson()"
+                       @send="send"
                        :isFavourite="course.isFavourite"
                        :isDisliked="course.isDisliked"
                        :isLiked="course.isLiked"
@@ -65,7 +66,6 @@ import {HeaderRouteType} from '@/entity/common/header.types';
 import Relation from '../../components/common/Relation.vue';
 import {ICourseItem, ICourseLessons} from '@/entity/courseItem/courseItem.type';
 import Lessons from '@/UI/components/lessons/Lessons.vue';
-import {RouterNameEnum} from '@/router/router.types';
 import {CourseItemStore} from '@/store/modules/CourseItem';
 import Doc from '@/UI/components/common/Doc.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
@@ -84,7 +84,7 @@ import {RelationStore} from '../../../store/modules/Relation';
 })
 export default class Course extends Vue {
   route: HeaderRouteType = {
-    name: RouterNameEnum.TrainingMain,
+    name: this.$routeRules.TrainingMain,
     label: 'Вернуться к списку курсов',
   };
   files: ILessonItemFiles[] = [];
@@ -105,11 +105,15 @@ export default class Course extends Vue {
 
   moveToNextLesson(): void {
     this.$router.push({
-      name: RouterNameEnum.Lesson,
+      name: this.$routeRules.Lesson,
       params: {
         lessonId: this.getNextLessonId(this.course!.lessons).toString()
       }
     })
+  }
+
+  send(): void {
+    this.fetchData();
   }
 
   async created(): Promise<void> {
@@ -119,7 +123,7 @@ export default class Course extends Vue {
     }
     if (!this.$route.params.lessonId) {
       await this.$router.push({
-        name: RouterNameEnum.Lesson,
+        name: this.$routeRules.Lesson,
         params: {lessonId: this.findCurrent(this.course!.lessons).toString()}
       });
     }

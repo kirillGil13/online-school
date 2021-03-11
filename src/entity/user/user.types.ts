@@ -4,6 +4,7 @@ export interface IUser {
     phoneNumber: string;
     name: string;
     lastName: string;
+    isLeader: boolean;
     vk?: string;
     facebook?: string;
     instagram?: string;
@@ -25,6 +26,7 @@ export type UserResponseType = {
     phoneNumber: string;
     name: string;
     lastName: string;
+    isLeader: boolean;
     vk?: string;
     facebook?: string;
     instagram?: string;

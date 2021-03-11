@@ -22,11 +22,14 @@ export default class InDev extends Vue {
     background: #F2F2F2;
     border: 1px solid rgba(87, 81, 183, 0.12);
     border-radius: 12px;
+    text-align: center;
     .in-dev-title {
+      text-align: center;
       font-size: 24px;
     }
     .in-dev-desc {
       color: #828282;
+      text-align: center;
       font-size: 12px;
     }
   }
