@@ -23,7 +23,6 @@ import {IInfoPackage} from '../../../entity/infoPackages/infoPackage.types';
 import {IUser} from '../../../entity/user';
 import {AuthStore} from '../../../store/modules/Auth';
 import {RouterNameEnum} from '../../../router/router.types';
-import Api from '../../../repository/api';
 import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 

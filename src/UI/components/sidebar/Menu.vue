@@ -1,7 +1,7 @@
 <template>
     <v-list :active-text-color="variables.menuActiveText" :collapse-transition="false" class="main-menu" nav rounded>
         <template v-for="item in items">
-            <v-list-item v-if="!item.subMenu" :key="item.title" :to="{ name: item.route }">
+            <v-list-item v-if="!item.subMenu" :key="item.title" exact :to="{ name: item.route }">
                 <v-list-item-icon>
                     <svg-icon :name="item.iconName" class="menu__icon" height="24" width="24" />
                 </v-list-item-icon>
