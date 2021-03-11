@@ -31,15 +31,16 @@
       <Relation svg-class="svg-down" :active="isDisliked" svg-name="Finger" :title="isMobile ? '' : 'Не нравится'"
                 @click="$emit('handleDisLike', false)"/>
       <Relation svg-name="Chosen" :active="isFavourite" :title="isMobile ? '' : 'В избранное'"
-                @click="$emit('handleFavourite'); show = true"/>
+                @click="handleFavourite"/>
       <Relation svg-name="Message" :title="isMobile ? '' : 'Обсудить'"/>
     </v-row>
     <v-col :class="['box-container', isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
       <h5>ОПИСАНИЕ</h5>
       <span class="desc">{{ lesson.description }}</span>
     </v-col>
-    <v-col v-if="lessonLoaded && (questions !== null || result !== null) && lesson.homeworkId"
-           :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
+    <v-col
+        v-if="lessonLoaded && (questions !== null || result !== null) && lesson.homeworkId && lesson.status !== lessonTypes.LOCKED"
+        :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
       <TestingComponent
           :form="testingForm"
           :result="result"
@@ -153,7 +154,9 @@
         </div>
       </v-row>
     </v-col>
-    <Alert :show="show" :type="alertType.Success" text="Курс успешно добавлен в избранное" @show="showAlert"/>
+    <Alert :show="show" :type="isFavourite ? alertType.Success : alertType.Error"
+           :text="isFavourite ? 'Курс успешно добавлен в избранное' : 'Курс успешно удален из избранного'"
+           @show="showAlert"/>
   </div>
 </template>
 
@@ -326,8 +329,14 @@ export default class Lesson extends Vue {
     this.show = show;
   }
 
+  handleFavourite(): void {
+    this.$emit('handleFavourite');
+    this.show = true;
+  }
+
   async send(): Promise<void> {
     await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.lesson!.homeworkId.toString()});
+    this.$emit('send');
     await this.fetchData();
     // this.$set(this.lesson!, 'homeworkIsDone', true);
     // this.$set(this.lesson!, 'homeworkId', this.questions!.id);
@@ -344,11 +353,13 @@ export default class Lesson extends Vue {
   .desc {
     color: #818c99;
   }
+
   .course-locked {
     width: 100%;
     height: 100%;
     background-size: cover;
     background-repeat: no-repeat;
+
     .background {
       position: absolute;
       top: 0;
@@ -358,10 +369,12 @@ export default class Lesson extends Vue {
       border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 12px;
       background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+
       h1 {
         font-size: 24px;
         color: #FFFFFF;
       }
+
       h3 {
         font-size: 16px;
         color: #FFFFFF;

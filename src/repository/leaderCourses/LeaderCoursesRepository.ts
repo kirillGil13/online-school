@@ -11,4 +11,9 @@ export class LeaderCoursesRepository implements ILeaderCoursesRepository {
         const responseData = response.data as LeaderCoursesResponseType[];
         return responseData.map((leaderCourses: LeaderCoursesResponseType) => new LeaderCourses(leaderCourses));
     }
+    async fetchMyCourses(): Promise<ILeaderCourses[]> {
+        const response = await Api.get('/courses/my');
+        const responseData = response.data as LeaderCoursesResponseType[];
+        return responseData.map((leaderCourses: LeaderCoursesResponseType) => new LeaderCourses(leaderCourses));
+    }
 }

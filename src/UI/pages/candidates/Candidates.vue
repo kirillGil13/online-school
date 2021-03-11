@@ -29,7 +29,7 @@
     <!--          <template v-slot:default>25</template>-->
     <!--          <template v-slot:stats>0.2</template>-->
     <!--        </Badge>-->
-    <!--        <Badge class="badges__container" :link-name="route.CandidatesStatistics">-->
+    <!--        <Badge class="badges__container" :link-name="$routeRules.CandidatesStatistics">-->
     <!--          <template v-slot:title>Подробная аналитика</template>-->
     <!--          <template v-slot:link>Посмотреть</template>-->
     <!--        </Badge>-->
@@ -107,7 +107,6 @@ import {SelectsStore} from '@/store/modules/Selects';
 import Modal from '@/UI/components/common/Modal.vue';
 import CandidateFormComponent from '@/UI/components/forms/candidateForm/CandidateFormComponent.vue';
 import {CandidateForm} from '@/form/candidate/candidateForm';
-import {RouterNameEnum} from '@/router/router.types';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 import {InfoPackagesStore} from '@/store/modules/InfoPackages';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
@@ -153,7 +152,6 @@ export default class Candidates extends Vue {
   callTimeForm: CallTimeForm;
   destroyUpdateForm = true;
   destroy = true;
-  route = RouterNameEnum;
   candidateId = 0;
   searchBody = '';
 

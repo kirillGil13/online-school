@@ -12,17 +12,17 @@
       </div>
       <div class="actions d-flex flex-row justify-space-between">
 
-        <router-link :to="{name: routeName.ChatMain}" >
+        <router-link :to="{name: $routeRules.ChatMain}" >
           <div class="actions__item">
             Чат
           </div>
         </router-link>
-        <router-link :to="{name: routeName.ChatNotes}" >
+        <router-link :to="{name: $routeRules.ChatNotes}" >
           <div class="actions__item">
             Уведомления
           </div>
         </router-link>
-        <router-link :to="{name: routeName.ChatTasks}" class="mr-4">
+        <router-link :to="{name: $routeRules.ChatTasks}" class="mr-4">
           <div class="actions__item">
             Задания
           </div>
@@ -34,13 +34,11 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {RouterNameEnum} from '@/router/router.types';
 import Search from '@/UI/components/common/Search.vue';
 @Component({
   components: {Search}
 })
 export default class ChatHeader extends Vue {
-  routeName = RouterNameEnum;
 }
 </script>
 

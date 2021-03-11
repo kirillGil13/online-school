@@ -22,7 +22,6 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import Rating from '../common/Rating.vue';
 import {SwiperOptions} from 'swiper';
-import {RouterNameEnum} from '@/router/router.types';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {ILeadersListItem} from '../../../entity/leader';
 
@@ -33,7 +32,6 @@ import {ILeadersListItem} from '../../../entity/leader';
 })
 export default class SliderLeaders extends Vue {
   @Prop() readonly leaders!: ILeadersListItem[];
-  routerName = RouterNameEnum;
 
   swiperComponentOption: SwiperOptions = {
     slidesPerView: 'auto',
@@ -46,7 +44,7 @@ export default class SliderLeaders extends Vue {
   };
 
   proceed(id: number): void {
-    this.$router.push({ name: this.routerName.LeaderCourses, params: { id: id.toString() } });
+    this.$router.push({ name: this.$routeRules.LeaderCourses, params: { id: id.toString() } });
   }
 
   next(): void {
