@@ -8,7 +8,7 @@
                        @handleLike="handleLike"
                        @handleDisLike="handleDisLike"
                        @handleFavourite="handleFavourite"
-                       @moveToNextLesson="moveToNextLesson()"
+                       @moveToNextLesson="moveToNextLesson"
                        @send="send"
                        @moveToPrevious="moveToPrevious"
                        :isFavourite="course.isFavourite"
@@ -107,6 +107,7 @@ export default class Course extends Vue {
   }
 
   moveToNextLesson(number: number): void {
+    console.log(number);
     this.$router.push({
       name: this.$routeRules.Lesson,
       params: {

@@ -7,7 +7,6 @@ export class TestingForm implements ITestingForm {
     activeStep: ITestingFormActiveStep[] = [];
 
     constructor(data?: ITestingQuestions[]) {
-        console.log(1);
         if (data) {
             for (let i = 0; i < data.length; i++) {
                 this.questions.push({id: data[i].id, question: data[i].question, variants: data[i].variants});
