@@ -1,6 +1,6 @@
 <template>
   <v-col class="training">
-    <Header :isBordered="false" title="Обучение" class="top_bar_p_0">
+    <Header :isBordered="false" action title="Обучение" class="top_bar_p_0">
       <div class="d-flex justify-end">
         <Button class="mt-0">Добавить свой курс</Button>
       </div>

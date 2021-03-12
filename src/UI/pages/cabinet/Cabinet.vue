@@ -54,7 +54,7 @@ import FilterComponent from '@/UI/components/filter/FilterComponent.vue';
 import Badge from '@/UI/components/common/Badge.vue';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 import Filters from '@/entity/filters/filters';
-import {FiltersNameEnum, IFilters} from '../../../entity/filters/filters.types';
+import {IFilters} from '../../../entity/filters/filters.types';
 import {FiltersStore} from '../../../store/modules/Filters';
 import {MyCoursesStore} from '../../../store/modules/MyCourses';
 import {ILeaderCourses} from '../../../entity/leaderCourses/leaderCourses.types';
@@ -73,6 +73,7 @@ import {IMyStatistic} from '../../../entity/myStatistic/myStatistic.types';
 
 export default class Cabinet extends Vue {
   filters: Filters;
+
 
   constructor() {
     super();

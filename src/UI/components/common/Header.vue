@@ -8,7 +8,7 @@
       <h1 v-if="title">{{ title }}</h1>
       <span class="desc" v-if="description">{{ description }}</span>
     </v-col>
-    <v-col class="top_bar_right" v-if="$slots[0]">
+    <v-col v-if="action">
       <slot></slot>
     </v-col>
   </v-row>
@@ -25,9 +25,11 @@ export default class Header extends Vue {
   @Prop() readonly route!: HeaderRouteType;
   @Prop({default: false}) readonly isBordered!: boolean;
   @Prop({default: ''}) readonly hash!: string;
+  @Prop({default: false, type: Boolean}) readonly action!: boolean;
 
   get isMobile(): boolean {
     return AdaptiveStore.isMobile;
+
   }
 }
 </script>

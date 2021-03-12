@@ -2,7 +2,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import {RouterNameEnum} from '@/router/router.types';
-import {AuthStore} from '@/store/modules/Auth';
 import {leaderGuard} from '@/guard';
 
 Vue.use(Router);
