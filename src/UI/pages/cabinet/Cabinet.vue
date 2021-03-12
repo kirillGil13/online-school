@@ -6,26 +6,26 @@
         <FilterComponent :search="false" :is-on-right="false" :filters="filters" @filter="onFilter"/>
       </v-col>
     </v-row>
-    <v-row class="badges pa-0">
-      <Badge :subs="true" :profit="true">
+    <v-row class="badges pa-0" v-if="myStatisticLoaded">
+      <Badge :profit="myStatistic.purchasesCount.isIncrease">
         <template v-slot:title>Продажи (человек)</template>
-        <template v-slot:default>26</template>
-        <template v-slot:stats>6</template>
+        <template v-slot:default>{{myStatistic.purchasesCount.current}}</template>
+        <template v-slot:stats>{{myStatistic.purchasesCount.change}}</template>
       </Badge>
-      <Badge :profit="true">
+      <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease">
         <template v-slot:title>Заработано</template>
-        <template v-slot:default>{{ 637890 | currency('RUB') }}</template>
-        <template v-slot:stats>5.3</template>
+        <template v-slot:default>{{ myStatistic.purchasesIncomeCurrent.current | currency('RUB') }}</template>
+        <template v-slot:stats>{{myStatistic.purchasesIncomeCurrent.change}}</template>
       </Badge>
-      <Badge :profit="true">
+      <Badge :profit="myStatistic.viewCountCurrent.isIncrease">
         <template v-slot:title>Просмотров</template>
-        <template v-slot:default>18771</template>
-        <template v-slot:stats>12</template>
+        <template v-slot:default>{{ myStatistic.viewCountCurrent.current }}</template>
+        <template v-slot:stats>{{ myStatistic.viewCountCurrent.change }}</template>
       </Badge>
-      <Badge :profit="true">
+      <Badge :profit="myStatistic.ratingCurrent.isIncrease">
         <template v-slot:title>Средняя оценка</template>
-        <template v-slot:default>9.8</template>
-        <template v-slot:stats>0.2</template>
+        <template v-slot:default>{{ myStatistic.ratingCurrent.current }}</template>
+        <template v-slot:stats>{{ myStatistic.ratingCurrent.change }}</template>
       </Badge>
     </v-row>
     <v-col class="events__content">
@@ -54,10 +54,12 @@ import FilterComponent from '@/UI/components/filter/FilterComponent.vue';
 import Badge from '@/UI/components/common/Badge.vue';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 import Filters from '@/entity/filters/filters';
-import {IFilters} from '../../../entity/filters/filters.types';
+import {FiltersNameEnum, IFilters} from '../../../entity/filters/filters.types';
 import {FiltersStore} from '../../../store/modules/Filters';
 import {MyCoursesStore} from '../../../store/modules/MyCourses';
 import {ILeaderCourses} from '../../../entity/leaderCourses/leaderCourses.types';
+import {MyStatisticStore} from '../../../store/modules/MyStatistic';
+import {IMyStatistic} from '../../../entity/myStatistic/myStatistic.types';
 
 
 @Component({
@@ -77,13 +79,6 @@ export default class Cabinet extends Vue {
     this.filters = new Filters(this.filtersPeriods);
   }
 
-  proceed(id: number): void {
-    this.$router.push({path: `/training/${id}/0`});
-  }
-
-  onFilter(): void {
-  }
-
   get filtersPeriods(): IFilters[] {
     return FiltersStore.periods;
   }
@@ -92,8 +87,41 @@ export default class Cabinet extends Vue {
     return MyCoursesStore.myCourses;
   }
 
-  async created(): Promise<void> {
-    await MyCoursesStore.fetchMyCourses();
+  get myStatistic(): IMyStatistic | null {
+    return MyStatisticStore.myStatistic;
+  }
+
+  get myStatisticLoaded(): boolean {
+    return MyStatisticStore.myStatisticLoaded;
+  }
+
+  proceed(id: number): void {
+    this.$router.push({path: `/training/${id}/0`});
+  }
+
+  onFilter(): void {
+    this.filtration();
+  }
+
+  getTime(date?: number): number {
+    if (date) {
+      return new Date(new Date().setDate(new Date().getDate() - date)).getTime() / 1000 | 0;
+    } else return (new Date()).getTime() / 1000 | 0;
+  }
+
+  created(): void {
+    MyCoursesStore.fetchMyCourses();
+    MyStatisticStore.fetchData({
+      timestampStart: this.getTime(this.filters.filterBody[0].filterValue.find(item => item.value === this.filters.default[0])!.value),
+      timestampFinish: this.getTime()
+    })
+  }
+
+  async filtration(): Promise<void> {
+    await MyStatisticStore.fetchData({
+      timestampStart: this.getTime(this.filters.filterBody[0].filterValue.find(item => item.value === this.filters.default[0])!.value),
+      timestampFinish: this.getTime()
+    })
   }
 }
 </script>

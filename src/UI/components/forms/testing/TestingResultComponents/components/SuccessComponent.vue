@@ -4,7 +4,7 @@
       <ProgressCircleTesting :result="result"/>
       <v-col>
         <h3>Поздравляем - вы выполнили задание!</h3>
-        <div class="success_info">Теперь вы можете перейти к следующему уроку.</div>
+        <div v-if="!lastLesson" class="success_info">Теперь вы можете перейти к следующему уроку.</div>
       </v-col>
     </v-row>
     <v-divider></v-divider>
@@ -13,7 +13,7 @@
         <svg-icon class="svg" name="Return"></svg-icon>
         Пересмотреть урок
       </Button>
-      <Button class="with_icon" @submit="$emit('moveToNextLesson')">
+      <Button v-if="!lastLesson" class="with_icon" @submit="$emit('moveToNextLesson')">
         <svg-icon class="svg next" name="Next"></svg-icon>
         Перейти к следующему уроку
       </Button>
@@ -35,5 +35,6 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 })
 export default class Success extends Vue {
   @Prop() readonly result!: TestingResult;
+  @Prop({default: false}) readonly lastLesson!: boolean;
 }
 </script>

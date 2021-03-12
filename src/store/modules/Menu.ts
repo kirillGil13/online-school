@@ -46,6 +46,11 @@ class MenuModule extends VuexModule {
             iconName: 'Chosen',
             route: RouterNameEnum.Chosen,
         },
+        {
+            title: 'Кабинет лидера',
+            iconName: 'Cabinet',
+            route: RouterNameEnum.Cabinet,
+        },
     ];
 }
 

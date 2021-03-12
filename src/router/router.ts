@@ -2,6 +2,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import {RouterNameEnum} from '@/router/router.types';
+import {AuthStore} from '@/store/modules/Auth';
+import {leaderGuard} from '@/guard';
 
 Vue.use(Router);
 Vue.prototype.$routeRules = RouterNameEnum;
@@ -149,8 +151,10 @@ const routes = [
                 component: () => import('../UI/pages/cabinet/Cabinet.vue'),
                 name: RouterNameEnum.Cabinet,
                 meta: {
-                    isLeader: true
-                }
+                    isLeader: true,
+                    title: 'Кабинет лидера -  OneLinks'
+                },
+                beforeEnter: leaderGuard
             },
 
         ],
@@ -175,8 +179,6 @@ Vue.router = new Router({
 });
 export const router = Vue.router;
 
-const isLeader = () => false;
-
 router.beforeEach((to, from, next) => {
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
     const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
@@ -197,16 +199,4 @@ router.beforeEach((to, from, next) => {
     })
         .forEach((tag: any) => document.head.appendChild(tag));
     next();
-});
-
-router.beforeEach((to, from, next) => {
-    if (to.matched.some((route) => route.meta?.isLeader)) {
-        if (!isLeader()) {
-            next();
-        } else {
-            next({name: RouterNameEnum.Main});
-        }
-    } else {
-        next();
-    }
 });

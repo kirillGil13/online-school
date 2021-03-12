@@ -108,15 +108,15 @@ class FiltersModule extends VuexModule {
             filterValue: [
                 {
                     text: 'Последние 30 дней',
-                    value: 0
+                    value: 30
                 },
                 {
                     text: 'Последние 15 дней',
-                    value: 1
+                    value: 15
                 },
                 {
                     text: 'Последние 5 дней',
-                    value: 2
+                    value: 5
                 },
             ],
             filterType: FiltersNameEnum.Period
