@@ -17,6 +17,7 @@ import {ILeaderCoursesRepository} from '@/repository/leaderCourses/LeaderCourses
 import {ICourseLevelsRepository} from '@/repository/courseLevels/CourseLevels.types';
 import {IRelationRepository} from '@/repository/relation/RelationRepository.types';
 import {ICoursesFavouriteRepository} from '@/repository/corsesFavourite/CoursesFavouriteRepository.types';
+import {IMyStatisticRepository} from '@/repository/myStatistic/MyStatisticRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -38,4 +39,5 @@ export interface IProvider {
     courseLevels: ICourseLevelsRepository;
     relation: IRelationRepository;
     coursesFavourite: ICoursesFavouriteRepository;
+    myStatistic: IMyStatisticRepository;
 }

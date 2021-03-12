@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <SuccessComponent :result="result" v-on="$listeners" v-if="resultType.GOOD === result.result" />
+        <SuccessComponent :result="result" v-on="$listeners" v-if="resultType.GOOD === result.result" :last-lesson="lastLesson"/>
         <ProceedComponent :result="result" v-on="$listeners" v-if="resultType.MIDDLE === result.result" />
         <FailComponent :result="result" v-on="$listeners" v-if="resultType.BAD === result.result" />
     </v-row>
@@ -22,6 +22,7 @@ import FailComponent from './components/FailComponent.vue';
 })
 export default class TestingResultComponent extends Vue {
     @Prop() readonly result!: TestingResult;
+    @Prop({default: false}) readonly lastLesson!: boolean;
     resultType = TestingResultComponentsEnum;
 }
 </script>

@@ -45,6 +45,7 @@
           :form="testingForm"
           :result="result"
           :homework-is-done="lesson.homeworkIsDone"
+          :last-lesson="lesson.number === lastLesson"
           @send="send()"
           @moveToNextLesson="$emit('moveToNextLesson', lesson.number)"
           @passTestAgain="passTestAgain()"
@@ -196,6 +197,7 @@ export default class Lesson extends Vue {
   @Prop() readonly isLiked!: boolean;
   @Prop() readonly isDisliked!: boolean;
   @Prop() readonly isFavourite!: boolean;
+  @Prop({default: false}) readonly lastLesson!: number;
   alertType = AlertTypeEnum;
   show = false;
   lessonTypes = LessonsTypesEnum;
