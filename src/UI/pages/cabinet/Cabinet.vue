@@ -24,7 +24,7 @@
       </Badge>
       <Badge :profit="myStatistic.ratingCurrent.isIncrease">
         <template v-slot:title>Средняя оценка</template>
-        <template v-slot:default>{{ myStatistic.ratingCurrent.current }}</template>
+        <template v-slot:default>{{ myStatistic.ratingCurrent.current }}0</template>
         <template v-slot:stats>{{ myStatistic.ratingCurrent.change }}</template>
       </Badge>
     </v-row>
@@ -156,7 +156,11 @@ export default class Cabinet extends Vue {
     padding: 16px 0 8px 24px !important;
     background-color: #ffffff;
     min-width: 230px;
-
+    &__default {
+      &:nth-last-child(1) {
+        margin-top: 12px;
+      }
+    }
     &__stats {
       margin-bottom: 5px;
     }
@@ -192,6 +196,7 @@ export default class Cabinet extends Vue {
   }
 
   &__courses {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
