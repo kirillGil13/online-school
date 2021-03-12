@@ -22,3 +22,7 @@ export type InfoPackageItemVideoResponseType = {
     coverLink: string;
     videoLink: string;
 }
+
+export type InfoPackageItemRequestType = {
+    account_id: string;
+}

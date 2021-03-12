@@ -1,6 +1,6 @@
 <template>
-  <v-col class="pa-6 d-flex justify-center flex-column candidate_form">
-    <h1 class="mx-auto my-0">Создать кандидата</h1>
+  <v-col class="pa-6 d-flex justify-center flex-column mail_form">
+    <h1 class="mx-auto my-0">Создать курс</h1>
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="name" show-custom-error label="Имя"
     >
@@ -28,57 +28,45 @@
       />
     </FormGroup>
     <FormGroup
-        class="mt-4" v-slot="attrs" :form="form" field="email" show-custom-error label="Email"
+        class="mt-4" v-slot="attrs" :form="form" field="topic" show-custom-error label="Название"
     >
       <input
           class="input input__normal"
-          type="email" name="email"
-          id="email"
+          type="text" name="topic"
+          id="topic"
           v-model="form[attrs.name]"
           v-bind="attrs"
           @input="attrs.change"
       >
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="product" label="Продукт">
-      <v-select
-          :items="form.productList"
-          v-model="form[attrs.name]"
-          id="product"
-          :menu-props="{ left: true}"
-          v-bind="attrs"
-          class="select"
-          no-data-text="Данные не найдены"
-          full-width
-          flat
-          dense
-          hide-details
-          solo
-      >
-      </v-select>
-    </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="status" label="Статус">
-      <v-select
-          :items="form.statusList"
-          v-model="form[attrs.name]"
-          id="status"
-          :menu-props="{ left: true}"
-          v-bind="attrs"
-          class="select"
-          no-data-text="Данные не найдены"
-          full-width
-          flat
-          dense
-          hide-details
-          solo
-      >
-      </v-select>
-    </FormGroup>
-    <FormGroup v-if="activatorDate"
-        class="mt-4 date-time-wrapper" :form="form" field="callTimeFake" label="Укажите время звонка" v-slot="attrs"
+    <FormGroup
+        class="mt-4" v-slot="attrs" :form="form" field="description" show-custom-error label="Описание"
     >
-      <datetime :phrases="{ok: 'Далее', cancel: 'Закрыть'}" class="date-time input input__normal" type="datetime"
-                v-model="form[attrs.name]" v-bind="attrs"/>
-      <svg-icon @click="clear" class="delete_content" name="Close"></svg-icon>
+      <input
+          class="input input__normal"
+          type="text" name="topic"
+          id="description"
+          v-model="form[attrs.name]"
+          v-bind="attrs"
+          @input="attrs.change"
+      >
+    </FormGroup>
+    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="levelId" label="Уровень  ">
+      <v-select
+          :items="form.levelList"
+          v-model="form[attrs.name]"
+          id="levelId"
+          :menu-props="{ left: true}"
+          v-bind="attrs"
+          class="select"
+          no-data-text="Данные не найдены"
+          full-width
+          flat
+          dense
+          hide-details
+          solo
+      >
+      </v-select>
     </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
       <Button class="secondary_blue mr-3" small @submit="$emit('close')">Отмена</Button>
@@ -90,36 +78,23 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-import {CandidateForm} from '../../../../form/candidate/candidateForm';
+import {Component, Prop, Vue} from 'vue-property-decorator';
 import Button from '../../common/Button.vue';
 import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
-import {IStatuses} from '../../../../entity/statuses/statuses.types';
-import {IInfoPackage} from '../../../../entity/infoPackages/infoPackage.types';
-import Modal from '../../common/Modal.vue';
-import {Datetime} from 'vue-datetime';
+import {ICourseLevels} from '../../../../entity/courseLevels/courseLevels.types';
+import {MailForm} from '../../../../form/mail/mailForm';
 
 @Component({
-  components: {Modal, FormGroup, Button, PhoneMaskInput, Datetime}
+  components: {FormGroup, Button, PhoneMaskInput}
 })
 export default class CandidateFormComponent extends Vue {
-  @Prop() readonly form!: CandidateForm;
-  @Prop() readonly statuses!: IStatuses[];
-  @Prop() readonly infoPacks!: IInfoPackage[];
-  @Prop() readonly accountId!: number;
-  activatorDate = false;
+  @Prop() readonly form!: MailForm;
+  @Prop() readonly levels!: ICourseLevels[];
 
   constructor() {
     super();
-    this.form.setFormData(this.statuses, this.infoPacks, this.accountId);
-  }
-
-  @Watch('form.status', {immediate: true})
-  onStatusChange(): void {
-    if (this.form.status === 3) {
-      this.activatorDate = true;
-    } else this.activatorDate = false;
+    this.form.setFormData(this.levels);
   }
 
   changePhone(): void {
@@ -130,14 +105,11 @@ export default class CandidateFormComponent extends Vue {
     //@ts-ignore
     this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
   }
-  clear(): void {
-    this.form.callTimeFake = '';
-  }
 }
 </script>
 
 <style lang="scss">
-.candidate_form {
+.mail_form {
   .select {
     border: 1px solid #f2f2f2 !important;
     padding: 4px !important;
@@ -149,21 +121,6 @@ export default class CandidateFormComponent extends Vue {
       fieldset {
         border: none !important;
       }
-    }
-  }
-  .date-time-wrapper {
-    position: relative;
-    .date-time {
-      border: 1px solid #F2F2F2;
-      position: relative;
-    }
-    .delete_content {
-      position: absolute;
-      cursor: pointer;
-      right: 10px;
-      bottom: 15px;
-      width: 20px !important;
-      height: 20px !important;
     }
   }
 }

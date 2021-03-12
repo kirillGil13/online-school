@@ -2,7 +2,7 @@
   <v-col class="training">
     <Header :isBordered="false" action title="Обучение" class="top_bar_p_0">
       <div class="d-flex justify-end">
-        <Button class="mt-0">Добавить свой курс</Button>
+        <Button class="mt-0" @submit="activator = true">Добавить свой курс</Button>
       </div>
     </Header>
     <template v-if="leaders.length !== 0 && leadersCoursesLoaded">
@@ -41,6 +41,14 @@
         К сожалению данные не найдены
       </v-col>
     </v-row>
+    <Modal v-if="courseLevelsLoaded" :activator="activator" @activatorChange="activatorChange">
+      <template v-slot:content>
+        <MailFormComponent :form="mailForm" v-if="destroy" :levels="courseLevels" @close="close" @add="add"/>
+      </template>
+    </Modal>
+    <Alert :show="show" :type="alertType.Success"
+           text="Данные успещно отправлены"
+           @show="showAlert"/>
   </v-col>
 </template>
 <script lang="ts">
@@ -64,9 +72,15 @@ import {CourseLevelsStore} from '../../../store/modules/CourseLevels';
 import {ICourseLevels} from '../../../entity/courseLevels/courseLevels.types';
 import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
+import Modal from '../../components/common/Modal.vue';
+import MailFormComponent from '../../components/forms/mailForm/MailFormComponent.vue';
+import {MailForm} from '../../../form/mail/mailForm';
+import {MailStore} from '../../../store/modules/Mail';
 
 @Component({
   components: {
+    MailFormComponent,
+    Modal,
     Alert,
     FilterComponent,
     LeaderCourseItem,
@@ -82,10 +96,15 @@ export default class Training extends Vue {
   filters: Filters;
   searchBody = '';
   alertType = AlertTypeEnum;
+  mailForm: MailForm;
+  destroy = true;
+  activator = false;
+  show = false;
 
   constructor() {
     super();
     this.filters = new Filters(this.filtersTraining);
+    this.mailForm = new MailForm();
   }
 
   @Watch('courseLevelsLoaded', {immediate: true})
@@ -138,6 +157,35 @@ export default class Training extends Vue {
       courseLevelId: this.filters.default[0],
       name: this.searchBody,
     });
+  }
+
+  async add(): Promise<void> {
+    if (await this.mailForm.submit(MailStore.create)) {
+      this.show = true;
+    }
+    this.mailForm = new MailForm();
+    this.rerender();
+    this.activator = false;
+  }
+
+  close(): void {
+    this.activator = false;
+  }
+
+  rerender(): void {
+    this.destroy = false;
+    this.$nextTick(() => {
+      this.destroy = true;
+    });
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
+  }
+
+  activatorChange(act: boolean): void {
+    this.destroy = true;
+    this.activator = act;
   }
 
   created(): void {

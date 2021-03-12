@@ -95,7 +95,7 @@
       </FormGroup>
     </div>
     <div>
-      <Button class="small" full-width :disabled="form.disabled" type="submit" v-on="$listeners">Завершить регистрацию
+      <Button small full-width :disabled="form.disabled" type="submit" v-on="$listeners">Завершить регистрацию
       </Button>
       <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
     </div>

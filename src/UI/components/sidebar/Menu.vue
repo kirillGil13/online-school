@@ -55,4 +55,15 @@ export default class MenuComponent extends Vue {
     }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-list-item--active {
+  .v-list-item__icon {
+    .svg-icon {
+      fill: #4F79FF !important;
+      path {
+        fill: #4F79FF !important;
+      }
+    }
+  }
+}
+</style>
