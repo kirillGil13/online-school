@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import {required, sameAs} from 'vuelidate/lib/validators';
+import {minLength, required, sameAs} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {IMailFormList, MailFormRequestType} from '@/form/mail/mailForm.types';
@@ -8,8 +8,6 @@ import {ICourseLevels} from '@/entity/courseLevels/courseLevels.types';
 @Component
 export class MailForm extends Form {
     public levelId: number | null = 0;
-    public topic = '';
-    public description = '';
     public levelList: IMailFormList[] = [];
     public phone = '';
     public phoneMask = '';
@@ -19,6 +17,14 @@ export class MailForm extends Form {
 
     @Validate(sameAs(() => true), (form: MailForm): string => 'Введите номер в формате ' + form.phoneMask)
     public phoneValid = true;
+
+    @Validate(required, 'Введите название курса')
+    @Validate(minLength(3), 'Название должно содержать не меньше 3 символов')
+    public topic = '';
+
+    @Validate(required, 'Введите описание курса')
+    @Validate(minLength(3), 'Описание должно содержать не меньше 3 символов')
+    public description = '';
 
     public serverErrors: { [key: string]: string[] } = {};
 

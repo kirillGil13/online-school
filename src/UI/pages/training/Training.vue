@@ -47,7 +47,7 @@
       </template>
     </Modal>
     <Alert :show="show" :type="alertType.Success"
-           text="Данные успещно отправлены"
+           text="Данные успешно отправлены"
            @show="showAlert"/>
   </v-col>
 </template>
