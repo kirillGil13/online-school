@@ -9,6 +9,7 @@ button{
     border-radius: 12px;
     margin-top: 16px;
     outline: none;
+    white-space: nowrap;
     transition: 0.4s all;
     &:disabled {
         background: #f2f2f2;

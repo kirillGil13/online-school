@@ -25,8 +25,8 @@ class InfoPackagesModule extends VuexModule {
         return {infoPackages, infoPackagesLoaded};
     }
     @MutationAction
-    async fetchData(route: string): Promise<{ infoPackageItem: IInfoPackageItem; infoPackageItemLoaded: boolean}> {
-        const infoPackageItem = await store.$repository.infoPackages.fetchData(route);
+    async fetchData(data: {route: string; accountId: string}): Promise<{ infoPackageItem: IInfoPackageItem; infoPackageItemLoaded: boolean}> {
+        const infoPackageItem = await store.$repository.infoPackages.fetchData(data.route, {account_id: data.accountId});//eslint-disable-line
         let infoPackageItemLoaded = false;
         if (infoPackageItem !== null) {
             infoPackageItemLoaded = true;

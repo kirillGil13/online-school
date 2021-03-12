@@ -91,8 +91,8 @@
       <svg-icon @click="clear" class="delete_content" name="Close"></svg-icon>
     </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
-      <Button class="secondary_blue mr-3" @submit="$emit('close')">Отмена</Button>
-      <Button :disabled="form.disabled" @submit="$emit('update')">Изменить</Button>
+      <Button class="secondary_blue mr-3" small @submit="$emit('close')">Отмена</Button>
+      <Button full-width small :disabled="form.disabled" @submit="$emit('update')">Изменить</Button>
     </div>
     <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
   </v-col>
@@ -144,10 +144,6 @@ export default class UpdateCandidateFormComponent extends Vue {
         border: none !important;
       }
     }
-  }
-
-  button {
-    width: 50%;
   }
 }
 
