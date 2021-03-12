@@ -17,13 +17,13 @@
       <PhoneMaskInput
           v-model="form.phone"
           v-bind="attrs"
+          autoDetectCountry
           flagSize="normal"
           inputClass="input"
           showFlag
-          autoDetectCountry
           wrapperClass="wrapper"
           ref="phoneMaskInput"
-          @onValidate="(e) => {if (form.phone.length > 2) form.phoneValid = e.isValidByLibPhoneNumberJs; else form.phoneValid = true}"
+          @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
           @input="changePhone"
       />
     </FormGroup>
@@ -44,7 +44,7 @@
     >
       <input
           class="input input__normal"
-          type="text" name="topic"
+          type="text" name="description"
           id="description"
           v-model="form[attrs.name]"
           v-bind="attrs"
@@ -88,7 +88,7 @@ import {MailForm} from '../../../../form/mail/mailForm';
 @Component({
   components: {FormGroup, Button, PhoneMaskInput}
 })
-export default class CandidateFormComponent extends Vue {
+export default class MailFormComponent extends Vue {
   @Prop() readonly form!: MailForm;
   @Prop() readonly levels!: ICourseLevels[];
 
@@ -100,7 +100,6 @@ export default class CandidateFormComponent extends Vue {
   changePhone(): void {
     if (this.form.phoneMask) {
       this.form.$v['phoneValid'].$touch();
-      this.form.$v['phone'].$touch();
     }
     //@ts-ignore
     this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
