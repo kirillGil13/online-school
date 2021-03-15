@@ -92,8 +92,10 @@ export default class Course extends Vue {
 
   findCurrent(lessons: ICourseLessons[]): number {
     const id = lessons.find((el) => el.status === LessonsTypesEnum.UN_DONE || el.status === LessonsTypesEnum.LOCKED)!.id;
-    if (id) {
-      return id
+    console.log(id);
+    console.log(lessons.find((el) => el.status === LessonsTypesEnum.DONE)!.id);
+    if (id !== undefined) {
+      return id;
     } else return lessons.find((el) => el.status === LessonsTypesEnum.DONE)!.id;
   }
 
