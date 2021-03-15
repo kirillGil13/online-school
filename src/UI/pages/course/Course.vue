@@ -94,7 +94,7 @@ export default class Course extends Vue {
     const id = lessons.find((el) => el.status === LessonsTypesEnum.UN_DONE || el.status === LessonsTypesEnum.LOCKED)!.id;
     if (id) {
       return id
-    } else return 0;
+    } else return lessons.find((el) => el.status === LessonsTypesEnum.DONE)!.id;
   }
 
   get lastLesson(): number {
