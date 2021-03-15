@@ -208,8 +208,10 @@ export default class Lesson extends Vue {
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
     await this.fetchData();
-    this.testingForm = new TestingForm(this.questions!.tests);
-    this.testingForm.activeStep[0].active = true;
+    if (this.questions) {
+      this.testingForm = new TestingForm(this.questions?.tests);
+      this.testingForm.activeStep[0].active = true;
+    }
   }
 
   @Watch('questionsLoaded')
