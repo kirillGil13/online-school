@@ -23,13 +23,14 @@ export default class AuthLayout extends Vue {}
 </script>
 <style lang="scss">
 .auth {
+  padding: 0 16px 0 16px;
     justify-content: center;
     align-items: center;
     background-color: transparent !important;
 
     &__wrapper {
         padding: 24px;
-        min-width: 436px;
+        width: 100%;
         max-width: 436px;
         background-color: $white;
         border: 1px solid rgba(66, 109, 246, 0.12);

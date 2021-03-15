@@ -91,7 +91,10 @@ export default class Course extends Vue {
   files: ILessonItemFiles[] = [];
 
   findCurrent(lessons: ICourseLessons[]): number {
-    return lessons.find((el) => el.status === LessonsTypesEnum.UN_DONE || el.status === LessonsTypesEnum.LOCKED)!.id;
+    const id = lessons.find((el) => el.status === LessonsTypesEnum.UN_DONE || el.status === LessonsTypesEnum.LOCKED)!.id;
+    if (id) {
+      return id
+    } else return 0;
   }
 
   get lastLesson(): number {

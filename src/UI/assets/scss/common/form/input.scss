@@ -4,7 +4,7 @@ input{
     border: 1px solid $grey;
     border-radius: 5px;
     color: $dark;
-    font-size: 14px;
+    font-size: 14px !important;
     width: 100%;
     &::placeholder{
         color: $dark;

@@ -42,14 +42,19 @@
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="description" show-custom-error label="Описание"
     >
-      <input
-          class="input input__normal"
-          type="text" name="description"
-          id="description"
+      <v-textarea
+          class="input input__normal text-area"
+          row-height="10"
+          rows="1"
+          color="#000000"
+          auto-grow
+          hide-details
+          single-line
           v-model="form[attrs.name]"
           v-bind="attrs"
           @input="attrs.change"
       >
+      </v-textarea>
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="levelId" label="Уровень  ">
       <v-select
@@ -119,6 +124,28 @@ export default class MailFormComponent extends Vue {
 
       fieldset {
         border: none !important;
+      }
+    }
+  }
+  .text-area {
+    border: none !important;
+    font-size: 14px !important;
+    .v-input__control {
+      border: none !important;
+      .v-input__slot {
+        padding-left: 16px !important;
+        label {
+          display: none !important;
+        }
+        fieldset {
+          border: 1px solid #F2F2F2;
+        }
+      }
+      .v-text-field__slot {
+        textarea {
+          max-height: 196px;
+          overflow: scroll;
+        }
       }
     }
   }
