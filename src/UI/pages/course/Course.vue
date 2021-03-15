@@ -91,16 +91,15 @@ export default class Course extends Vue {
   files: ILessonItemFiles[] = [];
 
   findCurrent(lessons: ICourseLessons[]): number {
-    const id = lessons.find((el) => el.status === LessonsTypesEnum.UN_DONE || el.status === LessonsTypesEnum.LOCKED)!.id;
-    console.log(id);
-    console.log(lessons.find((el) => el.status === LessonsTypesEnum.DONE)!.id);
-    if (id !== undefined) {
-      return id;
-    } else return lessons.find((el) => el.status === LessonsTypesEnum.DONE)!.id;
+    if (lessons.find((el) => el.status === LessonsTypesEnum.UN_DONE || el.status === LessonsTypesEnum.LOCKED)) {
+      return lessons.find((el) => el.status === LessonsTypesEnum.UN_DONE || el.status === LessonsTypesEnum.LOCKED)!.id;
+    } else {
+      return lessons.find((el) => el.number === this.lastLesson)!.id;
+    }
   }
 
   get lastLesson(): number {
-    return this.course!.lessons[this.course!.lessons.length].number;
+    return this.course!.lessons[this.course!.lessons.length - 1].number;
   }
 
   passFile(files: ILessonItemFiles[]): void {
