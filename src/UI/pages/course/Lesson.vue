@@ -208,10 +208,6 @@ export default class Lesson extends Vue {
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
     await this.fetchData();
-    if (this.questions) {
-      this.testingForm = new TestingForm(this.questions?.tests);
-      this.testingForm.activeStep[0].active = true;
-    }
   }
 
   @Watch('questionsLoaded')
@@ -241,6 +237,8 @@ export default class Lesson extends Vue {
         await RightAnswersStore.fetchAll(this.lesson!.homeworkId);
       } else {
         await QuestionsStore.fetchAll(this.lesson!.homeworkId);
+        this.testingForm = new TestingForm(this.questions!.tests);
+        this.testingForm.activeStep[0].active = true;
       }
     }
   }
