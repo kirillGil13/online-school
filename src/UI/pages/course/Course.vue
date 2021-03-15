@@ -11,6 +11,7 @@
                        @moveToNextLesson="moveToNextLesson"
                        @send="send"
                        @moveToPrevious="moveToPrevious"
+                       :last-lesson="lastLesson"
                        :isFavourite="course.isFavourite"
                        :isDisliked="course.isDisliked"
                        :isLiked="course.isLiked"
@@ -115,7 +116,6 @@ export default class Course extends Vue {
   }
 
   moveToNextLesson(number: number): void {
-    console.log(number);
     this.$router.push({
       name: this.$routeRules.Lesson,
       params: {
