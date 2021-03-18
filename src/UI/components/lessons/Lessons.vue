@@ -7,7 +7,8 @@
               v-for="(lesson, index) in course.lessons"
               :key="index"
           >
-            <router-link :to="{name: $routeRules.Lesson, params: {lessonId: lesson.id.toString()}}" active-class="lesson-current" :id="`lesson${index}`"
+            <router-link :to="{name: $routeRules.Lesson, params: {lessonId: lesson.id.toString()}}"
+                         active-class="lesson-current" :id="`lesson${index}`"
                          :class="[ course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED ? 'lesson-locked' : '']">
               <svg-icon class="svg-wh" :name="course.resolveType(index, $route.params.lessonId)"></svg-icon>
               <div class="lesson_name">
@@ -18,12 +19,13 @@
           </li>
         </ul>
       </div>
-      <div class="lesson-btn">
+      <div class="lesson-btn" :style="{justifyContent: last ? 'flex-start' : ''}">
         <Button class="with_icon">
           <svg-icon name="Chat"></svg-icon>
           Задать вопрос
         </Button>
-        <Button class="with_icon secondary_white">
+        <Button class="with_icon secondary_white"
+                v-if="!last">
           <svg-icon name="Next"></svg-icon>
           Следующий урок
         </Button>
@@ -46,6 +48,10 @@ import {ICourseItem} from '@/entity/courseItem/courseItem.type';
 export default class Lessons extends Vue {
   @Prop() readonly course!: ICourseItem;
   lessonType = LessonsTypesEnum;
+
+  get last(): boolean {
+    return (this.course.lessons[this.course.lessons.length - 1].id.toString() === this.$route.params.lessonId);
+  }
 }
 </script>
 
@@ -54,9 +60,11 @@ export default class Lessons extends Vue {
   border-radius: 12px;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
 }
+
 .course-lessons-block {
   position: relative;
   border-radius: 12px;
+
   .lessons-block {
     position: absolute;
     width: 100%;
@@ -84,10 +92,12 @@ export default class Lessons extends Vue {
             font-size: 12px;
             color: #060516;
             padding: 12px 18px 12px 18px;
+
             &#lesson0 {
               border-top-left-radius: 12px;
               border-top-right-radius: 12px;
             }
+
             &:hover {
               background-color: rgba(87, 81, 183, 0.12) !important;
             }
@@ -95,6 +105,7 @@ export default class Lessons extends Vue {
             &.lesson-current {
               background-color: rgba(87, 81, 183, 0.12);
             }
+
             &.lesson-locked {
               background-color: #f2f2f2;
             }
@@ -133,8 +144,8 @@ export default class Lessons extends Vue {
 
       .with_icon {
         margin-top: 0;
-        width: calc(50% - 12px) !important;
         font-size: 12px;
+        width: calc(50% - 12px) !important;
         padding: 15px 0;
         justify-content: center;
         margin-right: 12px;
