@@ -33,6 +33,9 @@ export default class Relation extends Vue {
     svg {
       width: 16px !important;
       height: 16px !important;
+      path {
+        fill: #5F739C;
+      }
     }
     &.active {
       background: #426DF6 !important;
