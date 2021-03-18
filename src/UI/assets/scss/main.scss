@@ -14,6 +14,7 @@
 
 html,
 body {
+    overflow-x: hidden;
     color: $black;
     font-family: 'Ubuntu' !important;
     background-color: $background;

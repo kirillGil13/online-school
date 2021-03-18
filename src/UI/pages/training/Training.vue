@@ -5,7 +5,7 @@
         <Button class="mt-0" @submit="activator = true">Добавить свой курс</Button>
       </div>
     </Header>
-    <template v-if="leaders.length !== 0 && leadersCoursesLoaded">
+    <template v-if="leaders.length !== 0">
       <div class="slider-title d-flex flex-row justify-space-between align-end mb-4">
         <h5>Топ лидеры</h5>
         <router-link :to="''">Показать все</router-link>
@@ -35,8 +35,8 @@
     <!--        </div>-->
     <!--      </v-row>-->
     <!--    </v-col>-->
-    <router-view v-if="leadersCourses.length !== 0 || !leadersCoursesLoaded" :leaderCourses="leadersCourses"/>
-    <v-row v-else>
+    <router-view v-if="leadersCourses.length !== 0 || leadersCoursesLoaded" :leaderCourses="leadersCourses"/>
+    <v-row v-else-if="leadersCourses === []">
       <v-col class="mt-10 d-flex justify-center align-center">
         К сожалению данные не найдены
       </v-col>

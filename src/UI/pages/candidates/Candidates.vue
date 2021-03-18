@@ -50,15 +50,24 @@
         </FilterComponent>
       </v-col>
     </v-row>
-    <v-row v-if="candidates.length !== 0 || !candidatesLoaded">
+    <v-row v-if="candidates.length !== 0 || candidatesLoaded">
       <v-col class="mt-6">
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
       </v-col>
     </v-row>
-    <v-row v-else>
+    <v-row v-else-if="candidates === []">
       <v-col class="mt-10 d-flex justify-center align-center">
         К сожалению данные не найдены
+      </v-col>
+    </v-row>
+    <v-row v-else class="mt-2">
+      <v-col>
+        <v-progress-linear
+            :active="true"
+            :indeterminate="true"
+            color="primary accent-4"
+        ></v-progress-linear>
       </v-col>
     </v-row>
     <Modal v-if="statusesLoaded && infoPackagesLoaded" :activator="activator" @activatorChange="activatorChange">
