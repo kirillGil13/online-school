@@ -1,6 +1,10 @@
 <template>
   <div :class="['course-block', isMobile ? 'course-mobile' : '']" @click="$emit('proceed', course.id)">
     <div class="course-video-block" :style="{ backgroundImage: 'url(' + course.photoLink + ')' }">
+      <div class="course-info progress" v-if="course.progress">
+        <ProgressCircle :progress="course.progress" color="#27AE60" empty-color="rgba(39, 174, 96, 0.24)"/>
+        <div class="text">Прогресс: {{ course.countDoneLessons }} из {{ course.countLessons }}</div>
+      </div>
       <Rating v-if="course.rating" :rating="course.rating"/>
       <div class="course-info duration">{{ course.lessonsCount() }}</div>
     </div>
@@ -17,9 +21,11 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import Rating from '@/UI/components/common/Rating.vue';
 import {ILeaderCourses} from '@/entity/leaderCourses/leaderCourses.types';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
+import ProgressCircle from '../progress/ProgressCircle.vue';
 
 @Component({
   components: {
+    ProgressCircle,
     Rating,
   },
 })
