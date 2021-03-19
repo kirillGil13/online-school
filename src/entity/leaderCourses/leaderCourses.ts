@@ -7,6 +7,7 @@ export default class LeaderCourses implements ILeaderCourses {
     account: ILeaderCoursesAccount;
     countLessons: number;
     rating: number;
+    countDoneLessons: number;
     constructor(data: LeaderCoursesResponseType) {
         this.id = data.id;
         this.name = data.name;
@@ -14,6 +15,7 @@ export default class LeaderCourses implements ILeaderCourses {
         this.account = data.account;
         this.countLessons = data.count_lessons;
         this.rating = data.rating;
+        this.countDoneLessons = data.count_done_lessons;
     }
     get fullName(): string {
         return this.account.name + ' ' + this.account.lastName;
@@ -26,5 +28,9 @@ export default class LeaderCourses implements ILeaderCourses {
     declination(number: number, titles: string[]): string {
         const cases = [2, 0, 1, 1, 1, 2];
         return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
+    }
+
+    get progress(): number {
+        return (this.countDoneLessons / this.countLessons) * 100;
     }
 }

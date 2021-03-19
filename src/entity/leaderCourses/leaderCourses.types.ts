@@ -6,7 +6,9 @@ export interface ILeaderCourses {
     countLessons: number;
     rating: number;
     fullName: string;
+    countDoneLessons: number;
     lessonsCount(): string;
+    progress: number;
 }
 export interface ILeaderCoursesAccount {
     id: number;
@@ -19,6 +21,7 @@ export type LeaderCoursesResponseType = {
     name: string;
     photo_link: string;
     account: LeaderCoursesAccountResponseType;
+    count_done_lessons: number;
     count_lessons: number;
     rating: number;
 }
