@@ -53,108 +53,16 @@
           @writeMaster="writeMaster()"
       />
     </v-col>
-    <!-- todo logic and connection plus components -->
-    <h2 class="discussion-title mt-6" v-if="!isMobile">Обсуждение</h2>
-    <v-row no-gutters v-if="!isMobile">
-      <Button class="discussion-button with_icon">
-        <svg-icon class="mr-2" name="Ring"></svg-icon>
-        Подписаться
-      </Button>
-    </v-row>
-    <v-col class="mt-4" v-if="!isMobile">
-      <v-row class="message-container d-flex flex-row">
-        <v-avatar size="36" class="mr-3">
-          <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">
-        </v-avatar>
-        <input
-            class="message"
-            type="text" name="text"
-            id="text"
-            placeholder="Ваше сообщение"
-        >
-      </v-row>
-      <v-row class="mt-8">
-        <v-avatar size="36" class="mr-3">
-          <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">
-        </v-avatar>
-        <div class="d-flex flex-column">
-          <div class="comment py-3 px-4">
-            <v-col class="pa-0">
-              <v-row no-gutters class="mb-1">
-                <h4 class="mr-3">Марина Кравец</h4>
-                <div class="desc">25 Января, 16:20</div>
-              </v-row>
-              <v-row no-gutters>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sed lobortis tortor ipsum neque.
-              </v-row>
-              <v-row no-gutters class="d-flex flex-row justify-space-between align-end mt-2">
-                <span class="comment-action">Ответить</span>
-                <div class="d-flex flex-row justify-space-between">
-                  <Relation class="mr-3" svg-name="Finger" title="1"/>
-                  <Relation svg-class="svg-down" svg-name="Finger"/>
-                </div>
-              </v-row>
-            </v-col>
-          </div>
-          <span class="comment-action mt-2"><svg-icon class="mr-2" name="Comment_Arrow"></svg-icon>Еще 2 ответа</span>
-        </div>
-      </v-row>
-      <v-row class="mt-8">
-        <v-avatar size="36" class="mr-3">
-          <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">
-        </v-avatar>
-        <div class="d-flex flex-column">
-          <div class="comment py-3 px-4">
-            <v-col class="pa-0">
-              <v-row no-gutters class="mb-1">
-                <h4 class="mr-3">Иван Харьков</h4>
-                <div class="desc">25 Января, 16:20</div>
-              </v-row>
-              <v-row no-gutters>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat orci varius molestie facilisis sed diam.
-                Orci habitasse in dolor in diam. Ac at mauris diam lobortis varius convallis metus sed. Cursus lorem
-                hendrerit sed etiam.
-              </v-row>
-              <v-row no-gutters class="d-flex flex-row justify-space-between align-end mt-2">
-                <span class="comment-action">Ответить</span>
-                <div class="d-flex flex-row justify-space-between">
-                  <Relation class="mr-3" svg-name="Finger" title="1"/>
-                  <Relation svg-class="svg-down" svg-name="Finger"/>
-                </div>
-              </v-row>
-            </v-col>
-          </div>
-          <v-row class="mt-4 ml-4">
-            <v-avatar size="24" class="mr-3">
-              <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">
-            </v-avatar>
-            <div class="d-flex flex-column">
-              <div class="comment child py-3 px-4">
-                <v-col class="pa-0">
-                  <v-row no-gutters class="mb-1">
-                    <h4 class="mr-3">Иван Харьков</h4>
-                    <div class="desc">25 Января, 16:20</div>
-                  </v-row>
-                  <v-row no-gutters>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Erat orci varius molestie facilisis sed
-                    diam.
-                    Orci habitasse in dolor in diam. Ac at mauris diam lobortis varius convallis metus sed. Cursus lorem
-                    hendrerit sed etiam.
-                  </v-row>
-                  <v-row no-gutters class="d-flex flex-row justify-space-between align-end mt-2">
-                    <span class="comment-action">Ответить</span>
-                    <div class="d-flex flex-row justify-space-between">
-                      <Relation class="mr-3" svg-name="Finger" title="1"/>
-                      <Relation svg-class="svg-down" svg-name="Finger"/>
-                    </div>
-                  </v-row>
-                </v-col>
-              </div>
-            </div>
-          </v-row>
-        </div>
-      </v-row>
-    </v-col>
+    <Discussion v-if="!isMobile && commentsLoaded" :comments="comments" :form="commentsForm" @postComment="postComment"
+                @respond="respond" @handleLike="handleLike" @handleDislike="handleDislike"/>
+    <Modal :activator="activator" @activatorChange="activatorChange">
+      <template v-slot:content>
+        <v-col class="pa-6">
+          <h1 class="mx-auto my-0 text-center">Поздравляем,<br> Вы прошли весь курс</h1>
+          <Button small full-width class="secondary_blue mt-6" @submit="activator = false">Закрыть</Button>
+        </v-col>
+      </template>
+    </Modal>
     <Alert :show="show" :type="isFavourite ? alertType.Success : alertType.Error"
            :text="isFavourite ? 'Курс успешно добавлен в избранное' : 'Курс успешно удален из избранного'"
            @show="showAlert"/>
@@ -181,9 +89,17 @@ import TestingComponent from '../../components/forms/testing/TestingResultCompon
 import {LessonsTypesEnum} from '../../../entity/common/lessons.types';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import Alert from '../../components/common/Alert.vue';
+import Modal from '../../components/common/Modal.vue';
+import Discussion from '../../components/discussion/Discussion.vue';
+import {CommentsStore} from '../../../store/modules/Comments';
+import {IComments} from '../../../entity/comments/comments.types';
+import {CommentsForm} from '../../../form/comments/commentsForm';
+import {CommentTypesEnum} from '../../../entity/common/comment.types';
 
 @Component({
   components: {
+    Discussion,
+    Modal,
     Alert,
     TestingComponent,
     TestingResultComponent,
@@ -198,16 +114,22 @@ export default class Lesson extends Vue {
   @Prop() readonly isDisliked!: boolean;
   @Prop() readonly isFavourite!: boolean;
   @Prop({default: false}) readonly lastLesson!: number;
+  interval = setInterval(() => {
+    return '';
+  }, 0);
+  activator = false;
   alertType = AlertTypeEnum;
   show = false;
   lessonTypes = LessonsTypesEnum;
   testingForm = new TestingForm();
+  commentsForm = new CommentsForm();
   isPlaying = false;
   play = false;
 
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
     await this.fetchData();
+    this.interval = setInterval(() => CommentsStore.fetchAll(this.$route.params.lessonId), 10000);
   }
 
   @Watch('questionsLoaded')
@@ -240,6 +162,9 @@ export default class Lesson extends Vue {
         this.testingForm = new TestingForm(this.questions!.tests);
         this.testingForm.activeStep[0].active = true;
       }
+      await CommentsStore.fetchAll(this.$route.params.lessonId);
+      this.commentsForm = new CommentsForm();
+      this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
     }
   }
 
@@ -271,12 +196,17 @@ export default class Lesson extends Vue {
     return RightAnswersStore.rightAnswers;
   }
 
-  get resultLoaded(): boolean {
-    return RightAnswersStore.answersLoaded;
+  get comments(): IComments[] {
+    return CommentsStore.comments;
+  }
+
+  get commentsLoaded(): boolean {
+    return CommentsStore.commentsLoaded;
   }
 
   async created(): Promise<void> {
     if (this.$route.params.lessonId) {
+      this.interval = setInterval(() => CommentsStore.fetchAll(this.$route.params.lessonId), 10000);
       await this.fetchData();
     }
   }
@@ -306,6 +236,72 @@ export default class Lesson extends Vue {
     await LessonItemStore.fetchData(this.$route.params.lessonId);
     (this.$refs.videoPlayer as any).player.currentTime(this.lesson!.timeCode);
     (this.$refs.videoPlayer as any).player.play();
+  }
+
+  async postComment(): Promise<void> {
+    if (this.commentsForm.commentId) {
+      if (await this.commentsForm.submit(CommentsStore.postAnswer)) {
+        await CommentsStore.fetchAll(this.$route.params.lessonId);
+        this.commentsForm = new CommentsForm();
+      }
+    } else {
+      if (await this.commentsForm.submit(CommentsStore.postComment)) {
+        await CommentsStore.fetchAll(this.$route.params.lessonId);
+        this.commentsForm = new CommentsForm();
+      }
+    }
+  }
+
+  async handleLike(data: any): Promise<void> {
+    if (data.type === CommentTypesEnum.Comment) {
+      if (this.comments.find(item => item.id === data.id)!.isLiked !== null) {
+        await CommentsStore.deleteLikeDislikeComment(data.id.toString());
+        if (!this.comments.find(item => item.id === data.id)!.isLiked) {
+          await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
+        }
+        await CommentsStore.fetchAll(this.$route.params.lessonId);
+      } else {
+        await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
+        await CommentsStore.fetchAll(this.$route.params.lessonId);
+      }
+    } else {
+      if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked !== null) {
+        await CommentsStore.deleteLikeDislikeAnswer(data.answerId.toString());
+        if (!this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked) {
+          await CommentsStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
+        }
+        await CommentsStore.fetchAll(this.$route.params.lessonId);
+      } else {
+        await CommentsStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
+        await CommentsStore.fetchAll(this.$route.params.lessonId);
+      }
+    }
+  }
+
+  async handleDislike(data: any): Promise<void> {
+    if (data.type === CommentTypesEnum.Comment) {
+      if (this.comments.find(item => item.id === data.id)!.isLiked !== null) {
+        await CommentsStore.deleteLikeDislikeComment(data.id.toString());
+        if (this.comments.find(item => item.id === data.id)!.isLiked) {
+          await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
+        }
+        await CommentsStore.fetchAll(this.$route.params.lessonId);
+      } else {
+        await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
+        await CommentsStore.fetchAll(this.$route.params.lessonId);
+      }
+    } else {
+      if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked !== null) {
+        await CommentsStore.deleteLikeDislikeAnswer(data.id.toString());
+        if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked) {
+          await CommentsStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
+        }
+        await CommentsStore.fetchAll(this.$route.params.lessonId);
+      } else {
+        await CommentsStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
+        await CommentsStore.fetchAll(this.$route.params.lessonId);
+      }
+    }
   }
 
   passFiles(): void {
@@ -338,12 +334,33 @@ export default class Lesson extends Vue {
     this.show = true;
   }
 
+  activatorChange(act: boolean): void {
+    this.activator = act;
+  }
+
+  respond(data: any): void {
+    this.commentsForm.commentId = data.id;
+    if (!data.index) {
+      this.commentsForm.message = this.comments.find(item => item.id === data.id)!.fullName + ', ';
+      this.commentsForm.author = this.comments.find(item => item.id === data.id)!.fullName;
+    } else {
+      this.commentsForm.message = this.comments.find(item => item.id === data.id)!.answers[data.index].fullName + ', ';
+      this.commentsForm.author = this.comments.find(item => item.id === data.id)!.answers[data.index].fullName;
+    }
+  }
+
+  beforeDestroy(): void {
+    clearInterval(this.interval);
+  }
+
+
   async send(): Promise<void> {
     await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.lesson!.homeworkId.toString()});
     this.$emit('send');
     await this.fetchData();
-    // this.$set(this.lesson!, 'homeworkIsDone', true);
-    // this.$set(this.lesson!, 'homeworkId', this.questions!.id);
+    if (this.lesson!.number === this.lastLesson) {
+      this.activator = true;
+    }
   }
 }
 </script>
@@ -393,73 +410,6 @@ export default class Lesson extends Vue {
     top: 36px;
     left: 36px;
     z-index: 99999999;
-  }
-
-  .discussion-title {
-    font-size: 18px;
-  }
-
-  .discussion-button {
-    padding: 0;
-    color: #5F739C !important;
-    font-size: 12px;
-    background: none;
-    background-color: transparent !important;
-    border: none;
-
-    &:hover {
-      box-shadow: none;
-    }
-  }
-
-  .message-container {
-    flex-wrap: nowrap;
-
-    .message {
-      background-color: $white;
-      border-radius: 5px;
-      color: $dark;
-      font-size: 14px;
-      width: 100%;
-      text-indent: 16px;
-      border: 1px solid rgba(66, 109, 246, 0.12);
-
-      &::placeholder {
-        color: #828282;
-      }
-    }
-  }
-
-  .comment {
-    background: rgba(66, 109, 246, 0.12);
-    border-radius: 2px 16px 16px 16px;
-    max-width: 570px;
-
-    &.child {
-      max-width: 490px;
-    }
-
-    .desc {
-      font-size: 12px;
-    }
-
-    .relation {
-      margin-right: 0;
-      font-size: 12px;
-
-      .icon-container {
-        width: auto;
-        height: auto;
-        background-color: transparent;
-        margin-right: 4px;
-      }
-    }
-  }
-
-  .comment-action {
-    cursor: pointer;
-    font-size: 12px;
-    color: #426DF6;
   }
 }
 

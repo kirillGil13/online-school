@@ -20,6 +20,7 @@ import {RelationRepository} from '@/repository/relation/RelationRepository';
 import {CoursesFavouriteRepository} from '@/repository/corsesFavourite/CoursesFavouriteRepository';
 import {MyStatisticRepository} from '@/repository/myStatistic/MyStatisticRepository';
 import {MailRepository} from '@/repository/mail/MailRepository';
+import {CommentsRepository} from '@/repository/comments/CommentsRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -43,5 +44,6 @@ export const provider = (): IProvider => ({
     coursesFavourite: new CoursesFavouriteRepository(),
     myStatistic: new MyStatisticRepository(),
     mail: new MailRepository(),
+    comments: new CommentsRepository(),
 });
 

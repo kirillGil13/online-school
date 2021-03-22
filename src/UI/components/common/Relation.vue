@@ -13,7 +13,7 @@ export default class Relation extends Vue {
   @Prop({default: false}) active!: boolean;
   @Prop() readonly svgName!: string;
   @Prop() readonly title!: string;
-  @Prop({default: ''}) readonly svgClass!: string;
+  @Prop({default: ''}) readonly svgClass!: string | string[];
 }
 </script>
 

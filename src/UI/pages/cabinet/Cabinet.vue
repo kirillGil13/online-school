@@ -1,6 +1,10 @@
 <template>
   <v-col class="events">
-    <Header :isBordered="false" title="Кабинет лидера" class="top_bar_p_0"></Header>
+    <Header :isBordered="false" title="Кабинет лидера" action class="top_bar_p_0">
+      <div class="d-flex justify-end">
+        <Button class="mt-0" small @submit="activator = true">Добавить свой курс</Button>
+      </div>
+    </Header>
     <v-row class="mb-4">
       <v-col>
         <FilterComponent :search="false" :is-on-right="false" :filters="filters" @filter="onFilter"/>
@@ -45,6 +49,14 @@
         К сожалению, вы еще не добавили ни одного курса
       </v-col>
     </v-col>
+    <Modal v-if="courseLevelsLoaded" :activator="activator" @activatorChange="activatorChange">
+      <template v-slot:content>
+        <MailFormComponent :form="mailForm" v-if="destroy" :levels="courseLevels" @close="close" @add="add"/>
+      </template>
+    </Modal>
+    <Alert :show="show" :type="alertType.Success"
+           text="Данные успешно отправлены"
+           @show="showAlert"/>
   </v-col>
 </template>
 <script lang="ts">
@@ -60,10 +72,23 @@ import {MyCoursesStore} from '../../../store/modules/MyCourses';
 import {ILeaderCourses} from '../../../entity/leaderCourses/leaderCourses.types';
 import {MyStatisticStore} from '../../../store/modules/MyStatistic';
 import {IMyStatistic} from '../../../entity/myStatistic/myStatistic.types';
+import Modal from '../../components/common/Modal.vue';
+import {ICourseLevels} from '../../../entity/courseLevels/courseLevels.types';
+import {CourseLevelsStore} from '../../../store/modules/CourseLevels';
+import {MailStore} from '../../../store/modules/Mail';
+import {MailForm} from '../../../form/mail/mailForm';
+import Alert from '../../components/common/Alert.vue';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
+import Button from '../../components/common/Button.vue';
+import MailFormComponent from '../../components/forms/mailForm/MailFormComponent.vue';
 
 
 @Component({
   components: {
+    MailFormComponent,
+    Button,
+    Alert,
+    Modal,
     Header,
     FilterComponent,
     Badge,
@@ -73,11 +98,17 @@ import {IMyStatistic} from '../../../entity/myStatistic/myStatistic.types';
 
 export default class Cabinet extends Vue {
   filters: Filters;
+  activator = false;
+  show = false;
+  destroy = true;
+  mailForm: MailForm;
+  alertType = AlertTypeEnum;
 
 
   constructor() {
     super();
     this.filters = new Filters(this.filtersPeriods);
+    this.mailForm = new MailForm();
   }
 
   get filtersPeriods(): IFilters[] {
@@ -96,6 +127,14 @@ export default class Cabinet extends Vue {
     return MyStatisticStore.myStatisticLoaded;
   }
 
+  get courseLevels(): ICourseLevels[] {
+    return CourseLevelsStore.courseLevels;
+  }
+
+  get courseLevelsLoaded(): boolean {
+    return CourseLevelsStore.courseLevelsLoaded;
+  }
+
   proceed(id: number): void {
     this.$router.push({path: `/training/${id}/0`});
   }
@@ -110,12 +149,46 @@ export default class Cabinet extends Vue {
     } else return (new Date()).getTime() / 1000 | 0;
   }
 
-  created(): void {
-    MyCoursesStore.fetchMyCourses();
-    MyStatisticStore.fetchData({
+  rerender(): void {
+    this.destroy = false;
+    this.$nextTick(() => {
+      this.destroy = true;
+    });
+  }
+
+  async add(): Promise<void> {
+    if (await this.mailForm.submit(MailStore.create)) {
+      this.show = true;
+    }
+    this.mailForm = new MailForm();
+    this.rerender();
+    this.activator = false;
+  }
+
+  close(): void {
+    this.activator = false;
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
+  }
+
+  activatorChange(act: boolean): void {
+    this.destroy = true;
+    this.activator = act;
+  }
+
+  async fetchData(): Promise<void> {
+    await MyCoursesStore.fetchMyCourses();
+    await MyStatisticStore.fetchData({
       timestampStart: this.getTime(this.filters.filterBody[0].filterValue.find(item => item.value === this.filters.default[0])!.value),
       timestampFinish: this.getTime()
-    })
+    });
+    await CourseLevelsStore.fetchAll();
+  }
+
+  async created(): Promise<void> {
+    await this.fetchData();
   }
 
   async filtration(): Promise<void> {

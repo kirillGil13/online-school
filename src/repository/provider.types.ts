@@ -19,6 +19,7 @@ import {IRelationRepository} from '@/repository/relation/RelationRepository.type
 import {ICoursesFavouriteRepository} from '@/repository/corsesFavourite/CoursesFavouriteRepository.types';
 import {IMyStatisticRepository} from '@/repository/myStatistic/MyStatisticRepository.types';
 import {IMailRepository} from '@/repository/mail/MailRepository.types';
+import {ICommentsRepository} from '@/repository/comments/CommentsRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -42,4 +43,5 @@ export interface IProvider {
     coursesFavourite: ICoursesFavouriteRepository;
     myStatistic: IMyStatisticRepository;
     mail: IMailRepository;
+    comments: ICommentsRepository;
 }

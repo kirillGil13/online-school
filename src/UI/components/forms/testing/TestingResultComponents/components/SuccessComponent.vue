@@ -5,6 +5,7 @@
       <v-col>
         <h3>Поздравляем - вы выполнили задание!</h3>
         <div v-if="!lastLesson" class="success_info">Теперь вы можете перейти к следующему уроку.</div>
+        <Button class="again pa-3" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
       </v-col>
     </v-row>
     <v-divider></v-divider>
@@ -38,3 +39,8 @@ export default class Success extends Vue {
   @Prop({default: false}) readonly lastLesson!: boolean;
 }
 </script>
+<style lang="scss">
+.again {
+  font-size: 12px;
+}
+</style>

@@ -11,7 +11,7 @@
     </v-row>
     <v-divider></v-divider>
     <v-row class="ma-0 justify-end">
-      <Button class="secondary_blue mr-2" @submit="$emit('writeMaster')">Написать наставнику</Button>
+      <Button class="secondary_blue mr-2" @submit="$emit('writeMaster')">Написать автору курса</Button>
       <Button @submit="$emit('reviewLesson')">Пересмотреть урок</Button>
     </v-row>
   </v-col>
