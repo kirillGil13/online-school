@@ -33,26 +33,32 @@ class FiltersModule extends VuexModule {
                     value: 0
                 },
                 {
-                    text: '50 - 5000 ₽',
+                    text: 'Бесплатные',
                     value: 1,
+                    minCost: 0,
+                    maxCost: 0
+                },
+                {
+                    text: '50 - 5000 ₽',
+                    value: 2,
                     minCost: 50,
                     maxCost: 5000,
                 },
                 {
                     text: '5000 - 20 000 ₽',
-                    value: 2,
+                    value: 3,
                     minCost: 5000,
                     maxCost: 20000,
                 },
                 {
                     text: '20 000 - 50 000 ₽',
-                    value: 3,
+                    value: 4,
                     minCost: 20000,
                     maxCost: 50000,
                 },
                 {
                     text: 'выше 50 000 ₽',
-                    value: 4,
+                    value: 5,
                     minCost: 50000,
                 },
             ],
