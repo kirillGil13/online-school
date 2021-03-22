@@ -86,7 +86,7 @@ export default class Comments extends Vue {
   show = false;
 
   @Watch('comment.answers.length')
-  onLengthChange(val: number, oldVal: number) {
+  onLengthChange(val: number, oldVal: number): void {
     if (val > oldVal) {
       this.show = true;
     }
