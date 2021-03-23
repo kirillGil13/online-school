@@ -1,4 +1,4 @@
-import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
+import {Action, getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import {IComments} from '@/entity/comments/comments.types';
 import {CommentsFormRequestType} from '@/form/comments/commentsForm.types';
@@ -13,6 +13,11 @@ import {ICommentsAnswers} from '@/entity/commentsAnswers/commentsAnswers.types';
 class CommentsModule extends VuexModule {
     comments: IComments[] = [];
     commentsLoaded = false;
+
+    @Mutation
+    setCommentsToEmpty(): void {
+        this.comments = [];
+    }
 
     @MutationAction
     async fetchAll(route: string): Promise<{ comments: IComments[]; commentsLoaded: boolean }> {
