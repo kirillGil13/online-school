@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex flex-row cont">
       <v-avatar size="36" class="mr-3">
-        <v-img :src="comment.author.photoLink" contain alt=""/>
+        <v-img :src="comment.author.photoLink" alt=""/>
       </v-avatar>
       <div class="d-flex flex-column comment-container">
         <div class="comment py-3 px-4">
@@ -39,7 +39,7 @@
                  v-for="(item, index) in comment.answers"
                  :key="index">
               <v-avatar size="24" class="mr-3">
-                <v-img :src="item.author.photoLink" contain alt=""/>
+                <v-img :src="item.author.photoLink" alt=""/>
               </v-avatar>
               <div class="d-flex flex-column comment-container">
                 <div class="comment child py-3 px-4">
