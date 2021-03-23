@@ -243,11 +243,13 @@ export default class Lesson extends Vue {
       if (await this.commentsForm.submit(CommentsStore.postAnswer)) {
         await CommentsStore.fetchAll(this.$route.params.lessonId);
         this.commentsForm = new CommentsForm();
+        this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
       }
     } else {
       if (await this.commentsForm.submit(CommentsStore.postComment)) {
         await CommentsStore.fetchAll(this.$route.params.lessonId);
         this.commentsForm = new CommentsForm();
+        this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
       }
     }
   }

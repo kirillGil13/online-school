@@ -10,7 +10,7 @@
           <div class="respond__action" @click="cancel">Отменить</div>
         </div>
         <v-textarea
-            v-on:keyup.enter="$emit('postComment')"
+            @keydown.enter.prevent="$emit('postComment')"
             v-model="form.message"
             dense
             auto-grow
