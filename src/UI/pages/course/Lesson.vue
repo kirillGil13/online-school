@@ -129,7 +129,7 @@ export default class Lesson extends Vue {
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
     await this.fetchData();
-    this.interval = setInterval(() => CommentsStore.fetchAll(this.$route.params.lessonId), 10000);
+    this.interval = setInterval(() => CommentsStore.fetchAll(this.$route.params.lessonId), 20000);
   }
 
   @Watch('questionsLoaded')
