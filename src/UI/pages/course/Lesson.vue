@@ -54,7 +54,7 @@
           @writeMaster="writeMaster()"
       />
     </v-col>
-    <Discussion v-if="!isMobile && commentsLoaded" :comments="comments" :form="commentsForm" @postComment="postComment"
+    <Discussion v-if="commentsLoaded" :comments="comments" :form="commentsForm" @postComment="postComment"
                 @respond="respond" @handleLike="handleLike" @handleDislike="handleDislike"/>
     <Modal :activator="activator" @activatorChange="activatorChange">
       <template v-slot:content>
