@@ -21,13 +21,13 @@
       </div>
       <div class="lesson-btn" :style="{justifyContent: last ? 'flex-start' : ''}">
         <v-col class="px-2 py-2">
-          <Button class="with_icon" small full-width>
+          <Button :class="['with_icon', isMobile ? 'py-2' : '']" small full-width>
             <svg-icon name="Chat"></svg-icon>
             Задать вопрос
           </Button>
         </v-col>
         <v-col class="px-2 py-2" :cols="isMobile ? 2 : ''">
-          <Button class="with_icon secondary_white"
+          <Button :class="['with_icon secondary_white', isMobile ? 'py-2' : '']"
                   v-if="!last" small full-width>
             <svg-icon name="Next" :style="{marginRight: isMobile ? 0 : ''}"></svg-icon>
             {{isMobile ? '' : 'Следующий урок'}}
