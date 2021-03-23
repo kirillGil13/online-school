@@ -9,16 +9,15 @@
       </v-col>
     </v-row>
     <v-divider></v-divider>
-    <v-row class="ma-0 justify-end">
-      <Button class="with_icon secondary_blue mr-2" @submit="$emit('reviewLesson')">
+    <v-row class="ma-0 justify-end btn-container-testing">
+      <Button class="with_icon secondary_blue mr-2" @submit="$emit('reviewLesson')" :full-width="isMobile">
         <svg-icon class="svg" name="Return"></svg-icon>
         Пересмотреть урок
       </Button>
       <Button v-if="!lastLesson" class="with_icon" @submit="$emit('moveToNextLesson')">
-        <svg-icon class="svg next" name="Next"></svg-icon>
-        Перейти к следующему уроку
+        <svg-icon class="svg next" name="Next" :style="{marginRight: isMobile ? '0' : ''}"></svg-icon>
+        {{isMobile ? '' : 'Перейти к следующему уроку' }}
       </Button>
-
     </v-row>
   </v-col>
 </template>
@@ -27,6 +26,7 @@ import TestingResult from '../../../../../../entity/testingResult/testingResult'
 import ProgressCircleTesting from '../../../../progress/ProgressCircleTesting.vue';
 import Button from '../../../../common/Button.vue';
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import {AdaptiveStore} from '../../../../../../store/modules/Adaptive';
 
 @Component({
   components: {
@@ -37,10 +37,21 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 export default class Success extends Vue {
   @Prop() readonly result!: TestingResult;
   @Prop({default: false}) readonly lastLesson!: boolean;
+
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
+  }
 }
 </script>
 <style lang="scss">
 .again {
   font-size: 12px;
+}
+.btn-container-testing {
+  flex-wrap: nowrap;
+  .with_icon {
+    display: flex;
+    justify-content: center;
+  }
 }
 </style>

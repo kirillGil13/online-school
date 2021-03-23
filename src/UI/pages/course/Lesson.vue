@@ -25,14 +25,14 @@
         />
       </div>
     </v-responsive>
-    <v-row class="course-video-row" v-if="lessonLoaded">
+    <v-row :class="['course-video-row', isMobile ? 'justify-center' : '']" v-if="lessonLoaded">
       <Relation svg-name="Finger" :active="isLiked" :title="isMobile ? '' : 'Нравится'"
                 @click="$emit('handleLike', true)"/>
       <Relation svg-class="svg-down" :active="isDisliked" svg-name="Finger" :title="isMobile ? '' : 'Не нравится'"
                 @click="$emit('handleDisLike', false)"/>
       <Relation svg-name="Chosen" :active="isFavourite" :title="isMobile ? '' : 'В избранное'"
                 @click="handleFavourite"/>
-      <Relation svg-name="Message" :title="isMobile ? '' : 'Обсудить'"/>
+      <Relation svg-name="Message" :title="isMobile ? '' : 'Обсудить'" @click="discuss"/>
     </v-row>
     <v-col :class="['box-container', isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
       <h5>ОПИСАНИЕ</h5>
@@ -338,6 +338,12 @@ export default class Lesson extends Vue {
     this.activator = act;
   }
 
+  discuss(): void {
+    const item = document.getElementById('message')!;
+    item.scrollIntoView();
+    item.focus();
+  }
+
   respond(data: any): void {
     this.commentsForm.commentId = data.id;
     if (!data.index) {
@@ -347,6 +353,7 @@ export default class Lesson extends Vue {
       this.commentsForm.message = this.comments.find(item => item.id === data.id)!.answers[data.index].fullName + ', ';
       this.commentsForm.author = this.comments.find(item => item.id === data.id)!.answers[data.index].fullName;
     }
+    document.getElementById('message')!.focus();
   }
 
   beforeDestroy(): void {

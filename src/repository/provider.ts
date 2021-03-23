@@ -21,6 +21,7 @@ import {CoursesFavouriteRepository} from '@/repository/corsesFavourite/CoursesFa
 import {MyStatisticRepository} from '@/repository/myStatistic/MyStatisticRepository';
 import {MailRepository} from '@/repository/mail/MailRepository';
 import {CommentsRepository} from '@/repository/comments/CommentsRepository';
+import {LeaderItemRepository} from '@/repository/leaderItem/LeaderItemRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -45,5 +46,6 @@ export const provider = (): IProvider => ({
     myStatistic: new MyStatisticRepository(),
     mail: new MailRepository(),
     comments: new CommentsRepository(),
+    leaderItem: new LeaderItemRepository(),
 });
 

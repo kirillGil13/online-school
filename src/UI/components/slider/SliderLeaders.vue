@@ -2,7 +2,7 @@
   <v-col :class="['slider-container', isMobile ? 'pa-0' : '']">
     <swiper :class="['swiper component', isMobile ? 'mx-0' : '']" :options="swiperComponentOption" ref="swiper">
       <swiper-slide v-for="(leader, index) in leaders" :key="index" :id="index">
-        <div :class=" ['slide', $route.params.id === leader.id.toString() ? 'active_leader' : '' ]">
+        <div :class=" ['slide', $route.params.id === leader.id.toString() ? 'active_leader' : '' ]" @click="proceed(leader.id)">
           <div class="leader-photo" :style="{ backgroundImage: 'url(' + leader.photoLink + ')' }">
             <Rating v-if="leader.rating" :rating="leader.rating" class="master-rating"/>
           </div>
@@ -44,7 +44,7 @@ export default class SliderLeaders extends Vue {
   };
 
   proceed(id: number): void {
-    this.$router.push({ name: this.$routeRules.LeaderCourses, params: { id: id.toString() } });
+    this.$router.push({ name: this.$routeRules.LeaderPage, params: { id: id.toString() } });
   }
 
   next(): void {

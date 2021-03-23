@@ -20,6 +20,7 @@ import {ICoursesFavouriteRepository} from '@/repository/corsesFavourite/CoursesF
 import {IMyStatisticRepository} from '@/repository/myStatistic/MyStatisticRepository.types';
 import {IMailRepository} from '@/repository/mail/MailRepository.types';
 import {ICommentsRepository} from '@/repository/comments/CommentsRepository.types';
+import {ILeaderItemRepository} from '@/repository/leaderItem/LeaderItemRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -44,4 +45,5 @@ export interface IProvider {
     myStatistic: IMyStatisticRepository;
     mail: IMailRepository;
     comments: ICommentsRepository;
+    leaderItem: ILeaderItemRepository;
 }

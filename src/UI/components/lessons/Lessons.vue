@@ -1,7 +1,7 @@
 <template>
-  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="42/44">
+  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="isMobile ? 18/9 : 42/44">
     <div class="lessons-block box-container">
-      <div class="lesson-container">
+      <div class="lesson-container" :style="{height: isMobile ? '70%' : ''}">
         <ul class="lesson-list" v-if="$route.params.lessonId">
           <li
               v-for="(lesson, index) in course.lessons"
@@ -20,17 +20,21 @@
         </ul>
       </div>
       <div class="lesson-btn" :style="{justifyContent: last ? 'flex-start' : ''}">
-        <Button class="with_icon">
-          <svg-icon name="Chat"></svg-icon>
-          Задать вопрос
-        </Button>
-        <Button class="with_icon secondary_white"
-                v-if="!last">
-          <svg-icon name="Next"></svg-icon>
-          Следующий урок
-        </Button>
+        <v-col class="px-2 py-2">
+          <Button class="with_icon" small full-width>
+            <svg-icon name="Chat"></svg-icon>
+            Задать вопрос
+          </Button>
+        </v-col>
+        <v-col class="px-2 py-2" :cols="isMobile ? 2 : ''">
+          <Button class="with_icon secondary_white"
+                  v-if="!last" small full-width>
+            <svg-icon name="Next" :style="{marginRight: isMobile ? 0 : ''}"></svg-icon>
+            {{isMobile ? '' : 'Следующий урок'}}
+          </Button>
+        </v-col>
       </div>
-    </div>
+      </div>
   </v-responsive>
 </template>
 
@@ -39,6 +43,7 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import Button from '@/UI/components/common/Button.vue';
 import {LessonsTypesEnum} from '@/entity/common/lessons.types';
 import {ICourseItem} from '@/entity/courseItem/courseItem.type';
+import {AdaptiveStore} from '../../../store/modules/Adaptive';
 
 @Component({
   components: {
@@ -51,6 +56,10 @@ export default class Lessons extends Vue {
 
   get last(): boolean {
     return (this.course.lessons[this.course.lessons.length - 1].id.toString() === this.$route.params.lessonId);
+  }
+
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
   }
 }
 </script>
@@ -73,6 +82,8 @@ export default class Lessons extends Vue {
     height: 100%;
 
     .lesson-container {
+      position: relative;
+      border-bottom: 1px solid #f2f2f2;
       width: 100%;
       overflow: scroll;
       height: 80%;
@@ -135,38 +146,25 @@ export default class Lessons extends Vue {
     }
 
     .lesson-btn {
-      border-top: 1px solid #f2f2f2;
       display: flex;
       flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 8px 10px 8px;
+      flex-wrap: nowrap;
+      max-height: 70px;
+      height: 100%;
 
       .with_icon {
         margin-top: 0;
-        font-size: 12px;
-        width: calc(50% - 12px) !important;
-        padding: 15px 0;
+        padding: 16px 0;
         justify-content: center;
-        margin-right: 12px;
 
         .svg-icon {
-          fill: #ffffff;
-          margin-right: 11px;
+          margin-right: 12px;
           height: 16px !important;
           width: 16px !important;
         }
 
         &.secondary_white {
           margin-right: 0;
-
-          .svg-icon {
-            margin-right: 11px;
-
-            path {
-              fill: #426df6 !important;
-            }
-          }
         }
       }
     }
