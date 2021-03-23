@@ -32,9 +32,9 @@
         </v-col>
         <v-col class="box-container mt-6 pa-4">
           <Header class="top_bar_small" title="Курсы" action>
-            <FilterComponent :search="false" :is-on-right="true" :filters="filters"/>
+            <FilterComponent :search="false" :is-on-right="true" :filters="filters" @filter="onFilter"/>
           </Header>
-          <div class="d-flex flex-wrap flex-row mt-8">
+          <div class="d-flex flex-wrap flex-row mt-8" v-if="leadersCourses.length !== 0 || leadersCoursesLoaded">
             <LeaderCourseItem v-for="(course, index) in leadersCourses"
                               :key="index"
                               :course="course"
@@ -42,6 +42,11 @@
                               @proceed="proceed"
             />
           </div>
+          <v-row v-else-if="leadersCourses === []">
+            <v-col class="mt-10 d-flex justify-center align-center">
+              К сожалению данные не найдены
+            </v-col>
+          </v-row>
         </v-col>
       </v-col>
     </v-row>
@@ -57,7 +62,7 @@ import LeaderCourseComponent from '@/UI/components/leaderCourse/LeaderCourseComp
 import Filters from '@/entity/filters/filters';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
-import {IFilters} from '../../../entity/filters/filters.types';
+import {FiltersNameEnum, IFilters} from '../../../entity/filters/filters.types';
 import {FiltersStore} from '../../../store/modules/Filters';
 import {LeaderItemStore} from '../../../store/modules/LeaderItem';
 import {ILeaderItem} from '../../../entity/leaderItem/leaderItem.types';
@@ -115,6 +120,10 @@ export default class LeaderPage extends Vue {
     return LeadersCoursesStore.leadersCourses;
   }
 
+  get leadersCoursesLoaded(): boolean {
+    return LeadersCoursesStore.leadersCoursesLoaded;
+  }
+
   created(): void {
     this.fetchData();
   }
@@ -126,7 +135,22 @@ export default class LeaderPage extends Vue {
   fetchData(): void {
     LeaderItemStore.fetchData(this.$route.params.id);
     CourseLevelsStore.fetchAll();
-    LeadersCoursesStore.fetchAll();
+    LeadersCoursesStore.fetchAll({
+      accountId: parseInt(this.$route.params.id),
+    });
+  }
+
+  async onFilter(): Promise<void> {
+    await this.filtration();
+  }
+
+  async filtration(): Promise<void> {
+    await LeadersCoursesStore.fetchAll({
+      minCost: this.filters.filterBody.find(item => item.filterType === FiltersNameEnum.Cost)?.filterValue.find(item => item.value === this.filters.default[1])?.minCost,
+      maxCost: this.filters.filterBody.find(item => item.filterType === FiltersNameEnum.Cost)?.filterValue.find(item => item.value === this.filters.default[1])?.maxCost,
+      courseLevelId: this.filters.default[0],
+      accountId: parseInt(this.$route.params.id)
+    });
   }
 }
 </script>
@@ -179,12 +203,16 @@ export default class LeaderPage extends Vue {
   }
   .tab-controls {
     justify-content: flex-end !important;
+    #select:nth-last-child(1) {
+      margin-right: 0;
+    }
   }
   .social {
     cursor: pointer;
     width: 17px !important;
     height: 17px !important;
   }
+
 }
 
 </style>
