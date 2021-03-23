@@ -11,7 +11,7 @@
               <h4 class="mr-3">{{ comment.fullName }}</h4>
               <div class="desc">{{ comment.createdAt }}</div>
             </v-row>
-            <v-row no-gutters>
+            <v-row no-gutters :id="'comment' + comment.id">
               {{ comment.message }}
             </v-row>
             <v-row no-gutters class="d-flex flex-row justify-space-between align-end mt-2">
@@ -32,7 +32,7 @@
               <svg-icon class="mr-2" name="Comment_Arrow"></svg-icon>Еще {{ comment.getAnswersLength() }}
           </span>
           <div v-else-if="comment.answers.length === 1 || show">
-            <span v-if="comment.answers.length !== 1" class="comment-action mt-2" @click="show = false">
+            <span v-if="comment.answers.length > 1" class="comment-action mt-2" @click="show = false">
               <svg-icon class="mr-2 svg-up" name="Comment_Arrow"></svg-icon>Скрыть
             </span>
             <div class="mt-4 ml-4 d-flex flex-row cont"
@@ -48,7 +48,7 @@
                       <h4 class="mr-3">{{ item.fullName }}</h4>
                       <div class="desc">{{ item.createdAt }}</div>
                     </v-row>
-                    <v-row no-gutters v-html="comment.prettierMsg(index) ? comment.prettierMsg(index) : item.message">
+                    <v-row no-gutters :id="'answer' + comment.id" v-html="comment.prettierMsg(index) ? comment.prettierMsg(index) : item.message">
                     </v-row>
                     <v-row no-gutters class="d-flex flex-row justify-space-between align-end mt-2">
                     <span class="comment-action"

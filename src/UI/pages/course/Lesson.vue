@@ -242,6 +242,7 @@ export default class Lesson extends Vue {
     if (this.commentsForm.commentId) {
       if (await this.commentsForm.submit(CommentsStore.postAnswer)) {
         await CommentsStore.fetchAll(this.$route.params.lessonId);
+        document.getElementById(`comment${this.commentsForm.commentId}`)!.scrollIntoView();
         this.commentsForm = new CommentsForm();
         this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
       }
