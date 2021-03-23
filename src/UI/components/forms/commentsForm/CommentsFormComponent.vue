@@ -4,22 +4,24 @@
       <v-img :src="user.photoLink" alt=""/>
     </v-avatar>
     <v-col class="pa-0 d-flex flex-row align-end">
-      <div class="respond d-flex flex-row justify-space-between" v-if="form.author">
-        <div class="respond__text">Ваш ответ <span>{{ form.author }}</span></div>
-        <div class="respond__action" @click="cancel">Отменить</div>
+      <div class="message-container-full">
+        <div class="respond d-flex flex-row justify-space-between" v-if="form.author">
+          <div class="respond__text">Ваш ответ <span>{{ form.author }}</span></div>
+          <div class="respond__action" @click="cancel">Отменить</div>
+        </div>
+        <v-textarea
+            v-on:keyup.enter="$emit('postComment')"
+            v-model="form.message"
+            dense
+            auto-grow
+            id="message"
+            filled
+            placeholder="Ваше сообщение"
+            rows="1"
+            hide-details
+            class="message-field"
+        ></v-textarea>
       </div>
-      <v-textarea
-          v-on:keyup.enter="$emit('postComment')"
-          v-model="form.message"
-          dense
-          auto-grow
-          id="message"
-          filled
-          placeholder="Ваше сообщение"
-          rows="1"
-          hide-details
-          class="message-field"
-      ></v-textarea>
       <div class="d-flex justify-center align-center mb-1">
         <svg-icon class="send-icon" name="Send" @click="$emit('postComment')"></svg-icon>
       </div>
@@ -66,6 +68,9 @@ export default class CommentsFormComponent extends Vue {
     .v-input__slot {
       background: transparent !important;
     }
+  }
+  .message-container-full {
+    width: 100%;
   }
   .message {
     background-color: #FFFFFF;
