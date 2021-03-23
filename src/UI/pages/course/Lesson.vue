@@ -351,6 +351,7 @@ export default class Lesson extends Vue {
 
   beforeDestroy(): void {
     clearInterval(this.interval);
+    CommentsStore.setCommentsToEmpty();
   }
 
 
