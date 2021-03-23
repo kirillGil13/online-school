@@ -1,13 +1,14 @@
 <template>
   <div>
     <h2 class="discussion-title mt-6">Обсуждение</h2>
-    <v-row no-gutters>
-      <Button class="discussion-button with_icon">
-        <svg-icon class="mr-2" name="Ring"></svg-icon>
-        Подписаться
-      </Button>
-    </v-row>
-    <CommentsFormComponent :form="form" v-on='$listeners'/>
+<!--todo-->
+<!--    <v-row no-gutters>-->
+<!--      <Button class="discussion-button with_icon">-->
+<!--        <svg-icon class="mr-2" name="Ring"></svg-icon>-->
+<!--        Подписаться-->
+<!--      </Button>-->
+<!--    </v-row>-->
+    <CommentsFormComponent :form="form" v-on='$listeners' class="mt-5"/>
     <v-col class="mt-4 pa-0">
       <Comments v-for="(item, index) in comments" :key="index" :comment="item" v-on="$listeners" :class="[index !== 0 ? 'mt-8' : '']"/>
     </v-col>
