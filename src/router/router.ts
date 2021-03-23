@@ -35,7 +35,7 @@ const routes = [
                 path: '',
                 name: RouterNameEnum.Main,
                 meta: {
-                    title: 'Главная -  OneLinks'
+                    title: 'Главная - OneLinks'
                 },
                 component: () => import('../UI/pages/main/Main.vue'),
             },
@@ -47,7 +47,7 @@ const routes = [
             {
                 path: 'training',
                 meta: {
-                    title: 'Обучение -  OneLinks'
+                    title: 'Обучение - OneLinks'
                 },
                 component: () => import('../UI/pages/training/Training.vue'),
                 children: [
@@ -78,7 +78,7 @@ const routes = [
             {
                 path: 'candidates',
                 meta: {
-                    title: 'Кандидаты -  OneLinks'
+                    title: 'Кандидаты - OneLinks'
                 },
                 name: RouterNameEnum.Candidates,
                 component: () => import('../UI/pages/candidates/Candidates.vue'),
@@ -87,7 +87,7 @@ const routes = [
             {
                 path: 'candidates/statistics',
                 meta: {
-                    title: 'Кандидаты статистика -  OneLinks'
+                    title: 'Кандидаты статистика - OneLinks'
                 },
                 name: RouterNameEnum.CandidatesStatistics,
                 component: () => import('../UI/pages/candidates/CandidatesStatistics.vue')
@@ -95,7 +95,7 @@ const routes = [
             {
                 path: 'my-studies',
                 meta: {
-                    title: 'Я изучаю -  OneLinks'
+                    title: 'Я изучаю - OneLinks'
                 },
                 name: RouterNameEnum.MyStudies,
                 component: () => import('../UI/pages/myStudies/MyStudies.vue')
@@ -103,7 +103,7 @@ const routes = [
             {
                 path: 'chat',
                 meta: {
-                    title: 'Чат -  OneLinks'
+                    title: 'Чат - OneLinks'
                 },
                 component: () => import('../UI/pages/chat/Chat.vue'),
                 children: [
@@ -127,7 +127,7 @@ const routes = [
             {
                 path: 'infoPackages',
                 meta: {
-                    title: 'Инфопакеты -  OneLinks'
+                    title: 'Инфопакеты - OneLinks'
                 },
                 component: () => import('../UI/pages/infoPackages/InfoPackages.vue'),
                 name: RouterNameEnum.InfoPackages
@@ -135,10 +135,18 @@ const routes = [
             {
                 path: 'chosen',
                 meta: {
-                    title: 'Избранное -  OneLinks'
+                    title: 'Избранное - OneLinks'
                 },
                 component: () => import('../UI/pages/chosen/Chosen.vue'),
                 name: RouterNameEnum.Chosen
+            },
+            {
+                path: 'leaders/:id',
+                meta: {
+                    title: 'Лидеры - OneLinks'
+                },
+                component: () => import('../UI/pages/leader/LeaderPage.vue'),
+                name: RouterNameEnum.LeaderPage
             },
             {
                 path: 'profile',
@@ -151,7 +159,7 @@ const routes = [
                 name: RouterNameEnum.Cabinet,
                 meta: {
                     isLeader: true,
-                    title: 'Кабинет лидера -  OneLinks'
+                    title: 'Кабинет лидера - OneLinks'
                 },
                 beforeEnter: leaderGuard
             },

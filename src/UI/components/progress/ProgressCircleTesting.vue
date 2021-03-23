@@ -54,8 +54,8 @@ export default class ProgressCircleTesting extends Vue {
 <style lang="scss">
 .legend-value {
     position: absolute;
-    left: 35%;
-    top: 51%;
+    left: 43px;
+    top: 75px;
     font-size: 12px;
 }
 .ep-legend--value {

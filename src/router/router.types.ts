@@ -13,6 +13,7 @@ export enum RouterNameEnum {
     InfoPackages = 'InfoPackages',
     Training = 'Training',
     LeaderCourses = 'LeaderCourses',
+    LeaderPage = 'LeaderPage',
     Materials = 'Materials',
     Chat = 'Chat',
     Course = 'Course',

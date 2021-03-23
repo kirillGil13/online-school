@@ -25,10 +25,10 @@ export default class Comments implements IComments{
                 createdAt: this.getTime(data.answers[i].created_at),
                 author: data.answers[i].author,
                 message: data.answers[i].message,
-                countLikes: data.count_likes === 0 ? '' : data.count_likes.toString(),
-                countDislikes: data.count_dislikes === 0 ? '' : data.count_dislikes.toString(),
-                isLiked: data.is_liked,
-                fullName: data.author.name + ' ' + data.author.lastName
+                countLikes: data.answers[i].count_likes === 0 ? '' : data.answers[i].count_likes.toString(),
+                countDislikes: data.answers[i].count_dislikes === 0 ? '' : data.answers[i].count_dislikes.toString(),
+                isLiked: data.answers[i].is_liked,
+                fullName: data.answers[i].author.name + ' ' + data.answers[i].author.lastName
             })
         }
     }

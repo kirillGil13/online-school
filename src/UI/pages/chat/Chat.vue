@@ -1,11 +1,16 @@
 <template>
-  <v-col class="chat pa-0">
-    <ChatHeader/>
-    <v-row class="chat-main d-flex flex-row" no-gutters>
-      <Conversations/>
-      <router-view></router-view>
-    </v-row>
-  </v-col>
+  <div>
+    <v-col v-if="false" class="chat pa-0">
+      <ChatHeader/>
+      <v-row class="chat-main d-flex flex-row" no-gutters>
+        <Conversations/>
+        <router-view></router-view>
+      </v-row>
+    </v-col>
+    <v-col v-else>
+      <InDev/>
+    </v-col>
+  </div>
 </template>
 
 <script lang="ts">
@@ -13,9 +18,10 @@ import {Vue, Component} from 'vue-property-decorator';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
 import Conversations from '@/UI/components/chat/Conversations.vue';
 import ChatHeader from '@/UI/components/chat/ChatHeader.vue';
+import InDev from '../../components/common/banners/InDev.vue';
 
 @Component({
-  components: {ChatHeader, Conversations}
+  components: {InDev, ChatHeader, Conversations}
 })
 export default class Chat extends Vue {
 

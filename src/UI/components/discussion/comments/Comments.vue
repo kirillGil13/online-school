@@ -55,9 +55,11 @@
                           @click="$emit('respond', {id: comment.id, index: index})">Ответить</span>
                       <div class="d-flex flex-row justify-space-between">
                         <Relation class="mr-3" svg-name="Finger" :title="item.countLikes"
-                                  @click="$emit('handleLike', {id: comment.id, like: true, type: commentType.Comment, answerId: item.id})"/>
-                        <Relation svg-class="svg-down" svg-name="Finger" :title="item.countDislikes"
-                                  @click="$emit('handleDislike', {id: comment.id, like: false, type: commentType.Comment, answerId: item.id})"/>
+                                  :svg-class="item.isLiked !== null && item.isLiked ? 'active-like' : ''"
+                                  @click="$emit('handleLike', {id: comment.id, like: true, type: commentType.Answer, answerId: item.id})"/>
+                        <Relation svg-name="Finger" :title="item.countDislikes"
+                                  :svg-class="['svg-down', item.isLiked !== null && !item.isLiked ? 'active-dislike' : '']"
+                                  @click="$emit('handleDislike', {id: comment.id, like: false, type: commentType.Answer, answerId: item.id})"/>
                       </div>
                     </v-row>
                   </v-col>
