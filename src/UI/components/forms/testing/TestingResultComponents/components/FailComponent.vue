@@ -7,8 +7,8 @@
         <div class="success_info"
         >Внимательно пересмотрите видео для того, чтобы повторно пройти тестирование и перейти к следующему
                     уроку</div>
-        <Timer v-if="!showButton" :currentTime="5" @stop="stop"/>
-        <Button v-if="showButton" class="again pa-3" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
+        <Timer v-if="result.handleTime(60) !== 0" :currentTime="result.handleTime(60)" @stop="stop"/>
+        <Button v-else class="again pa-3" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
       </v-col>
     </v-row>
     <v-divider></v-divider>
