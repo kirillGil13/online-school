@@ -4,9 +4,10 @@
       <div v-if="lesson.status === lessonTypes.LOCKED"
            class="course-locked"
            :style="{backgroundImage: 'url(' + lesson.photoLink + ')'}">
-        <div class="background d-flex flex-column align-center justify-center">
-          <h1>Вы не можете просмотреть этот урок</h1>
-          <h3 class="mt-4">Выполните задания из предыдущего урока, чтобы получить доступ к этому</h3>
+        <div class="background d-flex flex-column align-center justify-center pa-3">
+          <h1 class="text-center" v-if="!isMobile">Вы не можете просмотреть этот урок</h1>
+          <h2 class="text-center" v-else>Вы не можете просмотреть этот урок</h2>
+          <h3 class="mt-4 text-center">Выполните задания из предыдущего урока, чтобы получить доступ к этому</h3>
           <Button @submit="$emit('moveToPrevious', lesson.number)">Перейти к предыдущему</Button>
         </div>
       </div>
@@ -405,6 +406,9 @@ export default class Lesson extends Vue {
       h1 {
         font-size: 24px;
         color: #FFFFFF;
+      }
+      h2 {
+        color: #ffffff;
       }
 
       h3 {
