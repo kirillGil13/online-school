@@ -358,7 +358,7 @@ export default class Lesson extends Vue {
     await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.lesson!.homeworkId.toString()});
     this.$emit('send');
     await this.fetchData();
-    if (this.lesson!.number === this.lastLesson) {
+    if (this.lesson!.number === this.lastLesson && this.result!.isDone) {
       this.activator = true;
     }
   }
