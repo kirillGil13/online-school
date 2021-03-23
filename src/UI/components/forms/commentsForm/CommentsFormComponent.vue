@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters :class="['message-container d-flex flex-row align-end mt-2', form.author ? '' : 'pt-6']">
     <v-avatar size="36" class="mr-3">
-      <img :src="user.photoLink" alt="">
+      <v-img :src="user.photoLink" alt=""/>
     </v-avatar>
     <v-col class="pa-0">
       <div class="respond d-flex flex-row justify-space-between" v-if="form.author">
