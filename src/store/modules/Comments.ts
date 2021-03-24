@@ -16,6 +16,7 @@ class CommentsModule extends VuexModule {
 
     @Mutation
     setCommentsToEmpty(): void {
+        this.commentsLoaded = false;
         this.comments = [];
     }
 
