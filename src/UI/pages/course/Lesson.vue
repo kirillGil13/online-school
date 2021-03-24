@@ -54,8 +54,15 @@
           @writeMaster="writeMaster()"
       />
     </v-col>
-    <Discussion v-if="commentsLoaded" :comments="comments" :form="commentsForm" @postComment="postComment"
+    <Discussion :comments="comments" :form="commentsForm" @postComment="postComment"
                 @respond="respond" @handleLike="handleLike" @handleDislike="handleDislike"/>
+    <v-col v-if="!commentsLoaded" class="mt-1 pa-0">
+        <v-progress-linear
+            :active="true"
+            :indeterminate="true"
+            color="primary accent-4"
+        ></v-progress-linear>
+    </v-col>
     <Modal :activator="activator" @activatorChange="activatorChange">
       <template v-slot:content>
         <v-col class="pa-6">
@@ -129,6 +136,7 @@ export default class Lesson extends Vue {
 
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
+    CommentsStore.setCommentsToEmpty();
     await this.fetchData();
     this.interval = setInterval(() => CommentsStore.fetchAll(this.$route.params.lessonId), 20000);
   }
@@ -150,6 +158,9 @@ export default class Lesson extends Vue {
 
   async fetchData(): Promise<void> {
     await LessonItemStore.fetchData(this.$route.params.lessonId.toString());
+    await CommentsStore.fetchAll(this.$route.params.lessonId);
+    this.commentsForm = new CommentsForm();
+    this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
     if (this.lessonLoaded) {
       VideoOptionsStore.handleVideo({
         src: this.lesson!.m3u8FileLink,
@@ -163,9 +174,6 @@ export default class Lesson extends Vue {
         this.testingForm = new TestingForm(this.questions!.tests);
         this.testingForm.activeStep[0].active = true;
       }
-      await CommentsStore.fetchAll(this.$route.params.lessonId);
-      this.commentsForm = new CommentsForm();
-      this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
     }
   }
 
