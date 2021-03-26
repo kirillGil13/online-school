@@ -3,6 +3,7 @@ import { Vue } from 'vue-property-decorator';
 
 export abstract class Form extends Vue implements IForm {
     private sendingRequest = false;
+    status = 0;
 
     serverErrors: { [property: string]: string[] } = {};
 
@@ -16,6 +17,7 @@ export abstract class Form extends Vue implements IForm {
 
     clearErrors(): void {
         this.serverErrors = {};
+        this.status = 0;
     }
 
     getMessages(field: string): { [key: string]: string } {
@@ -58,6 +60,7 @@ export abstract class Form extends Vue implements IForm {
             return true;
         } catch (e) {
             if (e.response.status === 400 || e.response.status === 401 || e.response.status === 500) {
+                this.status = e.response.status;
                 this.setErrors('0', e.response.data.detail);
             }
             return false;

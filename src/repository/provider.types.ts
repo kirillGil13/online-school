@@ -21,6 +21,7 @@ import {IMyStatisticRepository} from '@/repository/myStatistic/MyStatisticReposi
 import {IMailRepository} from '@/repository/mail/MailRepository.types';
 import {ICommentsRepository} from '@/repository/comments/CommentsRepository.types';
 import {ILeaderItemRepository} from '@/repository/leaderItem/LeaderItemRepository.types';
+import {IRecoverRepository} from '@/repository/recover/RecoverRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -46,4 +47,5 @@ export interface IProvider {
     mail: IMailRepository;
     comments: ICommentsRepository;
     leaderItem: ILeaderItemRepository;
+    recover: IRecoverRepository;
 }

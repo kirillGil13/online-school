@@ -24,6 +24,11 @@ const routes = [
                 name: RouterNameEnum.AuthSignup,
                 component: () => import('@/UI/pages/auth/Signup.vue'),
             },
+            {
+                path: 'recover',
+                name: RouterNameEnum.AuthRecover,
+                component: () => import('@/UI/pages/auth/Recover.vue'),
+            },
         ],
     },
     {

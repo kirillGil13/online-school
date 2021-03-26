@@ -31,6 +31,9 @@
         <div class="d-flex justify-center">
             <router-link class="form-second-action mt-6" :to="{ name: $routeRules.AuthSignup }">Зарегистрироваться</router-link>
         </div>
+      <div class="d-flex justify-center" v-if="form.status === 401">
+        <router-link class="form-third-action mt-3" :to="{ name: $routeRules.AuthRecover }">Восстановить пароль</router-link>
+      </div>
     </v-form>
 </template>
 <script lang="ts">

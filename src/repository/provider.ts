@@ -22,6 +22,7 @@ import {MyStatisticRepository} from '@/repository/myStatistic/MyStatisticReposit
 import {MailRepository} from '@/repository/mail/MailRepository';
 import {CommentsRepository} from '@/repository/comments/CommentsRepository';
 import {LeaderItemRepository} from '@/repository/leaderItem/LeaderItemRepository';
+import {RecoverRepository} from '@/repository/recover/RecoverRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -47,5 +48,6 @@ export const provider = (): IProvider => ({
     mail: new MailRepository(),
     comments: new CommentsRepository(),
     leaderItem: new LeaderItemRepository(),
+    recover: new RecoverRepository(),
 });
 
