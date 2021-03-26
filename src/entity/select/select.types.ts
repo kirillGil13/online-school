@@ -2,6 +2,7 @@ export interface ISelect {
     id: number;
     name: string;
     photoLink?: string;
+    description?: string;
     extraAction?: boolean;
 }
 export interface ISelectList {

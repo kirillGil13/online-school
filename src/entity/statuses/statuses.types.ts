@@ -2,12 +2,14 @@ export interface IStatuses {
     id: number;
     photoLink: string;
     name: string;
+    description: string;
 }
 
 export type StatusesResponseType = {
     id: number;
     photoLink: string;
     name: string;
+    description: string;
 }
 
 export type StatusesRequestType = {
@@ -16,5 +18,7 @@ export type StatusesRequestType = {
 export enum StatusesNameEnum {
     Call = 'Call',
     Waiting = 'Waiting',
-    Client = 'Client'
+    Client = 'Client',
+    Archive = 'Archive',
+    Partner = 'Partner'
 }

@@ -31,10 +31,10 @@
         </div>
         <div class="name d-flex align-start justify-center flex-column">
           <div class="name_text">{{ candidate.name }}</div>
-          <div class="call-time" v-if="candidate.callTime">Позвонить {{candidate.callTime}}</div>
+          <div class="call-time" v-if="candidate.callTime" @click="$emit('changeCallTime', {index: index, callTime: candidate.callTime})">Позвонить {{candidate.callTime}}</div>
         </div>
-        <div class="link">{{ candidate.phoneNumber }}</div>
-        <div class="email link">{{ candidate.email }}</div>
+        <a class="link" :href="'tel:' + candidate.phoneNumber">{{ candidate.phoneNumber }}</a>
+        <a class="email link" :href="'mailto:' + candidate.email">{{ candidate.email }}</a>
         <div class="product">{{candidate.infoPackName}}</div>
         <div>{{ candidate.createdAt }}</div>
         <div class="pr-0">
@@ -73,7 +73,7 @@
             </Select>
             <div class="name d-flex flex-column align-start justify-center">
               <div class="name_text">{{ candidate.name }}</div>
-              <div class="call-time" v-if="candidate.callTime">Позвонить {{candidate.callTime}}</div>
+              <div class="call-time" v-if="candidate.callTime" @click="$emit('changeCallTime', {index: index, callTime: candidate.callTime})">Позвонить {{candidate.callTime}}</div>
             </div>
           </div>
           <div class="pr-0">
@@ -91,11 +91,11 @@
         </div>
         <div class="mb-2">
           <div class="label">Номер телефона</div>
-          <div class="link">{{ candidate.phoneNumber }}</div>
+          <a class="link" :href="'tel:' + candidate.phoneNumber">{{ candidate.phoneNumber }}</a>
         </div>
         <div class="mb-2">
           <div class="label">Почта</div>
-          <div class="email link">{{ candidate.email }}</div>
+          <a class="email link" :href="'mailto:' + candidate.email">{{ candidate.email }}</a>
         </div>
         <div class="mb-2">
           <div class="label">Продукт</div>

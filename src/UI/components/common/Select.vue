@@ -24,6 +24,32 @@
           <v-img :src="item.photoLink" max-width="22" max-height="22"></v-img>
         </v-list-item-icon>
         <v-list-item-title v-text="item.name"></v-list-item-title>
+        <v-menu
+            :open-on-hover="!isMobile"
+            v-if="item.description"
+            top right
+            offset-y
+            offset-x
+            :position-x="1000"
+            :position-y="1000"
+            content-class="pa-3 description-container"
+            max-width="224"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                icon
+                ripple
+                v-bind="attrs"
+                v-on="on"
+                class="info-btn"
+            >
+              <v-icon color="grey lighten-1">
+                mdi-information
+              </v-icon>
+            </v-btn>
+          </template>
+          <div class="status-desc">{{item.description}}</div>
+        </v-menu>
       </v-list-item>
       <slot name="action"></slot>
     </v-list>
@@ -32,12 +58,17 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {ISelect} from '@/entity/select/select.types';
+import {AdaptiveStore} from '../../../store/modules/Adaptive';
 
 @Component
 export default class Select extends Vue {
   @Prop() readonly selects!: ISelect[];
   @Prop() readonly className!: string;
   @Prop() readonly id!: number;
+
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
+  }
 }
 </script>
 <style lang="scss">
@@ -53,8 +84,23 @@ export default class Select extends Vue {
     font-size: 14px !important;
     color: #5F739C;
   }
+  .info-btn {
+    background-color: transparent !important;
+    margin-top: 0;
+    margin-left: 16px;
+    padding: 0;
+  }
 }
   .pos {
     position: relative;
+  }
+  .description-container {
+    background-color: #FFFFFF;
+    border-radius: 8px !important;
+    margin-top: -6px;
+    margin-bottom: 20px;
+    margin-left: -50px;
+    color: #5A606F;
+    font-size: 12px;
   }
 </style>

@@ -53,7 +53,7 @@
     <v-row v-if="candidates.length !== 0 || candidatesLoaded">
       <v-col class="mt-6">
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
-                         @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
+                         @extraAction="openUpdate" @addStatus="activatorStatus = true" @changeCallTime="changeCallTime"/>
       </v-col>
     </v-row>
     <v-row v-else-if="candidates === []">
@@ -92,6 +92,7 @@
       <template v-slot:content>
         <CallTimeFormComponent :form="callTimeForm" v-if="destroy" @close="close"
                                :candidate="candidates.find(item => item.id === candidateId)"
+                               @delete="deleteCallTime"
                                @save="saveCallTime"/>
       </template>
     </Modal>
@@ -277,6 +278,11 @@ export default class Candidates extends Vue {
     });
   }
 
+  changeCallTime(data: {index: number; callTime: string}): void {
+    this.candidateId = this.candidates[data.index].id;
+    this.activatorCallTime = true;
+  }
+
   async search(searchBody: string): Promise<void> {
     this.searchBody = searchBody;
     await this.filtration();
@@ -358,6 +364,16 @@ export default class Candidates extends Vue {
     const date = new Date(this.callTimeForm.callTimeFake);
     const seconds = date.getTime() / 1000;
     this.callTimeForm.callTime = seconds;
+    if (await this.callTimeForm.submit(CandidateItemStore.setCallTime, this.candidateId.toString())) {
+      await this.fetchData();
+    }
+    this.callTimeForm = new CallTimeForm();
+    this.rerender();
+    this.activatorCallTime = false;
+  }
+
+  async deleteCallTime(): Promise<void> {
+    this.callTimeForm.callTime = null;
     if (await this.callTimeForm.submit(CandidateItemStore.setCallTime, this.candidateId.toString())) {
       await this.fetchData();
     }

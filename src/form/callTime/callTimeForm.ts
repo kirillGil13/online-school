@@ -7,7 +7,7 @@ import {CallTimeFormRequestType} from '@/form/callTime/callTimeForm.types';
 @Component
 export class CallTimeForm extends Form {
 
-    public callTime = 0;
+    public callTime: number | null = 0;
 
     @Validate(required, 'Выберите дату')
     public callTimeFake = '';
