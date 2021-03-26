@@ -1,5 +1,5 @@
 <template>
-    <div class="logo" :style="{fontSize: fontSize}">
+    <div class="logo" :style="{fontSize: fontSize}" @click="proceed">
       <v-img src="@/UI/assets/logo.png" alt="onelinks" :max-height="height" :max-width="width" class="img"></v-img>
       <h3>ONELINKS</h3>
     </div>
@@ -7,17 +7,23 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import {RouterNameEnum} from '../../../router/router.types';
 
 @Component
 export default class Logo extends Vue {
   @Prop({default: ''}) readonly width!: string;
   @Prop({default: ''}) readonly height!: string;
   @Prop({default: ''}) readonly fontSize!: string;
+
+  proceed(): void {
+    this.$router.push({name: RouterNameEnum.Main});
+  }
 }
 </script>
 
 <style lang="scss" scoped>
   .logo {
+    cursor: pointer;
     margin-left: 15px;
     margin-bottom: 20px;
     display: flex;
