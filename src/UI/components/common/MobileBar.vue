@@ -5,7 +5,7 @@
         elevation="3"
         color="#FFFFFF"
     >
-      <v-toolbar-title>
+      <v-toolbar-title @click="proceed">
         <v-img width="30" height="30" :src="require('@/UI/assets/logo.png')"></v-img>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -34,6 +34,7 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import Menu from '@/UI/components/sidebar/Menu.vue';
 import {IFakeUserInfo} from '@/entity/environment';
 import AccountBadge from '@/UI/components/sidebar/AccountBadge.vue';
+import {RouterNameEnum} from '../../../router/router.types';
 @Component({
   components: {AccountBadge, Menu}
 })
@@ -41,6 +42,10 @@ export default class MobileBar extends Vue {
   @Prop({required: true}) userInfo!: IFakeUserInfo;
   @Prop({required: true}) userId!: number;
   drawer = false;
+
+  proceed(): void {
+    this.$router.push({name: RouterNameEnum.Main});
+  }
 }
 </script>
 

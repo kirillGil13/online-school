@@ -24,7 +24,6 @@ import Logo from '@/UI/components/common/Logo.vue';
 export default class extends Vue {
   @Prop({required: true}) userInfo!: IFakeUserInfo;
   @Prop({required: true}) userId!: number;
-
 }
 </script>
 
