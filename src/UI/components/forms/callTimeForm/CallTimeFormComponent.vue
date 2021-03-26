@@ -8,7 +8,7 @@
                 v-model="form[attrs.name]" v-bind="attrs"/>
     </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
-      <Button class="secondary_blue mr-3" small @submit="$emit('close')">Не указывать время</Button>
+      <Button class="secondary_blue mr-3" small @submit="$emit('delete')">Не указывать время</Button>
       <Button full-width small :disabled="form.disabled" @submit="$emit('save')">Сохранить</Button>
     </div>
     <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
@@ -27,7 +27,7 @@ import {Datetime} from 'vue-datetime';
 @Component({
   components: {Button, FormGroup, Datetime}
 })
-export default class StatusFormComponent extends Vue{
+export default class CallTimeFormComponent extends Vue{
   @Prop() readonly form!: CallTimeForm;
   @Prop() readonly candidate!: ICandidate;
 

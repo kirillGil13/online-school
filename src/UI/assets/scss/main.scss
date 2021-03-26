@@ -339,7 +339,13 @@ h5 {
                 .call-time {
                     color: #5F739C;
                     font-size: 12px;
+                    cursor: pointer;
                 }
+            }
+            .link {
+                cursor: pointer;
+                font-size: 14px;
+                color: #426DF6;
             }
             .label {
                 font-size: 12px;
