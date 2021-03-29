@@ -6,8 +6,6 @@
           v-for="(course, index) in courses"
           :key="index"
           :course="course"
-          :leaderAvatar="leader.userInfo.avatar"
-          :leaderFullName="leader.fullName"
           v-on="$listeners"
       />
     </div>

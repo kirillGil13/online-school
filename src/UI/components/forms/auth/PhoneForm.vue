@@ -17,7 +17,7 @@
       </FormGroup>
     </div>
     <div>
-      <Button small full-width type="submit" :disabled="form.disabled" @submit="$emit('submitPhone')">Продолжить
+      <Button small full-width type="submit" :disabled="form.disabled" @submit="$emit('submitPhone')" @keydown.enter="$emit('submitPhone')">Продолжить
       </Button>
       <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
     </div>

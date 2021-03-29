@@ -5,7 +5,7 @@
       <PhoneFormVue v-if="!codeStep" :form="phoneForm" @submitPhone="submitPhone"/>
       <CodeFormVue v-else :form="codeForm" @submitCode="submitCode"/>
     </template>
-    <RegisterFormVue v-else :form="registerForm" :link="pictureLoaded ? picture.fullLink : ''" @handleImage="handleImage" @submit="submitRegister"/>
+    <RegisterFormVue v-else :form="registerForm" :link="pictureLoaded ? picture.fullLink : ''" @handleImage="handleImage" @submit="submitRegister" @keydown.enter="submitRegister"/>
   </div>
 </template>
 <script lang="ts">
