@@ -20,4 +20,9 @@ export class RecoverCheckForm extends Form {
             code: this.code,
         };
     }
+
+    setFormData(id: string, code: string): void {
+        this.accountId = parseInt(id);
+        this.code = code;
+    }
 }

@@ -19,7 +19,7 @@
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorMainVideo"
            @activatorChange="activatorMainVideoChange">
       <template v-slot:content>
-        <iframe id="ytplayer1" width="100%" height="340"
+        <iframe id="ytplayer1" ref="ytp" width="100%" height="340"
                 :src="infoPackageItemLoaded ? infoPackageItem.mainVideo.videoLink : ''"
                 frameborder="0"/>
       </template>
