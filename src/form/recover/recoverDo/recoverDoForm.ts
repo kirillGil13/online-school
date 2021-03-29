@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import { required} from 'vuelidate/lib/validators';
+import {required, sameAs} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {RecoverDoRequestType} from '@/form/recover/recoverDo/recoverDoForm.types';
@@ -15,6 +15,10 @@ export class RecoverDoForm extends Form {
     @Validate(required, 'Введите пароль')
     public password = '';
 
+    @Validate(sameAs('password'), 'Пароли не совпадают')
+    @Validate(required, 'Подтвердите пароль')
+    public confirmPassword = '';
+
     public serverErrors: { [key: string]: string[] } = {};
 
     getFormData(): RecoverDoRequestType {
@@ -23,5 +27,10 @@ export class RecoverDoForm extends Form {
             code: this.code,
             newPassword: this.password
         };
+    }
+
+    setFormData(id: string, code: string): void {
+        this.accountId = parseInt(id);
+        this.code = code;
     }
 }

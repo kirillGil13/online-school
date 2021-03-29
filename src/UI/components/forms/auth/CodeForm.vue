@@ -1,6 +1,6 @@
 <template>
   <v-form class="form code-form" @submit.prevent>
-    <div class="d-flex justify-center code-desc mt-9">
+    <div class="d-flex justify-center form-desc mt-9">
       <div>
         Подтвердите номер телефона <br>
         {{ form.phone }} введите код из СМС
@@ -44,12 +44,4 @@ export default class CodeFormVue extends Vue {
 }
 </script>
 <style lang="scss">
-.code-form {
-  .code-desc {
-    color: #5f739c;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 12px;
-  }
-}
 </style>
