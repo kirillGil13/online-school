@@ -132,6 +132,11 @@ export default class SliderLeaders extends Vue {
       margin-top: 8px;
       margin-bottom: 0;
       line-height: 150%;
+      overflow: hidden;
+      max-width: 105px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
     }
 
     .desc {

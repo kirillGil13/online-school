@@ -23,6 +23,8 @@ import {MailRepository} from '@/repository/mail/MailRepository';
 import {CommentsRepository} from '@/repository/comments/CommentsRepository';
 import {LeaderItemRepository} from '@/repository/leaderItem/LeaderItemRepository';
 import {RecoverRepository} from '@/repository/recover/RecoverRepository';
+import {DialogsRepository} from '@/repository/dialogs/DialogsRepository';
+import {MessagesRepository} from '@/repository/messages/MessagesRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -49,5 +51,7 @@ export const provider = (): IProvider => ({
     comments: new CommentsRepository(),
     leaderItem: new LeaderItemRepository(),
     recover: new RecoverRepository(),
+    dialogs: new DialogsRepository(),
+    messages: new MessagesRepository(),
 });
 

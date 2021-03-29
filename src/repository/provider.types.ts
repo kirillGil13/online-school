@@ -22,6 +22,8 @@ import {IMailRepository} from '@/repository/mail/MailRepository.types';
 import {ICommentsRepository} from '@/repository/comments/CommentsRepository.types';
 import {ILeaderItemRepository} from '@/repository/leaderItem/LeaderItemRepository.types';
 import {IRecoverRepository} from '@/repository/recover/RecoverRepository.types';
+import {IMessagesRepository} from '@/repository/messages/MessagesRepository.types';
+import {IDialogsRepository} from '@/repository/dialogs/DialogsRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -48,4 +50,6 @@ export interface IProvider {
     comments: ICommentsRepository;
     leaderItem: ILeaderItemRepository;
     recover: IRecoverRepository;
+    messages: IMessagesRepository;
+    dialogs: IDialogsRepository;
 }
