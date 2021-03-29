@@ -1,13 +1,18 @@
 <template>
   <div :class="['course-block', isMobile ? 'course-mobile' : '']" @click="$emit('proceed', course.id)">
-    <div class="course-video-block" :style="{ backgroundImage: 'url(' + course.photoLink + ')' }">
-      <div class="course-info progress" v-if="course.progress">
-        <ProgressCircle :progress="course.progress" color="#27AE60" empty-color="rgba(39, 174, 96, 0.24)"/>
-        <div class="text">Прогресс: {{ course.countDoneLessons }} из {{ course.countLessons }}</div>
+    <v-img :src="course.photoLink" class="course-video-block">
+      <template v-slot:placeholder >
+        <CourseSkeleton/>
+      </template>
+      <div class="course-info-container">
+        <div class="course-info progress" v-if="course.progress">
+          <ProgressCircle :progress="course.progress" color="#27AE60" empty-color="rgba(39, 174, 96, 0.24)"/>
+          <div class="text">Прогресс: {{ course.countDoneLessons }} из {{ course.countLessons }}</div>
+        </div>
+        <Rating v-if="course.rating" :rating="course.rating"/>
+        <div class="course-info duration">{{ course.lessonsCount() }}</div>
       </div>
-      <Rating v-if="course.rating" :rating="course.rating"/>
-      <div class="course-info duration">{{ course.lessonsCount() }}</div>
-    </div>
+    </v-img>
     <div class="leader">
       <div class="course-avatar" :style="{ backgroundImage: 'url(' + course.account.photoLink + ')' }"></div>
       <span class="desc">{{ course.fullName}}</span>
@@ -22,9 +27,11 @@ import Rating from '@/UI/components/common/Rating.vue';
 import {ILeaderCourses} from '@/entity/leaderCourses/leaderCourses.types';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
 import ProgressCircle from '../progress/ProgressCircle.vue';
+import CourseSkeleton from '../common/skeletons/courseSkeleton/CourseSkeleton.vue';
 
 @Component({
   components: {
+    CourseSkeleton,
     ProgressCircle,
     Rating,
   },
