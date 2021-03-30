@@ -1,4 +1,4 @@
-import {getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
+import {getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import {ILeaderCourses, LeaderCoursesRequestType} from '@/entity/leaderCourses/leaderCourses.types';
 
@@ -11,6 +11,12 @@ import {ILeaderCourses, LeaderCoursesRequestType} from '@/entity/leaderCourses/l
 class LeadersCoursesModule extends VuexModule {
     leadersCourses: ILeaderCourses[] = [];
     leadersCoursesLoaded = false;
+
+    @Mutation
+    clear(): void {
+        this.leadersCourses = []
+        this.leadersCoursesLoaded = false;
+    }
 
     @MutationAction
     async fetchAll(data?: LeaderCoursesRequestType): Promise<{ leadersCourses: ILeaderCourses[]; leadersCoursesLoaded: boolean }> {

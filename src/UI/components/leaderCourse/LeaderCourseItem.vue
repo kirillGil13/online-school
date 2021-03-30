@@ -1,12 +1,16 @@
 <template>
-  <div :class="['course-block', isMobile ? 'course-mobile' : '']" @click="$emit('proceed', course.id)">
-    <div class="course-video-block" :style="{ backgroundImage: 'url(' + course.photoLink + ')' }">
-      <div class="course-info progress" v-if="course.progress">
-        <ProgressCircle :progress="course.progress" color="#27AE60" empty-color="rgba(39, 174, 96, 0.24)"/>
-        <div class="text">Прогресс: {{ course.countDoneLessons }} из {{ course.countLessons }}</div>
-      </div>
-      <Rating v-if="course.rating" :rating="course.rating"/>
-      <div class="course-info duration">{{ course.lessonsCount() }}</div>
+  <div :class="['course-block', isMobile ? 'course-mobile' : '']">
+    <div class="course-video-block" @click="$emit('proceed', course.id)">
+      <v-img class="course-image" :src="course.photoLink" max-width="100%" height="100%" :aspect-ratio="16/9">
+        <div class="course-info-container">
+          <div class="course-info progress" v-if="course.progress">
+            <ProgressCircle :progress="course.progress" color="#27AE60" empty-color="rgba(39, 174, 96, 0.24)"/>
+            <div class="text">Прогресс: {{ course.countDoneLessons }} из {{ course.countLessons }}</div>
+          </div>
+          <Rating v-if="course.rating" :rating="course.rating"/>
+          <div class="course-info duration">{{ course.lessonsCount() }}</div>
+        </div>
+      </v-img>
     </div>
     <div class="leader">
       <div class="course-avatar" :style="{ backgroundImage: 'url(' + course.account.photoLink + ')' }"></div>

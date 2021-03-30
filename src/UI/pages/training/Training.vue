@@ -192,6 +192,10 @@ export default class Training extends Vue {
     this.fetchData();
   }
 
+  beforeDestroy(): void {
+    LeadersCoursesStore.clear();
+  }
+
   fetchData(): void {
     LeadersStore.fetchAll();
     CourseLevelsStore.fetchAll();

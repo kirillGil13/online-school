@@ -1,9 +1,9 @@
 <template>
   <v-col>
     <Header :isBordered="false" title="Избранное" class="top_bar_p_0"></Header>
-    <v-col class="py-0" v-if="coursesFavourite.length !== 0">
-      <v-row class="mt-16">
-        <div class="d-flex flex-row flex-wrap leader-courses">
+    <v-col class="py-0" v-if="coursesFavouriteLoaded">
+      <v-row class="mt-6" v-if="coursesFavourite.length !== 0">
+        <div :class="['course-list-container course-list-small mt-3',isMobile ? 'course-list-mobile' : '']">
           <LeaderCourseItem v-for="(course, index) in coursesFavourite"
                             :key="index"
                             :course="course"
@@ -13,12 +13,12 @@
           />
         </div>
       </v-row>
+      <v-row v-else>
+        <v-col class="mt-10 d-flex justify-center align-center">
+          Ни одного курса еще не было добавлено в избранное
+        </v-col>
+      </v-row>
     </v-col>
-    <v-row v-else>
-      <v-col class="mt-10 d-flex justify-center align-center">
-        Ни одного курса еще не было добавлено в избранное
-      </v-col>
-    </v-row>
   </v-col>
 </template>
 
@@ -28,6 +28,7 @@ import {CoursesFavouriteStore} from '../../../store/modules/CoursesFavourite';
 import {ILeaderCourses} from '../../../entity/leaderCourses/leaderCourses.types';
 import LeaderCourseItem from '../../components/leaderCourse/LeaderCourseItem.vue';
 import Header from '../../components/common/Header.vue';
+import {AdaptiveStore} from '../../../store/modules/Adaptive';
 
 @Component({
   components: {Header, LeaderCourseItem}
@@ -36,6 +37,14 @@ export default class Chosen extends Vue {
 
   get coursesFavourite(): ILeaderCourses[] {
     return CoursesFavouriteStore.coursesFavourite;
+  }
+
+  get coursesFavouriteLoaded(): boolean {
+    return CoursesFavouriteStore.coursesFavouriteLoaded;
+  }
+
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
   }
 
   async created(): Promise<void> {
@@ -49,7 +58,4 @@ export default class Chosen extends Vue {
 </script>
 
 <style lang="scss">
-.leader-courses {
-  width: 100%;
-}
 </style>

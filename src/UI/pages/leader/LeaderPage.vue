@@ -34,7 +34,7 @@
           <Header class="top_bar_small" title="Курсы" action>
             <FilterComponent :search="false" :is-on-right="true" :filters="filters" @filter="onFilter"/>
           </Header>
-          <div class="d-flex flex-wrap flex-row mt-8" v-if="leadersCourses.length !== 0 || leadersCoursesLoaded">
+          <div :class="['course-list-container course-list-small mt-8 pa-0',isMobile ? 'course-list-mobile' : '']" v-if="leadersCourses.length !== 0 || leadersCoursesLoaded">
             <LeaderCourseItem v-for="(course, index) in leadersCourses"
                               :key="index"
                               :course="course"
@@ -138,6 +138,10 @@ export default class LeaderPage extends Vue {
     LeadersCoursesStore.fetchAll({
       accountId: parseInt(this.$route.params.id),
     });
+  }
+
+  beforeDestroy(): void {
+    LeadersCoursesStore.clear();
   }
 
   async onFilter(): Promise<void> {

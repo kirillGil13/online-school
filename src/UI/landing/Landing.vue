@@ -21,7 +21,7 @@
       <template v-slot:content>
         <iframe id="ytplayer1" ref="ytp" width="100%" height="340"
                 :src="infoPackageItemLoaded ? infoPackageItem.mainVideo.videoLink : ''"
-                frameborder="0"/>
+                frameborder="0" allowfullscreen />
       </template>
     </Modal>
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorVideo"
@@ -29,7 +29,7 @@
       <template v-slot:content>
         <iframe id="ytplayer2" type="text/html" width="100%" height="340"
                 :src="infoPackageItemLoaded ? infoPackageItem.videos.find(item => item.id === secondaryVideoId).videoLink : ''"
-                frameborder="0"/>
+                frameborder="0" allowfullscreen/>
       </template>
     </Modal>
   </v-col>

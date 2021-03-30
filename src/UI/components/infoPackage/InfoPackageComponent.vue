@@ -1,15 +1,19 @@
 <template>
   <div :class="['course-block', isMobile ? 'course-mobile' : '']">
-    <div class="course-video-block" @click="$emit('proceed', infoPackage.id)" :style="{ backgroundImage: 'url(' + infoPackage.coverLink + ')' }">
-      <div class="course-info progress">
-        <div class="text">
-          <svg-icon name="Chart"></svg-icon>{{infoPackage.countViews}}
-          <svg-icon name="Pack_Add_User"></svg-icon>{{infoPackage.countCandidates}}
+    <div class="course-video-block" @click="$emit('proceed', infoPackage.id)">
+      <v-img class="course-image" :src="infoPackage.coverLink" max-width="100%" height="100%" :aspect-ratio="16/9">
+        <div class="course-info-container">
+          <div class="course-info progress">
+            <div class="text">
+              <svg-icon name="Chart"></svg-icon>{{infoPackage.countViews}}
+              <svg-icon name="Pack_Add_User"></svg-icon>{{infoPackage.countCandidates}}
+            </div>
+          </div>
+          <div class="share">
+            <svg-icon v-clipboard="infoPackage.sharedLink" name="Share"></svg-icon>
+          </div>
         </div>
-      </div>
-      <div class="share">
-          <svg-icon v-clipboard="infoPackage.sharedLink" name="Share"></svg-icon>
-      </div>
+      </v-img>
     </div>
     <div class="course-title">{{ infoPackage.name }}</div>
     <div class="course-download" v-clipboard="infoPackage.sharedLink" @click="$emit('copied')">
