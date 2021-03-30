@@ -1,7 +1,7 @@
 <template>
       <v-col class="py-0">
         <v-row class="mt-16">
-          <div class="d-flex flex-row flex-wrap leader-courses">
+          <div :class="['course-list-container course-list-small',isMobile ? 'course-list-mobile' : '']">
             <LeaderCourseItem v-for="(course, index) in leaderCourses"
                               :key="index"
                               :course="course"
@@ -17,6 +17,7 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {ILeaderCourses} from '../../../entity/leaderCourses/leaderCourses.types';
 import LeaderCourseItem from '../../components/leaderCourse/LeaderCourseItem.vue';
+import {AdaptiveStore} from '../../../store/modules/Adaptive';
 @Component({
   components: {LeaderCourseItem}
 })
@@ -26,10 +27,11 @@ export default class TrainingMain extends Vue {
   proceed(id: number): void {
     this.$router.push({path: `/course/${id}`});
   }
+
+  get isMobile(): boolean {
+    return AdaptiveStore.isMobile;
+  }
 }
 </script>
 <style lang="scss">
-.leader-courses {
-  width: 100%;
-}
 </style>

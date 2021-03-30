@@ -1,9 +1,9 @@
 <template>
   <v-app class="main-view">
-    <MobileBar v-if="isMobile" :userId="user.id" :user-info="user"/>
+    <MobileBar v-if="$adaptive.isMobile" :userId="user.id" :user-info="user"/>
     <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
-        <div class="aside-view mr-7" v-if="!isMobile">
+        <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
           <Sidebar :userInfo="user" :userId="user.id" @proceed="proceed"/>
         </div>
         <div class="content-main pt-0 mb-16">
@@ -24,6 +24,7 @@ import {AdaptiveStore} from '@/store/modules/Adaptive';
 import Banner from '../components/common/Banner.vue';
 import Sidebar from '../components/sidebar/Sidebar.vue';
 
+
 @Component({
   components: {
     Banner,
@@ -39,14 +40,26 @@ export default class MainLayout extends Vue {
   @Watch('$vuetify.breakpoint.name')
   onBreakpointChange(): void {
     AdaptiveStore.resolveAdaptive(this.$vuetify.breakpoint.name);
+    this.$adaptive.isMobile = this.resolveAdaptiveMobile();
   }
 
   created(): void {
     AdaptiveStore.resolveAdaptive(this.$vuetify.breakpoint.name);
+    this.$adaptive.isMobile = this.resolveAdaptiveMobile();
   }
 
   proceed(): void {
     this.$router.push({name: this.$routeRules.Profile});
+  }
+
+  resolveAdaptiveMobile(): boolean {
+    let isMobile = false;
+    switch (this.$vuetify.breakpoint.name) {
+      case 'xs': isMobile = true; break;
+      case 'sm': isMobile = true; break;
+      case 'md': isMobile = false; break;
+    }
+    return isMobile;
   }
 
   get user(): IUser {

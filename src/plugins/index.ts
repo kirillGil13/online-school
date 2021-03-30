@@ -12,3 +12,4 @@ export * from './ClipBoard';
 export * from './Cookie';
 export * from './DateTime';
 export * from './VueVideoPlayer';
+export * from './Adaptive';
