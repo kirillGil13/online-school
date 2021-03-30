@@ -2,6 +2,9 @@
   <div :class="['course-block', isMobile ? 'course-mobile' : '']">
     <div class="course-video-block" @click="$emit('proceed', course.id)">
       <v-img class="course-image" :src="course.photoLink" max-width="100%" height="100%" :aspect-ratio="16/9">
+        <template v-slot:placeholder>
+          <CourseSkeleton/>
+        </template>
         <div class="course-info-container">
           <div class="course-info progress" v-if="course.progress">
             <ProgressCircle :progress="course.progress" color="#27AE60" empty-color="rgba(39, 174, 96, 0.24)"/>
@@ -26,9 +29,11 @@ import Rating from '@/UI/components/common/Rating.vue';
 import {ILeaderCourses} from '@/entity/leaderCourses/leaderCourses.types';
 import {AdaptiveStore} from '@/store/modules/Adaptive';
 import ProgressCircle from '../progress/ProgressCircle.vue';
+import CourseSkeleton from '../common/skeletons/courseSkeleton/CourseSkeleton.vue';
 
 @Component({
   components: {
+    CourseSkeleton,
     ProgressCircle,
     Rating,
   },

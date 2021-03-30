@@ -2,6 +2,9 @@
   <div :class="['course-block', isMobile ? 'course-mobile' : '']">
     <div class="course-video-block" @click="$emit('proceed', infoPackage.id)">
       <v-img class="course-image" :src="infoPackage.coverLink" max-width="100%" height="100%" :aspect-ratio="16/9">
+        <template v-slot:placeholder>
+          <CourseSkeleton/>
+        </template>
         <div class="course-info-container">
           <div class="course-info progress">
             <div class="text">
@@ -26,8 +29,10 @@
 import {Component, Prop, Vue} from 'vue-property-decorator'
 import {IInfoPackage} from '../../../entity/infoPackages/infoPackage.types';
 import {AdaptiveStore} from '../../../store/modules/Adaptive';
-
-@Component
+import CourseSkeleton from '../common/skeletons/courseSkeleton/CourseSkeleton.vue';
+@Component({
+  components: {CourseSkeleton}
+})
 export default class InfoPackageComponent extends Vue {
   @Prop() readonly infoPackage!: IInfoPackage;
 
