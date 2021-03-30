@@ -1,6 +1,6 @@
 <template>
   <v-sheet
-      color="grey lighten-4"
+      color="#F2F2F2"
   >
     <v-skeleton-loader
         type="image"
