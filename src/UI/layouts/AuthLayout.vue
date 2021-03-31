@@ -23,7 +23,7 @@ export default class AuthLayout extends Vue {}
 </script>
 <style lang="scss">
 .auth {
-  padding: 0 16px 0 16px;
+    padding: 0 16px 0 16px;
     justify-content: center;
     align-items: center;
     background-color: transparent !important;
@@ -34,7 +34,7 @@ export default class AuthLayout extends Vue {}
         max-width: 436px;
         background-color: $white;
         border: 1px solid rgba(66, 109, 246, 0.12);
-        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.04);
+        box-shadow: 4px 4px 40px rgb(68 101 152 / 20%);
         border-radius: 12px;
     }
 

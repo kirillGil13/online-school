@@ -12,7 +12,7 @@
       <div class="mb-6 mt-2">
         <FormGroup :form="form" field="file">
           <template v-slot:default>
-            <label class="upload-label" for="upload">Фото профиля</label>
+            <label class="upload-label" @click="activateInput">Фото профиля</label>
             <input type="file" accept="image/*" id="upload" @change="$emit('handleImage', $event)">
           </template>
         </FormGroup>
@@ -127,6 +127,10 @@ import PhoneMaskInput from 'vue-phone-mask-input';
 export default class RegisterFormVue extends Vue {
   @Prop() readonly form!: RegisterForm;
   @Prop({default: ''}) readonly link!: string;
+
+  activateInput(): void {
+    document.getElementById('upload')!.click();
+  }
 }
 </script>
 <style lang="scss">
