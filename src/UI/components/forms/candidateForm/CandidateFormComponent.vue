@@ -15,6 +15,7 @@
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
       <PhoneMaskInput
+          flagClass="flagClass"
           v-model="form.phone"
           v-bind="attrs"
           flagSize="normal"
