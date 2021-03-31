@@ -17,7 +17,7 @@ import { Validation } from 'vuelidate';
 @Component({
     components: { FormInput },
 })
-export default class extends Vue {
+export default class FormGroup extends Vue {
     @Prop({ required: true }) readonly field!: string;
     @Prop({ required: true }) readonly form!: Form;
     @Prop({ type: Boolean, default: false }) readonly showCustomError!: boolean;
