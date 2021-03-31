@@ -10,11 +10,11 @@
     </v-row>
     <v-divider></v-divider>
     <v-row class="ma-0 justify-end btn-container-testing">
-      <Button class="with_icon secondary_blue mr-2" @submit="$emit('reviewLesson')" :full-width="$adaptive.isMobile">
+      <Button :class="['with_icon secondary_blue mr-2', $adaptive.isMobile ? 'py-3' : '']" @submit="$emit('reviewLesson')" :full-width="$adaptive.isMobile">
         <svg-icon class="svg" name="Return"></svg-icon>
         Пересмотреть урок
       </Button>
-      <Button v-if="!lastLesson" class="with_icon" @submit="$emit('moveToNextLesson')">
+      <Button v-if="!lastLesson" :class="['with_icon', $adaptive.isMobile ? 'py-3' : '']" @submit="$emit('moveToNextLesson')">
         <svg-icon class="svg next" name="Next" :style="{marginRight: $adaptive.isMobile ? '0' : ''}"></svg-icon>
         {{$adaptive.isMobile ? '' : 'Перейти к следующему уроку' }}
       </Button>

@@ -116,7 +116,7 @@ import {CommentTypesEnum} from '../../../entity/common/comment.types';
     Relation,
   },
 })
-export default class Lesson extends Vue {
+export default class  Lesson extends Vue {
   @Prop() readonly isLiked!: boolean;
   @Prop() readonly isDisliked!: boolean;
   @Prop() readonly isFavourite!: boolean;

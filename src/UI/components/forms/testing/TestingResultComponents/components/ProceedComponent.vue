@@ -11,8 +11,8 @@
     </v-row>
     <v-divider></v-divider>
     <v-row class="ma-0 justify-end btn-container-testing">
-      <Button class="secondary_blue mr-2" @submit="$emit('writeMaster')" :full-width="$adaptive.isMobile">Написать автору курса</Button>
-      <Button @submit="$emit('reviewLesson')" :full-width="$adaptive.isMobile">Пересмотреть урок</Button>
+      <Button :class="['secondary_blue mr-2', $adaptive.isMobile ? 'py-3' : '']" @submit="$emit('writeMaster')" :full-width="$adaptive.isMobile">Написать автору курса</Button>
+      <Button :class="[$adaptive.isMobile ? 'py-3' : '']" @submit="$emit('reviewLesson')" :full-width="$adaptive.isMobile">Пересмотреть урок</Button>
     </v-row>
   </v-col>
 </template>

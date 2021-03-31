@@ -1,6 +1,7 @@
 <template>
   <div class="course-block" @click="$emit('open', infoPackageItemVideo.id)">
     <div class="course-video-block" :style="{ backgroundImage: 'url(' + infoPackageItemVideo.coverLink + ')' }">
+      <div class="course-info-container"></div>
     </div>
     <div class="course-title">{{ infoPackageItemVideo.name }}</div>
   </div>
@@ -17,6 +18,6 @@ export default class InfoPackageItemVideoComponent extends Vue {
 
 <style lang="scss">
 .course-block {
-  width: calc(100% / 3);
+  width: calc((100% / 3) - 16px);
 }
 </style>
