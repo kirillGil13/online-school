@@ -423,11 +423,11 @@ export default class  Lesson extends Vue {
 
   .abs {
     font-size: 24px;
+    z-index: 1;
     position: absolute;
     color: #ffffff;
     top: 36px;
     left: 36px;
-    z-index: 99999999;
   }
 }
 

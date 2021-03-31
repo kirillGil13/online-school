@@ -539,6 +539,9 @@ iframe {
     video {
         border-radius: 12px;
     }
+    .vjs-big-play-button {
+        z-index: 2;
+    }
 
     .vjs-control-bar {
         .vjs-control {
