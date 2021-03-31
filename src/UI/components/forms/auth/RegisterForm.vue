@@ -81,23 +81,25 @@
 
     <div>
       <FormGroup v-slot="attrs" :form="form" field="phoneNumber" label="Номер телефона">
-        <PhoneMaskInput
-            v-model="form.phoneNumber"
-            v-bind="attrs"
-            autoDetectCountry
-            flagSize="normal"
-            inputClass="input"
-            showFlag
-            wrapperClass="wrapper"
-            ref="phoneMaskInput"
-            :disabled="true"
-        />
+        <div id="phoneMask">
+          <PhoneMaskInput
+              v-model="form.phoneNumber"
+              v-bind="attrs"
+              autoDetectCountry
+              flagSize="normal"
+              inputClass="input"
+              showFlag
+              wrapperClass="wrapper"
+              ref="phoneMaskInput"
+              :disabled="true"
+          />
+        </div>
       </FormGroup>
     </div>
     <div>
       <Button small full-width :disabled="form.disabled" type="submit" v-on="$listeners">Завершить регистрацию
       </Button>
-      <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
+      <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div>
     </div>
     <v-divider class="mt-6 mb-6"></v-divider>
     <div class="d-flex justify-center rules">
@@ -114,6 +116,7 @@ import Button from '../../common/Button.vue';
 import {RegisterForm} from '../../../../form/register/RegisterForm';
 import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
+
 @Component({
   components: {
     FormGroup,
@@ -134,12 +137,14 @@ export default class RegisterFormVue extends Vue {
     font-size: 12px;
   }
 }
+
 .avatar {
   background: #F0F2F6 no-repeat;
   width: 100px;
   height: 100px;
   background-size: cover;
 }
+
 .avatar-icon {
   width: 36px !important;
   height: 36px !important;

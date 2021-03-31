@@ -14,18 +14,20 @@
       >
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
-      <PhoneMaskInput
-          v-model="form.phone"
-          v-bind="attrs"
-          autoDetectCountry
-          flagSize="normal"
-          inputClass="input"
-          showFlag
-          wrapperClass="wrapper"
-          ref="phoneMaskInput"
-          @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
-          @input="changePhone"
-      />
+      <div id="phoneMask">
+        <PhoneMaskInput
+            v-model="form.phone"
+            v-bind="attrs"
+            autoDetectCountry
+            flagSize="normal"
+            inputClass="input"
+            showFlag
+            wrapperClass="wrapper"
+            ref="phoneMaskInput"
+            @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
+            @input="changePhone"
+        />
+      </div>
     </FormGroup>
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="topic" show-custom-error label="Название"
@@ -127,20 +129,26 @@ export default class MailFormComponent extends Vue {
       }
     }
   }
+
   .text-area {
     border: none !important;
     font-size: 14px !important;
+
     .v-input__control {
       border: none !important;
+
       .v-input__slot {
         padding-left: 16px !important;
+
         label {
           display: none !important;
         }
+
         fieldset {
           border: 1px solid #F2F2F2;
         }
       }
+
       .v-text-field__slot {
         textarea {
           max-height: 196px;

@@ -14,19 +14,21 @@
       >
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
-      <PhoneMaskInput
-          flagClass="flagClass"
-          v-model="form.phone"
-          v-bind="attrs"
-          flagSize="normal"
-          inputClass="input"
-          showFlag
-          autoDetectCountry
-          wrapperClass="wrapper"
-          ref="phoneMaskInput"
-          @onValidate="(e) => {if (form.phone.length > 2) form.phoneValid = e.isValidByLibPhoneNumberJs; else form.phoneValid = true}"
-          @input="changePhone"
-      />
+      <div id="phoneMask">
+        <PhoneMaskInput
+            flagClass="flagClass"
+            v-model="form.phone"
+            v-bind="attrs"
+            flagSize="normal"
+            inputClass="input"
+            showFlag
+            autoDetectCountry
+            wrapperClass="wrapper"
+            ref="phoneMaskInput"
+            @onValidate="(e) => {if (form.phone.length > 2) form.phoneValid = e.isValidByLibPhoneNumberJs; else form.phoneValid = true}"
+            @input="changePhone"
+        />
+      </div>
     </FormGroup>
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="email" show-custom-error label="Email"

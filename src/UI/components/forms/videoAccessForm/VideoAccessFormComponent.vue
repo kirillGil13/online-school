@@ -14,6 +14,7 @@
       >
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
+      <div id="phoneMask">
       <PhoneMaskInput
           v-model="form.phone"
           v-bind="attrs"
@@ -26,6 +27,7 @@
           @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
           @input="changePhone"
       />
+      </div>
     </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
       <Button class="secondary_blue mr-3" @submit="$emit('close')">Отмена</Button>

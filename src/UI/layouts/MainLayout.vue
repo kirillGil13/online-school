@@ -40,6 +40,7 @@ export default class MainLayout extends Vue {
   get user(): IUser {
     return AuthStore.user;
   }
+
 }
 </script>
 <style lang="scss">

@@ -14,31 +14,21 @@
       >
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
-      <PhoneMaskInput
-          v-model="form.phone"
-          v-bind="attrs"
-          autoDetectCountry
-          flagSize="normal"
-          inputClass="input"
-          showFlag
-          wrapperClass="wrapper"
-          ref="phoneMaskInput"
-          @onValidate="(e) => {if (form.phone.length > 2) form.phoneValid = e.isValidByLibPhoneNumberJs; else form.phoneValid = true}"
-          @input="changePhone"
-      />
+      <div id="phoneMask">
+        <PhoneMaskInput
+            v-model="form.phone"
+            v-bind="attrs"
+            autoDetectCountry
+            flagSize="normal"
+            inputClass="input"
+            showFlag
+            wrapperClass="wrapper"
+            ref="phoneMaskInput"
+            @onValidate="(e) => {if (form.phone.length > 2) form.phoneValid = e.isValidByLibPhoneNumberJs; else form.phoneValid = true}"
+            @input="changePhone"
+        />
+      </div>
     </FormGroup>
-<!--    <FormGroup-->
-<!--        class="mt-4" v-slot="attrs" :form="form" field="phone" show-custom-error label="Email"-->
-<!--    >-->
-<!--      <input-->
-<!--          class="input input__normal"-->
-<!--          type="phone" name="phone"-->
-<!--          id="phone"-->
-<!--          v-model="form.phone"-->
-<!--          v-bind="attrs"-->
-<!--          @input="attrs.change"-->
-<!--      >-->
-<!--    </FormGroup>-->
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="email" show-custom-error label="Email"
     >
@@ -84,7 +74,8 @@
       </v-select>
     </FormGroup>
     <FormGroup v-if="form.status === 3"
-               class="mt-4 date-time-wrapper" :form="form" field="callTimeFake" label="Укажите время звонка" v-slot="attrs"
+               class="mt-4 date-time-wrapper" :form="form" field="callTimeFake" label="Укажите время звонка"
+               v-slot="attrs"
     >
       <datetime :phrases="{ok: 'Далее', cancel: 'Закрыть'}" class="date-time input input__normal" type="datetime"
                 v-model="form[attrs.name]" v-bind="attrs"/>
@@ -94,7 +85,7 @@
       <Button class="secondary_blue mr-3" small @submit="$emit('close')">Отмена</Button>
       <Button full-width small :disabled="form.disabled" @submit="$emit('update')">Изменить</Button>
     </div>
-    <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
+    <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div>
   </v-col>
 
 </template>
@@ -106,6 +97,7 @@ import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {UpdateCandidateForm} from '../../../../form/updateCandidate/updateCandidateForm';
 import {Datetime} from 'vue-datetime';
+
 @Component({
   components: {FormGroup, Button, PhoneMaskInput, Datetime}
 })
@@ -121,6 +113,7 @@ export default class UpdateCandidateFormComponent extends Vue {
     //@ts-ignore
     this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
   }
+
   clear(): void {
     this.form.callTimeFake = '';
   }
@@ -132,6 +125,7 @@ export default class UpdateCandidateFormComponent extends Vue {
   h1 {
     text-align: center;
   }
+
   .select {
     border: 1px solid #f2f2f2 !important;
     padding: 4px !important;
