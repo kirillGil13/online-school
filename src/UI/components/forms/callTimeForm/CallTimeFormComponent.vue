@@ -20,7 +20,6 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import FormGroup from '../../common/form/FormGroup.vue';
 import Button from '../../common/Button.vue';
-import {AdaptiveStore} from '../../../../store/modules/Adaptive';
 import {ICandidate} from '../../../../entity/candidates';
 import {CallTimeForm} from '../../../../form/callTime/callTimeForm';
 import {Datetime} from 'vue-datetime';
@@ -30,10 +29,6 @@ import {Datetime} from 'vue-datetime';
 export default class CallTimeFormComponent extends Vue{
   @Prop() readonly form!: CallTimeForm;
   @Prop() readonly candidate!: ICandidate;
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
-  }
 }
 </script>
 

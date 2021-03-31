@@ -1,11 +1,11 @@
 <template>
-  <div class="course" :style="{width: isMobile ? '100%' : '', order: isMobile ? 2 : ''}">
+  <div class="course" :style="{width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : ''}">
     <v-responsive v-if="lessonLoaded" :aspect-ratio="16/9" content-class="course-container">
       <div v-if="lesson.status === lessonTypes.LOCKED"
            class="course-locked"
            :style="{backgroundImage: 'url(' + lesson.photoLink + ')'}">
         <div class="background d-flex flex-column align-center justify-center pa-3">
-          <h1 class="text-center" v-if="!isMobile">Вы не можете просмотреть этот урок</h1>
+          <h1 class="text-center" v-if="!$adaptive.isMobile">Вы не можете просмотреть этот урок</h1>
           <h2 class="text-center" v-else>Вы не можете просмотреть этот урок</h2>
           <h3 class="mt-4 text-center">Выполните задания из предыдущего урока, чтобы получить доступ к этому</h3>
           <Button @submit="$emit('moveToPrevious', lesson.number)">Перейти к предыдущему</Button>
@@ -26,22 +26,22 @@
         />
       </div>
     </v-responsive>
-    <v-row :class="['course-video-row', isMobile ? 'justify-center' : '']" v-if="lessonLoaded">
-      <Relation svg-name="Finger" :active="isLiked" :title="isMobile ? '' : 'Нравится'"
+    <v-row :class="['course-video-row', $adaptive.isMobile ? 'justify-center' : '']" v-if="lessonLoaded">
+      <Relation svg-name="Finger" :active="isLiked" :title="$adaptive.isMobile ? '' : 'Нравится'"
                 @click="$emit('handleLike', true)"/>
-      <Relation svg-class="svg-down" :active="isDisliked" svg-name="Finger" :title="isMobile ? '' : 'Не нравится'"
+      <Relation svg-class="svg-down" :active="isDisliked" svg-name="Finger" :title="$adaptive.isMobile ? '' : 'Не нравится'"
                 @click="$emit('handleDisLike', false)"/>
-      <Relation svg-name="Chosen" :active="isFavourite" :title="isMobile ? '' : 'В избранное'"
+      <Relation svg-name="Chosen" :active="isFavourite" :title="$adaptive.isMobile ? '' : 'В избранное'"
                 @click="handleFavourite"/>
-      <Relation svg-name="Message" :title="isMobile ? '' : 'Обсудить'" @click="discuss"/>
+      <Relation svg-name="Message" :title="$adaptive.isMobile ? '' : 'Обсудить'" @click="discuss"/>
     </v-row>
-    <v-col :class="['box-container', isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
+    <v-col :class="['box-container', $adaptive.isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
       <h5>ОПИСАНИЕ</h5>
       <span class="desc">{{ lesson.description }}</span>
     </v-col>
     <v-col
         v-if="lessonLoaded && (questions !== null || result !== null) && lesson.homeworkId && lesson.status !== lessonTypes.LOCKED"
-        :class="['box-container mt-4', isMobile ? 'pa-3' : 'pa-5']">
+        :class="['box-container mt-4', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
       <TestingComponent
           :form="testingForm"
           :result="result"
@@ -89,7 +89,6 @@ import {QuestionsStore} from '@/store/modules/Questions';
 import {ITesting} from '@/entity/testing/testing.types';
 import {RightAnswersStore} from '@/store/modules/RightAnswers';
 import {ITestingResult} from '@/entity/testingResult/testingResult.types';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {VideoOptionsStore} from '../../../store/modules/VideoOptions';
 import TestingResultComponent from '../../components/forms/testing/TestingResultComponents/TestingResultComponent.vue';
 import TestingFormComponent from '../../components/forms/testing/TestingFormComponent.vue'
@@ -191,10 +190,6 @@ export default class Lesson extends Vue {
 
   get lessonLoaded(): boolean {
     return LessonItemStore.lessonLoaded;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 
   get options(): any {

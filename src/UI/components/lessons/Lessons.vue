@@ -1,7 +1,7 @@
 <template>
-  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="isMobile ? 18/9 : 42/44">
+  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 18/9 : 42/44">
     <div class="lessons-block box-container">
-      <div class="lesson-container" :style="{height: isMobile ? '70%' : ''}">
+      <div class="lesson-container" :style="{height: $adaptive.isMobile ? '70%' : ''}">
         <ul class="lesson-list" v-if="$route.params.lessonId">
           <li
               v-for="(lesson, index) in course.lessons"
@@ -21,16 +21,16 @@
       </div>
       <div class="lesson-btn" :style="{justifyContent: last ? 'flex-start' : ''}">
         <v-col class="px-2 py-2">
-          <Button :class="['with_icon', isMobile ? 'py-2' : '']" small full-width>
+          <Button :class="['with_icon', $adaptive.isMobile ? 'py-2' : '']" small full-width>
             <svg-icon name="Chat"></svg-icon>
             Задать вопрос
           </Button>
         </v-col>
-        <v-col class="px-2 py-2" :cols="isMobile ? 2 : ''">
-          <Button :class="['with_icon secondary_white', isMobile ? 'py-2' : '']"
+        <v-col class="px-2 py-2" :cols="$adaptive.isMobile ? 2 : ''">
+          <Button :class="['with_icon secondary_white', $adaptive.isMobile ? 'py-2' : '']"
                   v-if="!last" small full-width>
-            <svg-icon name="Next" :style="{marginRight: isMobile ? 0 : ''}"></svg-icon>
-            {{isMobile ? '' : 'Следующий урок'}}
+            <svg-icon name="Next" :style="{marginRight: $adaptive.isMobile ? 0 : ''}"></svg-icon>
+            {{$adaptive.isMobile ? '' : 'Следующий урок'}}
           </Button>
         </v-col>
       </div>
@@ -43,7 +43,6 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import Button from '@/UI/components/common/Button.vue';
 import {LessonsTypesEnum} from '@/entity/common/lessons.types';
 import {ICourseItem} from '@/entity/courseItem/courseItem.type';
-import {AdaptiveStore} from '../../../store/modules/Adaptive';
 
 @Component({
   components: {
@@ -56,10 +55,6 @@ export default class Lessons extends Vue {
 
   get last(): boolean {
     return (this.course.lessons[this.course.lessons.length - 1].id.toString() === this.$route.params.lessonId);
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 }
 </script>

@@ -3,15 +3,15 @@
     <v-col :cols="12">
       <div class="profile__main-content">
         <v-row>
-          <v-col class="pt-0" :cols="isMobile ? 12 : 2">
+          <v-col class="pt-0" :cols="$adaptive.isMobile ? 12 : 2">
             <div
                 :class="{
-                            'profile__info-full-size': !isMobile,
-                            'profile__info-low-size': isMobile,
+                            'profile__info-full-size': !$adaptive.isMobile,
+                            'profile__info-low-size': $adaptive.isMobile,
                         }"
             >
               <avatar
-                  :size="!isMobile ? 143 : 70"
+                  :size="!$adaptive.isMobile ? 143 : 70"
                   :starSize="AvatarSizeEnum.MEDIUM"
                   :avatar-size="AvatarSizeEnum.MEDIUM"
                   :image-source="''"
@@ -83,7 +83,7 @@
                 </div>
               </v-row>
             </v-col>
-            <v-col class="profile__detail-info-container px-6 pt-4 pb-6 mt-3" :cols="isMobile ? 10 : 12">
+            <v-col class="profile__detail-info-container px-6 pt-4 pb-6 mt-3" :cols="$adaptive.isMobile ? 10 : 12">
               <div class="grid-content">
                 <v-row>
                   <v-col cols="12" class="profile__col">
@@ -135,7 +135,6 @@ import Avatar from '@/UI/components/common/Avatar.vue';
 import Button from '@/UI/components/common/Button.vue';
 import {AvatarSizeEnum} from '@/entity/common/avatar.types';
 import Header from '@/UI/components/common/Header.vue';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {IPartner} from '../../../entity/partners';
 import {PartnersStore} from '../../../store/modules/Partners';
 import PartnerActions from '../../components/partner/PartnerActions.vue';
@@ -159,10 +158,6 @@ export default class PartnerPage extends Vue {
   success = false;
   activeName = 0;
   AvatarSizeEnum = AvatarSizeEnum;
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
-  }
 
   get partners(): IPartner[] {
     return PartnersStore.partners;

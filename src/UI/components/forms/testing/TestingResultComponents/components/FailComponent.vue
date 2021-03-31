@@ -13,7 +13,7 @@
     </v-row>
     <v-divider></v-divider>
     <v-row class="ma-0 justify-end">
-      <Button @submit="$emit('reviewLesson')" :full-width="isMobile">Пересмотреть урок</Button>
+      <Button @submit="$emit('reviewLesson')" :full-width="$adaptive.isMobile">Пересмотреть урок</Button>
     </v-row>
   </v-col>
 </template>
@@ -23,7 +23,6 @@ import ProgressCircleTesting from '../../../../progress/ProgressCircleTesting.vu
 import Button from '../../../../common/Button.vue';
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import Timer from '../../../../common/Timer.vue';
-import {AdaptiveStore} from '../../../../../../store/modules/Adaptive';
 
 @Component({
   components: {
@@ -38,10 +37,6 @@ export default class Fail extends Vue {
 
   stop(isZero: boolean): void {
     this.showButton = isZero;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 }
 </script>

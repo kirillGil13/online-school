@@ -20,7 +20,6 @@ import {Component, Vue } from 'vue-property-decorator';
 import {AuthStore} from '@/store/modules/Auth';
 import {IUser} from '@/entity/user';
 import MobileBar from '@/UI/components/common/MobileBar.vue';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import Banner from '../components/common/Banner.vue';
 import Sidebar from '../components/sidebar/Sidebar.vue';
 
@@ -33,20 +32,6 @@ import Sidebar from '../components/sidebar/Sidebar.vue';
   },
 })
 export default class MainLayout extends Vue {
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
-  }
-
-  @Watch('$vuetify.breakpoint.name')
-  onBreakpointChange(): void {
-    AdaptiveStore.resolveAdaptive(this.$vuetify.breakpoint.name);
-    this.$adaptive.isMobile = this.resolveAdaptiveMobile();
-  }
-
-  created(): void {
-    AdaptiveStore.resolveAdaptive(this.$vuetify.breakpoint.name);
-    this.$adaptive.isMobile = this.resolveAdaptiveMobile();
-  }
 
   proceed(): void {
     this.$router.push({name: this.$routeRules.Profile});

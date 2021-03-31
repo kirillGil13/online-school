@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="table" v-if="!isMobile">
+    <div class="table" v-if="!$adaptive.isMobile">
       <div class="tr">
         <div></div>
         <div>Имя</div>
@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <div class="table mobile" v-if="isMobile">
+    <div class="table mobile" v-else>
       <div class="tr tbody mb-3" v-for="(candidate, index) in candidates" :key="index">
         <div class="d-flex flex-row justify-space-between mb-3 pr-0">
           <div class="d-flex flex-row">
@@ -117,7 +117,6 @@ import Button from '@/UI/components/common/Button.vue';
 import {Candidate} from '@/entity/candidates';
 import {ISelect} from '@/entity/select/select.types';
 import Select from '@/UI/components/common/Select.vue';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 
 @Component({
@@ -130,10 +129,6 @@ export default class TableCandidates extends Vue {
   @Prop() readonly candidates!: Candidate[];
   @Prop() readonly statuses!: IStatuses[];
   @Prop() readonly selects!: ISelect[];
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
-  }
 }
 </script>
 

@@ -15,7 +15,6 @@
 
 <script lang="ts">
 import {Vue, Component} from 'vue-property-decorator';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import Conversations from '@/UI/components/chat/Conversations.vue';
 import ChatHeader from '@/UI/components/chat/ChatHeader.vue';
 import InDev from '../../components/common/banners/InDev.vue';
@@ -24,10 +23,6 @@ import InDev from '../../components/common/banners/InDev.vue';
   components: {InDev, ChatHeader, Conversations}
 })
 export default class Chat extends Vue {
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
-  }
 }
 </script>
 <style lang="scss">

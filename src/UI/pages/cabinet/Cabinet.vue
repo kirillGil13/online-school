@@ -37,7 +37,7 @@
         <h3>Мои курсы</h3>
       </v-row>
       <v-row class="events__blocks" v-if="myCourses.length !== 0">
-        <div :class="['course-list-container mt-4 pa-0',isMobile ? 'course-list-mobile' : '']">
+        <div :class="['course-list-container mt-4 pa-0',$adaptive.isMobile ? 'course-list-mobile' : '']">
           <LeaderCourseItem v-for="(course, index) in myCourses"
                             :key="index"
                             :course="course"
@@ -81,8 +81,6 @@ import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import Button from '../../components/common/Button.vue';
 import MailFormComponent from '../../components/forms/mailForm/MailFormComponent.vue';
-import {AdaptiveStore} from '../../../store/modules/Adaptive';
-
 
 @Component({
   components: {
@@ -134,10 +132,6 @@ export default class Cabinet extends Vue {
 
   get courseLevelsLoaded(): boolean {
     return CourseLevelsStore.courseLevelsLoaded;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 
   proceed(id: number): void {

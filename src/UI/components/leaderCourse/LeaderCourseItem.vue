@@ -1,5 +1,5 @@
 <template>
-  <div :class="['course-block', isMobile ? 'course-mobile' : '']">
+  <div :class="['course-block', $adaptive.isMobile ? 'course-mobile' : '']">
     <div class="course-video-block" @click="$emit('proceed', course.id)">
       <v-img class="course-image" :src="course.photoLink" max-width="100%" height="100%" :aspect-ratio="16/9">
         <template v-slot:placeholder>
@@ -40,10 +40,6 @@ import CourseSkeleton from '../common/skeletons/courseSkeleton/CourseSkeleton.vu
 })
 export default class LeaderCourseItem extends Vue {
   @Prop({required: true}) readonly course!: ILeaderCourses;
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
-  }
 }
 </script>
 
