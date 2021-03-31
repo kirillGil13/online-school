@@ -7,7 +7,7 @@
         description="Здесь отображаются все инфопакеты компании"
     >
     </Header>
-    <v-col :class="['course-list-container mt-6 pa-0',isMobile ? 'course-list-mobile' : '']">
+    <v-col :class="['course-list-container mt-6 pa-0',$adaptive.isMobile ? 'course-list-mobile' : '']">
       <InfoPackageComponent v-for="(item, index) in infoPackages" :key="index" :info-package="item" @proceed="proceed" @copied="copied"/>
     </v-col>
     <Alert :show="show" :type="alertType.Success" text="Скопировано в буфер обмена" @show="showAlert"/>
@@ -24,7 +24,6 @@ import {IUser} from '../../../entity/user';
 import {AuthStore} from '../../../store/modules/Auth';
 import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
-import {AdaptiveStore} from '../../../store/modules/Adaptive';
 
 @Component({
   components: {Alert, Header, InfoPackageComponent}
@@ -56,10 +55,6 @@ export default class InfoPackages extends Vue {
 
   get user(): IUser {
     return AuthStore.user;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 
   async created(): Promise<void> {

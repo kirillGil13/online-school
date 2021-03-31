@@ -119,7 +119,6 @@ import CandidateFormComponent from '@/UI/components/forms/candidateForm/Candidat
 import {CandidateForm} from '@/form/candidate/candidateForm';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 import {InfoPackagesStore} from '@/store/modules/InfoPackages';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {StatusesStore} from '../../../store/modules/Statuses';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 import {StatusForm} from '../../../form/status/statusForm';
@@ -232,10 +231,6 @@ export default class Candidates extends Vue {
 
   get statusIcons(): IStatusIcons[] {
     return StatusIconsStore.statusIcons;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 
   get filtersCandidates(): IFilters[] {

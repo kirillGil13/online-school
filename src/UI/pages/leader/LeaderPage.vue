@@ -6,15 +6,15 @@
           <div class="container">
             <v-col class="pa-0" v-if="leader">
               <v-row class="ma-0">
-                <v-col :cols="isMobile ? 4 : 2" class="pa-0">
+                <v-col :cols="$adaptive.isMobile ? 4 : 2" class="pa-0">
                   <v-avatar
                       color="white"
-                      :size="isMobile ? 46 : 66"
+                      :size="$adaptive.isMobile ? 46 : 66"
                   >
                     <v-img :src="leader.photoLink" alt=""/>
                   </v-avatar>
                 </v-col>
-                <v-col :class="['leader-info pa-0', isMobile ? 'mobile-info' : '']">
+                <v-col :class="['leader-info pa-0', $adaptive.isMobile ? 'mobile-info' : '']">
                   <h1>{{ leader.fullName }}</h1>
                 </v-col>
               </v-row>
@@ -23,7 +23,7 @@
               <Button class="py-3">Подписаться</Button>
             </v-col>
           </div>
-<!--          <div :class="['leader_page__desc', isMobile ? 'mt-1' : 'mt-3']"></div>-->
+<!--          <div :class="['leader_page__desc', $adaptive.isMobile ? 'mt-1' : 'mt-3']"></div>-->
           <div class="d-flex flex-row px-2 py-1 mt-2">
             <svg-icon class="social mr-2" name="Facebook"></svg-icon>
             <svg-icon class="social mr-2" name="Twitter"></svg-icon>
@@ -34,7 +34,7 @@
           <Header class="top_bar_small" title="Курсы" action>
             <FilterComponent :search="false" :is-on-right="true" :filters="filters" @filter="onFilter"/>
           </Header>
-          <div :class="['course-list-container course-list-small mt-8 pa-0',isMobile ? 'course-list-mobile' : '']" v-if="leadersCourses.length !== 0 || leadersCoursesLoaded">
+          <div :class="['course-list-container course-list-small mt-8 pa-0',$adaptive.isMobile ? 'course-list-mobile' : '']" v-if="leadersCourses.length !== 0 || leadersCoursesLoaded">
             <LeaderCourseItem v-for="(course, index) in leadersCourses"
                               :key="index"
                               :course="course"
@@ -61,7 +61,6 @@ import Search from '../../components/common/Search.vue';
 import LeaderCourseComponent from '@/UI/components/leaderCourse/LeaderCourseComponent.vue';
 import Filters from '@/entity/filters/filters';
 import LeaderCourseItem from '@/UI/components/leaderCourse/LeaderCourseItem.vue';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {FiltersNameEnum, IFilters} from '../../../entity/filters/filters.types';
 import {FiltersStore} from '../../../store/modules/Filters';
 import {LeaderItemStore} from '../../../store/modules/LeaderItem';
@@ -98,10 +97,6 @@ export default class LeaderPage extends Vue {
         value: this.courseLevels[i].id
       });
     }
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 
   get filtersTraining(): IFilters[] {

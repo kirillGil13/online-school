@@ -10,13 +10,13 @@
     </v-row>
     <v-divider></v-divider>
     <v-row class="ma-0 justify-end btn-container-testing">
-      <Button class="with_icon secondary_blue mr-2" @submit="$emit('reviewLesson')" :full-width="isMobile">
+      <Button class="with_icon secondary_blue mr-2" @submit="$emit('reviewLesson')" :full-width="$adaptive.isMobile">
         <svg-icon class="svg" name="Return"></svg-icon>
         Пересмотреть урок
       </Button>
       <Button v-if="!lastLesson" class="with_icon" @submit="$emit('moveToNextLesson')">
-        <svg-icon class="svg next" name="Next" :style="{marginRight: isMobile ? '0' : ''}"></svg-icon>
-        {{isMobile ? '' : 'Перейти к следующему уроку' }}
+        <svg-icon class="svg next" name="Next" :style="{marginRight: $adaptive.isMobile ? '0' : ''}"></svg-icon>
+        {{$adaptive.isMobile ? '' : 'Перейти к следующему уроку' }}
       </Button>
     </v-row>
   </v-col>
@@ -26,7 +26,6 @@ import TestingResult from '../../../../../../entity/testingResult/testingResult'
 import ProgressCircleTesting from '../../../../progress/ProgressCircleTesting.vue';
 import Button from '../../../../common/Button.vue';
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {AdaptiveStore} from '../../../../../../store/modules/Adaptive';
 
 @Component({
   components: {
@@ -37,10 +36,6 @@ import {AdaptiveStore} from '../../../../../../store/modules/Adaptive';
 export default class Success extends Vue {
   @Prop() readonly result!: TestingResult;
   @Prop({default: false}) readonly lastLesson!: boolean;
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
-  }
 }
 </script>
 <style lang="scss">

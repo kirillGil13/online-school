@@ -1,7 +1,7 @@
 <template>
   <v-col>
     <v-row>
-      <v-col v-if="courseLoaded" :class="[isMobile ? 'pa-6' : '']">
+      <v-col v-if="courseLoaded" :class="[$adaptive.isMobile ? 'pa-6' : '']">
         <Header :isBordered="true" :route="route" :title="course.name"></Header>
         <v-row :class="['mt-6', $adaptive.isMobile ? 'd-flex flex-column' : '']">
           <router-view @passFile="passFile"
@@ -16,7 +16,7 @@
                        :isDisliked="course.isDisliked"
                        :isLiked="course.isLiked"
           ></router-view>
-          <div :class="['lessons', isMobile ? 'mb-3' : 'ml-4']" :style="{width: isMobile ? '100%' : ''}">
+          <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']" :style="{width: $adaptive.isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course"/>
             <!--todo or not ?-->
             <!--            <div class="contacts" v-if="!$adaptive.isMobile">-->
@@ -42,7 +42,7 @@
             <!--                </div>-->
             <!--              </div>-->
             <!--            </div>-->
-            <v-col class="box-container pa-6 pb-8 materials" v-if="!isMobile && files === []">
+            <v-col class="box-container pa-6 pb-8 materials" v-if="!$adaptive.isMobile && files === []">
               <h5>МАТЕРИАЛЫ К УРОКУ</h5>
               <Doc v-for="(item, index) in files" :key="index" :material="item"/>
             </v-col>
@@ -70,7 +70,6 @@ import {ICourseItem, ICourseLessons} from '@/entity/courseItem/courseItem.type';
 import Lessons from '@/UI/components/lessons/Lessons.vue';
 import {CourseItemStore} from '@/store/modules/CourseItem';
 import Doc from '@/UI/components/common/Doc.vue';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {LessonsTypesEnum} from '../../../entity/common/lessons.types';
 import {ILessonItemFiles} from '../../../entity/lessonItem/lessonItem.types';
 import {RelationStore} from '../../../store/modules/Relation';
@@ -197,10 +196,6 @@ export default class Course extends Vue {
 
   get courseLoaded(): boolean {
     return CourseItemStore.courseLoaded;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 
   // reviewLesson() {}

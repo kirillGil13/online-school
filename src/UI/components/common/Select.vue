@@ -25,7 +25,7 @@
         </v-list-item-icon>
         <v-list-item-title v-text="item.name"></v-list-item-title>
         <v-menu
-            :open-on-hover="!isMobile"
+            :open-on-hover="!$adaptive.isMobile"
             v-if="item.description"
             top right
             offset-y
@@ -58,17 +58,12 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {ISelect} from '@/entity/select/select.types';
-import {AdaptiveStore} from '../../../store/modules/Adaptive';
 
 @Component
 export default class Select extends Vue {
   @Prop() readonly selects!: ISelect[];
   @Prop() readonly className!: string;
   @Prop() readonly id!: number;
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
-  }
 }
 </script>
 <style lang="scss">

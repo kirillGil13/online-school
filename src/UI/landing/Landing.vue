@@ -1,13 +1,13 @@
 <template>
   <v-col class="infoPackageItem" v-if="infoPackageItemLoaded">
     <div class="main-video-wrapper">
-      <InfoPackageItemVideoComponent :class="['main-video', isMobile ? 'mobile' : '']"
+      <InfoPackageItemVideoComponent :class="['main-video', $adaptive.isMobile ? 'mobile' : '']"
                                      :info-package-item-video="infoPackageItem.mainVideo"
                                      @open="activatorMainVideo = true"/>
     </div>
     <div class="videos" v-if="infoPackageItemLoaded">
-      <InfoPackageItemVideoComponent :class="['secondary-video', isMobile ? 'mobile' : '']"
-                                     v-for="(item, index) in infoPackageItem.videos" :key="index"
+      <InfoPackageItemVideoComponent :class="['secondary-video', $adaptive.isMobile ? 'mobile' : '']"
+                                v-for="(item, index) in infoPackageItem.videos" :key="index"
                                      :info-package-item-video="item" @open="open"/>
     </div>
     <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
@@ -45,7 +45,6 @@ import {VideoAccessForm} from '../../form/videoAccess/videoAccessForm';
 import Modal from '../components/common/Modal.vue';
 import VideoAccessFormComponent from '../components/forms/videoAccessForm/VideoAccessFormComponent.vue';
 import {AccessVideoStore} from '../../store/modules/AccessVideo';
-import {AdaptiveStore} from '../../store/modules/Adaptive';
 
 @Component({
   components: {VideoAccessFormComponent, Modal, InfoPackageItemVideoComponent, CourseComponent}
@@ -102,10 +101,6 @@ export default class Landing extends Vue {
 
   get infoPackageItem(): IInfoPackageItem {
     return InfoPackagesStore.infoPackageItem!;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 
   get infoPackageItemLoaded(): boolean {

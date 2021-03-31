@@ -3,7 +3,7 @@
     <Header :isBordered="false" title="Избранное" class="top_bar_p_0"></Header>
     <v-col class="py-0" v-if="coursesFavouriteLoaded">
       <v-row class="mt-6" v-if="coursesFavourite.length !== 0">
-        <div :class="['course-list-container course-list-small mt-3',isMobile ? 'course-list-mobile' : '']">
+        <div :class="['course-list-container course-list-small mt-3',$adaptive.isMobile ? 'course-list-mobile' : '']">
           <LeaderCourseItem v-for="(course, index) in coursesFavourite"
                             :key="index"
                             :course="course"
@@ -28,7 +28,6 @@ import {CoursesFavouriteStore} from '../../../store/modules/CoursesFavourite';
 import {ILeaderCourses} from '../../../entity/leaderCourses/leaderCourses.types';
 import LeaderCourseItem from '../../components/leaderCourse/LeaderCourseItem.vue';
 import Header from '../../components/common/Header.vue';
-import {AdaptiveStore} from '../../../store/modules/Adaptive';
 
 @Component({
   components: {Header, LeaderCourseItem}
@@ -41,10 +40,6 @@ export default class Chosen extends Vue {
 
   get coursesFavouriteLoaded(): boolean {
     return CoursesFavouriteStore.coursesFavouriteLoaded;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 
   async created(): Promise<void> {
