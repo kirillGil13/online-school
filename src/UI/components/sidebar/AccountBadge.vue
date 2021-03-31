@@ -9,12 +9,6 @@
     />
     <div class="account-badge__account-info">
       <span class="user_name" @click="$emit('proceed')">{{ `${userInfo.name} ${userInfo.lastName}` }}</span>
-      <div class="account-badge__bottom">
-        <div class="account-badge__login-wrapper">
-          <span class="account-badge__login">{{ userId }}</span>
-        </div>
-        <svg-icon v-clipboard="userId" @click="show = true" class="account-badge__copy-icon" name="Copy"/>
-      </div>
     </div>
     <div class="proceed d-flex justify-end" @click="$emit('proceed')">
       <svg-icon name="Arrow_Down"></svg-icon>

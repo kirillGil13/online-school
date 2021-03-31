@@ -25,21 +25,6 @@
                     <input class="input-file" type="file" accept="image/*" id="upload" @change="pickPhoto($event)">
                   </template>
                 </avatar>
-                <div :class="['badges', $adaptive.isMobile ? 'd-flex flex-row mobile' : '']">
-                  <Badge :subs="user.activeSubscription">
-                    <template v-slot:title>Подписка</template>
-                    <template v-if="user.activeSubscription" v-slot:sub>Оформлена</template>
-                    <template v-else v-slot:sub>Не оформлена</template>
-                  </Badge>
-                  <Badge>
-                    <template v-slot:title>Партнеров</template>
-                    <template v-slot:default>18</template>
-                  </Badge>
-                  <Badge>
-                    <template v-slot:title>Переходов</template>
-                    <template v-slot:default>291</template>
-                  </Badge>
-                </div>
               </div>
               <Button @submit="logOut" class="btn secondary_blue py-3 mt-2">Выйти</Button>
             </div>
@@ -56,15 +41,6 @@
                     <v-tab>
                       Контактные данные
                     </v-tab>
-                    <v-tab>
-                      Безопасность
-                    </v-tab>
-                    <v-tab>
-                      Подписка
-                    </v-tab>
-                    <v-tab>
-                      Сменить аватар
-                    </v-tab>
                   </v-tabs>
                   <v-tabs-items v-model="activeName">
                     <v-divider></v-divider>
@@ -77,15 +53,6 @@
                       <keep-alive>
                         <profile-contact-data :form="contactDataForm"/>
                       </keep-alive>
-                    </v-tab-item>
-                    <v-tab-item>
-                      <profile-security/>
-                    </v-tab-item>
-                    <v-tab-item>
-                      <profile-subscribe/>
-                    </v-tab-item>
-                    <v-tab-item>
-                      <profile-avatar-change/>
                     </v-tab-item>
                   </v-tabs-items>
                 </v-col>

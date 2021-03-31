@@ -12,19 +12,9 @@ import {RouterNameEnum} from '@/router/router.types';
 class MenuModule extends VuexModule {
     items: IMainMenu[] = [
         {
-            title: 'Главная',
-            iconName: 'Home',
-            route: RouterNameEnum.Main,
-        },
-        {
             title: 'Обучение',
             iconName: 'Education',
             route: RouterNameEnum.TrainingMain,
-        },
-        {
-            title: 'Чат',
-            iconName: 'Chat',
-            route: RouterNameEnum.ChatMain,
         },
         {
             title: 'Кандидаты',
@@ -35,11 +25,6 @@ class MenuModule extends VuexModule {
             title: 'Инфопакеты',
             iconName: 'Users',
             route: RouterNameEnum.InfoPackages,
-        },
-        {
-            title: 'Я изучаю',
-            iconName: 'Education',
-            route: RouterNameEnum.MyStudies,
         },
         {
             title: 'Избранное',

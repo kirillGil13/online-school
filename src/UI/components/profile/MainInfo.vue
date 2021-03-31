@@ -25,20 +25,6 @@
           </FormGroup>
         </div>
         <div class="mb-3">
-          <FormGroup v-slot="attrs" :form="form" field="id" label="OneLinks ID"
-          >
-              <input
-                  class="input input__normal"
-                  type="text" name="id"
-                  id="id"
-                  :disabled="true"
-                  v-model="form[attrs.name]"
-                  v-bind="attrs"
-                  @input="attrs.change"
-              >
-          </FormGroup>
-        </div>
-        <div class="mb-3">
           <FormGroup v-slot="attrs" :form="form" field="description" show-custom-error label="Обо мне">
             <input
                 class="input input__normal"

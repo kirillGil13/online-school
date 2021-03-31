@@ -3,9 +3,12 @@
     <h2 class="form-title">Регистрация</h2>
     <template v-if="!registerStep" >
       <PhoneFormVue v-if="!codeStep" :form="phoneForm" @submitPhone="submitPhone"/>
-      <CodeFormVue v-else :form="codeForm" @submitCode="submitCode"/>
+      <CodeFormVue v-else :form="codeForm" @submitCode="submitCode" @sendAgain="submitPhone" :show-alert="show"/>
     </template>
     <RegisterFormVue v-else :form="registerForm" :link="pictureLoaded ? picture.fullLink : ''" @handleImage="handleImage" @submit="submitRegister" @keydown.enter="submitRegister"/>
+    <Alert :show="show" :type="alertType.Success"
+           text="Код успешно отправлен"
+           @show="showAlert"/>
   </div>
 </template>
 <script lang="ts">
@@ -25,9 +28,12 @@ import PhoneFormVue from '../../components/forms/auth/PhoneForm.vue';
 import {PhoneForm} from '../../../form/phone/phoneForm';
 import {ProfilePictureStore} from '../../../store/modules/ProfilePicture';
 import {IProfilePicture} from '../../../entity/common/profilePicture.types';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
+import Alert from '../../components/common/Alert.vue';
 
 @Component({
   components: {
+    Alert,
     PhoneFormVue,
     RegisterFormVue,
     Button,
@@ -45,6 +51,9 @@ export default class Signup extends Vue {
   registerForm = new RegisterForm();
   codeStep = false;
   registerStep = false;
+  show = false;
+  alertType = AlertTypeEnum;
+
 
   get picture(): IProfilePicture | null {
     return ProfilePictureStore.profilePicture;
@@ -54,20 +63,33 @@ export default class Signup extends Vue {
     return ProfilePictureStore.profilePictureLoaded;
   }
 
+  showAlert(show: boolean): void {
+    this.show = show;
+  }
+
   async handleImage(e: any): Promise<void> {
     const selectedImage = e.target.files[0];
     await ProfilePictureStore.set({file: selectedImage});
   }
 
-  async submitPhone(): Promise<boolean> {
+  async submitPhone(again?: boolean): Promise<boolean> {
     const res = await this.phoneForm.submit(AuthStore.sendCode);
-    if (res) {
-      this.phoneForm.clearErrors();
-      this.codeStep = true;
-      this.codeForm.phone = this.phoneForm.phone;
-      return true;
-    } else {
-      this.codeStep = false;
+    if (!again) {
+      if (res) {
+        this.phoneForm.clearErrors();
+        this.codeStep = true;
+        this.codeForm.phone = this.phoneForm.phone;
+        return true;
+      } else {
+        this.codeStep = false;
+        return false;
+      }
+    }
+    else {
+      if (res) {
+        this.show = true;
+        return true;
+      }
       return false;
     }
   }
