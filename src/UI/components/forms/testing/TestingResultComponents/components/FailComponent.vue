@@ -13,7 +13,7 @@
     </v-row>
     <v-divider></v-divider>
     <v-row class="ma-0 justify-end">
-      <Button @submit="$emit('reviewLesson')" :full-width="$adaptive.isMobile">Пересмотреть урок</Button>
+      <Button :class="[$adaptive.isMobile ? 'py-3' : '']" @submit="$emit('reviewLesson')" :full-width="$adaptive.isMobile">Пересмотреть урок</Button>
     </v-row>
   </v-col>
 </template>

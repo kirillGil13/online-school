@@ -521,6 +521,21 @@ iframe {
     font-size: 10px !important;
     border-radius: 12px;
 
+    .vjs-poster {
+        background-position: center;
+        background-size: cover;
+        &:after {
+            border-radius: 12px;
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0,0,0,0.5);
+        }
+    }
+
     video {
         border-radius: 12px;
     }

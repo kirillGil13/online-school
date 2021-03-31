@@ -152,8 +152,13 @@ export default class Landing extends Vue {
     flex-wrap: wrap;
 
     .secondary-video {
+      margin-right: 16px;
+      &:nth-last-child(1) {
+        margin-right: 0;
+      }
       &.mobile {
         margin-right: 0;
+        margin-top: 24px;
         width: 100%;
 
         .course-video-block {
