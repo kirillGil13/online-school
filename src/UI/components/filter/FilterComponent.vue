@@ -3,13 +3,13 @@
     <v-row class="tab-controls d-flex flex-row flex-wrap">
       <div class="filter-tabs d-flex flex-row justify-center mt-2" :style="{order: isOnRight ? '2' : '1'}">
         <v-col v-for="(item, index) in filters.filterBody" id="select" :key="index" cols="auto"
-               :class="['pa-0 d-flex flex-column', index + 1 === filters.filterBody.length && isMobile ? 'mr-0' : '']">
+               :class="['pa-0 d-flex flex-column', index + 1 === filters.filterBody.length && $adaptive.isMobile ? 'mr-0' : '']">
           <label :for="index">{{ item.filterType }}</label>
           <v-select
               :items="item.filterValue"
               v-model="filters.default[index]"
               @change="$emit('filter')"
-              :class="['filter pa-0', isMobile ? 'filter-mobile' : '']"
+              :class="['filter pa-0', $adaptive.isMobile ? 'filter-mobile' : '']"
               :menu-props="{ left: true, minWidth: 190}"
               flat
               dense
@@ -21,11 +21,11 @@
           </v-select>
         </v-col>
       </div>
-      <v-col :class="['filter-search pa-0 d-flex align-end mt-3', isMobile ? '' : 'mr-4']" :cols="isMobile ? 12 : ''"
+      <v-col :class="['filter-search pa-0 d-flex align-end mt-3', $adaptive.isMobile ? '' : 'mr-4']" :cols="$adaptive.isMobile ? 12 : ''"
              v-if="search" :style="{order: isOnRight ? '1' : '2'}">
         <slot name="search"/>
       </v-col>
-      <v-col :cols="isMobile ? 12 : 2" class="filter-button pa-0 d-flex align-end mt-2" v-if="button" :style="{order: isMobile ? '-1' : '3'}">
+      <v-col :cols="$adaptive.isMobile ? 12 : 2" class="filter-button pa-0 d-flex align-end mt-2" v-if="button" :style="{order: $adaptive.isMobile ? '-1' : '3'}">
         <slot name="button"/>
       </v-col>
     </v-row>
@@ -33,7 +33,6 @@
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import Filters from '../../../entity/filters/filters';
 
 @Component({
@@ -44,9 +43,6 @@ export default class FilterComponent extends Vue {
   @Prop() readonly button!: boolean;
   @Prop() readonly filters!: Filters;
   @Prop() readonly isOnRight: boolean | undefined;
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
-  }
 }
 </script>
 <style lang="scss">

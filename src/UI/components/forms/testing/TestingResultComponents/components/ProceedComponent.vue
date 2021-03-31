@@ -11,8 +11,8 @@
     </v-row>
     <v-divider></v-divider>
     <v-row class="ma-0 justify-end btn-container-testing">
-      <Button class="secondary_blue mr-2" @submit="$emit('writeMaster')" :full-width="isMobile">Написать автору курса</Button>
-      <Button @submit="$emit('reviewLesson')" :full-width="isMobile">Пересмотреть урок</Button>
+      <Button class="secondary_blue mr-2" @submit="$emit('writeMaster')" :full-width="$adaptive.isMobile">Написать автору курса</Button>
+      <Button @submit="$emit('reviewLesson')" :full-width="$adaptive.isMobile">Пересмотреть урок</Button>
     </v-row>
   </v-col>
 </template>
@@ -22,7 +22,6 @@ import ProgressCircleTesting from '../../../../progress/ProgressCircleTesting.vu
 import Button from '../../../../common/Button.vue';
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import Timer from '../../../../common/Timer.vue';
-import {AdaptiveStore} from '../../../../../../store/modules/Adaptive';
 
 @Component({
   components: {
@@ -37,10 +36,6 @@ export default class Proceed extends Vue {
 
   stop(isZero: boolean): void {
     this.showButton = isZero;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 }
 </script>

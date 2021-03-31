@@ -7,14 +7,30 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import {AuthStore} from '@/store/modules/Auth';
 
 @Component
 export default class App extends Vue {
 
+  @Watch('$vuetify.breakpoint.name')
+  onBreakpointChange(): void {
+    this.$adaptive.isMobile = this.resolveAdaptiveMobile();
+  }
+
   created(): void {
+    this.$adaptive.isMobile = this.resolveAdaptiveMobile();
     AuthStore.load();
+  }
+
+  resolveAdaptiveMobile(): boolean {
+    let isMobile = false;
+    switch (this.$vuetify.breakpoint.name) {
+      case 'xs': isMobile = true; break;
+      case 'sm': isMobile = true; break;
+      case 'md': isMobile = false; break;
+    }
+    return isMobile;
   }
 }
 </script>

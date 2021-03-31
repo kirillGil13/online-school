@@ -16,7 +16,7 @@
   </v-app>
 </template>
 <script lang="ts">
-import {Component, Vue, Watch} from 'vue-property-decorator';
+import {Component, Vue } from 'vue-property-decorator';
 import {AuthStore} from '@/store/modules/Auth';
 import {IUser} from '@/entity/user';
 import MobileBar from '@/UI/components/common/MobileBar.vue';
@@ -50,16 +50,6 @@ export default class MainLayout extends Vue {
 
   proceed(): void {
     this.$router.push({name: this.$routeRules.Profile});
-  }
-
-  resolveAdaptiveMobile(): boolean {
-    let isMobile = false;
-    switch (this.$vuetify.breakpoint.name) {
-      case 'xs': isMobile = true; break;
-      case 'sm': isMobile = true; break;
-      case 'md': isMobile = false; break;
-    }
-    return isMobile;
   }
 
   get user(): IUser {
