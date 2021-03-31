@@ -89,9 +89,9 @@ import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactD
 import Alert from '@/UI/components/common/Alert.vue';
 import {ProfilePictureStore} from '../../../store/modules/ProfilePicture';
 import {IProfilePicture} from '../../../entity/common/profilePicture.types';
-import {UserUpdateStore} from '../../../store/modules/UserUpdate';
 import Modal from '../../components/common/Modal.vue';
 import PictureCropper from '../../components/cropper/PictureCropper.vue';
+import {UserUpdateStore} from '../../../store/modules/UserUpdate';
 
 @Component({
   components: {
@@ -123,6 +123,16 @@ export default class Profile extends Vue {
   @Watch('user.photoLink')
   onPhotoChanged(): void {
     this.pictureChanged = false;
+  }
+
+  @Watch('pictureLoaded')
+  async onPictureLoaded(): Promise<void> {
+    if (this.pictureLoaded) {
+      if (await UserUpdateStore.updateUser({shortPhotoLink: this.picture!.shortLink})) {
+        await AuthStore.fetch();
+        ProfilePictureStore.clear();
+      }
+    }
   }
 
   get user(): IUser {
@@ -184,17 +194,32 @@ export default class Profile extends Vue {
     reader.readAsDataURL(file);
   }
 
+  // b64toBlob(b64Data: string, contentType: string, sliceSize?: number): Blob {
+  //   contentType = contentType || '';
+  //   sliceSize = sliceSize || 512;
+  //   const byteCharacters = atob(b64Data);
+  //   const byteArrays = [];
+  //   for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+  //     const slice = byteCharacters.slice(offset, offset + sliceSize);
+  //     const byteNumbers = new Array(slice.length);
+  //     for (let i = 0; i < slice.length; i++) {
+  //       byteNumbers[i] = slice.charCodeAt(i);
+  //     }
+  //     const byteArray = new Uint8Array(byteNumbers);
+  //     byteArrays.push(byteArray);
+  //   }
+  //   const blob = new Blob(byteArrays, {type: contentType});
+  //   return blob;
+  // }
+
   async setImage(data: any): Promise<void> {
     this.pictureChanged = true;
-    const {canvas} = data.getResult() ;
-    canvas.toBlob(blob => ProfilePictureStore.set({file: blob as any}));
+    const {canvas} = data.getResult();
+    canvas.toBlob( (blob: Blob): void => {
+          ProfilePictureStore.set({file: blob as any});
+        }
+    );
     this.activator = false;
-    if (this.pictureLoaded) {
-      if (await UserUpdateStore.updateUser({shortPhotoLink: this.picture!.shortLink})) {
-        await AuthStore.fetch();
-      }
-    }
-
   }
 
   get picture(): IProfilePicture | null {
