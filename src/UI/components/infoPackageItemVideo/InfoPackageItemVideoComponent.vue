@@ -1,7 +1,10 @@
 <template>
   <div class="course-block" @click="$emit('open', infoPackageItemVideo.id)">
-    <div class="course-video-block" :style="{ backgroundImage: 'url(' + infoPackageItemVideo.coverLink + ')' }">
-      <div class="course-info-container"></div>
+    <div class="course-video-block">
+      <v-img class="course-image" :src="infoPackageItemVideo.coverLink" max-width="100%" height="100%"
+             :aspect-ratio="16/9">
+        <div class="course-info-container"></div>
+      </v-img>
     </div>
     <div class="course-title">{{ infoPackageItemVideo.name }}</div>
   </div>
@@ -10,6 +13,7 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {IInfoPackageItemVideo} from '../../../entity/infoPackageItem/infoPackageItem.types';
+
 @Component
 export default class InfoPackageItemVideoComponent extends Vue {
   @Prop() readonly infoPackageItemVideo!: IInfoPackageItemVideo;
