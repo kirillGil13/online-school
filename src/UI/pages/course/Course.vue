@@ -3,7 +3,7 @@
     <v-row>
       <v-col v-if="courseLoaded" :class="[isMobile ? 'pa-6' : '']">
         <Header :isBordered="true" :route="route" :title="course.name"></Header>
-        <v-row :class="['mt-6', isMobile ? 'd-flex flex-column' : '']">
+        <v-row :class="['mt-6', $adaptive.isMobile ? 'd-flex flex-column' : '']">
           <router-view @passFile="passFile"
                        @handleLike="handleLike"
                        @handleDisLike="handleDisLike"
@@ -19,7 +19,7 @@
           <div :class="['lessons', isMobile ? 'mb-3' : 'ml-4']" :style="{width: isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course"/>
             <!--todo or not ?-->
-            <!--            <div class="contacts" v-if="!isMobile">-->
+            <!--            <div class="contacts" v-if="!$adaptive.isMobile">-->
             <!--              <div class="contacts__content">-->
             <!--                <div class="contacts__item d-flex flex-row">-->
             <!--                  <v-avatar class="mr-3">-->

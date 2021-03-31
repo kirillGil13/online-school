@@ -16,5 +16,7 @@ export default class InfoPackageItemVideoComponent extends Vue {
 </script>
 
 <style lang="scss">
-
+.course-block {
+  width: calc(100% / 3);
+}
 </style>

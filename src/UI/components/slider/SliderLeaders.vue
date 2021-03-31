@@ -1,6 +1,6 @@
 <template>
-  <v-col :class="['slider-container', isMobile ? 'pa-0' : '']">
-    <swiper :class="['swiper component', isMobile ? 'mx-0' : '']" :options="swiperComponentOption" ref="swiper">
+  <v-col :class="['slider-container', $adaptive.isMobile ? 'pa-0' : '']">
+    <swiper :class="['swiper component', $adaptive.isMobile ? 'mx-0' : '']" :options="swiperComponentOption" ref="swiper">
       <swiper-slide v-for="(leader, index) in leaders" :key="index" :id="index">
         <div :class=" ['slide', $route.params.id === leader.id.toString() ? 'active_leader' : '' ]" @click="proceed(leader.id)">
           <div class="leader-photo" :style="{ backgroundImage: 'url(' + leader.photoLink + ')' }">
@@ -9,10 +9,10 @@
           <h4>{{ leader.fullName }}</h4>
         </div>
       </swiper-slide>
-      <div class="swiper-button-prev" @click="prev()" slot="button-prev" v-if="!isMobile">
+      <div class="swiper-button-prev" @click="prev()" slot="button-prev" v-if="!$adaptive.isMobile">
         <svg-icon name="Slider_Arrow"></svg-icon>
       </div>
-      <div class="swiper-button-next" @click="next()" slot="button-next" v-if="!isMobile">
+      <div class="swiper-button-next" @click="next()" slot="button-next" v-if="!$adaptive.isMobile">
         <svg-icon name="Slider_Arrow"></svg-icon>
       </div>
     </swiper>
@@ -22,7 +22,6 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import Rating from '../common/Rating.vue';
 import {SwiperOptions} from 'swiper';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {ILeadersListItem} from '../../../entity/leader';
 
 @Component({
@@ -62,9 +61,6 @@ export default class SliderLeaders extends Vue {
     // if (this.$refs.swiper.$swiper.activeIndex != 0) {
     //     this.$refs.swiper.$swiper.params.el.children[1].style.display = 'flex';
     // } else this.$refs.swiper.$swiper.params.el.children[1].style.display = 'none';
-  }
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 }
 </script>

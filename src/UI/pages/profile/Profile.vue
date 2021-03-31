@@ -6,16 +6,16 @@
     <v-col :cols="12">
       <div class="profile__main-content">
         <v-row>
-          <v-col class="pt-0" :cols="isMobile ? 12 : 2">
+          <v-col class="pt-0" :cols="$adaptive.isMobile ? 12 : 2">
             <div
                 :class="{
-                            'profile__info-full-size': !isMobile,
-                            'profile__info-low-size': isMobile,
+                            'profile__info-full-size': !$adaptive.isMobile,
+                            'profile__info-low-size': $adaptive.isMobile,
                         }"
             >
-              <div :class="[isMobile ? 'avatar_mobile_container' : '']">
+              <div :class="[$adaptive.isMobile ? 'avatar_mobile_container' : '']">
                 <avatar
-                    :size="isMobile ? 73 : 143"
+                    :size="$adaptive.isMobile ? 73 : 143"
                     :imageSource="user.photoLink"
                     :starSize="AvatarSizeEnum.MEDIUM"
                     :avatar-size="AvatarSizeEnum.MEDIUM"
@@ -25,7 +25,7 @@
                     <input class="input-file" type="file" accept="image/*" id="upload" @change="pickPhoto($event)">
                   </template>
                 </avatar>
-                <div :class="['badges', isMobile ? 'd-flex flex-row mobile' : '']">
+                <div :class="['badges', $adaptive.isMobile ? 'd-flex flex-row mobile' : '']">
                   <Badge :subs="user.activeSubscription">
                     <template v-slot:title>Подписка</template>
                     <template v-if="user.activeSubscription" v-slot:sub>Оформлена</template>
@@ -44,7 +44,7 @@
               <Button @submit="logOut" class="btn secondary_blue py-3 mt-2">Выйти</Button>
             </div>
           </v-col>
-          <v-col class="profile__detail-info-container pa-6" :cols="isMobile ? 12 : 10">
+          <v-col class="profile__detail-info-container pa-6" :cols="$adaptive.isMobile ? 12 : 10">
             <div class="grid-content">
               <v-row>
                 <v-col cols="12" class="profile__col">
@@ -116,7 +116,6 @@ import {ProfileMainInfoForm} from '@/form/profile/mainInfo/ProfileMainInfoForm';
 import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactDataForm';
 import ProfileEditForm from '@/form/profile/profileEditForm';
 import Alert from '@/UI/components/common/Alert.vue';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import {ProfilePictureStore} from '../../../store/modules/ProfilePicture';
 import {IProfilePicture} from '../../../entity/common/profilePicture.types';
 import {UserUpdateStore} from '../../../store/modules/UserUpdate';
@@ -151,10 +150,6 @@ export default class Profile extends Vue {
 
   get user(): IUser {
     return AuthStore.user;
-  }
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
   }
 
   constructor() {

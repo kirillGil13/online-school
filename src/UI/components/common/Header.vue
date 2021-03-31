@@ -1,6 +1,6 @@
 <template>
   <v-row :class="['top_bar', isBordered ? 'box-container pa-2' : 'py-24']" ref="topBar">
-    <v-col :class="['bar_title', isMobile ? 'pa-3' : '']">
+    <v-col :class="['bar_title', $adaptive.isMobile ? 'pa-3' : '']">
       <router-link v-if="route" :to="{ name: route.name }" class="link">
         <svg-icon name="Arrow_Left" class="svg-fill-none"></svg-icon>
         {{ route.label }}
@@ -16,7 +16,6 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {HeaderRouteType} from '@/entity/common/header.types';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 
 @Component
 export default class Header extends Vue {
@@ -26,11 +25,6 @@ export default class Header extends Vue {
   @Prop({default: false}) readonly isBordered!: boolean;
   @Prop({default: ''}) readonly hash!: string;
   @Prop({default: false, type: Boolean}) readonly action!: boolean;
-
-  get isMobile(): boolean {
-    return AdaptiveStore.isMobile;
-
-  }
 }
 </script>
 <style lang="scss">
