@@ -27,7 +27,6 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import Rating from '@/UI/components/common/Rating.vue';
 import {ILeaderCourses} from '@/entity/leaderCourses/leaderCourses.types';
-import {AdaptiveStore} from '@/store/modules/Adaptive';
 import ProgressCircle from '../progress/ProgressCircle.vue';
 import CourseSkeleton from '../common/skeletons/courseSkeleton/CourseSkeleton.vue';
 

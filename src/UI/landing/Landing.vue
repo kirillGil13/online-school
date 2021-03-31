@@ -153,7 +153,8 @@ export default class Landing extends Vue {
 
     .secondary-video {
       margin-right: 16px;
-      &:nth-last-child(1) {
+      margin-top: 16px;
+      &:nth-child(3n+3) {
         margin-right: 0;
       }
       &.mobile {
