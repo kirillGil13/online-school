@@ -1,4 +1,4 @@
-import { getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
+import {getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import {IProfilePicture, ProfilePictureRequestType} from '@/entity/common/profilePicture.types';
 
@@ -11,6 +11,12 @@ import {IProfilePicture, ProfilePictureRequestType} from '@/entity/common/profil
 class ProfilePictureModule extends VuexModule {
     profilePicture: IProfilePicture | null = null;
     profilePictureLoaded = false;
+
+    @Mutation
+    clear(): void {
+        this.profilePicture = null;
+        this.profilePictureLoaded = false;
+    }
 
     @MutationAction
     async set( data: ProfilePictureRequestType): Promise<{ profilePicture: IProfilePicture; profilePictureLoaded: boolean }> {

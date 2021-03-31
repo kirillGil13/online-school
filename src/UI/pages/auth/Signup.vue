@@ -113,7 +113,10 @@ export default class Signup extends Vue {
 
   async setImage(data: any): Promise<void> {
     const {canvas} = data.getResult() ;
-    canvas.toBlob(blob => ProfilePictureStore.set({file: blob as any}))
+    canvas.toBlob( (blob: Blob): void => {
+          ProfilePictureStore.set({file: blob as any});
+        }
+    );
     this.activator = false;
   }
 
