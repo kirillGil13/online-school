@@ -16,7 +16,7 @@
   </v-app>
 </template>
 <script lang="ts">
-import {Component, Vue } from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 import {AuthStore} from '@/store/modules/Auth';
 import {IUser} from '@/entity/user';
 import MobileBar from '@/UI/components/common/MobileBar.vue';

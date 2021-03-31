@@ -18,7 +18,7 @@
         right
         class="pa-2 drawer"
     >
-      <account-badge :userInfo="userInfo" :user-id="userId"/>
+      <account-badge :userInfo="userInfo" :user-id="userId" @proceed="goTo"/>
       <Menu/>
       <v-spacer></v-spacer>
       <div class="close d-flex flex-row justify-start align-center" @click="drawer = false">
@@ -45,6 +45,10 @@ export default class MobileBar extends Vue {
 
   proceed(): void {
     this.$router.push({name: RouterNameEnum.Main});
+  }
+
+  goTo(): void {
+    this.$router.push({name: RouterNameEnum.Profile});
   }
 }
 </script>
