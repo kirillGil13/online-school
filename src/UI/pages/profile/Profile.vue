@@ -22,24 +22,9 @@
                     :picture-changed="pictureChanged"
                 >
                   <template v-slot:inputFile>
-                    <input class="input-file" type="file" accept="image/*" id="upload" @change="pickPhoto($event)">
+                    <input class="input-file" type="file" accept="image/*" id="upload" @change="handleImage($event)">
                   </template>
                 </avatar>
-                <div :class="['badges', $adaptive.isMobile ? 'd-flex flex-row mobile' : '']">
-                  <Badge :subs="user.activeSubscription">
-                    <template v-slot:title>Подписка</template>
-                    <template v-if="user.activeSubscription" v-slot:sub>Оформлена</template>
-                    <template v-else v-slot:sub>Не оформлена</template>
-                  </Badge>
-                  <Badge>
-                    <template v-slot:title>Партнеров</template>
-                    <template v-slot:default>18</template>
-                  </Badge>
-                  <Badge>
-                    <template v-slot:title>Переходов</template>
-                    <template v-slot:default>291</template>
-                  </Badge>
-                </div>
               </div>
               <Button @submit="logOut" class="btn secondary_blue py-3 mt-2">Выйти</Button>
             </div>
@@ -56,15 +41,6 @@
                     <v-tab>
                       Контактные данные
                     </v-tab>
-                    <v-tab>
-                      Безопасность
-                    </v-tab>
-                    <v-tab>
-                      Подписка
-                    </v-tab>
-                    <v-tab>
-                      Сменить аватар
-                    </v-tab>
                   </v-tabs>
                   <v-tabs-items v-model="activeName">
                     <v-divider></v-divider>
@@ -78,15 +54,6 @@
                         <profile-contact-data :form="contactDataForm"/>
                       </keep-alive>
                     </v-tab-item>
-                    <v-tab-item>
-                      <profile-security/>
-                    </v-tab-item>
-                    <v-tab-item>
-                      <profile-subscribe/>
-                    </v-tab-item>
-                    <v-tab-item>
-                      <profile-avatar-change/>
-                    </v-tab-item>
                   </v-tabs-items>
                 </v-col>
               </v-row>
@@ -95,6 +62,11 @@
         </v-row>
       </div>
     </v-col>
+    <Modal :activator="activator" @activatorChange="activatorChange">
+      <template v-slot:content v-if="destroy">
+        <PictureCropper :image="image" @close="close" @setImage="setImage"/>
+      </template>
+    </Modal>
   </v-row>
 </template>
 
@@ -114,14 +86,17 @@ import {IUser} from '@/entity/user';
 import Header from '@/UI/components/common/Header.vue';
 import {ProfileMainInfoForm} from '@/form/profile/mainInfo/ProfileMainInfoForm';
 import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactDataForm';
-import ProfileEditForm from '@/form/profile/profileEditForm';
 import Alert from '@/UI/components/common/Alert.vue';
 import {ProfilePictureStore} from '../../../store/modules/ProfilePicture';
 import {IProfilePicture} from '../../../entity/common/profilePicture.types';
 import {UserUpdateStore} from '../../../store/modules/UserUpdate';
+import Modal from '../../components/common/Modal.vue';
+import PictureCropper from '../../components/cropper/PictureCropper.vue';
 
 @Component({
   components: {
+    PictureCropper,
+    Modal,
     Badge,
     Avatar,
     Button,
@@ -137,11 +112,13 @@ import {UserUpdateStore} from '../../../store/modules/UserUpdate';
 export default class Profile extends Vue {
   mainInfoForm!: ProfileMainInfoForm;
   contactDataForm: ProfileContactDataForm;
-  editForm!: ProfileEditForm;
   pictureChanged = false;
   success = false;
   activeName = 0;
   AvatarSizeEnum = AvatarSizeEnum;
+  image = '';
+  activator = false;
+  destroy = true;
 
   @Watch('user.photoLink')
   onPhotoChanged(): void {
@@ -174,15 +151,50 @@ export default class Profile extends Vue {
   //   } else this.changeAlert(true, false);
   // }
 
-  async pickPhoto(e: any): Promise<void> {
+  close(): void {
+    this.activator = false;
+  }
+
+  activatorChange(act: boolean): void {
+    this.activator = act;
+    this.image = '';
+    this.rerender();
+  }
+
+  rerender(): void {
+    this.destroy = false;
+    this.$nextTick(() => {
+      this.destroy = true;
+    });
+  }
+
+  handleImage(e: any): void {
+    const file = e.target.files[0];
+    if (file) {
+      this.createBase64(file);
+      this.activator = true;
+    }
+  }
+
+  createBase64(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e: any): void => {
+      this.image = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async setImage(data: any): Promise<void> {
     this.pictureChanged = true;
-    const selectedImage = e.target.files[0];
-    await ProfilePictureStore.set({file: selectedImage});
+    const {canvas} = data.getResult() ;
+    canvas.toBlob(blob => ProfilePictureStore.set({file: blob as any}));
+    this.activator = false;
     if (this.pictureLoaded) {
       if (await UserUpdateStore.updateUser({shortPhotoLink: this.picture!.shortLink})) {
         await AuthStore.fetch();
       }
     }
+
   }
 
   get picture(): IProfilePicture | null {
