@@ -10,7 +10,7 @@
         <h5>Топ лидеры</h5>
         <router-link :to="''">Показать все</router-link>
       </div>
-      <SliderLeaders :leaders="leaders"/>
+      <SliderLeaders :leaders="leaders" id="step-2"/>
     </template>
     <v-row>
       <v-col class="py-0">

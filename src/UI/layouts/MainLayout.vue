@@ -12,6 +12,7 @@
           </v-main>
         </div>
       </v-container>
+      <v-tour name="tour" :steps="steps" :options="options"></v-tour>
     </v-main>
   </v-app>
 </template>
@@ -22,6 +23,8 @@ import {IUser} from '@/entity/user';
 import MobileBar from '@/UI/components/common/MobileBar.vue';
 import Banner from '../components/common/Banner.vue';
 import Sidebar from '../components/sidebar/Sidebar.vue';
+import {ITourOptions, ITourSteps} from '../../entity/common/tour.types';
+import {TourStore} from '../../store/modules/Tour';
 
 
 @Component({
@@ -39,6 +42,20 @@ export default class MainLayout extends Vue {
 
   get user(): IUser {
     return AuthStore.user;
+  }
+
+  get options(): ITourOptions {
+    return TourStore.options;
+  }
+
+  get steps(): ITourSteps[] {
+    return TourStore.steps;
+  }
+
+  mounted(): void {
+    if (TourStore.newUser) {
+      this.$tours['tour'].start();
+    }
   }
 
 }

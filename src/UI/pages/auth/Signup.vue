@@ -1,11 +1,12 @@
 <template>
   <div>
     <h2 class="form-title">Регистрация</h2>
-    <template v-if="!registerStep" >
+    <template v-if="!registerStep">
       <PhoneFormVue v-if="!codeStep" :form="phoneForm" @submitPhone="submitPhone"/>
       <CodeFormVue v-else :form="codeForm" @submitCode="submitCode" @sendAgain="submitPhone" :show-alert="show"/>
     </template>
-    <RegisterFormVue v-else :form="registerForm" :link="pictureLoaded ? picture.fullLink : ''" @handleImage="handleImage" @submit="submitRegister" @keydown.enter="submitRegister"/>
+    <RegisterFormVue v-else :form="registerForm" :link="pictureLoaded ? picture.fullLink : ''"
+                     @handleImage="handleImage" @submit="submitRegister" @keydown.enter="submitRegister"/>
     <Alert :show="show" :type="alertType.Success"
            text="Код успешно отправлен"
            @show="showAlert"/>
@@ -37,6 +38,7 @@ import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import Alert from '../../components/common/Alert.vue';
 import Modal from '../../components/common/Modal.vue';
 import PictureCropper from '../../components/cropper/PictureCropper.vue';
+import {LoginForm} from '../../../form/login';
 
 @Component({
   components: {
@@ -58,6 +60,7 @@ export default class Signup extends Vue {
   codeForm = new CodeForm();
   phoneForm = new PhoneForm();
   registerForm = new RegisterForm();
+  form = new LoginForm();
   codeStep = false;
   registerStep = false;
   show = false;
@@ -112,8 +115,8 @@ export default class Signup extends Vue {
   }
 
   async setImage(data: any): Promise<void> {
-    const {canvas} = data.getResult() ;
-    canvas.toBlob( (blob: Blob): void => {
+    const {canvas} = data.getResult();
+    canvas.toBlob((blob: Blob): void => {
           ProfilePictureStore.set({file: blob as any});
         }
     );
@@ -132,8 +135,7 @@ export default class Signup extends Vue {
         this.codeStep = false;
         return false;
       }
-    }
-    else {
+    } else {
       if (res) {
         this.show = true;
         return true;
@@ -152,11 +154,12 @@ export default class Signup extends Vue {
     } else return false;
   }
 
- async submitRegister(): Promise<boolean> {
+  async submitRegister(): Promise<boolean> {
     if (this.picture !== null) {
       this.registerForm.photoLink = this.picture!.shortLink;
     }
     if (await this.registerForm.submit(AuthStore.register)) {
+      await AuthStore.login({username: this.registerForm.email, password: this.registerForm.password});
       return true;
     } else return false;
   }
@@ -168,6 +171,7 @@ export default class Signup extends Vue {
     border-color: #f2f2f2 !important;
   }
 }
+
 .form-title {
   font-size: 24px;
   text-align: center;

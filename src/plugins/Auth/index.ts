@@ -31,7 +31,6 @@ Vue.use(auth, {
     registerData: {
         url: '/accounts/register',
         method: 'POST',
-        redirect: '/'
     },
     refreshData: {
         url: '/accounts/me',

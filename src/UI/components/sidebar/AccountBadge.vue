@@ -1,5 +1,5 @@
 <template>
-  <div class="account-badge">
+  <div class="account-badge" @click="$emit('proceed')">
     <avatar
         :imageSource="userInfo.photoLink"
         :imageClass="'account-badge__avatar'"
@@ -8,9 +8,9 @@
         :starSize="AvatarSizeEnum.SMALL"
     />
     <div class="account-badge__account-info">
-      <span class="user_name" @click="$emit('proceed')">{{ `${userInfo.name} ${userInfo.lastName}` }}</span>
+      <span class="user_name">{{ `${userInfo.name} ${userInfo.lastName}` }}</span>
     </div>
-    <div class="proceed d-flex justify-end" @click="$emit('proceed')">
+    <div class="proceed d-flex justify-end">
       <svg-icon name="Arrow_Down"></svg-icon>
     </div>
     <Alert :show="show" :type="alertType.Success" text="Скопировано в буфер обмена" @show="showAlert"/>
@@ -51,6 +51,7 @@ export default class AccountBadge extends Vue {
 <style scoped lang="scss">
 .account-badge {
   min-width: 80%;
+  cursor: pointer;
   padding: 12px;
   display: flex;
   align-items: center;
