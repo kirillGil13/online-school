@@ -11,16 +11,17 @@
             <Confirm
                 v-if="!user.isEmailConfirmed && !$route.query.accountId"
                 :text="`Для полноценной работы необходимо подтвердить почту ${user.email}`"
-                @show="showAlert"
+                @show="showNote"
                 :show="show"
                 @submit="sendCode"
             />
             <Confirm
                 v-else-if="user.isEmailConfirmed && $route.query.accountId"
                 :text="`Ваша почта ${user.email} успешно подверждена`"
-                @show="showAlert"
+                @show="showNote"
                 :show="show"
             />
+            <Alert :show="success" :type="alertType.Success" text="Ссылка успешно отправлена" @show="showAlert"/>
             <router-view></router-view>
           </v-main>
         </div>
@@ -40,10 +41,14 @@ import {ITourOptions, ITourSteps} from '../../entity/common/tour.types';
 import {TourStore} from '../../store/modules/Tour';
 import Confirm from '../components/common/Confirm.vue';
 import {ConfirmEmailStore} from '../../store/modules/ConfirmEmail';
+import {RouterNameEnum} from '../../router/router.types';
+import {AlertTypeEnum} from '../../entity/common/alert.types';
+import Alert from '../components/common/Alert.vue';
 
 
 @Component({
   components: {
+    Alert,
     Confirm,
     Banner,
     MobileBar,
@@ -53,12 +58,18 @@ import {ConfirmEmailStore} from '../../store/modules/ConfirmEmail';
 export default class MainLayout extends Vue {
 
   show = true;
+  success = false;
+  alertType = AlertTypeEnum;
+
+  showAlert(show: boolean): void {
+    this.success = show;
+  }
 
   proceed(): void {
     this.$router.push({name: this.$routeRules.Profile});
   }
 
-  showAlert(show: boolean): void {
+  showNote(show: boolean): void {
     this.show = show;
   }
 
@@ -75,21 +86,23 @@ export default class MainLayout extends Vue {
   }
 
   async mounted(): Promise<void> {
-    if (TourStore.newUser) {
-      this.$tours['tour'].start();
-    }
     if (this.$route.query.accountId) {
+      await this.$router.push({name: RouterNameEnum.TrainingMain, query: {accountId: this.$route.query.accountId, code: this.$route.query.code}})
       await ConfirmEmailStore.confirm({
         code: this.$route.query.code.toString(),
         accountId: parseInt(this.$route.query.accountId.toString())
       })
       await AuthStore.fetch();
     }
+    if (TourStore.newUser) {
+      this.$tours['tour'].start();
+    }
   }
 
   async sendCode(): Promise<boolean> {
     const res = await ConfirmEmailStore.sendCode({email: this.user.email});
     if (res) {
+      this.success = true;
       return true
     } else return false;
   }
