@@ -3,11 +3,10 @@
     <h2 class="form-title text-center">Восстановаление пароля</h2>
     <SendCodeFormComponent v-if="!$route.query.accountId" :form="sendCodeForm" @sendCode="sendCode"/>
     <template v-else>
-      <CheckCodeFormComponent v-if="!recoverCodeStep" :form="checkCodeForm" @checkCode="checkCode"/>
-      <RecoverDoFormComponent v-else :form="doCodeForm" @doRecover="doRecover"/>
+      <RecoverDoFormComponent v-if="recoverCodeStep" :form="doCodeForm" @doRecover="doRecover"/>
+      <CheckCodeFailed v-else/>
     </template>
     <Alert :type="alertTypes.Success" text="Ссылка отправлена" :show="showSendCode"/>
-    <Alert :type="alertTypes.Success" text="Данные корректны" :show="showCheckCode"/>
   </div>
 </template>
 <script lang="ts">
@@ -22,13 +21,14 @@ import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import RecoverDoFormComponent from '../../components/forms/recover/recoverDoForm/RecoverDoFormComponent.vue';
 import {RecoverDoForm} from '../../../form/recover/recoverDo/recoverDoForm';
 import {RouterNameEnum} from '../../../router/router.types';
+import CheckCodeFailed from '../../components/common/CheckCodeFailed.vue';
+
 @Component({
-  components: {RecoverDoFormComponent, Alert, CheckCodeFormComponent, SendCodeFormComponent}
+  components: {CheckCodeFailed, RecoverDoFormComponent, Alert, CheckCodeFormComponent, SendCodeFormComponent}
 })
 export default class Recover extends Vue {
   alertTypes = AlertTypeEnum;
   showSendCode = false;
-  showCheckCode = false;
   recoverCodeStep = false;
   sendCodeForm = new RecoverSendCodeForm();
   checkCodeForm = new RecoverCheckForm();
@@ -40,12 +40,11 @@ export default class Recover extends Vue {
     }
   }
 
-  async checkCode(): Promise<void> {
-    if (await this.checkCodeForm.submit(RecoverStore.checkCode)) {
+  async checkCode(): Promise<boolean> {
+    if (await RecoverStore.checkCode({accountId: this.checkCodeForm.accountId, code: this.checkCodeForm.code})) {
       this.doCodeForm.setFormData(this.$route.query.accountId.toString(), this.$route.query.code.toString());
-      this.showCheckCode = true;
-      this.recoverCodeStep = true;
-    }
+      return true;
+    } else return false;
   }
 
   async doRecover(): Promise<void> {
@@ -54,9 +53,12 @@ export default class Recover extends Vue {
     }
   }
 
-  created(): void {
-    if (this.$route.query.accountId){
+  async created(): Promise<void> {
+    if (this.$route.query.accountId) {
       this.checkCodeForm.setFormData(this.$route.query.accountId.toString(), this.$route.query.code.toString());
+      if (await this.checkCode()) {
+        this.recoverCodeStep = true;
+      } else this.recoverCodeStep = false;
     }
   }
 }

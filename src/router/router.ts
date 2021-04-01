@@ -37,7 +37,7 @@ const routes = [
         meta: { auth: true },
         children: [
             {
-                path: '',
+                path: 'main',
                 name: RouterNameEnum.Main,
                 meta: {
                     title: 'Главная - OneLinks'
@@ -50,7 +50,7 @@ const routes = [
                 component: () => import('../UI/pages/leader/LeaderPage.vue'),
             },
             {
-                path: 'training',
+                path: '',
                 meta: {
                     title: 'Обучение - OneLinks'
                 },
