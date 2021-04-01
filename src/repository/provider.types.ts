@@ -24,6 +24,7 @@ import {ILeaderItemRepository} from '@/repository/leaderItem/LeaderItemRepositor
 import {IRecoverRepository} from '@/repository/recover/RecoverRepository.types';
 import {IMessagesRepository} from '@/repository/messages/MessagesRepository.types';
 import {IDialogsRepository} from '@/repository/dialogs/DialogsRepository.types';
+import {IConfirmEmailRepository} from '@/repository/confirmEmail/ConfirmEmailRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -52,4 +53,5 @@ export interface IProvider {
     recover: IRecoverRepository;
     messages: IMessagesRepository;
     dialogs: IDialogsRepository;
+    confirmEmail: IConfirmEmailRepository;
 }

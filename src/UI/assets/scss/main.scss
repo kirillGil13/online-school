@@ -541,6 +541,8 @@ iframe {
     }
     .vjs-big-play-button {
         z-index: 2;
+        border-radius: 50% !important;
+        width: 2.1em !important;
     }
 
     .vjs-control-bar {

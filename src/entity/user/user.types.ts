@@ -5,6 +5,7 @@ export interface IUser {
     name: string;
     lastName: string;
     isLeader: boolean;
+    isEmailConfirmed: boolean;
     vk?: string;
     facebook?: string;
     instagram?: string;
@@ -27,6 +28,7 @@ export type UserResponseType = {
     name: string;
     lastName: string;
     isLeader: boolean;
+    is_email_confirmed: boolean;
     vk?: string;
     facebook?: string;
     instagram?: string;
@@ -52,3 +54,4 @@ export type UserUpdateRequestType = {
     lastName?: string;
     shortPhotoLink?: string;
 }
+

@@ -8,6 +8,19 @@
         </div>
         <div class="content-main pt-0 mb-16">
           <v-main>
+            <Confirm
+                v-if="!user.isEmailConfirmed"
+                :text="`Для полноценной работы необходимо подтвердить почту ${user.email}`"
+                @show="showAlert"
+                :show="show"
+                @submit="sendCode"
+            />
+            <Confirm
+                v-else-if="user.isEmailConfirmed && $route.query.accountId"
+                :text="`Ваша почта ${user.email} успешно подверждена`"
+                @show="showAlert"
+                :show="show"
+            />
             <router-view></router-view>
           </v-main>
         </div>
@@ -25,10 +38,13 @@ import Banner from '../components/common/Banner.vue';
 import Sidebar from '../components/sidebar/Sidebar.vue';
 import {ITourOptions, ITourSteps} from '../../entity/common/tour.types';
 import {TourStore} from '../../store/modules/Tour';
+import Confirm from '../components/common/Confirm.vue';
+import {ConfirmEmailStore} from '../../store/modules/ConfirmEmail';
 
 
 @Component({
   components: {
+    Confirm,
     Banner,
     MobileBar,
     Sidebar
@@ -36,8 +52,14 @@ import {TourStore} from '../../store/modules/Tour';
 })
 export default class MainLayout extends Vue {
 
+  show = true;
+
   proceed(): void {
     this.$router.push({name: this.$routeRules.Profile});
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
   }
 
   get user(): IUser {
@@ -52,10 +74,23 @@ export default class MainLayout extends Vue {
     return TourStore.steps;
   }
 
-  mounted(): void {
+  async mounted(): Promise<void> {
     if (TourStore.newUser) {
       this.$tours['tour'].start();
     }
+    if (this.$route.query.accountId) {
+      await ConfirmEmailStore.confirm({
+        code: this.$route.query.code.toString(),
+        accountId: parseInt(this.$route.query.accountId.toString())
+      })
+    }
+  }
+
+  async sendCode(): Promise<boolean> {
+    const res = await ConfirmEmailStore.sendCode({email: this.user.email});
+    if (res) {
+      return true
+    } else return false;
   }
 
 }

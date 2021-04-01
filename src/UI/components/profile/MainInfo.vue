@@ -1,5 +1,5 @@
 <template>
-    <v-col class="mt-3 pa-0">
+    <v-form class="mt-3 pa-0 main-info">
         <div class="mb-3">
           <FormGroup v-slot="attrs" :form="form" field="name" show-custom-error label="Имя">
             <input
@@ -24,23 +24,25 @@
             >
           </FormGroup>
         </div>
-        <div class="mb-3">
-          <FormGroup v-slot="attrs" :form="form" field="description" show-custom-error label="Обо мне">
-            <input
-                class="input input__normal"
-                type="text" name="description"
-                id="description"
+        <div class="mb-1">
+          <FormGroup
+               v-slot="attrs" :form="form" field="description" show-custom-error label="Обо мне"
+          >
+            <textarea
+                rows="8"
+                class="input input__normal text-area"
                 v-model="form[attrs.name]"
                 v-bind="attrs"
                 @input="attrs.change"
-            >
+            ></textarea>
           </FormGroup>
         </div>
-        <div>
+        <div class="info-desc ml-6">Расскажите о том, каких успехов вы достигли как лидер, про ваш опыт. Эту ифнормацию будут видеть ваши клиенты, просматривая вашу страницу или изучая ваши курсы.</div>
+        <div class="mt-2">
           <Button class="form-button" :disabled="form.disabled" v-on="$listeners">Сохранить
           </Button>
         </div>
-    </v-col>
+    </v-form>
 </template>
 
 <script lang="ts">
@@ -67,4 +69,15 @@ export default class ProfileMainInfo extends Vue {
 .bg-purple {
     background: #d3dce6;
 }
+.main-info {
+  .text-area {
+    width: 100%;
+    border: 1px solid #f2f2f2 !important;
+  }
+  .info-desc {
+    color: #818C99;
+    font-size: 12px;
+  }
+}
+
 </style>

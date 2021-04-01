@@ -12,7 +12,7 @@ const routes = [
         path: '/auth',
         redirect: '/auth/login',
         component: () => import('../UI/layouts/AuthLayout.vue'),
-        meta: { auth: false },
+        meta: {auth: false},
         children: [
             {
                 path: 'login',
@@ -36,28 +36,16 @@ const routes = [
         component: () => import('../UI/layouts/MainLayout.vue'),
         meta: {
             auth: true,
-            new: true,
         },
+        redirect: 'training',
         beforeEnter: mainGuard,
         children: [
             {
-                path: 'main',
-                name: RouterNameEnum.Main,
-                meta: {
-                    title: 'Главная - OneLinks'
-                },
-                component: () => import('../UI/pages/main/Main.vue'),
-            },
-            {
-                path: 'leader/:id',
-                name: RouterNameEnum.LeaderCourses,
-                component: () => import('../UI/pages/leader/LeaderPage.vue'),
-            },
-            {
-                path: '',
+                path: 'training',
                 meta: {
                     title: 'Обучение - OneLinks'
                 },
+                redirect: 'trainingMain',
                 component: () => import('../UI/pages/training/Training.vue'),
                 children: [
                     {
@@ -72,6 +60,20 @@ const routes = [
                     },
                 ]
             },
+            {
+                path: 'main',
+                name: RouterNameEnum.Main,
+                meta: {
+                    title: 'Главная - OneLinks'
+                },
+                component: () => import('../UI/pages/main/Main.vue'),
+            },
+            {
+                path: 'leader/:id',
+                name: RouterNameEnum.LeaderCourses,
+                component: () => import('../UI/pages/leader/LeaderPage.vue'),
+            },
+
             {
                 path: 'course/:id',
                 name: RouterNameEnum.Course,
@@ -198,11 +200,11 @@ export const router = Vue.router;
 router.beforeEach((to, from, next) => {
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
     const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
-    if(nearestWithTitle) {
+    if (nearestWithTitle) {
         document.title = nearestWithTitle.meta.title;
     }
     Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode?.removeChild(el));
-    if(!nearestWithMeta) {
+    if (!nearestWithMeta) {
         return next();
     }
     nearestWithMeta.meta.metaTags.map((tagDef: any) => {

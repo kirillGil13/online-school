@@ -18,7 +18,7 @@ export class ProfileMainInfoForm extends Form {
     @Validate(required, 'Введите фамилию')
     public surname = '';
 
-    @Validate(maxLength(50), 'Описание не должно превышать 50 символов')
+    @Validate(maxLength(100), 'Описание не должно превышать 50 символов')
     public description = '';
 
     setFormData(user: IUser): void {

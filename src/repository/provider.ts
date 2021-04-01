@@ -25,6 +25,7 @@ import {LeaderItemRepository} from '@/repository/leaderItem/LeaderItemRepository
 import {RecoverRepository} from '@/repository/recover/RecoverRepository';
 import {DialogsRepository} from '@/repository/dialogs/DialogsRepository';
 import {MessagesRepository} from '@/repository/messages/MessagesRepository';
+import {ConfirmEmailRepository} from '@/repository/confirmEmail/ConfirmEmailRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -53,5 +54,6 @@ export const provider = (): IProvider => ({
     recover: new RecoverRepository(),
     dialogs: new DialogsRepository(),
     messages: new MessagesRepository(),
+    confirmEmail: new ConfirmEmailRepository(),
 });
 
