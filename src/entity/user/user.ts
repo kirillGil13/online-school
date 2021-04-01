@@ -15,6 +15,7 @@ export class User implements IUser {
     description: string;
     photoLink: string;
     login?: string;
+    isEmailConfirmed: boolean;
 
     constructor(data: UserResponseType) {
         this.id = data.id;
@@ -31,6 +32,7 @@ export class User implements IUser {
         this.name = data.name;
         this.lastName = data.lastName;
         this.isLeader = data.isLeader;
+        this.isEmailConfirmed = data.is_email_confirmed;
     }
 
     get link(): string {

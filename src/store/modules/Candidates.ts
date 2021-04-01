@@ -2,6 +2,8 @@ import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module
 import store from '@/store';
 import {CandidateRequestType, ICandidate} from '@/entity/candidates';
 import {CandidateFormRequestType} from '@/form/candidate/candidateForm.types';
+import {PhoneRequestType} from '@/form/phone/phoneForm.types';
+import {CodeRequestType} from '@/form/code/codeForm.types';
 
 @Module({
     namespaced: true,
@@ -50,9 +52,21 @@ class CandidatesModule extends VuexModule {
         return { candidates, candidatesLoaded };
     }
 
-    @Action
+    @Action({rawError: true})
     async create(data: CandidateFormRequestType): Promise<boolean> {
         const response = await store.$repository.candidates.create(data);
+        return response;
+    }
+
+    @Action({rawError: true})
+    async sendCode(data: PhoneRequestType): Promise<boolean> {
+        const response = await store.$repository.candidates.sendCode(data);
+        return response;
+    }
+
+    @Action({rawError: true})
+    async checkCode(data: CodeRequestType): Promise<boolean> {
+        const response = await store.$repository.candidates.checkCode(data);
         return response;
     }
 }

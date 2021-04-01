@@ -12,8 +12,12 @@
     </div>
     <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
       <template v-slot:content>
-        <VideoAccessFormComponent :form="accessForm" @close="close" @access="access"
+        <VideoAccessFormComponent v-if="!codeStep" :form="accessForm" @close="close" @access="submitPhone"
                                   :account-id="+$route.query.account_id" :info-pack-id="+$route.params.id"/>
+        <v-col class="pa-6 text-center" v-else>
+          <h1 class="mx-auto my-0">Получить доступ к видео</h1>
+          <CodeFormVue :form="codeForm" :show-alert="show" @submitCode="submitCode" @sendAgain="submitPhone"/>
+        </v-col>
       </template>
     </Modal>
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorMainVideo"
@@ -32,6 +36,9 @@
                 frameborder="0" allowfullscreen/>
       </template>
     </Modal>
+    <Alert :show="show" :type="alertType.Success"
+           text="Код успешно отправлен"
+           @show="showAlert"/>
   </v-col>
 </template>
 
@@ -45,9 +52,15 @@ import {VideoAccessForm} from '../../form/videoAccess/videoAccessForm';
 import Modal from '../components/common/Modal.vue';
 import VideoAccessFormComponent from '../components/forms/videoAccessForm/VideoAccessFormComponent.vue';
 import {AccessVideoStore} from '../../store/modules/AccessVideo';
+import {AlertTypeEnum} from '../../entity/common/alert.types';
+import {CandidatesStore} from '../../store/modules/Candidates';
+import {AuthStore} from '../../store/modules/Auth';
+import {CodeForm} from '../../form/code/codeForm';
+import Alert from '../components/common/Alert.vue';
+import CodeFormVue from '../components/forms/auth/CodeForm.vue';
 
 @Component({
-  components: {VideoAccessFormComponent, Modal, InfoPackageItemVideoComponent, CourseComponent}
+  components: {CodeFormVue, Alert, VideoAccessFormComponent, Modal, InfoPackageItemVideoComponent, CourseComponent}
 })
 export default class Landing extends Vue {
   activator = false;
@@ -55,12 +68,11 @@ export default class Landing extends Vue {
   activatorVideo = false;
   destroy = true;
   secondaryVideoId = 1;
-  accessForm: VideoAccessForm;
-
-  constructor() {
-    super();
-    this.accessForm = new VideoAccessForm();
-  }
+  accessForm = new VideoAccessForm();
+  codeForm = new CodeForm();
+  alertType = AlertTypeEnum;
+  show = false;
+  codeStep = false;
 
   open(id: number): void {
     this.secondaryVideoId = id;
@@ -71,6 +83,10 @@ export default class Landing extends Vue {
       this.activator = true;
       this.destroy = true;
     }
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
   }
 
   activatorChange(act: boolean): void {
@@ -84,6 +100,36 @@ export default class Landing extends Vue {
 
   activatorMainVideoChange(act: boolean): void {
     this.activatorMainVideo = act;
+  }
+
+  async submitPhone(again?: boolean): Promise<boolean> {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    const res = await CandidatesStore.sendCode({phone_number: this.accessForm.phone});
+    if (!again) {
+      if (res) {
+        this.accessForm.clearErrors();
+        this.codeStep = true;
+        this.codeForm.phone = this.accessForm.phone;
+        return true;
+      } else {
+        this.codeStep = false;
+        return false;
+      }
+    } else {
+      if (res) {
+        this.show = true;
+        return true;
+      }
+      return false;
+    }
+  }
+
+  async submitCode(): Promise<boolean> {
+    const res = await this.codeForm.submit(CandidatesStore.checkCode);
+    if (res) {
+      await this.access();
+      return true;
+    } else return false;
   }
 
   async access(): Promise<void> {
