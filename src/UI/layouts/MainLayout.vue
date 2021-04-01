@@ -9,7 +9,7 @@
         <div class="content-main pt-0 mb-16">
           <v-main>
             <Confirm
-                v-if="!user.isEmailConfirmed"
+                v-if="!user.isEmailConfirmed && !$route.query.accountId"
                 :text="`Для полноценной работы необходимо подтвердить почту ${user.email}`"
                 @show="showAlert"
                 :show="show"
@@ -83,6 +83,7 @@ export default class MainLayout extends Vue {
         code: this.$route.query.code.toString(),
         accountId: parseInt(this.$route.query.accountId.toString())
       })
+      await AuthStore.fetch();
     }
   }
 
