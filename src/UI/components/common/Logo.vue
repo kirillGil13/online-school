@@ -7,7 +7,6 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {RouterNameEnum} from '../../../router/router.types';
 
 @Component
 export default class Logo extends Vue {
@@ -16,7 +15,7 @@ export default class Logo extends Vue {
   @Prop({default: ''}) readonly fontSize!: string;
 
   proceed(): void {
-    this.$router.push({name: RouterNameEnum.Main});
+    this.$router.push({path: '/'});
   }
 }
 </script>

@@ -5,18 +5,6 @@
         Введите новый пароль
       </div>
     </div>
-    <div class="mt-9 mb-3">
-      <FormGroup v-slot="attrs" :form="form" field="code" show-custom-error label="Код">
-        <input
-            :disabled="true"
-            class="input input__normal"
-            type="code"
-            v-model="form[attrs.name]"
-            v-bind="attrs"
-            @input="attrs.change"
-        >
-      </FormGroup>
-    </div>
     <div class="mb-3">
       <FormGroup v-slot="attrs" :form="form" field="password" show-custom-error label="Пароль">
         <input

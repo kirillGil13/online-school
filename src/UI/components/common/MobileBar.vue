@@ -44,7 +44,7 @@ export default class MobileBar extends Vue {
   drawer = false;
 
   proceed(): void {
-    this.$router.push({name: RouterNameEnum.Main});
+    this.$router.push({path: '/'});
   }
 
   goTo(): void {
