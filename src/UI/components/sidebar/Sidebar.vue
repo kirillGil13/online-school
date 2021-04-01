@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <Logo width="34px" height="34px" font-size="14px"/>
+    <Logo width="34px" height="34px" font-size="14px" id="step-0"/>
     <account-badge :userInfo="userInfo" :userId="userId" v-on="$listeners"/>
     <Menu/>
   </div>
