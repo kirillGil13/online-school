@@ -1,14 +1,11 @@
 <template>
   <div>
-    <v-col v-if="false" class="chat pa-0">
+    <v-col class="chat pa-0">
       <ChatHeader/>
       <v-row class="chat-main d-flex flex-row" no-gutters>
         <Conversations/>
         <router-view></router-view>
       </v-row>
-    </v-col>
-    <v-col v-else>
-      <InDev/>
     </v-col>
   </div>
 </template>
@@ -23,6 +20,10 @@ import InDev from '../../components/common/banners/InDev.vue';
   components: {InDev, ChatHeader, Conversations}
 })
 export default class Chat extends Vue {
+
+  async created(): Promise<void> {
+    console.log(1);
+  }
 }
 </script>
 <style lang="scss">

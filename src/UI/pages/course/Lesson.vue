@@ -168,7 +168,7 @@ export default class  Lesson extends Vue {
       });
       if (this.lesson!.homeworkIsDone) {
         await RightAnswersStore.fetchAll(this.lesson!.homeworkId);
-      } else {
+      } else if (this.lesson!.homeworkId) {
         await QuestionsStore.fetchAll(this.lesson!.homeworkId);
         this.testingForm = new TestingForm(this.questions!.tests);
         this.testingForm.activeStep[0].active = true;

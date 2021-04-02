@@ -21,6 +21,16 @@ export default class App extends Vue {
   created(): void {
     this.$adaptive.isMobile = this.resolveAdaptiveMobile();
     AuthStore.load();
+    const ws = new WebSocket(`${process.env.VUE_APP_WSS_URL}?token=` + localStorage.getItem('token'));
+    ws.onopen = function(): void {
+      console.log('WS подключенно')
+    };
+    ws.onclose = function(eventclose: any): void {
+      console.log('соеденение закрыто причина: ' + eventclose)
+    }
+    ws.onmessage = function(msg: any): void {
+      console.log('Сообщение ' + msg)
+    }
   }
 
   resolveAdaptiveMobile(): boolean {

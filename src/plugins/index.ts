@@ -15,4 +15,3 @@ export * from './VueVideoPlayer';
 export * from './Adaptive';
 export * from './Tour';
 export * from './ReCaptcha';
-//export * from './Cropper';
