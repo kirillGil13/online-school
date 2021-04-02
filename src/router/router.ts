@@ -38,7 +38,6 @@ const routes = [
             auth: true,
             new: true
         },
-       // redirect: 'training',
         beforeEnter: mainGuard,
         children: [
             {
@@ -46,7 +45,6 @@ const routes = [
                 meta: {
                     title: 'Обучение - OneLinks'
                 },
-                //redirect: 'trainingMain',
                 component: () => import('../UI/pages/training/Training.vue'),
                 children: [
                     {

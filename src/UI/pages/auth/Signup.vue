@@ -126,7 +126,6 @@ export default class Signup extends Vue {
   async submitPhone(again?: boolean): Promise<boolean> {
     await this.$recaptchaLoaded();
     const token = await this.$recaptcha('sendCode');
-    console.log(token);
     if (token) {
       this.phoneForm.token = token;
       const res = await this.phoneForm.submit(AuthStore.sendCode);
