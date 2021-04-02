@@ -148,7 +148,6 @@ export default class Signup extends Vue {
       }
     }
     return true;
-
   }
 
   async submitCode(): Promise<boolean> {

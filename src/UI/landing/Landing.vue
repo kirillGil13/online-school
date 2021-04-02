@@ -57,6 +57,8 @@ import {CandidatesStore} from '../../store/modules/Candidates';
 import {CodeForm} from '../../form/code/codeForm';
 import Alert from '../components/common/Alert.vue';
 import CodeFormVue from '../components/forms/auth/CodeForm.vue';
+import {VideoOptionsStore} from '../../store/modules/VideoOptions';
+import {IVideoOptions} from '../../entity/common/videoOptions.types';
 
 @Component({
   components: {CodeFormVue, Alert, VideoAccessFormComponent, Modal, InfoPackageItemVideoComponent, CourseComponent}
@@ -73,6 +75,18 @@ export default class Landing extends Vue {
   show = false;
   codeStep = false;
 
+  get infoPackageItem(): IInfoPackageItem {
+    return InfoPackagesStore.infoPackageItem!;
+  }
+
+  get infoPackageItemLoaded(): boolean {
+    return InfoPackagesStore.infoPackageItemLoaded;
+  }
+
+  get options(): IVideoOptions {
+    return VideoOptionsStore.options;
+  }
+
   open(id: number): void {
     this.secondaryVideoId = id;
     if (this.$cookies.get('username')) {
@@ -84,11 +98,17 @@ export default class Landing extends Vue {
     }
   }
 
-
+  close(): void {
+    this.activator = false;
+  }
 
   activatorChange(act: boolean): void {
     this.destroy = true;
     this.activator = act;
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
   }
 
   activatorVideoChange(act: boolean): void {
@@ -136,18 +156,6 @@ export default class Landing extends Vue {
       this.activator = false;
       this.activatorVideo = true;
     }
-  }
-
-  close(): void {
-    this.activator = false;
-  }
-
-  get infoPackageItem(): IInfoPackageItem {
-    return InfoPackagesStore.infoPackageItem!;
-  }
-
-  get infoPackageItemLoaded(): boolean {
-    return InfoPackagesStore.infoPackageItemLoaded;
   }
 
   async created(): Promise<void> {
