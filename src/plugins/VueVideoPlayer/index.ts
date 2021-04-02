@@ -2,6 +2,7 @@ import VideoPlayer from 'vue-video-player';
 import Vue from 'vue';
 import hls from 'videojs-contrib-hls';
 
+require('videojs-youtube');
 require('video.js/dist/video-js.css');
 require('vue-video-player/src/custom-theme.css');
 
