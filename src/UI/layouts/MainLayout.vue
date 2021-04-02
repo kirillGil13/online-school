@@ -16,7 +16,7 @@
                 @submit="sendCode"
             />
             <Confirm
-                v-else-if="user.isEmailConfirmed && $route.query.accountId"
+                v-else-if="!error && $route.query.accountId && showSuccess"
                 :text="`Ваша почта ${user.email} успешно подверждена`"
                 @show="showNote"
                 icon
@@ -64,6 +64,7 @@ export default class MainLayout extends Vue {
   success = false;
   alertType = AlertTypeEnum;
   error = false;
+  showSuccess = false;
 
   showAlert(show: boolean): void {
     this.success = show;
@@ -90,12 +91,13 @@ export default class MainLayout extends Vue {
   }
 
   async mounted(): Promise<void> {
-    if (this.$route.query.accountId) {
+    if (this.$route.query.accountId && !this.user.isEmailConfirmed) {
       if (await ConfirmEmailStore.confirm({
         code: this.$route.query.code.toString(),
         accountId: parseInt(this.$route.query.accountId.toString())
       })) {
         await AuthStore.fetch();
+        this.showSuccess = true;
       }
       else {
         this.error = true;
