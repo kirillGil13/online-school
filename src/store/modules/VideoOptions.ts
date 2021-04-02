@@ -1,6 +1,6 @@
 import {getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import {IVideoOptions, IVideoOptionsSourceYoutube} from '@/entity/common/videoOptions.types';
+import {IVideoOptions} from '@/entity/common/videoOptions.types';
 
 @Module({
     namespaced: true,
