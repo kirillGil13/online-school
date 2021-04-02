@@ -31,10 +31,10 @@ export class ProfileContactDataForm extends Form {
 
     setFormData(user: IUser): void {
         this.email = user.email;
-        this.vk = user.vk!;
-        this.facebook = user.facebook!;
-        this.instagram = user.instagram!;
-        this.skype = user.skype!;
+        this.vk = user.vkLink;
+        this.facebook = user.facebookLink;
+        this.instagram = user.instagramLink;
+        this.skype = user.skype;
         this.username = user.phoneNumber;
     }
     getFormData(): ProfileContactDataRequestType {

@@ -4,6 +4,7 @@ import {ITabs} from '@/entity/tabs/tabs.types';
 import {TrainingTabsNameEnum} from '@/entity/tabs/trainingTabs.types';
 import {PresentationTabsNameEnum} from '@/entity/tabs/presentationTabs.types';
 import {OrganizationTabsNameEnum} from '@/entity/tabs/organizationTabs.types';
+import {ProfileTabsNameEnum} from '@/entity/tabs/profileTabs.types';
 
 
 @Module({
@@ -52,6 +53,21 @@ class TabsModule extends VuexModule {
             title: 'Презентации по маркетинг-планам',
             filter: false,
             component: PresentationTabsNameEnum.MarketingPlansPresentation,
+        },
+    ];
+
+    profileTabs: ITabs[] = [
+        {
+            id: 0,
+            title: 'Общие',
+            filter: false,
+            component: ProfileTabsNameEnum.ProfileMain,
+        },
+        {
+            id: 1,
+            title: 'Контактные данные',
+            filter: false,
+            component: ProfileTabsNameEnum.ProfileContact,
         },
     ];
     organizationTabs: ITabs[] = [

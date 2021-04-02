@@ -26,7 +26,7 @@
                   </template>
                 </avatar>
               </div>
-              <Button @submit="logOut" class="btn secondary_blue py-3 mt-2">Выйти</Button>
+              <Button @submit="logOut" full-width small class="secondary_blue py-3 mt-2">Выйти</Button>
             </div>
           </v-col>
           <v-col class="profile__detail-info-container pa-6" :cols="$adaptive.isMobile ? 12 : 10">
@@ -35,23 +35,19 @@
                 <v-col cols="12" class="profile__col">
                   <v-tabs show-arrows class="mb-2" color="#426DF6" v-model="activeName">
                     <v-tabs-slider color="#426DF6"></v-tabs-slider>
-                    <v-tab>
-                      Общие
-                    </v-tab>
-                    <v-tab>
-                      Контактные данные
-                    </v-tab>
+                    <v-tab v-for="(item, index) in tabs" :key="index">{{item.title}}</v-tab>
                   </v-tabs>
                   <v-tabs-items v-model="activeName">
                     <v-divider></v-divider>
-                    <v-tab-item>
+                    <v-tab-item v-for="(item, index) in tabs" :key="index">
                       <keep-alive>
-                        <profile-main-info :form="mainInfoForm"/>
-                      </keep-alive>
-                    </v-tab-item>
-                    <v-tab-item>
-                      <keep-alive>
-                        <profile-contact-data :form="contactDataForm"/>
+                        <component
+                            :is="item.component"
+                            :contactForm="contactDataForm"
+                            :mainForm="mainInfoForm"
+                            @saveMain="saveMain"
+                            @saveContact="saveContact"
+                        />
                       </keep-alive>
                     </v-tab-item>
                   </v-tabs-items>
@@ -67,6 +63,9 @@
         <PictureCropper :image="image" @close="close" @setImage="setImage"/>
       </template>
     </Modal>
+    <Alert :show="show" :type="alertType.Success"
+           text="Данные успешно изменены"
+           @show="showAlert"/>
   </v-row>
 </template>
 
@@ -76,10 +75,8 @@ import Badge from '@/UI/components/common/Badge.vue';
 import Avatar from '@/UI/components/common/Avatar.vue';
 import Button from '@/UI/components/common/Button.vue';
 import ProfileAvatarChange from '@/UI/components/profile/AvatarChange.vue';
-import ProfileSubscribe from '@/UI/components/profile/Subscribe.vue';
-import ProfileSecurity from '@/UI/components/profile/Security.vue';
-import ProfileContactData from '@/UI/components/profile/ContactData.vue';
-import ProfileMainInfo from '@/UI/components/profile/MainInfo.vue';
+import ProfileContactData from '../../components/forms/profile/ProfileContactDataFormComponent.vue';
+import ProfileMainInfo from '../../components/forms/profile/ProfileMainFormComponent.vue';
 import {AvatarSizeEnum} from '@/entity/common/avatar.types';
 import {AuthStore} from '@/store/modules/Auth';
 import {IUser} from '@/entity/user';
@@ -92,6 +89,11 @@ import {IProfilePicture} from '../../../entity/common/profilePicture.types';
 import Modal from '../../components/common/Modal.vue';
 import PictureCropper from '../../components/cropper/PictureCropper.vue';
 import {UserUpdateStore} from '../../../store/modules/UserUpdate';
+import {ITabs} from '../../../entity/tabs/tabs.types';
+import {TabsStore} from '../../../store/modules/Tabs';
+import ProfileMain from '@/UI/components/profile/sections/ProfileMain.vue';
+import ProfileContact from '@/UI/components/profile/sections/ProfileContact.vue';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
 
 @Component({
   components: {
@@ -100,17 +102,17 @@ import {UserUpdateStore} from '../../../store/modules/UserUpdate';
     Badge,
     Avatar,
     Button,
-    ProfileSecurity,
     ProfileMainInfo,
     ProfileContactData,
-    ProfileSubscribe,
     ProfileAvatarChange,
     Header,
     Alert,
+    ProfileMain,
+    ProfileContact
   },
 })
 export default class Profile extends Vue {
-  mainInfoForm!: ProfileMainInfoForm;
+  mainInfoForm: ProfileMainInfoForm;
   contactDataForm: ProfileContactDataForm;
   pictureChanged = false;
   success = false;
@@ -119,6 +121,17 @@ export default class Profile extends Vue {
   image = '';
   activator = false;
   destroy = true;
+  show = false;
+  alertType = AlertTypeEnum;
+
+  constructor() {
+    super();
+    this.mainInfoForm = new ProfileMainInfoForm();
+    this.mainInfoForm.setFormData(this.user);
+    this.contactDataForm = new ProfileContactDataForm();
+    this.contactDataForm.setFormData(this.user);
+
+  }
 
   @Watch('user.photoLink')
   onPhotoChanged(): void {
@@ -135,34 +148,32 @@ export default class Profile extends Vue {
     }
   }
 
-  get user(): IUser {
-    return AuthStore.user;
+  get picture(): IProfilePicture | null {
+    return ProfilePictureStore.profilePicture;
   }
 
-  constructor() {
-    super();
-    this.mainInfoForm = new ProfileMainInfoForm();
-    this.mainInfoForm.setFormData(this.user);
-    this.contactDataForm = new ProfileContactDataForm();
-    this.contactDataForm.setFormData(this.user);
+  get pictureLoaded(): boolean {
+    return ProfilePictureStore.profilePictureLoaded;
+  }
 
+  get tabs(): ITabs[] {
+    return TabsStore.profileTabs;
+  }
+
+  get user(): IUser {
+    return AuthStore.user;
   }
 
   private logOut(): void {
     AuthStore.logout()
   }
 
-  // todo
-  // private submit(): void {
-  //   this.editForm = new ProfileEditForm(this.mainInfoForm.getFormData(), this.contactDataForm.getFormData());
-  //   const resp = UserUpdateStore.updateUser(this.editForm.getFullRequest());
-  //   if (resp) {
-  //     this.changeAlert(true, true);
-  //   } else this.changeAlert(true, false);
-  // }
-
   close(): void {
     this.activator = false;
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
   }
 
   activatorChange(act: boolean): void {
@@ -194,6 +205,10 @@ export default class Profile extends Vue {
     reader.readAsDataURL(file);
   }
 
+  created(): void {
+    document.title = this.user.fullName + ' - ' + 'OneLinks';
+  }
+
   async setImage(data: any): Promise<void> {
     this.pictureChanged = true;
     const {canvas} = data.getResult();
@@ -204,18 +219,31 @@ export default class Profile extends Vue {
     this.activator = false;
   }
 
-  get picture(): IProfilePicture | null {
-    return ProfilePictureStore.profilePicture;
+  async saveMain(): Promise<void> {
+    if (await UserUpdateStore.updateUser({
+      name: this.mainInfoForm.name,
+      lastName: this.mainInfoForm.surname,
+      description: this.mainInfoForm.description
+    })) {
+      this.show = true;
+      await AuthStore.fetch();
+    }
   }
 
-  get pictureLoaded(): boolean {
-    return ProfilePictureStore.profilePictureLoaded;
+  async saveContact(): Promise<void> {
+    if (await UserUpdateStore.updateUser({
+      skype: this.contactDataForm.skype,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      vk_link: this.contactDataForm.vk,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      facebook_link: this.contactDataForm.facebook,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      instagram_link: this.contactDataForm.instagram,
+    })){
+      this.show = true;
+      await AuthStore.fetch();
+    }
   }
-
-  created(): void {
-      document.title = this.user.fullName + ' - ' + 'OneLinks';
-  }
-
 
 }
 </script>
@@ -228,36 +256,12 @@ export default class Profile extends Vue {
   .avatar_mobile_container {
     width: 100%;
   }
-  .badges {
-    margin-top: 24px;
-    &.mobile {
-      width: 100%;
-      .badge {
-        &:nth-last-child(1) {
-          margin-bottom: 8px;
-        }
-      }
-    }
-  }
 
   &__main-content {
     border-radius: $main_border_radius;
     background-color: $white;
     padding: 24px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-  }
-
-  .btn {
-    font-size: 12px;
-    width: 100%;
-  }
-
-  &__singout-button {
-    background-color: rgba(66, 109, 246, 0.12) !important;
-    border-radius: $main_border_radius;
-    color: $blue;
-    width: 144px;
-    max-height: 50px;
   }
 
   &__col {

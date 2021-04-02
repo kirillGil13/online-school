@@ -6,10 +6,10 @@
     </v-row>
 </template>
 
-<script lang="ts">
+<script>
 import { Component, Vue } from 'vue-property-decorator';
 @Component
-export default class ProfileSecurity extends Vue {}
+export default class ProfileSubscribeFormComponent extends Vue {}
 </script>
 
 <style lang="scss" scoped>

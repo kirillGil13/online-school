@@ -1,5 +1,5 @@
 export interface ITabs {
-    id: string;
+    id: string | number;
     title: string;
     filter: boolean;
     component: string;

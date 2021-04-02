@@ -124,26 +124,32 @@ export default class Signup extends Vue {
   }
 
   async submitPhone(again?: boolean): Promise<boolean> {
-    const res = await this.phoneForm.submit(AuthStore.sendCode);
-    if (!again) {
-      if (res) {
-        this.phoneForm.clearErrors();
-        this.codeStep = true;
-        this.codeForm.phone = this.phoneForm.phone;
-        return true;
+    await this.$recaptchaLoaded();
+    const token = await this.$recaptcha('sendCode');
+    console.log(token);
+    if (token) {
+      this.phoneForm.token = token;
+      const res = await this.phoneForm.submit(AuthStore.sendCode);
+      if (!again) {
+        if (res) {
+          this.phoneForm.clearErrors();
+          this.codeStep = true;
+          this.codeForm.phone = this.phoneForm.phone;
+          return true;
+        } else {
+          this.codeStep = false;
+          return false;
+        }
       } else {
-        this.codeStep = false;
+        if (res) {
+          this.show = true;
+          return true;
+        }
         return false;
       }
-    } else {
-      if (res) {
-        this.show = true;
-        return true;
-      }
-      return false;
     }
-  }
 
+  }
 
   async submitCode(): Promise<boolean> {
     const res = await this.codeForm.submit(AuthStore.checkCode);
@@ -163,6 +169,7 @@ export default class Signup extends Vue {
       return true;
     } else return false;
   }
+
 }
 </script>
 <style lang="scss">
