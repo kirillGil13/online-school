@@ -1,11 +1,10 @@
 import {ICandidate} from '@/entity/candidates';
-import {CandidateFormRequestType} from '@/form/candidate/candidateForm.types';
-import {PhoneRequestType} from '@/form/phone/phoneForm.types';
+import {CandidateFormRequestType, CandidatePhoneRequestType} from '@/form/candidate/candidateForm.types';
 import {CodeRequestType} from '@/form/code/codeForm.types';
 
 export interface ICandidatesRepository {
     fetchAll(data?: FormData): Promise<ICandidate[]>;
     create(data: CandidateFormRequestType): Promise<boolean>;
-    sendCode(data: PhoneRequestType): Promise<boolean>;
+    sendCode(data: CandidatePhoneRequestType): Promise<boolean>;
     checkCode(data: CodeRequestType): Promise<boolean>;
 }

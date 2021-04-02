@@ -23,3 +23,7 @@ export interface ICandidateFormList {
     text: string;
     value: number | null;
 }
+
+export type CandidatePhoneRequestType = RequestType & {
+    phone_number: string;
+};

@@ -1,8 +1,7 @@
 import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import {CandidateRequestType, ICandidate} from '@/entity/candidates';
-import {CandidateFormRequestType} from '@/form/candidate/candidateForm.types';
-import {PhoneRequestType} from '@/form/phone/phoneForm.types';
+import {CandidateFormRequestType, CandidatePhoneRequestType} from '@/form/candidate/candidateForm.types';
 import {CodeRequestType} from '@/form/code/codeForm.types';
 
 @Module({
@@ -59,7 +58,7 @@ class CandidatesModule extends VuexModule {
     }
 
     @Action({rawError: true})
-    async sendCode(data: PhoneRequestType): Promise<boolean> {
+    async sendCode(data: CandidatePhoneRequestType): Promise<boolean> {
         const response = await store.$repository.candidates.sendCode(data);
         return response;
     }

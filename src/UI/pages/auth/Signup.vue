@@ -147,6 +147,7 @@ export default class Signup extends Vue {
         return false;
       }
     }
+    return true;
 
   }
 
