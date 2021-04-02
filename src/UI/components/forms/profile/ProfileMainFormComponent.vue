@@ -1,5 +1,5 @@
 <template>
-    <v-form class="mt-3 pa-0 main-info">
+    <v-form class="mt-3 pa-0 main-info" @submit.prevent>
         <div class="mb-3">
           <FormGroup v-slot="attrs" :form="form" field="name" show-custom-error label="Имя">
             <input
@@ -39,7 +39,7 @@
         </div>
         <div class="info-desc ml-6">Расскажите о том, каких успехов вы достигли как лидер, про ваш опыт. Эту ифнормацию будут видеть ваши клиенты, просматривая вашу страницу или изучая ваши курсы.</div>
         <div class="mt-2">
-          <Button class="form-button" :disabled="form.disabled" v-on="$listeners">Сохранить
+          <Button small :disabled="form.disabled" v-on="$listeners">Сохранить
           </Button>
         </div>
     </v-form>
@@ -47,9 +47,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { ProfileMainInfoForm } from '@/form/profile/mainInfo/ProfileMainInfoForm';
-import Button from '@/UI/components/common/Button.vue';
-import FormGroup from '@/UI/components/common/form/FormGroup.vue';
+import { ProfileMainInfoForm } from '../../../../form/profile/mainInfo/ProfileMainInfoForm';
+import Button from '../../common/Button.vue';
+import FormGroup from '../../common/form/FormGroup.vue';
 
 @Component({
     components: {
@@ -57,7 +57,7 @@ import FormGroup from '@/UI/components/common/form/FormGroup.vue';
       Button
     },
 })
-export default class ProfileMainInfo extends Vue {
+export default class ProfileMainFormComponent extends Vue {
     @Prop({ required: true }) readonly form!: ProfileMainInfoForm;
 }
 </script>

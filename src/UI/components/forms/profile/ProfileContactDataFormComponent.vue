@@ -15,6 +15,7 @@
             class="input input__normal"
             type="email" name="email"
             id="email"
+            :disabled="true"
             v-model="form[attrs.name]"
             v-bind="attrs"
             @input="attrs.change"
@@ -27,6 +28,7 @@
             class="input input__normal"
             type="text" name="username"
             id="username"
+            :disabled="true"
             v-model="form[attrs.name]"
             v-bind="attrs"
             @input="attrs.change"
@@ -82,7 +84,7 @@
       </FormGroup>
     </div>
     <div>
-      <Button class="form-button" :disabled="form.disabled" v-on="$listeners">Сохранить
+      <Button small :disabled="form.disabled" v-on="$listeners">Сохранить
       </Button>
     </div>
   </v-col>
@@ -90,9 +92,9 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactDataForm';
-import Button from '@/UI/components/common/Button.vue';
-import FormGroup from '@/UI/components/common/form/FormGroup.vue';
+import {ProfileContactDataForm} from '../../../../form/profile/contactData/ProfileContactDataForm';
+import Button from '../../common/Button.vue';
+import FormGroup from '../../common/form/FormGroup.vue';
 
 @Component({
   components: {
@@ -100,7 +102,7 @@ import FormGroup from '@/UI/components/common/form/FormGroup.vue';
     Button
   }
 })
-export default class ProfileContactData extends Vue {
+export default class ProfileContactDataFormComponent extends Vue {
   @Prop({ required: true }) readonly form!: ProfileContactDataForm;
 }
 </script>

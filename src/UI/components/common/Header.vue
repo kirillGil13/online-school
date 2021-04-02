@@ -8,7 +8,7 @@
       <h1 v-if="title">{{ title }}</h1>
       <span class="desc" v-if="description">{{ description }}</span>
     </v-col>
-    <v-col v-if="action">
+    <v-col v-if="action" class="align-self-end">
       <slot></slot>
     </v-col>
   </v-row>

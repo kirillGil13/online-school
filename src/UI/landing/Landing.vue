@@ -54,7 +54,6 @@ import VideoAccessFormComponent from '../components/forms/videoAccessForm/VideoA
 import {AccessVideoStore} from '../../store/modules/AccessVideo';
 import {AlertTypeEnum} from '../../entity/common/alert.types';
 import {CandidatesStore} from '../../store/modules/Candidates';
-import {AuthStore} from '../../store/modules/Auth';
 import {CodeForm} from '../../form/code/codeForm';
 import Alert from '../components/common/Alert.vue';
 import CodeFormVue from '../components/forms/auth/CodeForm.vue';
@@ -85,9 +84,7 @@ export default class Landing extends Vue {
     }
   }
 
-  showAlert(show: boolean): void {
-    this.show = show;
-  }
+
 
   activatorChange(act: boolean): void {
     this.destroy = true;

@@ -8,6 +8,7 @@ import {PhoneRequestType} from '@/form/phone/phoneForm.types';
 export class PhoneForm extends Form {
     public phone = '';
     public phoneMask = '';
+    public token = '';
 
     @Validate(sameAs(() => true), (form: PhoneForm): string => 'Введите номер в формате ' + form.phoneMask)
     public phoneValid = true;
@@ -20,6 +21,7 @@ export class PhoneForm extends Form {
             /* tslint:disable */
             // @ts-ignore
             phone_number: this.phone,
+            recaptcha_token: this.token
         };
     }
 }

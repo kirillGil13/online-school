@@ -39,9 +39,6 @@ export default class Confirm extends Vue {
 
 <style lang="scss" scoped>
 .alert {
-  position: absolute;
-  top: 0;
-  right: 0;
   font-size: 14px !important;
   width: 100%;
   .v-alert {

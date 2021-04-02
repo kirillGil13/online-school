@@ -19,10 +19,12 @@
                 v-else-if="user.isEmailConfirmed && $route.query.accountId"
                 :text="`Ваша почта ${user.email} успешно подверждена`"
                 @show="showNote"
+                icon
                 :show="show"
             />
             <Alert :show="success" :type="alertType.Success" text="Ссылка успешно отправлена" @show="showAlert"/>
-            <router-view></router-view>
+            <Error v-if="error"/>
+            <router-view v-else></router-view>
           </v-main>
         </div>
       </v-container>
@@ -41,13 +43,14 @@ import {ITourOptions, ITourSteps} from '../../entity/common/tour.types';
 import {TourStore} from '../../store/modules/Tour';
 import Confirm from '../components/common/Confirm.vue';
 import {ConfirmEmailStore} from '../../store/modules/ConfirmEmail';
-import {RouterNameEnum} from '../../router/router.types';
 import {AlertTypeEnum} from '../../entity/common/alert.types';
 import Alert from '../components/common/Alert.vue';
+import Error from '../components/common/banners/Error.vue';
 
 
 @Component({
   components: {
+    Error,
     Alert,
     Confirm,
     Banner,
@@ -60,6 +63,7 @@ export default class MainLayout extends Vue {
   show = true;
   success = false;
   alertType = AlertTypeEnum;
+  error = false;
 
   showAlert(show: boolean): void {
     this.success = show;
@@ -87,12 +91,15 @@ export default class MainLayout extends Vue {
 
   async mounted(): Promise<void> {
     if (this.$route.query.accountId) {
-      await this.$router.push({name: RouterNameEnum.TrainingMain, query: {accountId: this.$route.query.accountId, code: this.$route.query.code}})
-      await ConfirmEmailStore.confirm({
+      if (await ConfirmEmailStore.confirm({
         code: this.$route.query.code.toString(),
         accountId: parseInt(this.$route.query.accountId.toString())
-      })
-      await AuthStore.fetch();
+      })) {
+        await AuthStore.fetch();
+      }
+      else {
+        this.error = true;
+      }
     }
     if (TourStore.newUser) {
       this.$tours['tour'].start();

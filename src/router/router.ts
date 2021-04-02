@@ -36,16 +36,17 @@ const routes = [
         component: () => import('../UI/layouts/MainLayout.vue'),
         meta: {
             auth: true,
+            new: true
         },
-        redirect: 'training',
+       // redirect: 'training',
         beforeEnter: mainGuard,
         children: [
             {
-                path: 'training',
+                path: '',
                 meta: {
                     title: 'Обучение - OneLinks'
                 },
-                redirect: 'trainingMain',
+                //redirect: 'trainingMain',
                 component: () => import('../UI/pages/training/Training.vue'),
                 children: [
                     {
@@ -54,7 +55,7 @@ const routes = [
                         component: () => import('../UI/pages/training/TrainingMain.vue')
                     },
                     {
-                        path: ':hashtag',
+                        path: 'training/:hashtag',
                         name: RouterNameEnum.TrainingHashTag,
                         component: () => import('../UI/pages/training/TrainingMain.vue')
                     },

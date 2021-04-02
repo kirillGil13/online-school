@@ -3,11 +3,10 @@
     <v-snackbar
         v-model="showAlert"
         :timeout="2500"
-        outlined
-        :color="resolveType()"
+        :color="resolveType().color"
     >
       <v-row class="d-flex align-center" no-gutters>
-        <svg-icon class="mr-3" :name="resolveType()"></svg-icon>
+        <v-icon class="mr-3">{{resolveType().type}}</v-icon>
         {{text}}
       </v-row>
     </v-snackbar>
@@ -33,14 +32,15 @@ export default class Alert extends Vue {
     return this.show;
   }
 
-  resolveType(): string {
+  resolveType(): {color: string; type: string} {
     let type = '';
+    let color = '';
     switch (this.type) {
-      case AlertTypeEnum.Info: type = AlertTypeEnum.Info; break;
-      case AlertTypeEnum.Success: type = AlertTypeEnum.Success; break;
-      case AlertTypeEnum.Error: type = AlertTypeEnum.Error; break;
+      case AlertTypeEnum.Info: type = 'mdi-information-outline'; color = 'primary'; break;
+      case AlertTypeEnum.Success: type = 'mdi-checkbox-marked-circle-outline'; color = 'success'; break;
+      case AlertTypeEnum.Error: type = 'mdi-close-circle-outline'; color = 'error'; break;
     }
-    return type;
+    return {color, type};
   }
 }
 </script>
@@ -53,6 +53,10 @@ export default class Alert extends Vue {
   .svg-icon {
     width: 24px !important;
     height: 24px !important;
+    fill: #FFFFFF !important;
+    path {
+      fill: #FFFFFF !important;
+    }
   }
 }
 </style>

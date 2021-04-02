@@ -14,7 +14,7 @@ class TourModule extends VuexModule {
     options: ITourOptions = {
         useKeyboardNavigation: false,
         labels: {
-            buttonSkip: 'Отказаться',
+            buttonSkip: 'Пропустить',
             buttonPrevious: 'Назад',
             buttonNext: 'Вперед',
             buttonStop: 'Закончить',

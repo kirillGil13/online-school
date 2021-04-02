@@ -6,19 +6,14 @@ export interface IUser {
     lastName: string;
     isLeader: boolean;
     isEmailConfirmed: boolean;
-    vk?: string;
-    facebook?: string;
-    instagram?: string;
-    skype?: string;
-    activeSubscription?: boolean;
-    description?: string;
+    vkLink: string;
+    facebookLink: string;
+    instagramLink: string;
+    skype: string;
+    description: string;
     photoLink: string;
-    login?: string;
-    link: string;
     initials: string;
-    referLink?: string;
     fullName: string;
-    getRequestData(): UserRequestType;
 }
 
 export type UserResponseType = {
@@ -29,29 +24,22 @@ export type UserResponseType = {
     lastName: string;
     isLeader: boolean;
     is_email_confirmed: boolean;
-    vk?: string;
-    facebook?: string;
-    instagram?: string;
-    skype?: string;
-    activeSubscription?: boolean;
-    description?: string;
-    photoLink: string;
-    login?: string;
-};
-export type UserRequestType = {
-    name: string;
-    lastName: string;
-    login: string;
-    email: string;
-    vk: string;
-    facebook: string;
-    instagram: string;
+    vk_link: string;
+    facebook_link: string;
+    instagram_link: string;
     skype: string;
     description: string;
-}
+    photoLink: string;
+};
+
 export type UserUpdateRequestType = {
     name?: string;
     lastName?: string;
     shortPhotoLink?: string;
+    description?: string;
+    skype?: string;
+    vk_link?: string;
+    instagram_link?: string;
+    facebook_link?: string;
 }
 
