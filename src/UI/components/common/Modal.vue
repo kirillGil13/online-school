@@ -3,6 +3,7 @@
       v-model="activatorChange"
       activator="activatorChange"
       :value="activator"
+      content-class="modal-window"
       :max-width="videoModal ? 600 : 500"
   >
     <v-card class="modal-content">
@@ -30,6 +31,9 @@ export default class Modal extends Vue {
 </script>
 
 <style lang="scss">
+.modal-window {
+  border-radius: 12px !important;
+}
 .modal-content {
   border-radius: 12px !important;
   max-height: 900px;
