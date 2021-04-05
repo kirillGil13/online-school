@@ -56,6 +56,7 @@ export default class MenuComponent extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+
 .v-list-item--active {
   .v-list-item__icon {
     .svg-icon {
@@ -63,6 +64,13 @@ export default class MenuComponent extends Vue {
       path {
         fill: #4F79FF !important;
       }
+    }
+  }
+}
+.main-menu {
+  .v-list-item {
+    .v-list-item__title {
+      font-size: 16px !important;
     }
   }
 }
