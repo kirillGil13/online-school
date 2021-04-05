@@ -144,7 +144,7 @@ export default class TableCandidates extends Vue {
       font-weight: 600;
     }
 
-    #select3 {
+    #select2 {
       .v-list-item__title {
         color: #EB5757 !important;
       }
