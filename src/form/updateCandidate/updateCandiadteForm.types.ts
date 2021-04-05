@@ -16,7 +16,7 @@ export interface IUpdateCandidateForm {
     phone: string | null;
     email: string;
     product: number | null;
-    status: number;
+    statusId: number;
     statusList: IUpdateCandidateFormList[];
     productList: IUpdateCandidateFormList[];
 }

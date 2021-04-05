@@ -27,15 +27,15 @@
                                        :info-package-item-video="item" @open="open"/>
       </template>
     </div>
-<!--    <div class="landing_text-block mt-12 d-flex justify-center align-center flex-column">-->
-<!--      <blockquote class="blockquote">-->
-<!--        <div class="landing_title text-center">-->
-<!--          Занимайся чем хочешь, а деньги должны быть.-->
-<!--          <p></p>-->
-<!--        </div>-->
-<!--        <cite>Слоган компании</cite>-->
-<!--      </blockquote>-->
-<!--    </div>-->
+    <div class="landing_text-block mt-12 d-flex justify-center align-center flex-column">
+      <blockquote class="blockquote">
+        <div class="landing_title text-center">
+          Занимайся чем хочешь, а деньги должны быть.
+          <p></p>
+        </div>
+        <cite>Finiko</cite>
+      </blockquote>
+    </div>
     <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
       <template v-slot:content>
         <VideoAccessFormComponent v-if="!codeStep" :form="accessForm" @close="close" @access="submitPhone"

@@ -6,8 +6,6 @@
     >
       <input
           class="input input__normal"
-          type="name" name="name"
-          id="name"
           v-model="form[attrs.name]"
           v-bind="attrs"
           @input="attrs.change"
@@ -57,7 +55,7 @@
       >
       </v-select>
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="status" label="Статус">
+    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="statusId" label="Статус">
       <v-select
           :items="form.statusList"
           v-model="form[attrs.name]"
