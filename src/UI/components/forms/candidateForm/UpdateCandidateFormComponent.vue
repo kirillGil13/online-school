@@ -71,7 +71,7 @@
       >
       </v-select>
     </FormGroup>
-    <FormGroup v-if="form.status === 3"
+    <FormGroup v-if="form.statusId === 3"
                class="mt-4 date-time-wrapper" :form="form" field="callTimeFake" label="Укажите время звонка"
                v-slot="attrs"
     >

@@ -118,9 +118,9 @@ export default class CandidateFormComponent extends Vue {
     this.form.setFormData(this.statuses, this.infoPacks, this.accountId);
   }
 
-  @Watch('form.status', {immediate: true})
+  @Watch('form.statusId', {immediate: true})
   onStatusChange(): void {
-    if (this.form.status === 3) {
+    if (this.form.statusId === 3) {
       this.activatorDate = true;
     } else this.activatorDate = false;
   }

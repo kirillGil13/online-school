@@ -9,6 +9,7 @@ import {
     UpdateCandidateFormRequestType
 } from '@/form/updateCandidate/updateCandiadteForm.types';
 import {ICandidateItem} from '@/entity/candidateItem/candidateItem.types';
+import moment from 'moment';
 /* eslint-disable */
 
 /* tslint:disable */
@@ -78,6 +79,8 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
         this.email = data.email ? data.email : '';
         this.phone = data.phoneNumber ? data.phoneNumber : '';
         this.callTime = data.callTime;
+        const date = new Date(this.callTime! * 1000);
+        this.callTimeFake = date.toISOString();
         this.candidateId = data.id;
     }
 
