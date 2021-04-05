@@ -3,9 +3,11 @@
     <swiper :class="['swiper component', $adaptive.isMobile ? 'mx-0' : '']" :options="swiperComponentOption" ref="swiper">
       <swiper-slide v-for="(leader, index) in leaders" :key="index" :id="index">
         <div :class=" ['slide', $route.params.id === leader.id.toString() ? 'active_leader' : '' ]" @click="proceed(leader.id)">
-          <div class="leader-photo" :style="{ backgroundImage: 'url(' + leader.photoLink + ')' }">
-            <Rating v-if="leader.rating" :rating="leader.rating" class="master-rating"/>
-          </div>
+          <v-avatar size="72" class="leader-photo">
+            <v-img :src="leader.photoLink">
+              <Rating v-if="leader.rating" :rating="leader.rating" class="master-rating"/>
+            </v-img>
+          </v-avatar>
           <h4>{{ leader.fullName }}</h4>
         </div>
       </swiper-slide>
@@ -108,11 +110,7 @@ export default class SliderLeaders extends Vue {
     flex-direction: column;
 
     .leader-photo {
-      width: 72px;
-      height: 72px;
       position: relative;
-      background-repeat: no-repeat;
-      background-size: cover;
       border: 1px solid rgba(0, 0, 0, 0.04);
       border-radius: 50%;
 
