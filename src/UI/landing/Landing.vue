@@ -1,6 +1,6 @@
 <template>
   <v-col class="infoPackageItem py-14" v-if="infoPackageItemLoaded">
-    <div class="landing_title text-center">{{infoPackageItem.mainVideo.name}}</div>
+    <div class="landing_title text-center">{{ infoPackageItem.mainVideo.name }}</div>
     <div class="main-video-wrapper">
       <InfoPackageItemVideoComponent :class="['main-video', $adaptive.isMobile ? 'mobile' : '']"
                                      :info-package-item-video="infoPackageItem.mainVideo"
@@ -8,19 +8,18 @@
     </div>
     <div class="landing_text-block d-flex justify-center align-center flex-column">
       <div class="landing_title text-center">
-         Кейсы компании.
+        Кейсы по продукту.
         <p></p>
       </div>
       <div class="block-description text-center">
-        На нашем сайте вы можете найти кейсы по приобретению того или иного продукта через компанию Финико. <br>
-        Также вы можете узнать подробнее о программах компании. <br>
-        Для того, чтобы кейсы стали вам доступы, нужно заполнить небольшую форму ниже <br>
+        Здесь вы можете ознакомиться с реальными кейсами и отзывами людей, которые уже воспользовались данным продуктом.
+        Просто выберите кейс и уделите несколько минут просмотру.
       </div>
     </div>
     <div class="main-video-wrapper d-flex flex-column" v-if="infoPackageItemLoaded">
-      <template v-for="(item, index) in infoPackageItem.videos" >
+      <template v-for="(item, index) in infoPackageItem.videos">
         <div class="landing_title text-center mb-10" :key="index">
-          {{item.name}}
+          {{ item.name }}
         </div>
         <InfoPackageItemVideoComponent :class="['main-video', $adaptive.isMobile ? 'mobile' : '']"
                                        :key="item.id"
@@ -28,15 +27,15 @@
                                        :info-package-item-video="item" @open="open"/>
       </template>
     </div>
-    <div class="landing_text-block mt-12 d-flex justify-center align-center flex-column">
-      <blockquote class="blockquote">
-        <div class="landing_title text-center">
-          Занимайся чем хочешь, а деньги должны быть.
-          <p></p>
-        </div>
-        <cite>Слоган компании</cite>
-      </blockquote>
-    </div>
+<!--    <div class="landing_text-block mt-12 d-flex justify-center align-center flex-column">-->
+<!--      <blockquote class="blockquote">-->
+<!--        <div class="landing_title text-center">-->
+<!--          Занимайся чем хочешь, а деньги должны быть.-->
+<!--          <p></p>-->
+<!--        </div>-->
+<!--        <cite>Слоган компании</cite>-->
+<!--      </blockquote>-->
+<!--    </div>-->
     <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
       <template v-slot:content>
         <VideoAccessFormComponent v-if="!codeStep" :form="accessForm" @close="close" @access="submitPhone"
@@ -50,17 +49,21 @@
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorMainVideo"
            @activatorChange="activatorMainVideoChange">
       <template v-slot:content>
-        <iframe v-if="destroyVideo" id="ytplayer1" ref="ytp" width="100%" height="340"
-                :src="infoPackageItemLoaded ? infoPackageItem.mainVideo.videoLink : ''"
-                frameborder="0" allowfullscreen/>
+        <div class="video">
+          <iframe v-if="destroyVideo" id="ytplayer1" ref="ytp" width="100%" height="100%"
+                  :src="infoPackageItemLoaded ? infoPackageItem.mainVideo.videoLink : ''"
+                  frameborder="0" allowfullscreen/>
+        </div>
       </template>
     </Modal>
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorVideo"
            @activatorChange="activatorVideoChange">
       <template v-slot:content>
-        <iframe v-if="destroyVideo" id="ytplayer2" type="text/html" width="100%" height="340"
-                :src="infoPackageItemLoaded ? infoPackageItem.videos.find(item => item.id === secondaryVideoId).videoLink : ''"
-                frameborder="0" allowfullscreen/>
+        <div class="video">
+          <iframe v-if="destroyVideo" id="ytplayer2" type="text/html" width="100%" height="100%"
+                  :src="infoPackageItemLoaded ? infoPackageItem.videos.find(item => item.id === secondaryVideoId).videoLink : ''"
+                  frameborder="0" allowfullscreen/>
+        </div>
       </template>
     </Modal>
     <Alert :show="show" :type="alertType.Success"
@@ -217,10 +220,12 @@ export default class Landing extends Vue {
   margin: 16px 46px;
   font-size: 16px;
   text-align: center;
+
   .landing_title {
     font-size: 48px;
   }
 }
+
 .blockquote:before,
 .blockquote:after {
   position: absolute;
@@ -229,20 +234,28 @@ export default class Landing extends Vue {
   font-family: Times, sans-serif;
   line-height: 100px;
 }
+
 .blockquote:before {
   content: '“';
   left: -30px;
   top: -10px;
 }
+
 .blockquote:after {
   content: '”';
   right: -60px;
   bottom: -10px;
 }
+
 .blockquote cite {
   color: #1d1d1f;
   font-size: 21px;
   padding-top: 10px;
   display: block;
+}
+
+.video {
+  width: 100%;
+  height: 345px;
 }
 </style>
