@@ -1,14 +1,47 @@
 <template>
-  <v-col class="infoPackageItem" v-if="infoPackageItemLoaded">
+  <v-col class="infoPackageItem py-14" v-if="infoPackageItemLoaded">
+    <div class="landing_title text-center">There’s a lot in the works. <br> And much more work to do.</div>
     <div class="main-video-wrapper">
       <InfoPackageItemVideoComponent :class="['main-video', $adaptive.isMobile ? 'mobile' : '']"
                                      :info-package-item-video="infoPackageItem.mainVideo"
                                      @open="activatorMainVideo = true"/>
     </div>
-    <div class="videos" v-if="infoPackageItemLoaded">
-      <InfoPackageItemVideoComponent :class="['secondary-video', $adaptive.isMobile ? 'mobile' : '']"
-                                v-for="(item, index) in infoPackageItem.videos" :key="index"
+    <div class="landing_text-block d-flex justify-center align-center flex-column">
+      <div class="landing_title text-center">
+        Where we stand today.
+        <p></p>
+      </div>
+      <div class="block-description text-center">
+        We have about 160,000 talented employees across the world. And we are proud that when people join Apple, they
+        find fulfillment for many years. That also means increasing overall representation takes time. <p></p>
+        Every hiring decision is made one role, and one person, at a time. We are taking meaningful actions for more
+        diverse representation across every part of the business. Because just 1% of over a hundred thousand represents
+        change for thousands of people.
+      </div>
+    </div>
+    <div class="d-flex justify-center mt-12">
+      <a class="infopack-btn">All hearing features <v-icon color="#000000">mdi-chevron-right</v-icon></a>
+    </div>
+    <div class="main-video-wrapper d-flex flex-column" v-if="infoPackageItemLoaded">
+      <InfoPackageItemVideoComponent :class="['main-video mb-16', $adaptive.isMobile ? 'mobile' : '']"
+                                     v-for="(item, index) in infoPackageItem.videos" :key="index"
                                      :info-package-item-video="item" @open="open"/>
+    </div>
+    <div class="landing_text-block mt-12 d-flex justify-center align-center flex-column">
+      <div class="landing_title text-center">
+        Where we stand today.
+        <p></p>
+      </div>
+      <div class="block-description text-center">
+        We have about 160,000 talented employees across the world. And we are proud that when people join Apple, they
+        find fulfillment for many years. That also means increasing overall representation takes time. <p></p>
+        Every hiring decision is made one role, and one person, at a time. We are taking meaningful actions for more
+        diverse representation across every part of the business. Because just 1% of over a hundred thousand represents
+        change for thousands of people.
+      </div>
+    </div>
+    <div class="d-flex justify-center mt-12">
+      <a class="infopack-btn">All hearing features <v-icon color="#000000">mdi-chevron-right</v-icon></a>
     </div>
     <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
       <template v-slot:content>
@@ -25,7 +58,7 @@
       <template v-slot:content>
         <iframe v-if="destroyVideo" id="ytplayer1" ref="ytp" width="100%" height="340"
                 :src="infoPackageItemLoaded ? infoPackageItem.mainVideo.videoLink : ''"
-                frameborder="0" allowfullscreen />
+                frameborder="0" allowfullscreen/>
       </template>
     </Modal>
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorVideo"
@@ -183,56 +216,4 @@ export default class Landing extends Vue {
 </script>
 
 <style lang="scss">
-.infoPackageItem {
-  .main-video-wrapper {
-    display: flex;
-    justify-content: center;
-
-    .main-video {
-      margin-right: 0;
-      width: 80%;
-
-      .course-video-block {
-        height: 425px;
-      }
-
-      &.mobile {
-        width: 100%;
-
-        .course-video-block {
-          height: 225px !important;
-        }
-      }
-
-      .course-title {
-        font-size: 36px !important;
-      }
-    }
-  }
-
-  .videos {
-    margin-top: 60px;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    .secondary-video {
-      margin-right: 16px;
-      margin-top: 16px;
-      &:nth-child(3n+3) {
-        margin-right: 0;
-      }
-      &.mobile {
-        margin-right: 0;
-        margin-top: 24px;
-        width: 100%;
-
-        .course-video-block {
-          height: 225px !important;
-        }
-      }
-    }
-  }
-}
 </style>
