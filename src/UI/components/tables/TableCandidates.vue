@@ -75,8 +75,9 @@
             </Select>
             <div class="name d-flex flex-column align-start justify-center">
               <div class="name_text">{{ candidate.name }}</div>
-              <div class="caption" v-if="candidate.caption" @click="$emit('changeCallTime', {index: index, callTime: candidate.callTime})">Позвонить {{candidate.callTime}}</div>
-              <div class="caption" v-else-if="candidate.status.name === 'Надо позвонить'">{{candidate.status.name}}</div>
+              <div class="caption" v-if="candidate.callTime" @click="$emit('changeCallTime', {index: index, callTime: candidate.callTime})">Позвонить {{candidate.callTime}}</div>
+              <div class="caption" v-else-if="candidate.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: candidate.callTime})">{{candidate.status.name}}</div>
+              <div class="caption__origin" v-else>{{candidate.status.name}}</div>
             </div>
           </div>
           <div class="pr-0">
@@ -144,7 +145,9 @@ export default class TableCandidates extends Vue {
   max-height: 296px !important;
   &.action {
     #select0 {
-      font-weight: 600;
+      .v-list-item__title {
+        font-weight: bold !important;
+      }
     }
 
     #select2 {
