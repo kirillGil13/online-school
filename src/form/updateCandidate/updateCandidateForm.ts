@@ -17,7 +17,7 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
     public candidateId = 0;
     public phoneMask = '';
     public product: number | null = 0;
-    public status = 0;
+    public statusId = 0;
     public isFiction = false;
     public accountId = 0;
     public productList: IUpdateCandidateFormList[] = [];
@@ -54,7 +54,7 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
             name: this.name,
             email: this.email === '' ? null : this.email,
             account_id: this.accountId,
-            status_id: this.status,
+            status_id: this.statusId,
             info_pack_id: this.product,
             is_fiction: this.isFiction,
             callTime: this.callTime === 0 ? null : this.callTime
@@ -71,7 +71,7 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
             }
             this.productList.push({text: infoPacks[i].name, value: infoPacks[i].id})
         }
-        this.status = data.status.id;
+        this.statusId = data.status.id;
         this.product = data.infoPack ? data.infoPack.id : null;
         this.accountId = accountId;
         this.name = data.name;

@@ -15,7 +15,7 @@ export interface ICandidateForm {
     phone: string;
     email: string;
     product: number | null;
-    status: number;
+    statusId: number;
     statusList: ICandidateFormList[];
     productList: ICandidateFormList[];
 }
