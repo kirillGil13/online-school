@@ -16,7 +16,10 @@
       </v-img>
     </div>
     <div class="leader">
-      <div class="course-avatar" :style="{ backgroundImage: 'url(' + course.account.photoLink + ')' }"></div>
+      <v-avatar size="24" class="course-avatar">
+        <v-img :src="course.account.photoLink">
+        </v-img>
+      </v-avatar>
       <span class="desc">{{ course.fullName}}</span>
     </div>
     <div class="course-title">{{ course.name }}</div>
@@ -52,11 +55,8 @@ export default class LeaderCourseItem extends Vue {
 
     .course-avatar {
       border: 1px solid rgba(0, 0, 0, 0.04);
-      width: 24px;
-      height: 24px;
       margin-right: 8px;
       border-radius: 50%;
-      background-size: cover;
     }
 
     .desc {
