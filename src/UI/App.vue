@@ -9,7 +9,7 @@
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator';
 import {AuthStore} from '@/store/modules/Auth';
-import {startIntercomMessenger} from '@/plugins';
+import {startIntercomMessenger} from '@/plugins/Intercom';
 
 @Component
 export default class App extends Vue {

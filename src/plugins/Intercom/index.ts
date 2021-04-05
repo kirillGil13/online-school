@@ -17,7 +17,8 @@ function rebootIntercom(user: IUser): void {
     });
 }
 
-export function startIntercomMessenger (user: IUser): void {
+export const startIntercomMessenger =  (user: IUser): void => {
+    console.log(1);
     if (!intercom.ready) {
         intercom.once('ready', () => rebootIntercom(user));
     } else {
