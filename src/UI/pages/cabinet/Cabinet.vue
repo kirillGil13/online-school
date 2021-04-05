@@ -135,7 +135,7 @@ export default class Cabinet extends Vue {
   }
 
   proceed(id: number): void {
-    this.$router.push({path: `/training/${id}/0`});
+    this.$router.push({path: `/course/${id}`});
   }
 
   onFilter(): void {
