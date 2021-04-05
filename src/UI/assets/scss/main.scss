@@ -337,7 +337,9 @@ h5 {
     display: flex;
     justify-content: center;
     margin-top: 88px;
-
+    .landing_title {
+      font-size: 46px;
+    }
     .main-video {
       margin-right: 0;
       width: 100%;

@@ -1,6 +1,6 @@
 <template>
   <v-col class="infoPackageItem py-14" v-if="infoPackageItemLoaded">
-    <div class="landing_title text-center">There’s a lot in the works. <br> And much more work to do.</div>
+    <div class="landing_title text-center">{{infoPackageItem.mainVideo.name}}</div>
     <div class="main-video-wrapper">
       <InfoPackageItemVideoComponent :class="['main-video', $adaptive.isMobile ? 'mobile' : '']"
                                      :info-package-item-video="infoPackageItem.mainVideo"
@@ -8,40 +8,34 @@
     </div>
     <div class="landing_text-block d-flex justify-center align-center flex-column">
       <div class="landing_title text-center">
-        Where we stand today.
+         Кейсы компании.
         <p></p>
       </div>
       <div class="block-description text-center">
-        We have about 160,000 talented employees across the world. And we are proud that when people join Apple, they
-        find fulfillment for many years. That also means increasing overall representation takes time. <p></p>
-        Every hiring decision is made one role, and one person, at a time. We are taking meaningful actions for more
-        diverse representation across every part of the business. Because just 1% of over a hundred thousand represents
-        change for thousands of people.
+        На нашем сайте вы можете найти кейсы по приобретению того или иного продукта через компанию Финико. <br>
+        Также вы можете узнать подробнее о программах компании. <br>
+        Для того, чтобы кейсы стали вам доступы, нужно заполнить небольшую форму ниже <br>
       </div>
-    </div>
-    <div class="d-flex justify-center mt-12">
-      <a class="infopack-btn">All hearing features <v-icon color="#000000">mdi-chevron-right</v-icon></a>
     </div>
     <div class="main-video-wrapper d-flex flex-column" v-if="infoPackageItemLoaded">
-      <InfoPackageItemVideoComponent :class="['main-video mb-16', $adaptive.isMobile ? 'mobile' : '']"
-                                     v-for="(item, index) in infoPackageItem.videos" :key="index"
-                                     :info-package-item-video="item" @open="open"/>
+      <template v-for="(item, index) in infoPackageItem.videos" >
+        <div class="landing_title text-center mb-10" :key="index">
+          {{item.name}}
+        </div>
+        <InfoPackageItemVideoComponent :class="['main-video', $adaptive.isMobile ? 'mobile' : '']"
+                                       :key="item.id"
+                                       :style="{marginBottom: '100px'}"
+                                       :info-package-item-video="item" @open="open"/>
+      </template>
     </div>
     <div class="landing_text-block mt-12 d-flex justify-center align-center flex-column">
-      <div class="landing_title text-center">
-        Where we stand today.
-        <p></p>
-      </div>
-      <div class="block-description text-center">
-        We have about 160,000 talented employees across the world. And we are proud that when people join Apple, they
-        find fulfillment for many years. That also means increasing overall representation takes time. <p></p>
-        Every hiring decision is made one role, and one person, at a time. We are taking meaningful actions for more
-        diverse representation across every part of the business. Because just 1% of over a hundred thousand represents
-        change for thousands of people.
-      </div>
-    </div>
-    <div class="d-flex justify-center mt-12">
-      <a class="infopack-btn">All hearing features <v-icon color="#000000">mdi-chevron-right</v-icon></a>
+      <blockquote class="blockquote">
+        <div class="landing_title text-center">
+          Занимайся чем хочешь, а деньги должны быть.
+          <p></p>
+        </div>
+        <cite>Слоган компании</cite>
+      </blockquote>
     </div>
     <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
       <template v-slot:content>
@@ -216,4 +210,39 @@ export default class Landing extends Vue {
 </script>
 
 <style lang="scss">
+
+.blockquote {
+  position: relative;
+  padding: 16px 24px;
+  margin: 16px 46px;
+  font-size: 16px;
+  text-align: center;
+  .landing_title {
+    font-size: 48px;
+  }
+}
+.blockquote:before,
+.blockquote:after {
+  position: absolute;
+  color: #000000;
+  font-size: 100px;
+  font-family: Times, sans-serif;
+  line-height: 100px;
+}
+.blockquote:before {
+  content: '“';
+  left: -30px;
+  top: -10px;
+}
+.blockquote:after {
+  content: '”';
+  right: -60px;
+  bottom: -10px;
+}
+.blockquote cite {
+  color: #1d1d1f;
+  font-size: 21px;
+  padding-top: 10px;
+  display: block;
+}
 </style>

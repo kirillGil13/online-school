@@ -5,7 +5,6 @@
         <div class="play-button"></div>
       </v-img>
     </v-responsive>
-    <div class="course-title">{{ infoPackageItemVideo.name }}</div>
   </div>
 </template>
 
