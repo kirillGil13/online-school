@@ -23,7 +23,7 @@
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorMainVideo"
            @activatorChange="activatorMainVideoChange">
       <template v-slot:content>
-        <iframe id="ytplayer1" ref="ytp" width="100%" height="340"
+        <iframe v-if="destroyVideo" id="ytplayer1" ref="ytp" width="100%" height="340"
                 :src="infoPackageItemLoaded ? infoPackageItem.mainVideo.videoLink : ''"
                 frameborder="0" allowfullscreen />
       </template>
@@ -31,7 +31,7 @@
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorVideo"
            @activatorChange="activatorVideoChange">
       <template v-slot:content>
-        <iframe id="ytplayer2" type="text/html" width="100%" height="340"
+        <iframe v-if="destroyVideo" id="ytplayer2" type="text/html" width="100%" height="340"
                 :src="infoPackageItemLoaded ? infoPackageItem.videos.find(item => item.id === secondaryVideoId).videoLink : ''"
                 frameborder="0" allowfullscreen/>
       </template>
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import CourseComponent from '../components/course/CourseComponent.vue';
 import InfoPackageItemVideoComponent from '../components/infoPackageItemVideo/InfoPackageItemVideoComponent.vue';
 import {InfoPackagesStore} from '../../store/modules/InfoPackages';
@@ -68,12 +68,27 @@ export default class Landing extends Vue {
   activatorMainVideo = false;
   activatorVideo = false;
   destroy = true;
+  destroyVideo = true;
   secondaryVideoId = 1;
   accessForm = new VideoAccessForm();
   codeForm = new CodeForm();
   alertType = AlertTypeEnum;
   show = false;
   codeStep = false;
+
+  @Watch('activatorMainVideo')
+  onMainActivatorChange(): void {
+    if (this.activatorMainVideo) {
+      this.destroyVideo = true;
+    } else this.destroyVideo = false;
+  }
+
+  @Watch('activatorVideo')
+  onSecondActivatorChange(): void {
+    if (this.activatorVideo) {
+      this.destroyVideo = true;
+    } else this.destroyVideo = false;
+  }
 
   get infoPackageItem(): IInfoPackageItem {
     return InfoPackagesStore.infoPackageItem!;

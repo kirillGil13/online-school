@@ -344,10 +344,15 @@ h5 {
                     text-overflow: ellipsis;
                     white-space: nowrap;
                 }
-                .call-time {
+                .caption {
                     color: #5F739C;
                     font-size: 12px;
                     cursor: pointer;
+                    &__origin {
+                        color: #5F739C;
+                        font-size: 12px;
+                        cursor: default;
+                    }
                 }
             }
             .link {

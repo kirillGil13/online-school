@@ -17,15 +17,11 @@ class SelectsModule extends VuexModule {
         },
         {
             id: 1,
-            name: 'Создать действие',
-        },
-        {
-            id: 2,
             name: 'Изменить',
             extraAction: true
         },
         {
-            id: 3,
+            id: 2,
             name: 'Поместить в архив',
         },
     ]
