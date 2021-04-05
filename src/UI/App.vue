@@ -9,7 +9,7 @@
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator';
 import {AuthStore} from '@/store/modules/Auth';
-import {startIntercomMessenger} from '@/plugins';
+import {startIntercomMessenger} from '@/plugins/Intercom';
 
 @Component
 export default class App extends Vue {
@@ -30,6 +30,7 @@ export default class App extends Vue {
   async created(): Promise<void> {
     this.$adaptive.isMobile = this.resolveAdaptiveMobile();
     await AuthStore.load();
+    startIntercomMessenger(AuthStore.user);
     // this.ws = new WebSocket(`${process.env.VUE_APP_WSS_URL}?token=` + localStorage.getItem('token'));
     // this.ws.onopen = function(): void {
     //   console.log('WS подключенно')
@@ -40,7 +41,6 @@ export default class App extends Vue {
     // this.ws.onmessage = function(msg: any): void {
     //   console.log('Сообщение ' + msg)
     // }
-    startIntercomMessenger(AuthStore.user);
   }
 
   // send(): void {

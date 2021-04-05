@@ -12,12 +12,12 @@ function rebootIntercom(user: IUser): void {
     intercom.boot({
         // eslint-disable-next-line @typescript-eslint/camelcase
         user_id: user.id,
-        name: user.fullName,
+        name: user.name,
         email: user.email,
     });
 }
 
-export function startIntercomMessenger (user: IUser): void {
+export const startIntercomMessenger =  (user: IUser): void => {
     if (!intercom.ready) {
         intercom.once('ready', () => rebootIntercom(user));
     } else {
