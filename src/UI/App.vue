@@ -50,6 +50,7 @@ export default class App extends Vue {
     }
     return isMobile;
   }
+
 }
 </script>
 <style lang="scss" scoped></style>
