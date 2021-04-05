@@ -36,7 +36,7 @@ export default class InfoPackages extends Vue {
     const routeData = this.$router.resolve({
       name: this.$routeRules.Landing,
       params: {id: id.toString()},
-      query: {account_id: this.user.id.toString()}//eslint-disable-line
+      query: {account_id: this.user!.id.toString()}//eslint-disable-line
     });
     window.open(routeData.href, '_blank');
   }
@@ -53,7 +53,7 @@ export default class InfoPackages extends Vue {
     return InfoPackagesStore.infoPackages;
   }
 
-  get user(): IUser {
+  get user(): IUser | null {
     return AuthStore.user;
   }
 

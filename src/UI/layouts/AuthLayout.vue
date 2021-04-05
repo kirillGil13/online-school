@@ -11,6 +11,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import Banner from '../components/common/Banner.vue';
 import Sidebar from '../components/sidebar/Sidebar.vue';
 import Logo from '../components/common/Logo.vue';
+import {startIntercomMessenger} from '../../plugins/Intercom';
+import {AuthStore} from '../../store/modules/Auth';
 
 @Component({
     components: {
@@ -19,7 +21,12 @@ import Logo from '../components/common/Logo.vue';
         Banner,
     },
 })
-export default class AuthLayout extends Vue {}
+export default class AuthLayout extends Vue {
+
+  created(): void {
+    startIntercomMessenger();
+  }
+}
 </script>
 <style lang="scss">
 .auth {

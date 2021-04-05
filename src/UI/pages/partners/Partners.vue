@@ -34,7 +34,7 @@ import {IPartner} from '@/entity/partners';
   },
 })
 export default class Partners extends Vue {
-  get user(): IUser {
+  get user(): IUser | null {
     return AuthStore.user;
   }
 

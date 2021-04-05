@@ -127,9 +127,9 @@ export default class Profile extends Vue {
   constructor() {
     super();
     this.mainInfoForm = new ProfileMainInfoForm();
-    this.mainInfoForm.setFormData(this.user);
+    this.mainInfoForm.setFormData(this.user!);
     this.contactDataForm = new ProfileContactDataForm();
-    this.contactDataForm.setFormData(this.user);
+    this.contactDataForm.setFormData(this.user!);
 
   }
 
@@ -160,7 +160,7 @@ export default class Profile extends Vue {
     return TabsStore.profileTabs;
   }
 
-  get user(): IUser {
+  get user(): IUser | null {
     return AuthStore.user;
   }
 
@@ -206,7 +206,7 @@ export default class Profile extends Vue {
   }
 
   created(): void {
-    document.title = this.user.fullName + ' - ' + 'OneLinks';
+    document.title = this.user!.fullName + ' - ' + 'OneLinks';
   }
 
   async setImage(data: any): Promise<void> {

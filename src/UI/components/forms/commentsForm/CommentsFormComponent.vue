@@ -39,7 +39,7 @@ import {CommentsForm} from '../../../../form/comments/commentsForm';
 export default class CommentsFormComponent extends Vue {
   @Prop() readonly form!: CommentsForm;
 
-  get user(): IUser {
+  get user(): IUser | null {
     return AuthStore.user;
   }
 

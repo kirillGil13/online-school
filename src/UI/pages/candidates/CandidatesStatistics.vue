@@ -80,7 +80,7 @@ export default class CandidatesStatistics extends Vue {
     return SelectsStore.selectsActions;
   }
 
-  get user(): IUser {
+  get user(): IUser | null {
     return AuthStore.user;
   }
 

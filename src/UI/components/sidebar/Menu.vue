@@ -38,7 +38,7 @@ export default class MenuComponent extends Vue {
         return variables;
     }
 
-    get user(): IUser {
+    get user(): IUser | null {
       return AuthStore.user;
     }
 
@@ -48,7 +48,7 @@ export default class MenuComponent extends Vue {
 
     handleMenuItem(menuItem: IMainMenu): boolean {
       if (menuItem.route === this.$routeRules.Cabinet) {
-        if (this.user.isLeader) {
+        if (this.user!.isLeader) {
           return true;
         } else return false;
       } else return true;
