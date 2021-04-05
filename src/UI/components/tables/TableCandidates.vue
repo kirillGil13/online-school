@@ -10,7 +10,7 @@
         <div>Дата</div>
         <div></div>
       </div>
-      <div :class="['tr tbody', candidate.callTime ? 'py-3' : '']" v-for="(candidate, index) in candidates" :key="index">
+      <div class="tr tbody py-3" v-for="(candidate, index) in candidates" :key="index">
         <div class="status_select">
           <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="candidate.id">
             <template v-slot:act>
@@ -31,7 +31,9 @@
         </div>
         <div class="name d-flex align-start justify-center flex-column">
           <div class="name_text">{{ candidate.name }}</div>
-          <div class="call-time" v-if="candidate.callTime" @click="$emit('changeCallTime', {index: index, callTime: candidate.callTime})">Позвонить {{candidate.callTime}}</div>
+          <div class="caption" v-if="candidate.callTime" @click="$emit('changeCallTime', {index: index, callTime: candidate.callTime})">Позвонить {{candidate.callTime}}</div>
+          <div class="caption" v-else-if="candidate.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: candidate.callTime})">{{candidate.status.name}}</div>
+          <div class="caption__origin" v-else>{{candidate.status.name}}</div>
         </div>
         <a class="link" :href="'tel:' + candidate.phoneNumber">{{ candidate.phoneNumber }}</a>
         <a class="email link" :href="'mailto:' + candidate.email">{{ candidate.email }}</a>
@@ -73,7 +75,8 @@
             </Select>
             <div class="name d-flex flex-column align-start justify-center">
               <div class="name_text">{{ candidate.name }}</div>
-              <div class="call-time" v-if="candidate.callTime" @click="$emit('changeCallTime', {index: index, callTime: candidate.callTime})">Позвонить {{candidate.callTime}}</div>
+              <div class="caption" v-if="candidate.caption" @click="$emit('changeCallTime', {index: index, callTime: candidate.callTime})">Позвонить {{candidate.callTime}}</div>
+              <div class="caption" v-else-if="candidate.status.name === 'Надо позвонить'">{{candidate.status.name}}</div>
             </div>
           </div>
           <div class="pr-0">
