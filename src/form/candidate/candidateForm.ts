@@ -12,7 +12,7 @@ import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 export class CandidateForm extends Form implements ICandidateForm {
     public phoneMask = '';
     public product: number | null = 0;
-    public status = 0;
+    public statusId = 0;
     public isFiction = true;
     public accountId = 0;
     public callTimeFake = '';
@@ -45,7 +45,7 @@ export class CandidateForm extends Form implements ICandidateForm {
             name: this.name,
             email: this.email === '' ? undefined : this.email,
             account_id: this.accountId,
-            status_id: this.status,
+            status_id: this.statusId,
             info_pack_id: this.product,
             is_fiction: this.isFiction,
             callTime: this.callTime === 0 ? undefined : this.callTime,
@@ -62,7 +62,7 @@ export class CandidateForm extends Form implements ICandidateForm {
             }
             this.productList.push({text: infoPacks[i].name, value: infoPacks[i].id})
         }
-        this.status = this.statusList[0].value!;
+        this.statusId = this.statusList[0].value!;
         this.product = this.productList[0].value!;
         this.accountId = accountId;
     }

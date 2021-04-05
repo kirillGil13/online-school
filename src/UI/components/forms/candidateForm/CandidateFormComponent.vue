@@ -59,7 +59,7 @@
       >
       </v-select>
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="status" label="Статус">
+    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="statusId" label="Статус">
       <v-select
           :items="form.statusList"
           v-model="form[attrs.name]"
