@@ -16,8 +16,9 @@
           v-for="(item, index) in selects"
           :key="index"
           :id="`select${index}`"
+          dense
           link
-          class="selection"
+          class="selection pr-0"
           @click="item.extraAction ? $emit('extraAction', id) : $emit('select', {statusId: item.id, id: id})"
       >
         <v-list-item-icon v-if="item.photoLink">
@@ -43,7 +44,7 @@
                 v-on="on"
                 class="info-btn"
             >
-              <v-icon color="grey lighten-1">
+              <v-icon color="grey lighten-1" size="16">
                 mdi-information
               </v-icon>
             </v-btn>
@@ -82,7 +83,7 @@ export default class Select extends Vue {
   .info-btn {
     background-color: transparent !important;
     margin-top: 0;
-    margin-left: 16px;
+    margin-left: 36px;
     padding: 0;
   }
 }
