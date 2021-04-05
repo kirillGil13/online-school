@@ -15,7 +15,7 @@ import { AuthStore } from '@/store/modules/Auth';
     },
 })
 export default class QrCodeBanner extends Vue {
-    get user(): IUser {
+    get user(): IUser | null {
         return AuthStore.user;
     }
 }

@@ -190,7 +190,7 @@ export default class Candidates extends Vue {
     }
   }
 
-  get user(): IUser {
+  get user(): IUser | null {
     return AuthStore.user;
   }
 
@@ -298,7 +298,7 @@ export default class Candidates extends Vue {
 
   async openUpdate(id: number): Promise<void> {
     await CandidateItemStore.fetchData(id.toString());
-    await this.updateCandidateForm.setFormData(this.candidateItem!, this.statuses, this.infoPackages, this.user.id);
+    await this.updateCandidateForm.setFormData(this.candidateItem!, this.statuses, this.infoPackages, this.user!.id);
     this.destroyUpdateForm = true;
     this.activatorCandidate = true;
   }

@@ -18,8 +18,15 @@ import {RouterNameEnum} from '@/router/router.types';
 })
 class AuthModule extends VuexModule {
 
-    get user(): IUser {
-        return new User(Vue.auth.user() as UserResponseType);
+    get user(): IUser | null {
+        try {
+            const user = new User(Vue.auth.user() as UserResponseType)
+            return user;
+        }
+        catch (e) {
+            console.log(e);
+            return null;
+        }
     }
 
     @Action

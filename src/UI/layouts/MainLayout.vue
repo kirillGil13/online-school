@@ -46,6 +46,7 @@ import {ConfirmEmailStore} from '../../store/modules/ConfirmEmail';
 import {AlertTypeEnum} from '../../entity/common/alert.types';
 import Alert from '../components/common/Alert.vue';
 import Error from '../components/common/banners/Error.vue';
+import {startIntercomMessenger} from '../../plugins/Intercom';
 
 
 @Component({
@@ -78,7 +79,11 @@ export default class MainLayout extends Vue {
     this.show = show;
   }
 
-  get user(): IUser {
+  created(): void {
+      startIntercomMessenger(AuthStore.user!);
+  }
+
+  get user(): IUser | null {
     return AuthStore.user;
   }
 
@@ -91,7 +96,7 @@ export default class MainLayout extends Vue {
   }
 
   async mounted(): Promise<void> {
-    if (this.$route.query.accountId && !this.user.isEmailConfirmed) {
+    if (this.$route.query.accountId && !this.user!.isEmailConfirmed) {
       if (await ConfirmEmailStore.confirm({
         code: this.$route.query.code.toString(),
         accountId: parseInt(this.$route.query.accountId.toString())
@@ -109,7 +114,7 @@ export default class MainLayout extends Vue {
   }
 
   async sendCode(): Promise<boolean> {
-    const res = await ConfirmEmailStore.sendCode({email: this.user.email});
+    const res = await ConfirmEmailStore.sendCode({email: this.user!.email});
     if (res) {
       this.success = true;
       return true
