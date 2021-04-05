@@ -387,7 +387,7 @@ export default class  Lesson extends Vue {
   flex-direction: column;
 
   .desc {
-    color: #818c99;
+    color: #000000;
   }
 
   .course-locked {

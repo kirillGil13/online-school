@@ -20,7 +20,7 @@
               </v-row>
             </v-col>
             <v-col class="leader-action pa-0">
-              <Button class="py-3">Подписаться</Button>
+<!--              <Button class="py-3">Подписаться</Button>-->
             </v-col>
           </div>
 <!--          <div :class="['leader_page__desc', $adaptive.isMobile ? 'mt-1' : 'mt-3']"></div>-->
