@@ -35,8 +35,7 @@ export default class SliderLeaders extends Vue {
   @Prop() readonly leaders!: ILeadersListItem[];
 
   swiperComponentOption: SwiperOptions = {
-    slidesPerView: 7,
-    slidesPerGroup:7,
+    slidesPerView: 'auto',
     spaceBetween: 8,
     loop: false,
     navigation: {
@@ -73,15 +72,13 @@ export default class SliderLeaders extends Vue {
 }
 .swiper {
   overflow: hidden !important;
-
 }
 .swiper-slide {
-
+  max-width: 150px;
   .slide {
     border-radius: 12px;
     padding-top: 16px;
     padding-bottom: 16px;
-    max-width: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
