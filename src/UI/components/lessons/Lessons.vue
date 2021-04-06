@@ -28,6 +28,7 @@
 <!--        </v-col>-->
         <v-col class="px-2 py-2" :cols="$adaptive.isMobile ? 2 : ''">
           <Button :class="['with_icon secondary_white', $adaptive.isMobile ? 'py-2' : '']"
+                  @submit="$emit('moveToNextLesson', course.lessons.find(item => item.id === parseInt($route.params.lessonId)).number)"
                   v-if="!last && !$adaptive.isMobile && $route.params.lessonId" small full-width>
             <svg-icon name="Next" :style="{marginRight: $adaptive.isMobile ? 0 : ''}"></svg-icon>
             {{$adaptive.isMobile ? '' : 'Следующий урок'}}

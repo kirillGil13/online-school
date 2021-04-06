@@ -19,7 +19,6 @@
             autoDetectCountry
             flagSize="normal"
             inputClass="input"
-            showFlag
             wrapperClass="wrapper"
             ref="phoneMaskInput"
             @onValidate="(e) => {if (form.phone.length > 2) form.phoneValid = e.isValidByLibPhoneNumberJs; else form.phoneValid = true}"

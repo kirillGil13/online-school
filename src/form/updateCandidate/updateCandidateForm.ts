@@ -9,7 +9,6 @@ import {
     UpdateCandidateFormRequestType
 } from '@/form/updateCandidate/updateCandiadteForm.types';
 import {ICandidateItem} from '@/entity/candidateItem/candidateItem.types';
-import moment from 'moment';
 /* eslint-disable */
 
 /* tslint:disable */

@@ -11,9 +11,9 @@ import {IVideoOptions} from '@/entity/common/videoOptions.types';
 class VideoOptionsModule extends VuexModule {
     options: IVideoOptions = {
         playbackRates: [0.7, 1.0, 1.5, 2.0],
-        autoplay: false,
         muted: false,
         loop: false,
+        autoplay: true,
         preload: 'auto',
         language: 'zh-CN',
         aspectRatio: '16:9',

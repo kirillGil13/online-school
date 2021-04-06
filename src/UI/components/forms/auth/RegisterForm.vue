@@ -88,7 +88,6 @@
               autoDetectCountry
               flagSize="normal"
               inputClass="input"
-              showFlag
               wrapperClass="wrapper"
               ref="phoneMaskInput"
               :disabled="true"
