@@ -30,7 +30,7 @@
           </div>
           <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"
                :style="{width: $adaptive.isMobile ? '100%' : ''}">
-            <Lessons ref="lessons" :course="course"/>
+            <Lessons ref="lessons" :course="course" @moveToNextLesson="moveToNextLesson"/>
             <!--todo or not ?-->
             <!--            <div class="contacts" v-if="!$adaptive.isMobile">-->
             <!--              <div class="contacts__content">-->

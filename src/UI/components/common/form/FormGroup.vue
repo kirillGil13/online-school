@@ -41,24 +41,6 @@ export default class FormGroup extends Vue {
         };
         return attrs;
     }
-
-  mounted(): void {
-    const phoneMask = document.getElementById('phoneMask') ? document.getElementById('phoneMask') : '';
-    if (phoneMask) {
-      //@ts-ignore
-      const flag = phoneMask.getElementsByClassName('flag')[0];
-      if (flag && phoneMask) {
-        //@ts-ignore
-        if (phoneMask.getElementsByClassName('flag-wrapper')[0] === undefined) {
-          const wrapper = document.createElement('div');
-          wrapper.setAttribute('class', 'flag-wrapper');
-          //@ts-ignore
-          flag.parentNode.insertBefore(wrapper, flag);
-          wrapper.appendChild(flag);
-        }
-      }
-    }
-  }
 }
 </script>
 <style lang="scss">

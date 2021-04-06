@@ -21,7 +21,6 @@
             v-bind="attrs"
             flagSize="normal"
             inputClass="input"
-            showFlag
             autoDetectCountry
             wrapperClass="wrapper"
             ref="phoneMaskInput"
