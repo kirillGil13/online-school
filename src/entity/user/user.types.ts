@@ -9,7 +9,7 @@ export interface IUser {
     vkLink: string;
     facebookLink: string;
     instagramLink: string;
-    skype: string;
+    telegram: string;
     description: string;
     photoLink: string;
     initials: string;
@@ -27,7 +27,7 @@ export type UserResponseType = {
     vk_link: string;
     facebook_link: string;
     instagram_link: string;
-    skype: string;
+    telegram: string;
     description: string;
     photoLink: string;
 };
@@ -37,7 +37,7 @@ export type UserUpdateRequestType = {
     lastName?: string;
     shortPhotoLink?: string;
     description?: string;
-    skype?: string;
+    telegram?: string;
     vk_link?: string;
     instagram_link?: string;
     facebook_link?: string;

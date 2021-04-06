@@ -2,9 +2,9 @@
   <v-col>
     <v-row class="leader_page">
       <v-col class="py-0">
-        <v-col class="box-container pa-4">
+        <v-col class="box-container pa-4" v-if="leader">
           <div class="container">
-            <v-col class="pa-0" v-if="leader">
+            <v-col class="pa-0">
               <v-row class="ma-0">
                 <v-col :cols="$adaptive.isMobile ? 4 : 2" class="pa-0">
                   <v-avatar
@@ -20,21 +20,69 @@
               </v-row>
             </v-col>
             <v-col class="leader-action pa-0">
-<!--              <Button class="py-3">Подписаться</Button>-->
+              <!--              <Button class="py-3">Подписаться</Button>-->
             </v-col>
           </div>
-<!--          <div :class="['leader_page__desc', $adaptive.isMobile ? 'mt-1' : 'mt-3']"></div>-->
+          <div :class="['leader_page__desc', $adaptive.isMobile ? 'mt-1' : 'mt-3']" v-if="leader.description !== null">
+            {{ leader.description }}
+          </div>
           <div class="d-flex flex-row px-2 py-1 mt-2">
-            <svg-icon class="social mr-2" name="Facebook"></svg-icon>
-            <svg-icon class="social mr-2" name="Twitter"></svg-icon>
-            <svg-icon class="social mr-2" name="Instagram"></svg-icon>
+            <a :href="leader.facebookLink" target="_blank">
+              <v-btn
+                  class="white--text mr-2 mt-0"
+                  icon
+                  small
+              >
+                <v-icon small>
+                  mdi-facebook
+                </v-icon>
+              </v-btn>
+            </a>
+            <a :href="leader.instagramLink" target="_blank">
+              <v-btn
+                  class="white--text mr-2 mt-0"
+                  color="red lighten-3"
+                  icon
+                  small
+              >
+                <v-icon small>
+                  mdi-instagram
+                </v-icon>
+              </v-btn>
+            </a>
+            <a :href="leader.vkLink" target="_blank">
+              <v-btn
+                  class="white--text mr-2 mt-0"
+                  color="primary"
+                  icon
+                  small
+              >
+                <v-icon small>
+                  mdi-vk
+                </v-icon>
+              </v-btn>
+            </a>
+            <a :href="leader.telegram" target="_blank">
+              <v-btn
+                  class="white--text mt-0"
+                  color="white"
+                  icon
+                  small
+              >
+                <v-icon small>
+                  mdi-telegram
+                </v-icon>
+              </v-btn>
+            </a>
           </div>
         </v-col>
         <v-col class="box-container mt-6 pa-4">
           <Header class="top_bar_small" title="Курсы" action>
             <FilterComponent :search="false" :is-on-right="true" :filters="filters" @filter="onFilter"/>
           </Header>
-          <div :class="['course-list-container course-list-small mt-8 pa-0',$adaptive.isMobile ? 'course-list-mobile' : '']" v-if="leadersCourses.length !== 0 || leadersCoursesLoaded">
+          <div
+              :class="['course-list-container course-list-small mt-8 pa-0',$adaptive.isMobile ? 'course-list-mobile' : '']"
+              v-if="leadersCourses.length !== 0 || leadersCoursesLoaded">
             <LeaderCourseItem v-for="(course, index) in leadersCourses"
                               :key="index"
                               :course="course"
@@ -159,7 +207,7 @@ export default class LeaderPage extends Vue {
   margin-top: -11px !important;
 
   &__desc {
-    font-size: 12px;
+    font-size: 14px;
     color: #828282;
   }
 
@@ -200,12 +248,15 @@ export default class LeaderPage extends Vue {
       margin-top: 0;
     }
   }
+
   .tab-controls {
     justify-content: flex-end !important;
+
     #select:nth-last-child(1) {
       margin-right: 0;
     }
   }
+
   .social {
     cursor: pointer;
     width: 17px !important;

@@ -5,5 +5,5 @@ export type ProfileContactDataRequestType = RequestType & {
     vk: string;
     facebook: string;
     instagram: string;
-    skype: string;
+    telegram: string;
 };

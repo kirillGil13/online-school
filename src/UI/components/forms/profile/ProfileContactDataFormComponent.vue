@@ -36,11 +36,11 @@
       </FormGroup>
     </div>
     <div class="mb-3">
-      <FormGroup v-slot="attrs" :form="form" field="skype" show-custom-error label="Логин в Skype">
+      <FormGroup v-slot="attrs" :form="form" field="telegram" show-custom-error label="Логин в Telegram">
         <input
             class="input input__normal"
-            type="text" name="skype"
-            id="skype"
+            type="text" name="telegram"
+            id="telegram"
             v-model="form[attrs.name]"
             v-bind="attrs"
             @input="attrs.change"
