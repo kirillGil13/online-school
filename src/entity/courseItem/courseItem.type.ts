@@ -9,6 +9,7 @@ export interface ICourseItem {
     isLiked: boolean;
     isDisliked: boolean;
     isFavourite: boolean;
+    photoLink: string;
     lessons: ICourseLessons[];
     level: ICourseLevels;
     resolveType(index: number, routeParam: string): string;
@@ -29,6 +30,7 @@ export type CourseItemResponseType = {
     is_liked: boolean;
     is_disliked: boolean;
     is_favourite: boolean;
+    photo_link: string;
     lessons: CourseLessonsResponseType[];
     level: CourseLevelsResponseType;
 }

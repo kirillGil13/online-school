@@ -16,6 +16,15 @@
                        :isDisliked="course.isDisliked"
                        :isLiked="course.isLiked"
           ></router-view>
+          <div class="course" v-if="!$route.params.lessonId" :style="{width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : ''}">
+            <v-responsive :aspect-ratio="16/9" content-class="course-container">
+              <v-img :aspect-ratio="16/9" width="100%" height="100%" class="course-cover" :src="course.photoLink"></v-img>
+            </v-responsive>
+            <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
+              <h5>ОПИСАНИЕ</h5>
+              <span class="desc">{{ course.description }}</span>
+            </v-col>
+          </div>
           <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']" :style="{width: $adaptive.isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course"/>
             <!--todo or not ?-->
@@ -141,12 +150,12 @@ export default class Course extends Vue {
     if (this.courseLoaded) {
       document.title = this.course!.name + ' - ' + 'ONELINKS';
     }
-    if (!this.$route.params.lessonId) {
-      await this.$router.push({
-        name: this.$routeRules.Lesson,
-        params: {lessonId: this.findCurrent(this.course!.lessons).toString()}
-      });
-    }
+    // if (!this.$route.params.lessonId) {
+    //   await this.$router.push({
+    //     name: this.$routeRules.Lesson,
+    //     params: {lessonId: this.findCurrent(this.course!.lessons).toString()}
+    //   });
+    // }
   }
 
   @Watch('$route.params.lessonId')
@@ -212,19 +221,13 @@ export default class Course extends Vue {
   padding: 0 36px 96px 0;
 }
 
-.course-container {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-
-  &.material {
-    border-radius: 5px;
-  }
-}
-
 .lessons {
   position: relative;
   width: calc(100% - 64% - 16px);
+}
+
+.course-cover {
+  border-radius: 12px;
 }
 
 .contacts {

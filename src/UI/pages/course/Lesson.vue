@@ -135,9 +135,11 @@ export default class  Lesson extends Vue {
 
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
-    CommentsStore.setCommentsToEmpty();
-    await this.fetchData();
-    this.interval = setInterval(() => CommentsStore.fetchAll(this.$route.params.lessonId), 20000);
+    if (this.$route.params.lessonId !== undefined) {
+      CommentsStore.setCommentsToEmpty();
+      await this.fetchData();
+      this.interval = setInterval(() => CommentsStore.fetchAll(this.$route.params.lessonId), 20000);
+    }
   }
 
   @Watch('questionsLoaded')
@@ -381,65 +383,6 @@ export default class  Lesson extends Vue {
 </script>
 
 <style lang="scss">
-.course {
-  width: 64%;
-  display: flex;
-  flex-direction: column;
-
-  .desc {
-    color: #000000;
-  }
-
-  .course-locked {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-
-    .background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      border-radius: 12px;
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-
-      h1 {
-        font-size: 24px;
-        color: #FFFFFF;
-      }
-      h2 {
-        color: #ffffff;
-      }
-
-      h3 {
-        font-size: 16px;
-        color: #FFFFFF;
-      }
-    }
-  }
-
-  .abs {
-    font-size: 24px;
-    z-index: 1;
-    position: absolute;
-    color: #ffffff;
-    top: 36px;
-    left: 36px;
-  }
-}
-
-.course-container {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-
-  &.material {
-    border-radius: 5px;
-  }
-}
 
 .course-video-row {
   margin: 16px 0 16px 24px;
