@@ -13,19 +13,14 @@
           @input="attrs.change"
       >
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
+    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
       <div id="phoneMask">
-      <PhoneMaskInput
-          v-model="form.phone"
-          v-bind="attrs"
-          autoDetectCountry
-          flagSize="normal"
-          inputClass="input"
-          wrapperClass="wrapper"
-          ref="phoneMaskInput"
-          @onValidate="(e) => (form.phoneValid = e.isValidByLibPhoneNumberJs)"
-          @input="changePhone"
-      />
+        <input
+            class="input input__normal"
+            v-model="form[attrs.name]"
+            v-bind="attrs"
+            @input="attrs.change"
+        >
       </div>
     </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">

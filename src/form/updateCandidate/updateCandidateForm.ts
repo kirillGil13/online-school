@@ -1,7 +1,7 @@
 import {Component} from 'vue-property-decorator';
 import {Form} from '@/form/form';
 import {Validate} from '@/plugins/Vuelidate/Decorators';
-import {required, sameAs, email, requiredIf} from 'vuelidate/lib/validators';
+import {required, sameAs, email, requiredIf, maxLength} from 'vuelidate/lib/validators';
 import {IStatuses} from '@/entity/statuses/statuses.types';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 import {
@@ -34,7 +34,8 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
     @Validate(requiredIf(function (vm): boolean {
         return vm.email === '';
     }), 'Введите телефон или email')
-    public phone = '';
+    @Validate(maxLength(15), 'Номер не должен превышать 15 символов')
+    public phone = '+';
 
     @Validate(sameAs(() => true), (form: UpdateCandidateForm): string => 'Введите номер в формате ' + form.phoneMask)
     public phoneValid = true;
@@ -50,7 +51,7 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
 
     getFormData(): UpdateCandidateFormRequestType {
         return {
-            phoneNumber: this.phone.length === 2 ? null : this.phone,
+            phoneNumber: this.phone.length === 1 ? null : this.phone,
             name: this.name,
             email: this.email === '' ? null : this.email,
             account_id: this.accountId,

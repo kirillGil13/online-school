@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import { required, sameAs } from 'vuelidate/lib/validators';
+import {maxLength, minLength, required, sameAs} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {VideoAccessFormRequestType} from '@/form/videoAccess/videoAccessForm.types';
@@ -7,7 +7,11 @@ import {VideoAccessFormRequestType} from '@/form/videoAccess/videoAccessForm.typ
 /* tslint:disable */
 @Component
 export class VideoAccessForm extends Form {
-    public phone = '';
+
+    @Validate(maxLength(15), 'Номер не должен превышать 15 символов')
+    @Validate(minLength(11), 'Номер должен быть не меньше 11 символов')
+    public phone = '+';
+
     public phoneMask = '';
     public accountId = 0;
     public statusId = 1;
