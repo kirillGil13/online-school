@@ -36,7 +36,7 @@
       </FormGroup>
     </div>
     <div class="mb-3">
-      <FormGroup v-slot="attrs" :form="form" field="telegram" show-custom-error label="Логин в Telegram">
+      <FormGroup v-slot="attrs" :form="form" field="telegram" show-custom-error label="Telegram ID (без @)">
         <input
             class="input input__normal"
             type="text" name="telegram"
@@ -48,7 +48,7 @@
       </FormGroup>
     </div>
     <div class="mb-3">
-      <FormGroup v-slot="attrs" :form="form" field="vk" show-custom-error label="Страница ВКонтакте">
+      <FormGroup v-slot="attrs" :form="form" field="vk" show-custom-error label="ВКонтакте ID">
         <input
             class="input input__normal"
             type="text" name="vk"
@@ -60,7 +60,7 @@
       </FormGroup>
     </div>
     <div class="mb-3">
-      <FormGroup v-slot="attrs" :form="form" field="instagram" show-custom-error label="Страница Instagram">
+      <FormGroup v-slot="attrs" :form="form" field="instagram" show-custom-error label="Логин Instagram">
         <input
             class="input input__normal"
             type="text" name="instagram"
@@ -72,7 +72,7 @@
       </FormGroup>
     </div>
     <div class="mb-3">
-      <FormGroup v-slot="attrs" :form="form" field="facebook" show-custom-error label="Страница Facebook">
+      <FormGroup v-slot="attrs" :form="form" field="facebook" show-custom-error label="Facebook ID">
         <input
             class="input input__normal"
             type="text" name="facebook"
