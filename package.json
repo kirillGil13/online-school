@@ -21,7 +21,7 @@
         "luxon": "^1.26.0",
         "moment-duration-format": "^2.3.2",
         "qrcode": "^1.4.4",
-        "swiper": "^6.4.5",
+        "swiper": "^6.5.4",
         "v-clipboard": "^2.2.3",
         "videojs-contrib-hls": "^5.15.0",
         "videojs-resolution-switcher": "^0.4.2",

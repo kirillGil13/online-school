@@ -36,7 +36,7 @@
       <v-row class="events__titles">
         <h3>Мои курсы</h3>
       </v-row>
-      <v-row class="events__blocks" v-if="myCourses.length !== 0">
+      <v-row class="events__blocks mt-6" v-if="myCourses.length !== 0">
         <div :class="['course-list-container mt-4 pa-0',$adaptive.isMobile ? 'course-list-mobile' : '']">
           <LeaderCourseItem v-for="(course, index) in myCourses"
                             :key="index"

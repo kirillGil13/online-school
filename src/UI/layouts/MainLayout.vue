@@ -140,6 +140,7 @@ export default class MainLayout extends Vue {
 
 .content-main {
   width: 100%;
+  min-width: 0;
   padding-top: 10px !important;
 }
 
