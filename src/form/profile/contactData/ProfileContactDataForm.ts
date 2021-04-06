@@ -19,8 +19,8 @@ export class ProfileContactDataForm extends Form {
     @Validate(maxLength(30), 'Ссылка на страницу instagram не должна превышать 30 символов')
     public instagram = '';
 
-    @Validate(maxLength(30), 'Ссылка на страницу skype не должна превышать 30 символов')
-    public skype = '';
+    @Validate(maxLength(30), 'Ссылка на страницу telegram не должна превышать 30 символов')
+    public telegram = '';
 
     @Validate(required, 'Введите email')
     @Validate(email, 'Введите корректный email')
@@ -34,7 +34,7 @@ export class ProfileContactDataForm extends Form {
         this.vk = user.vkLink;
         this.facebook = user.facebookLink;
         this.instagram = user.instagramLink;
-        this.skype = user.skype;
+        this.telegram = user.telegram;
         this.username = user.phoneNumber;
     }
     getFormData(): ProfileContactDataRequestType {
@@ -43,7 +43,7 @@ export class ProfileContactDataForm extends Form {
             vk: this.vk,
             facebook: this.facebook,
             instagram: this.instagram,
-            skype: this.skype,
+            telegram: this.telegram,
         };
     }
 }

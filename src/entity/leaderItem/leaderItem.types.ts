@@ -6,6 +6,13 @@ export interface ILeaderItem {
     email: string;
     phoneNumber: string;
     fullName: string;
+    description: string;
+    vkLink: string;
+    telegram: string;
+    isEmailConfirmed: boolean;
+    isLeader: boolean;
+    instagramLink: string;
+    facebookLink: string;
 }
 export type LeaderItemResponseType = {
     id: number;
@@ -14,4 +21,11 @@ export type LeaderItemResponseType = {
     email: string;
     phoneNumber: string;
     photoLink: string;
+    description: string;
+    vk_link: string;
+    telegram: string;
+    is_email_confirmed: boolean;
+    isLeader: boolean;
+    instagram_link: string;
+    facebook_link: string;
 }

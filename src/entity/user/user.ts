@@ -10,7 +10,7 @@ export class User implements IUser {
     vkLink: string;
     facebookLink: string;
     instagramLink: string;
-    skype: string;
+    telegram: string;
     description: string;
     photoLink: string;
     isEmailConfirmed: boolean;
@@ -24,7 +24,7 @@ export class User implements IUser {
         this.vkLink = data.vk_link;
         this.facebookLink = data.facebook_link;
         this.instagramLink = data.instagram_link;
-        this.skype = data.skype;
+        this.telegram = data.telegram;
         this.name = data.name;
         this.lastName = data.lastName;
         this.isLeader = data.isLeader;

@@ -7,6 +7,13 @@ export default class LeaderItem implements ILeaderItem {
     photoLink: string;
     email: string;
     phoneNumber: string;
+    description: string;
+    vkLink: string;
+    telegram: string;
+    isEmailConfirmed: boolean;
+    isLeader: boolean;
+    instagramLink: string;
+    facebookLink: string;
 
     constructor(data: LeaderItemResponseType) {
         this.id = data.id;
@@ -15,6 +22,13 @@ export default class LeaderItem implements ILeaderItem {
         this.photoLink = data.photoLink;
         this.email = data.email;
         this.phoneNumber = data.phoneNumber;
+        this.description = data.description;
+        this.vkLink = data.vk_link;
+        this.telegram = data.telegram;
+        this.isEmailConfirmed = data.is_email_confirmed;
+        this.isLeader = data.isLeader;
+        this.instagramLink = data.instagram_link;
+        this.facebookLink = data.facebook_link;
     }
 
     get fullName(): string {

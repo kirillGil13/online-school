@@ -238,7 +238,7 @@ export default class Profile extends Vue {
 
   async saveContact(): Promise<void> {
     if (await UserUpdateStore.updateUser({
-      skype: this.contactDataForm.skype,
+      telegram: this.contactDataForm.telegram,
       // eslint-disable-next-line @typescript-eslint/camelcase
       vk_link: this.contactDataForm.vk,
       // eslint-disable-next-line @typescript-eslint/camelcase
