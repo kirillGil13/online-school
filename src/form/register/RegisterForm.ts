@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import { required, sameAs, email } from 'vuelidate/lib/validators';
+import {required, sameAs, email, minLength} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {RegisterRequestType} from '@/form/register/RegisterForm.types';
@@ -10,9 +10,11 @@ export class RegisterForm extends Form {
     public photoLink = '';
 
     @Validate(required, 'Введите имя')
+    @Validate(minLength(2), 'Имя должно быть не меньше двух символов')
     public name = '';
 
     @Validate(required, 'Введите фамилию')
+    @Validate(minLength(2), 'Фамилия должна быть не меньше двух символов')
     public lastName = '';
 
     @Validate(required, 'Введите email')
