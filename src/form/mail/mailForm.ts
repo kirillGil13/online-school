@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import {minLength, required, sameAs} from 'vuelidate/lib/validators';
+import {maxLength, minLength, required, sameAs} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {IMailFormList, MailFormRequestType} from '@/form/mail/mailForm.types';
@@ -9,7 +9,12 @@ import {ICourseLevels} from '@/entity/courseLevels/courseLevels.types';
 export class MailForm extends Form {
     public levelId: number | null = 0;
     public levelList: IMailFormList[] = [];
-    public phone = '';
+
+    @Validate(maxLength(15), 'Номер не должен превышать 15 символов')
+    @Validate(minLength(11), 'Номер должен быть не меньше 11 символов')
+    public phone = '+';
+
+
     public phoneMask = '';
 
     @Validate(required, 'Введите имя')

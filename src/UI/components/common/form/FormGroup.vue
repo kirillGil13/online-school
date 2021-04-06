@@ -22,6 +22,7 @@ export default class FormGroup extends Vue {
     @Prop({ required: true }) readonly form!: Form;
     @Prop({ type: Boolean, default: false }) readonly showCustomError!: boolean;
     @Prop() readonly label!: string;
+    @Prop({default: false}) readonly isPhone!: boolean;
     get validator(): Validation {
         return this.form.$v[this.field];
     }
@@ -38,6 +39,11 @@ export default class FormGroup extends Vue {
         attrs.change = (): void => {
             this.form.$v[this.field].$touch();
             this.form.clearErrors();
+            if (this.isPhone) {
+              if (this.form[this.field].length === 0 || this.form[this.field][0] !== '+') {
+                this.form[this.field] = '+';
+              }
+            }
         };
         return attrs;
     }

@@ -80,18 +80,14 @@
     </div>
 
     <div>
-      <FormGroup v-slot="attrs" :form="form" field="phoneNumber" label="Номер телефона">
+      <FormGroup v-slot="attrs" :form="form" field="phoneNumber" :is-phone="true" label="Номер телефона">
         <div id="phoneMask">
-          <PhoneMaskInput
-              v-model="form.phoneNumber"
+          <input
+              class="input input__normal"
+              v-model="form[attrs.name]"
               v-bind="attrs"
-              autoDetectCountry
-              flagSize="normal"
-              inputClass="input"
-              wrapperClass="wrapper"
-              ref="phoneMaskInput"
-              :disabled="true"
-          />
+              @input="attrs.change"
+          >
         </div>
       </FormGroup>
     </div>

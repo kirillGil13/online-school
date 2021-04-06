@@ -1,12 +1,16 @@
 import { Component } from 'vue-property-decorator';
-import { sameAs } from 'vuelidate/lib/validators';
+import {maxLength, minLength, sameAs} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {PhoneRequestType} from '@/form/phone/phoneForm.types';
 
 @Component
 export class PhoneForm extends Form {
-    public phone = '';
+    @Validate(maxLength(15), 'Номер не должен превышать 15 символов')
+    @Validate(minLength(11), 'Номер должен быть не меньше 11 символов')
+    public phone = '+';
+
+
     public phoneMask = '';
     public token = '';
 

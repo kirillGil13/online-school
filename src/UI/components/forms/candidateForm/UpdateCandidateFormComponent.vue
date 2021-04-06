@@ -11,19 +11,14 @@
           @input="attrs.change"
       >
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phoneValid" show-custom-error label="Номер телефона">
+    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
       <div id="phoneMask">
-        <PhoneMaskInput
-            v-model="form.phone"
+        <input
+            class="input input__normal"
+            v-model="form[attrs.name]"
             v-bind="attrs"
-            autoDetectCountry
-            flagSize="normal"
-            inputClass="input"
-            wrapperClass="wrapper"
-            ref="phoneMaskInput"
-            @onValidate="(e) => {if (form.phone.length > 2) form.phoneValid = e.isValidByLibPhoneNumberJs; else form.phoneValid = true}"
-            @input="changePhone"
-        />
+            @input="attrs.change"
+        >
       </div>
     </FormGroup>
     <FormGroup

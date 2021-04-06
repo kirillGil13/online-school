@@ -1,12 +1,17 @@
 import { Component } from 'vue-property-decorator';
-import {required, sameAs, email, minLength} from 'vuelidate/lib/validators';
+import {required, sameAs, email, minLength, maxLength} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {RegisterRequestType} from '@/form/register/RegisterForm.types';
 
 @Component
 export class RegisterForm extends Form {
+
+    @Validate(maxLength(15), 'Номер не должен превышать 15 символов')
+    @Validate(minLength(11), 'Номер должен быть не меньше 11 символов')
     public phoneNumber = '';
+
+
     public photoLink = '';
 
     @Validate(required, 'Введите имя')
