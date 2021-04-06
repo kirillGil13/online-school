@@ -1,19 +1,14 @@
 <template>
   <v-col class="infoPackageItem py-14" v-if="infoPackageItemLoaded">
-    <div class="landing_title text-center">{{ infoPackageItem.mainVideo.name }}</div>
-    <div class="main-video-wrapper mt-8">
+    <div :class="['landing_title text-center', $adaptive.isMobile ? 'mobile' : '']">{{ infoPackageItem.mainVideo.name }}</div>
+    <div class="main-video-wrapper mt-10">
       <InfoPackageItemVideoComponent :class="['main-video', $adaptive.isMobile ? 'mobile' : '']"
                                      :info-package-item-video="infoPackageItem.mainVideo"
                                      @open="activatorMainVideo = true"/>
     </div>
-    <div class="landing_text-block mt-8 d-flex justify-center align-center flex-column">
-      <div class="landing_title text-center">
-        Кейсы по продукту.
-        <p></p>
-      </div>
-      <div class="block-description text-center">
-        Здесь вы можете ознакомиться с реальными кейсами и отзывами людей, которые уже воспользовались данным продуктом.
-        Просто выберите кейс и уделите несколько минут просмотру.
+    <div class="landing_text-block mt-14 d-flex justify-center align-center flex-column">
+      <div :class="['landing_title text-center', $adaptive.isMobile ? 'mobile' : '']">
+        Истории клиентов
       </div>
     </div>
     <div class="videos" v-if="infoPackageItemLoaded">
@@ -208,49 +203,6 @@ export default class Landing extends Vue {
 </script>
 
 <style lang="scss">
-
-
-
-.blockquote {
-  position: relative;
-  padding: 16px 24px;
-  margin: 16px 46px;
-  font-size: 36px;
-  text-align: center;
-
-  .landing_title {
-    font-size: 24px;
-  }
-}
-
-.blockquote:before,
-.blockquote:after {
-  position: absolute;
-  color: #000000;
-  font-size: 80px;
-  font-family: Times, sans-serif;
-  line-height: 100px;
-}
-
-.blockquote:before {
-  content: '“';
-  left: -30px;
-  top: -20px;
-}
-
-.blockquote:after {
-  content: '”';
-  right: -50px;
-  bottom: 0px;
-}
-
-.blockquote cite {
-  color: #1d1d1f;
-  font-size: 18px;
-  padding-top: 10px;
-  display: block;
-}
-
 .video {
   width: 100%;
   height: 345px;

@@ -11,10 +11,10 @@
           <h4>{{ leader.fullName }}</h4>
         </div>
       </swiper-slide>
-      <div class="swiper-button-prev" @click="prev()" slot="button-prev" v-if="!$adaptive.isMobile">
+      <div class="swiper-button-prev" @click="prev" slot="button-prev" v-if="!$adaptive.isMobile" v-show="leaders.length >= 7">
         <svg-icon name="Slider_Arrow"></svg-icon>
       </div>
-      <div class="swiper-button-next" @click="next()" slot="button-next" v-if="!$adaptive.isMobile">
+      <div class="swiper-button-next" @click="next" slot="button-next" v-if="!$adaptive.isMobile" v-show="leaders.length >= 7">
         <svg-icon name="Slider_Arrow"></svg-icon>
       </div>
     </swiper>
@@ -35,7 +35,8 @@ export default class SliderLeaders extends Vue {
   @Prop() readonly leaders!: ILeadersListItem[];
 
   swiperComponentOption: SwiperOptions = {
-    slidesPerView: 'auto',
+    slidesPerView: 7,
+    slidesPerGroup:7,
     spaceBetween: 8,
     loop: false,
     navigation: {
@@ -47,67 +48,47 @@ export default class SliderLeaders extends Vue {
   proceed(id: number): void {
     this.$router.push({ name: this.$routeRules.LeaderPage, params: { id: id.toString() } });
   }
-
   next(): void {
-    // this.$refs.swiper.$swiper.slideNext();
-    this.checkActive();
+    (this.$refs.swiper as any).$swiper.slideNext();
   }
 
   prev(): void {
-    // this.$refs.swiper.$swiper.slidePrev();
-    this.checkActive();
+    (this.$refs.swiper as any).$swiper.slidePrev();
   }
 
-  checkActive(): void {
-
-    // if (this.$refs.swiper.$swiper.activeIndex != 0) {
-    //     this.$refs.swiper.$swiper.params.el.children[1].style.display = 'flex';
-    // } else this.$refs.swiper.$swiper.params.el.children[1].style.display = 'none';
-  }
 }
 </script>
 <style lang="scss" scoped>
 .swiper {
   width: 100%;
-  position: static;
 }
 
 .swiper-wrapper {
-  position: static;
+  overflow: hidden !important;
 }
 
 .slider-container {
   position: relative;
   margin-bottom: 34px;
 }
+.swiper {
+  overflow: hidden !important;
 
+}
 .swiper-slide {
-  width: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background: #ffffff;
-  border: 1px solid #f2f2f2;
-  box-sizing: border-box;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border-radius: 12px;
-  cursor: pointer;
-
-  &:nth-child(1) {
-    margin-left: 5px;
-  }
 
   .slide {
     border-radius: 12px;
     padding-top: 16px;
     padding-bottom: 16px;
-    height: 100%;
-    width: 100%;
+    max-width: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #f2f2f2;
+    cursor: pointer;
 
     .leader-photo {
       position: relative;
@@ -162,7 +143,7 @@ export default class SliderLeaders extends Vue {
 }
 
 .swiper-button-prev {
-  //display: none;
+  left: 0;
 
   .svg-icon {
     transform: rotate(180deg);
@@ -170,7 +151,7 @@ export default class SliderLeaders extends Vue {
 }
 
 .swiper-button-next {
-  display: flex;
+  right: 0;
 }
 
 .master-rating {
