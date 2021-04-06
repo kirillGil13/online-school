@@ -139,7 +139,7 @@ export default class  Lesson extends Vue {
       CommentsStore.setCommentsToEmpty();
       await this.fetchData();
       this.interval = setInterval(() => CommentsStore.fetchAll(this.$route.params.lessonId), 20000);
-    }
+    } else clearInterval(this.interval);
   }
 
   @Watch('questionsLoaded')

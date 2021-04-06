@@ -16,16 +16,20 @@
                        :isDisliked="course.isDisliked"
                        :isLiked="course.isLiked"
           ></router-view>
-          <div class="course" v-if="!$route.params.lessonId" :style="{width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : ''}">
-            <v-responsive :aspect-ratio="16/9" content-class="course-container">
-              <v-img :aspect-ratio="16/9" width="100%" height="100%" class="course-cover" :src="course.photoLink"></v-img>
+          <div class="course" v-if="!$route.params.lessonId"
+               :style="{width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : ''}">
+            <v-responsive :aspect-ratio="16/9" content-class="course-container" @click="pushToCurrent">
+              <v-img :aspect-ratio="16/9" width="100%" height="100%" class="course-cover" :src="course.photoLink">
+                <div class="play-button"></div>
+              </v-img>
             </v-responsive>
             <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
               <h5>ОПИСАНИЕ</h5>
               <span class="desc">{{ course.description }}</span>
             </v-col>
           </div>
-          <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']" :style="{width: $adaptive.isMobile ? '100%' : ''}">
+          <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"
+               :style="{width: $adaptive.isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course"/>
             <!--todo or not ?-->
             <!--            <div class="contacts" v-if="!$adaptive.isMobile">-->
@@ -117,6 +121,13 @@ export default class Course extends Vue {
     }
   }
 
+  pushToCurrent(): void {
+    this.$router.push({
+      name: this.$routeRules.Lesson,
+      params: {lessonId: this.findCurrent(this.course!.lessons).toString()}
+    });
+  }
+
   getLessonId(lessons: ICourseLessons[], number: number, next: boolean): number {
     if (next) {
       return lessons.find(item => item.number === number + 1)!.id;
@@ -150,12 +161,6 @@ export default class Course extends Vue {
     if (this.courseLoaded) {
       document.title = this.course!.name + ' - ' + 'ONELINKS';
     }
-    // if (!this.$route.params.lessonId) {
-    //   await this.$router.push({
-    //     name: this.$routeRules.Lesson,
-    //     params: {lessonId: this.findCurrent(this.course!.lessons).toString()}
-    //   });
-    // }
   }
 
   @Watch('$route.params.lessonId')
@@ -228,6 +233,7 @@ export default class Course extends Vue {
 
 .course-cover {
   border-radius: 12px;
+  cursor: pointer;
 }
 
 .contacts {
@@ -262,6 +268,39 @@ export default class Course extends Vue {
         color: #828282;
       }
     }
+  }
+}
+
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: rgb(62, 60, 60, 0.7);
+  transform: translate(-50%, -50%);
+  color: hsla(0, 0%, 100%, .74);
+  cursor: pointer;
+  -webkit-transition: .2s;
+  -o-transition: .2s;
+  transition: all ease .5s;
+  width: 68px;
+  height: 68px;
+  border-radius: 100%;
+  border: 3px solid #fff;
+  z-index: 2;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-30%, -50%);
+    -o-transform: translate(-30%, -50%);
+    transform: translate(-30%, -50%);
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-left: 15px solid #fff;
   }
 }
 </style>
