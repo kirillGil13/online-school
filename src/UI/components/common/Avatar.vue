@@ -40,9 +40,6 @@
                 <svg-icon :class="{'medium-size-icon': avatarSize === sizes.MEDIUM}" name="Camera" ></svg-icon>
               </template>
             </v-avatar>
-            <div v-if="showStar" :class="starClass" class="star">
-                <svg-icon name="Star" />
-            </div>
         </div>
     </div>
 </template>
