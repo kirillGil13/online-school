@@ -27,7 +27,7 @@
             {{ leader.description }}
           </div>
           <div class="d-flex flex-row px-2 py-1 mt-2">
-            <a :href="leader.facebookLink" target="_blank">
+            <a :href="leader.facebookLink" target="_blank" v-if="leader.facebookLink">
               <v-btn
                   class="white--text mr-2 mt-0"
                   icon
@@ -38,7 +38,7 @@
                 </v-icon>
               </v-btn>
             </a>
-            <a :href="leader.instagramLink" target="_blank">
+            <a :href="leader.instagramLink" target="_blank" v-if="leader.instagramLink">
               <v-btn
                   class="white--text mr-2 mt-0"
                   color="red lighten-3"
@@ -50,7 +50,7 @@
                 </v-icon>
               </v-btn>
             </a>
-            <a :href="leader.vkLink" target="_blank">
+            <a :href="leader.vkLink" target="_blank" v-if="leader.vkLink">
               <v-btn
                   class="white--text mr-2 mt-0"
                   color="primary"
@@ -62,7 +62,7 @@
                 </v-icon>
               </v-btn>
             </a>
-            <a :href="leader.telegram" target="_blank">
+            <a :href="leader.telegram" target="_blank" v-if="leader.telegram">
               <v-btn
                   class="white--text mt-0"
                   color="white"
