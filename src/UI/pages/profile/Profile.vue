@@ -123,6 +123,7 @@ export default class Profile extends Vue {
   destroy = true;
   show = false;
   alertType = AlertTypeEnum;
+  reader = new FileReader();
 
   constructor() {
     super();
@@ -145,6 +146,14 @@ export default class Profile extends Vue {
         await AuthStore.fetch();
         ProfilePictureStore.clear();
       }
+    }
+  }
+
+  @Watch('activator')
+  onActivatorChange(): void {
+    if (!this.activator) {
+      this.image = '';
+      this.rerender();
     }
   }
 
@@ -178,8 +187,6 @@ export default class Profile extends Vue {
 
   activatorChange(act: boolean): void {
     this.activator = act;
-    this.image = '';
-    this.rerender();
   }
 
   rerender(): void {
@@ -198,15 +205,14 @@ export default class Profile extends Vue {
   }
 
   createBase64(file: File): void {
-    const reader = new FileReader();
-    reader.onload = (e: any): void => {
+    this.reader.onload = (e: any): void => {
       this.image = e.target.result;
     };
-    reader.readAsDataURL(file);
+    this.reader.readAsDataURL(file);
   }
 
   created(): void {
-    document.title = this.user!.fullName + ' - ' + 'OneLinks';
+    document.title = this.user!.fullName + ' - ' + 'ONELINKS';
   }
 
   async setImage(data: any): Promise<void> {

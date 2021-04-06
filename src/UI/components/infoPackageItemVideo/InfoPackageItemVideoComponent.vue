@@ -1,10 +1,11 @@
 <template>
   <div class="course-block" @click="$emit('open', infoPackageItemVideo.id)">
     <v-responsive class="infopack-video-block" :aspect-ratio="16/9">
-      <v-img class="course-image infopack-image" width="100%" height="100%" :src="infoPackageItemVideo.coverLink">
-        <div class="play-button"></div>
-      </v-img>
+        <v-img class="infopack-image" width="100%" height="100%" :aspect-ratio="16/9" :src="infoPackageItemVideo.coverLink">
+          <div class="play-button"></div>
+        </v-img>
     </v-responsive>
+    <div class="course-title">{{infoPackageItemVideo.name}}</div>
   </div>
 </template>
 
@@ -19,15 +20,12 @@ export default class InfoPackageItemVideoComponent extends Vue {
 </script>
 
 <style lang="scss">
-.course-block {
-  width: calc((100% / 3) - 16px);
-}
 .infopack-video-block {
-  border-radius: 18px;
-  max-height: 550px;
+  border-radius: 12px;
 }
 .infopack-image {
   position: relative;
+  border-radius: 12px;
   &:hover {
     .play-button {
       display: block;

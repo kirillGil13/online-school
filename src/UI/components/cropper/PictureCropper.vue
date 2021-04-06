@@ -64,5 +64,7 @@ export default class PictureCropper extends Vue{
 </script>
 
 <style scoped>
-
+.cropper {
+  max-height: 350px;
+}
 </style>

@@ -139,7 +139,7 @@ export default class Course extends Vue {
   async created(): Promise<void> {
     await this.fetchData();
     if (this.courseLoaded) {
-      document.title = this.course!.name + ' - ' + 'OneLinks';
+      document.title = this.course!.name + ' - ' + 'ONELINKS';
     }
     if (!this.$route.params.lessonId) {
       await this.$router.push({

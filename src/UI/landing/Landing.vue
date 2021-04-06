@@ -1,12 +1,12 @@
 <template>
   <v-col class="infoPackageItem py-14" v-if="infoPackageItemLoaded">
     <div class="landing_title text-center">{{ infoPackageItem.mainVideo.name }}</div>
-    <div class="main-video-wrapper">
+    <div class="main-video-wrapper mt-8">
       <InfoPackageItemVideoComponent :class="['main-video', $adaptive.isMobile ? 'mobile' : '']"
                                      :info-package-item-video="infoPackageItem.mainVideo"
                                      @open="activatorMainVideo = true"/>
     </div>
-    <div class="landing_text-block d-flex justify-center align-center flex-column">
+    <div class="landing_text-block mt-8 d-flex justify-center align-center flex-column">
       <div class="landing_title text-center">
         Кейсы по продукту.
         <p></p>
@@ -16,16 +16,11 @@
         Просто выберите кейс и уделите несколько минут просмотру.
       </div>
     </div>
-    <div class="main-video-wrapper d-flex flex-column" v-if="infoPackageItemLoaded">
-      <template v-for="(item, index) in infoPackageItem.videos">
-        <div class="landing_title text-center mb-10" :key="index">
-          {{ item.name }}
-        </div>
-        <InfoPackageItemVideoComponent :class="['main-video', $adaptive.isMobile ? 'mobile' : '']"
-                                       :key="item.id"
-                                       :style="{marginBottom: '100px'}"
+    <div class="videos" v-if="infoPackageItemLoaded">
+        <InfoPackageItemVideoComponent :class="['secondary-video', $adaptive.isMobile ? 'mobile' : '']"
+                                       :key="index"
+                                       v-for="(item, index) in infoPackageItem.videos"
                                        :info-package-item-video="item" @open="open"/>
-      </template>
     </div>
     <div class="landing_text-block mt-12 d-flex justify-center align-center flex-column">
       <blockquote class="blockquote">
@@ -214,15 +209,17 @@ export default class Landing extends Vue {
 
 <style lang="scss">
 
+
+
 .blockquote {
   position: relative;
   padding: 16px 24px;
   margin: 16px 46px;
-  font-size: 16px;
+  font-size: 36px;
   text-align: center;
 
   .landing_title {
-    font-size: 48px;
+    font-size: 24px;
   }
 }
 
@@ -230,7 +227,7 @@ export default class Landing extends Vue {
 .blockquote:after {
   position: absolute;
   color: #000000;
-  font-size: 100px;
+  font-size: 80px;
   font-family: Times, sans-serif;
   line-height: 100px;
 }
@@ -238,18 +235,18 @@ export default class Landing extends Vue {
 .blockquote:before {
   content: '“';
   left: -30px;
-  top: -10px;
+  top: -20px;
 }
 
 .blockquote:after {
   content: '”';
-  right: -60px;
-  bottom: -10px;
+  right: -50px;
+  bottom: 0px;
 }
 
 .blockquote cite {
   color: #1d1d1f;
-  font-size: 21px;
+  font-size: 18px;
   padding-top: 10px;
   display: block;
 }

@@ -318,16 +318,15 @@ h5 {
 .infoPackageItem {
   font-family: 'Ubuntu';
   .landing_title {
-    font-size: 58px;
+    font-size: 36px;
     line-height: 1.0625;
     font-weight: 600;
   }
 
   .landing_text-block {
-    margin-top: 88px;
     .block-description {
       color: #1d1d1f;
-      font-size: 21px;
+      font-size: 18px;
       max-width: 670px;
       width: 100%;
     }
@@ -336,28 +335,19 @@ h5 {
   .main-video-wrapper {
     display: flex;
     justify-content: center;
-    margin-top: 88px;
     .landing_title {
-      font-size: 46px;
+      font-size: 36px;
     }
     .main-video {
       margin-right: 0;
-      width: 100%;
-
-      .course-video-block {
-        height: 425px;
-      }
+      width: 60%;
 
       &.mobile {
         width: 100%;
-
-        .course-video-block {
-          height: 225px !important;
-        }
       }
 
       .course-title {
-        font-size: 36px !important;
+        display: none;
       }
     }
   }
@@ -380,7 +370,7 @@ h5 {
   }
 
   .videos {
-    margin-top: 60px;
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
@@ -389,6 +379,7 @@ h5 {
     .secondary-video {
       margin-right: 16px;
       margin-top: 16px;
+      width: calc((100% / 3) - 16px);
 
       &:nth-child(3n+3) {
         margin-right: 0;

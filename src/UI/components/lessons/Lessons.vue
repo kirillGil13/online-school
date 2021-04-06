@@ -20,12 +20,12 @@
         </ul>
       </div>
       <div class="lesson-btn" :style="{justifyContent: last ? 'flex-start' : ''}">
-        <v-col class="px-2 py-2">
-          <Button :class="['with_icon', $adaptive.isMobile ? 'py-2' : '']" small full-width>
-            <svg-icon name="Chat"></svg-icon>
-            Задать вопрос
-          </Button>
-        </v-col>
+<!--        <v-col class="px-2 py-2">-->
+<!--          <Button :class="['with_icon', $adaptive.isMobile ? 'py-2' : '']" small full-width>-->
+<!--            <svg-icon name="Chat"></svg-icon>-->
+<!--            Задать вопрос-->
+<!--          </Button>-->
+<!--        </v-col>-->
         <v-col class="px-2 py-2" :cols="$adaptive.isMobile ? 2 : ''">
           <Button :class="['with_icon secondary_white', $adaptive.isMobile ? 'py-2' : '']"
                   v-if="!last" small full-width>
