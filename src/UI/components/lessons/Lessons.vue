@@ -1,7 +1,7 @@
 <template>
-  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 18/9 : 42/44">
+  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6 : 42/44">
     <div class="lessons-block box-container">
-      <div class="lesson-container" :style="{height: $adaptive.isMobile ? '70%' : ''}">
+      <div class="lesson-container" :style="{height: $adaptive.isMobile ? '100%' : ''}">
         <ul class="lesson-list" v-if="$route.params.lessonId">
           <li
               v-for="(lesson, index) in course.lessons"
@@ -28,7 +28,7 @@
 <!--        </v-col>-->
         <v-col class="px-2 py-2" :cols="$adaptive.isMobile ? 2 : ''">
           <Button :class="['with_icon secondary_white', $adaptive.isMobile ? 'py-2' : '']"
-                  v-if="!last" small full-width>
+                  v-if="!last && !$adaptive.isMobile" small full-width>
             <svg-icon name="Next" :style="{marginRight: $adaptive.isMobile ? 0 : ''}"></svg-icon>
             {{$adaptive.isMobile ? '' : 'Следующий урок'}}
           </Button>

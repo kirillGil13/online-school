@@ -8,20 +8,22 @@
         </div>
         <div class="content-main pt-0 mb-16">
           <v-main>
-            <Confirm
-                v-if="!user.isEmailConfirmed && !$route.query.accountId"
-                :text="`Для полноценной работы необходимо подтвердить почту ${user.email}`"
-                @show="showNote"
-                :show="show"
-                @submit="sendCode"
-            />
-            <Confirm
-                v-else-if="!error && $route.query.accountId && showSuccess"
-                :text="`Ваша почта ${user.email} успешно подверждена`"
-                @show="showNote"
-                icon
-                :show="show"
-            />
+            <v-col class="py-0" v-if="!user.isEmailConfirmed && !$route.query.accountId">
+              <Confirm
+                  :text="`Для полноценной работы необходимо подтвердить почту ${user.email}`"
+                  @show="showNote"
+                  :show="show"
+                  @submit="sendCode"
+              />
+            </v-col>
+            <v-col class="py-0" v-else-if="!error && $route.query.accountId && showSuccess">
+              <Confirm
+                  :text="`Ваша почта ${user.email} успешно подверждена`"
+                  @show="showNote"
+                  icon
+                  :show="show"
+              />
+            </v-col>
             <Alert :show="success" :type="alertType.Success" text="Ссылка успешно отправлена" @show="showAlert"/>
             <Error v-if="error"/>
             <router-view v-else></router-view>

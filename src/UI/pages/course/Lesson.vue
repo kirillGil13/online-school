@@ -12,7 +12,7 @@
         </div>
       </div>
       <div v-else>
-        <h1 v-if="!isPlaying" class="abs">{{ lesson.name }}</h1>
+        <h1 v-if="!isPlaying && !$adaptive.isMobile" class="abs">{{ lesson.name }}</h1>
         <video-player
             ref="videoPlayer"
             class="video-player vjs-custom-skin"
