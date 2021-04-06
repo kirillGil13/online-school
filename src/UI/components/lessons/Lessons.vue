@@ -2,7 +2,7 @@
   <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6 : 42/44">
     <div class="lessons-block box-container">
       <div class="lesson-container" :style="{height: $adaptive.isMobile ? '100%' : ''}">
-        <ul class="lesson-list" v-if="$route.params.lessonId">
+        <ul class="lesson-list">
           <li
               v-for="(lesson, index) in course.lessons"
               :key="index"
@@ -28,7 +28,7 @@
 <!--        </v-col>-->
         <v-col class="px-2 py-2" :cols="$adaptive.isMobile ? 2 : ''">
           <Button :class="['with_icon secondary_white', $adaptive.isMobile ? 'py-2' : '']"
-                  v-if="!last && !$adaptive.isMobile" small full-width>
+                  v-if="!last && !$adaptive.isMobile && $route.params.lessonId" small full-width>
             <svg-icon name="Next" :style="{marginRight: $adaptive.isMobile ? 0 : ''}"></svg-icon>
             {{$adaptive.isMobile ? '' : 'Следующий урок'}}
           </Button>
@@ -52,6 +52,7 @@ import {ICourseItem} from '@/entity/courseItem/courseItem.type';
 export default class Lessons extends Vue {
   @Prop() readonly course!: ICourseItem;
   lessonType = LessonsTypesEnum;
+  //v-if="$route.params.lessonId"
 
   get last(): boolean {
     return (this.course.lessons[this.course.lessons.length - 1].id.toString() === this.$route.params.lessonId);
