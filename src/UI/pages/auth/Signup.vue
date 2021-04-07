@@ -134,7 +134,7 @@ export default class Signup extends Vue {
           if (res) {
             this.phoneForm.clearErrors();
             this.codeStep = true;
-            this.codeForm.phone = this.phoneForm.phone;
+            this.codeForm.phone = this.phoneForm.getFormData().phone_number;
             return true;
           } else {
             this.codeStep = false;
@@ -155,7 +155,7 @@ export default class Signup extends Vue {
         if (res) {
           this.phoneForm.clearErrors();
           this.codeStep = true;
-          this.codeForm.phone = this.phoneForm.phone;
+          this.codeForm.phone = this.phoneForm.getFormData().phone_number;
           return true;
         } else {
           this.codeStep = false;
@@ -174,7 +174,7 @@ export default class Signup extends Vue {
   async submitCode(): Promise<boolean> {
     const res = await this.codeForm.submit(AuthStore.checkCode);
     if (res) {
-      this.registerForm.phoneNumber = this.codeForm.getFormData().phone_number;
+      this.registerForm.setFormData(this.codeForm.getFormData().phone_number);
       this.registerStep = true;
       return true;
     } else return false;

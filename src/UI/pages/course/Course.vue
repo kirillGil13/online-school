@@ -31,7 +31,7 @@
           <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"
                :style="{width: $adaptive.isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course" @moveToNextLesson="moveToNextLesson"/>
-            <!--todo or not ?-->
+            <!--todo -->
             <!--            <div class="contacts" v-if="!$adaptive.isMobile">-->
             <!--              <div class="contacts__content">-->
             <!--                <div class="contacts__item d-flex flex-row">-->
@@ -103,16 +103,31 @@ export default class Course extends Vue {
   };
   files: ILessonItemFiles[] = [];
 
+  @Watch('$route.params.lessonId')
+  async onChangeRoute(val: string, oldVal: string): Promise<void> {
+    if (oldVal) {
+      await this.fetchData();
+    }
+  }
+
+  get lastLesson(): number {
+    return this.course!.lessons[this.course!.lessons.length - 1].number;
+  }
+
+  get course(): ICourseItem | null {
+    return CourseItemStore.courseItem;
+  }
+
+  get courseLoaded(): boolean {
+    return CourseItemStore.courseLoaded;
+  }
+
   findCurrent(lessons: ICourseLessons[]): number {
     if (lessons.find((el) => el.status === LessonsTypesEnum.UN_DONE || el.status === LessonsTypesEnum.LOCKED)) {
       return lessons.find((el) => el.status === LessonsTypesEnum.UN_DONE || el.status === LessonsTypesEnum.LOCKED)!.id;
     } else {
       return lessons.find((el) => el.number === this.lastLesson)!.id;
     }
-  }
-
-  get lastLesson(): number {
-    return this.course!.lessons[this.course!.lessons.length - 1].number;
   }
 
   passFile(files: ILessonItemFiles[]): void {
@@ -163,13 +178,6 @@ export default class Course extends Vue {
     }
   }
 
-  @Watch('$route.params.lessonId')
-  async onChangeRoute(val: string, oldVal: string): Promise<void> {
-    if (oldVal) {
-      await this.fetchData();
-    }
-  }
-
   async fetchData(): Promise<void> {
     await CourseItemStore.fetchData(this.$route.params.id);
   }
@@ -203,22 +211,6 @@ export default class Course extends Vue {
       await this.fetchData();
     }
   }
-
-  get course(): ICourseItem | null {
-    return CourseItemStore.courseItem;
-  }
-
-  get courseLoaded(): boolean {
-    return CourseItemStore.courseLoaded;
-  }
-
-  // reviewLesson() {}
-  //
-  // moveToNextLesson() {}
-  //
-  // writeMaster() {}
-  //
-  // passTestAgain() {}
 }
 </script>
 <style lang="scss">

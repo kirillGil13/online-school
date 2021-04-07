@@ -141,33 +141,6 @@ export default class Training extends Vue {
     return CourseLevelsStore.courseLevelsLoaded;
   }
 
-  async search(searchBody: string): Promise<void> {
-    this.searchBody = searchBody;
-    await this.filtration();
-  }
-
-  async onFilter(): Promise<void> {
-    await this.filtration();
-  }
-
-  async filtration(): Promise<void> {
-    await LeadersCoursesStore.fetchAll({
-      minCost: this.filters.filterBody.find(item => item.filterType === FiltersNameEnum.Cost)?.filterValue.find(item => item.value === this.filters.default[1])?.minCost,
-      maxCost: this.filters.filterBody.find(item => item.filterType === FiltersNameEnum.Cost)?.filterValue.find(item => item.value === this.filters.default[1])?.maxCost,
-      courseLevelId: this.filters.default[0],
-      name: this.searchBody,
-    });
-  }
-
-  async add(): Promise<void> {
-    if (await this.mailForm.submit(MailStore.create)) {
-      this.show = true;
-    }
-    this.mailForm = new MailForm();
-    this.rerender();
-    this.activator = false;
-  }
-
   close(): void {
     this.activator = false;
   }
@@ -200,6 +173,33 @@ export default class Training extends Vue {
     LeadersStore.fetchAll();
     CourseLevelsStore.fetchAll();
     LeadersCoursesStore.fetchAll();
+  }
+
+  async search(searchBody: string): Promise<void> {
+    this.searchBody = searchBody;
+    await this.filtration();
+  }
+
+  async onFilter(): Promise<void> {
+    await this.filtration();
+  }
+
+  async filtration(): Promise<void> {
+    await LeadersCoursesStore.fetchAll({
+      minCost: this.filters.filterBody.find(item => item.filterType === FiltersNameEnum.Cost)?.filterValue.find(item => item.value === this.filters.default[1])?.minCost,
+      maxCost: this.filters.filterBody.find(item => item.filterType === FiltersNameEnum.Cost)?.filterValue.find(item => item.value === this.filters.default[1])?.maxCost,
+      courseLevelId: this.filters.default[0],
+      name: this.searchBody,
+    });
+  }
+
+  async add(): Promise<void> {
+    if (await this.mailForm.submit(MailStore.create)) {
+      this.show = true;
+    }
+    this.mailForm = new MailForm();
+    this.rerender();
+    this.activator = false;
   }
 }
 </script>

@@ -12,9 +12,12 @@
       >
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
-      <div id="phoneMask">
+      <div id="phoneMask" class="d-flex flex-row">
+        <vue-country-code
+            @onSelect="changeCode" enabledCountryCode :defaultCountry="form.defaultCountry">
+        </vue-country-code>
         <input
-            class="input input__normal"
+            class="input input__normal input-phone"
             v-model="form[attrs.name]"
             v-bind="attrs"
             @input="attrs.change"
@@ -89,6 +92,7 @@ import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {UpdateCandidateForm} from '../../../../form/updateCandidate/updateCandidateForm';
 import {Datetime} from 'vue-datetime';
+import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
 
 @Component({
   components: {FormGroup, Button, PhoneMaskInput, Datetime}
@@ -97,13 +101,8 @@ export default class UpdateCandidateFormComponent extends Vue {
   @Prop() readonly form!: UpdateCandidateForm;
   @Prop() readonly accountId!: number;
 
-  changePhone(): void {
-    if (this.form.phoneMask) {
-      this.form.$v['phoneValid'].$touch();
-      this.form.$v['phone'].$touch();
-    }
-    //@ts-ignore
-    this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
+  changeCode(data: ISelectRegion): void {
+    this.form.region = '+' + data.dialCode;
   }
 
   clear(): void {

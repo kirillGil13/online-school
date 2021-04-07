@@ -1,6 +1,7 @@
 <template>
   <v-col class="pa-6 d-flex justify-center flex-column mail_form">
     <h1 class="mx-auto my-0">Создать курс</h1>
+    <div class="text-center mt-3"><font color="#828282">Заполните форму ниже, и наши менеджеры свяжутся с Вами для дальнейшего обсуждения Вашего курса</font></div>
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="name" show-custom-error label="Имя"
     >
@@ -14,9 +15,12 @@
       >
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
-      <div id="phoneMask">
+      <div id="phoneMask" class="d-flex flex-row">
+        <vue-country-code
+            @onSelect="changeCode" enabledCountryCode>
+        </vue-country-code>
         <input
-            class="input input__normal"
+            class="input input__normal input-phone"
             v-model="form[attrs.name]"
             v-bind="attrs"
             @input="attrs.change"
@@ -71,7 +75,7 @@
     </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
       <Button class="secondary_blue mr-3" small @submit="$emit('close')">Отмена</Button>
-      <Button full-width small :disabled="form.disabled" @submit="$emit('add')">Добавить кандидата</Button>
+      <Button full-width small :disabled="form.disabled" @submit="$emit('add')">Отправить</Button>
     </div>
     <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div>
   </v-col>
@@ -85,6 +89,7 @@ import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {ICourseLevels} from '../../../../entity/courseLevels/courseLevels.types';
 import {MailForm} from '../../../../form/mail/mailForm';
+import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
 
 @Component({
   components: {FormGroup, Button, PhoneMaskInput}
@@ -98,12 +103,8 @@ export default class MailFormComponent extends Vue {
     this.form.setFormData(this.levels);
   }
 
-  changePhone(): void {
-    if (this.form.phoneMask) {
-      this.form.$v['phoneValid'].$touch();
-    }
-    //@ts-ignore
-    this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
+  changeCode(data: ISelectRegion): void {
+    this.form.region = '+' + data.dialCode;
   }
 }
 </script>

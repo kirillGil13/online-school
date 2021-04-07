@@ -1,18 +1,17 @@
 import { Component } from 'vue-property-decorator';
-import {required, sameAs, email, minLength, maxLength} from 'vuelidate/lib/validators';
+import {required, sameAs, email, minLength} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {RegisterRequestType} from '@/form/register/RegisterForm.types';
+import {countries} from '@/countries';
 
 @Component
 export class RegisterForm extends Form {
-
-    @Validate(maxLength(15), 'Номер не должен превышать 15 символов')
-    @Validate(minLength(11), 'Номер должен быть не меньше 11 символов')
-    public phoneNumber = '';
-
+    public phone = '';
 
     public photoLink = '';
+    public defaultCountry = '';
+    public region = '';
 
     @Validate(required, 'Введите имя')
     @Validate(minLength(2), 'Имя должно быть не меньше двух символов')
@@ -37,12 +36,28 @@ export class RegisterForm extends Form {
 
     getFormData(): RegisterRequestType {
         return {
-            phoneNumber: this.phoneNumber,
+            phoneNumber: this.region + this.phone,
             name: this.name,
             lastName: this.lastName,
             email: this.email,
             password: this.password,
             photoLink: this.photoLink
         };
+    }
+
+    setFormData(data: string): void {
+        for (let i = 0; i < countries.length; i++) {
+            if (data) {
+                if (data.indexOf('+' + countries[i].code) >= 0) {
+                    this.defaultCountry = countries[i].iso;
+                    this.phone = data.replace('+' + countries[i].code, '');
+                    this.region = '+' + countries[i].code;
+                }
+            }
+            else {
+                this.phone = '';
+                this.defaultCountry = '';
+            }
+        }
     }
 }

@@ -14,9 +14,12 @@
       >
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
-      <div id="phoneMask">
+      <div id="phoneMask" class="d-flex flex-row">
+        <vue-country-code
+            @onSelect="changeCode" enabledCountryCode>
+        </vue-country-code>
         <input
-            class="input input__normal"
+            class="input input__normal input-phone"
             v-model="form[attrs.name]"
             v-bind="attrs"
             @input="attrs.change"
@@ -38,6 +41,7 @@ import Button from '../../common/Button.vue';
 import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {VideoAccessForm} from '../../../../form/videoAccess/videoAccessForm';
+import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
 
 @Component({
   components: {FormGroup, Button, PhoneMaskInput}
@@ -52,12 +56,9 @@ export default class VideoAccessFormComponent extends Vue {
     this.form.setFormData(this.accountId, this.infoPackId);
   }
 
-  changePhone(): void {
-    if (this.form.phoneMask) {
-      this.form.$v['phoneValid'].$touch();
-    }
-    //@ts-ignore
-    this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
+  changeCode(data: ISelectRegion): void {
+    this.form.region = '+' + data.dialCode;
+    console.log(this.form.region);
   }
 }
 </script>

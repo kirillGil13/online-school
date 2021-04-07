@@ -4,11 +4,15 @@ import { Form } from '@/form/form';
 import {IUser} from '@/entity/user';
 import {ProfileContactDataRequestType} from '@/form/profile/contactData/ProfileContactDataForm.types';
 import {Validate} from '@/plugins/Vuelidate/Decorators';
+import {countries} from '@/countries';
 
 @Component
 export class ProfileContactDataForm extends Form {
 
     public serverErrors: { [key: string]: string[] } = {};
+
+    public defaultCountry = '';
+    public region = '';
 
     @Validate(maxLength(30), 'Ссылка на страницу vk не должна превышать 30 символов')
     public vk = '';
@@ -27,7 +31,7 @@ export class ProfileContactDataForm extends Form {
     public email = '';
 
     @Validate(required, 'Введите номер телефона')
-    public username = '';
+    public phone = '';
 
     setFormData(user: IUser): void {
         this.email = user.email;
@@ -35,7 +39,20 @@ export class ProfileContactDataForm extends Form {
         this.facebook = user.facebookLink;
         this.instagram = user.instagramLink;
         this.telegram = user.telegram;
-        this.username = user.phoneNumber;
+        this.phone = user.phoneNumber;
+        for (let i = 0; i < countries.length; i++) {
+            if (user.phoneNumber) {
+                if (user.phoneNumber.indexOf('+' + countries[i].code) >= 0) {
+                    this.defaultCountry = countries[i].iso;
+                    this.phone = user.phoneNumber.replace('+' + countries[i].code, '');
+                    this.region = '+' + countries[i].code;
+                }
+            }
+            else {
+                this.phone = '';
+                this.defaultCountry = '';
+            }
+        }
     }
     getFormData(): ProfileContactDataRequestType {
         return {

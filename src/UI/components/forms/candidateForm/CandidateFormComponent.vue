@@ -14,9 +14,12 @@
       >
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
-      <div id="phoneMask">
+      <div id="phoneMask" class="d-flex flex-row">
+        <vue-country-code
+            @onSelect="changeCode" enabledCountryCode>
+        </vue-country-code>
         <input
-            class="input input__normal"
+            class="input input__normal input-phone"
             v-model="form[attrs.name]"
             v-bind="attrs"
             @input="attrs.change"
@@ -95,6 +98,7 @@ import {IStatuses} from '../../../../entity/statuses/statuses.types';
 import {IInfoPackage} from '../../../../entity/infoPackages/infoPackage.types';
 import Modal from '../../common/Modal.vue';
 import {Datetime} from 'vue-datetime';
+import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
 
 @Component({
   components: {Modal, FormGroup, Button, PhoneMaskInput, Datetime}
@@ -118,13 +122,8 @@ export default class CandidateFormComponent extends Vue {
     } else this.activatorDate = false;
   }
 
-  changePhone(): void {
-    if (this.form.phoneMask) {
-      this.form.$v['phoneValid'].$touch();
-      this.form.$v['phone'].$touch();
-    }
-    //@ts-ignore
-    this.form.phoneMask = this.$refs.phoneMaskInput.$refs.phoneMask.mask;
+  changeCode(data: ISelectRegion): void {
+    this.form.region = '+' + data.dialCode;
   }
   clear(): void {
     this.form.callTimeFake = '';
