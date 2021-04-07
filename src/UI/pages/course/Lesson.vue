@@ -157,27 +157,6 @@ export default class  Lesson extends Vue {
     }
   }
 
-  async fetchData(): Promise<void> {
-    await LessonItemStore.fetchData(this.$route.params.lessonId.toString());
-    await CommentsStore.fetchAll(this.$route.params.lessonId);
-    this.commentsForm = new CommentsForm();
-    this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
-    if (this.lessonLoaded) {
-      VideoOptionsStore.handleVideo({
-        src: this.lesson!.m3u8FileLink,
-        poster: this.lesson!.photoLink,
-        currentTime: this.lesson!.timeCode
-      });
-      if (this.lesson!.homeworkIsDone) {
-        await RightAnswersStore.fetchAll(this.lesson!.homeworkId);
-      } else if (this.lesson!.homeworkId) {
-        await QuestionsStore.fetchAll(this.lesson!.homeworkId);
-        this.testingForm = new TestingForm(this.questions!.tests);
-        this.testingForm.activeStep[0].active = true;
-      }
-    }
-  }
-
   get lesson(): ILessonItem | null {
     return LessonItemStore.lessonItem;
   }
@@ -208,6 +187,84 @@ export default class  Lesson extends Vue {
 
   get commentsLoaded(): boolean {
     return CommentsStore.commentsLoaded;
+  }
+
+  passFiles(): void {
+    this.$emit('passFile', this.lesson!.files);
+  }
+
+  playerReadied(player: any): void {
+    this.isPlaying = false;
+    player.currentTime(this.lesson!.timeCode);
+  }
+
+  onPlayerPlay(): void {
+    this.isPlaying = true;
+  }
+
+  onPlayerPause(): void {
+    this.isPlaying = false;
+  }
+
+  onPlayerLoadeddata(): void {
+    console.log('player loadedData');
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
+  }
+
+  handleFavourite(): void {
+    this.$emit('handleFavourite');
+    this.show = true;
+  }
+
+  activatorChange(act: boolean): void {
+    this.activator = act;
+  }
+
+  discuss(): void {
+    const item = document.getElementById('message')!;
+    item.scrollIntoView();
+    item.focus();
+  }
+
+  respond(data: any): void {
+    this.commentsForm.commentId = data.id;
+    if (!data.index) {
+      this.commentsForm.message = this.comments.find(item => item.id === data.id)!.fullName + ', ';
+      this.commentsForm.author = this.comments.find(item => item.id === data.id)!.fullName;
+    } else {
+      this.commentsForm.message = this.comments.find(item => item.id === data.id)!.answers[data.index].fullName + ', ';
+      this.commentsForm.author = this.comments.find(item => item.id === data.id)!.answers[data.index].fullName;
+    }
+    document.getElementById('message')!.focus();
+  }
+
+  beforeDestroy(): void {
+    clearInterval(this.interval);
+    CommentsStore.setCommentsToEmpty();
+  }
+
+  async fetchData(): Promise<void> {
+    await LessonItemStore.fetchData(this.$route.params.lessonId.toString());
+    await CommentsStore.fetchAll(this.$route.params.lessonId);
+    this.commentsForm = new CommentsForm();
+    this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
+    if (this.lessonLoaded) {
+      VideoOptionsStore.handleVideo({
+        src: this.lesson!.m3u8FileLink,
+        poster: this.lesson!.photoLink,
+        currentTime: this.lesson!.timeCode
+      });
+      if (this.lesson!.homeworkIsDone) {
+        await RightAnswersStore.fetchAll(this.lesson!.homeworkId);
+      } else if (this.lesson!.homeworkId) {
+        await QuestionsStore.fetchAll(this.lesson!.homeworkId);
+        this.testingForm = new TestingForm(this.questions!.tests);
+        this.testingForm.activeStep[0].active = true;
+      }
+    }
   }
 
   async created(): Promise<void> {
@@ -312,64 +369,6 @@ export default class  Lesson extends Vue {
       }
     }
   }
-
-  passFiles(): void {
-    this.$emit('passFile', this.lesson!.files);
-  }
-
-  playerReadied(player: any): void {
-    this.isPlaying = false;
-    player.currentTime(this.lesson!.timeCode);
-  }
-
-  onPlayerPlay(): void {
-    this.isPlaying = true;
-  }
-
-  onPlayerPause(): void {
-    this.isPlaying = false;
-  }
-
-  onPlayerLoadeddata(): void {
-    console.log('player loadedData');
-  }
-
-  showAlert(show: boolean): void {
-    this.show = show;
-  }
-
-  handleFavourite(): void {
-    this.$emit('handleFavourite');
-    this.show = true;
-  }
-
-  activatorChange(act: boolean): void {
-    this.activator = act;
-  }
-
-  discuss(): void {
-    const item = document.getElementById('message')!;
-    item.scrollIntoView();
-    item.focus();
-  }
-
-  respond(data: any): void {
-    this.commentsForm.commentId = data.id;
-    if (!data.index) {
-      this.commentsForm.message = this.comments.find(item => item.id === data.id)!.fullName + ', ';
-      this.commentsForm.author = this.comments.find(item => item.id === data.id)!.fullName;
-    } else {
-      this.commentsForm.message = this.comments.find(item => item.id === data.id)!.answers[data.index].fullName + ', ';
-      this.commentsForm.author = this.comments.find(item => item.id === data.id)!.answers[data.index].fullName;
-    }
-    document.getElementById('message')!.focus();
-  }
-
-  beforeDestroy(): void {
-    clearInterval(this.interval);
-    CommentsStore.setCommentsToEmpty();
-  }
-
 
   async send(): Promise<void> {
     await RightAnswersStore.postAnswers({answers: this.testingForm.results, param: this.lesson!.homeworkId.toString()});

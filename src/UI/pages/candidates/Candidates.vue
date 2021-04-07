@@ -278,6 +278,17 @@ export default class Candidates extends Vue {
     this.activatorCallTime = true;
   }
 
+  created(): void {
+    this.fetchData();
+  }
+
+  fetchData(): void {
+    StatusesStore.fetchAll();
+    CandidatesStore.fetchAll();
+    InfoPackagesStore.fetchAll();
+    StatusIconsStore.fetchAll();
+  }
+
   async search(searchBody: string): Promise<void> {
     this.searchBody = searchBody;
     await this.filtration();
@@ -375,17 +386,6 @@ export default class Candidates extends Vue {
     this.callTimeForm = new CallTimeForm();
     this.rerender();
     this.activatorCallTime = false;
-  }
-
-  created(): void {
-    this.fetchData();
-  }
-
-  fetchData(): void {
-    StatusesStore.fetchAll();
-    CandidatesStore.fetchAll();
-    InfoPackagesStore.fetchAll();
-    StatusIconsStore.fetchAll();
   }
 
 }

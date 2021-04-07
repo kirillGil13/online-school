@@ -12,7 +12,6 @@ import Banner from '../components/common/Banner.vue';
 import Sidebar from '../components/sidebar/Sidebar.vue';
 import Logo from '../components/common/Logo.vue';
 import {startIntercomMessenger} from '../../plugins/Intercom';
-import {AuthStore} from '../../store/modules/Auth';
 
 @Component({
     components: {

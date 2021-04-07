@@ -1,7 +1,7 @@
 import {Component} from 'vue-property-decorator';
 import {Form} from '@/form/form';
 import {Validate} from '@/plugins/Vuelidate/Decorators';
-import {required, sameAs, email, requiredIf, maxLength} from 'vuelidate/lib/validators';
+import {required, sameAs, email, requiredIf, maxLength, numeric, minLength} from 'vuelidate/lib/validators';
 import {IStatuses} from '@/entity/statuses/statuses.types';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 import {
@@ -9,6 +9,7 @@ import {
     UpdateCandidateFormRequestType
 } from '@/form/updateCandidate/updateCandiadteForm.types';
 import {ICandidateItem} from '@/entity/candidateItem/candidateItem.types';
+import {countries} from '@/countries';
 /* eslint-disable */
 
 /* tslint:disable */
@@ -24,6 +25,8 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
     public statusList: IUpdateCandidateFormList[] = [];
     public callTime: number | null = 0;
     public callTimeFake = '';
+    public region = '';
+    public defaultCountry = '';
 
     constructor() {
         super();
@@ -34,24 +37,23 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
     @Validate(requiredIf(function (vm): boolean {
         return vm.email === '';
     }), 'Введите телефон или email')
-    @Validate(maxLength(15), 'Номер не должен превышать 15 символов')
-    public phone = '+';
-
-    @Validate(sameAs(() => true), (form: UpdateCandidateForm): string => 'Введите номер в формате ' + form.phoneMask)
-    public phoneValid = true;
+    @Validate(numeric, 'Поле должно содержать только цифры')
+    @Validate(minLength(8), 'Номер должен быть не меньше 8 символов')
+    @Validate(maxLength(12), 'Номер должен быть не больше 12 символов')
+    public phone = '';
 
     @Validate(required, 'Введите имя ')
     public name = '';
 
     @Validate(requiredIf(function (vm): boolean {
-        return vm.phone.length <= 2;
+        return vm.phone === '';
     }), 'Введите телефон или email')
     @Validate(email, 'Введите корректный Email')
     public email = '';
 
     getFormData(): UpdateCandidateFormRequestType {
         return {
-            phoneNumber: this.phone.length === 1 ? null : this.phone,
+            phoneNumber: this.phone === '' ? null : this.region + this.phone,
             name: this.name,
             email: this.email === '' ? null : this.email,
             account_id: this.accountId,
@@ -77,7 +79,19 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
         this.accountId = accountId;
         this.name = data.name;
         this.email = data.email ? data.email : '';
-        this.phone = data.phoneNumber ? data.phoneNumber : '';
+        for (let i = 0; i < countries.length; i++) {
+            if (data.phoneNumber) {
+                if (data.phoneNumber.indexOf('+' + countries[i].code) >= 0) {
+                    this.defaultCountry = countries[i].iso;
+                    this.phone = data.phoneNumber.replace('+' + countries[i].code, '');
+                    this.region = '+' + countries[i].code;
+                }
+            }
+            else {
+                this.phone = '';
+                this.defaultCountry = '';
+            }
+        }
         this.callTime = data.callTime;
         const date = new Date(this.callTime! * 1000);
         this.callTimeFake = date.toISOString();

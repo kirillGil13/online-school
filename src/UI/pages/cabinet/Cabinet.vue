@@ -155,15 +155,6 @@ export default class Cabinet extends Vue {
     });
   }
 
-  async add(): Promise<void> {
-    if (await this.mailForm.submit(MailStore.create)) {
-      this.show = true;
-    }
-    this.mailForm = new MailForm();
-    this.rerender();
-    this.activator = false;
-  }
-
   close(): void {
     this.activator = false;
   }
@@ -188,6 +179,15 @@ export default class Cabinet extends Vue {
 
   async created(): Promise<void> {
     await this.fetchData();
+  }
+
+  async add(): Promise<void> {
+    if (await this.mailForm.submit(MailStore.create)) {
+      this.show = true;
+    }
+    this.mailForm = new MailForm();
+    this.rerender();
+    this.activator = false;
   }
 
   async filtration(): Promise<void> {

@@ -1,4 +1,4 @@
-<template>
+c<template>
   <v-col class="infoPackageItem py-14" v-if="infoPackageItemLoaded">
     <div :class="['landing_title text-center', $adaptive.isMobile ? 'mobile' : '']">{{ infoPackageItem.mainVideo.name }}</div>
     <div class="main-video-wrapper mt-10">
@@ -28,7 +28,7 @@
     </div>
     <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
       <template v-slot:content>
-        <VideoAccessFormComponent v-if="!codeStep" :form="accessForm" @close="close" @access="submitPhone"
+        <VideoAccessFormComponent v-if="codeStep" :form="accessForm" @close="close" @access="submitPhone"
                                   :account-id="+$route.query.account_id" :info-pack-id="+$route.params.id"/>
         <v-col class="pa-6 text-center" v-else>
           <h1 class="mx-auto my-0">Получить доступ к видео</h1>
@@ -156,12 +156,12 @@ export default class Landing extends Vue {
 
   async submitPhone(again?: boolean): Promise<boolean> {
     // eslint-disable-next-line @typescript-eslint/camelcase
-    const res = await CandidatesStore.sendCode({phone_number: this.accessForm.phone});
+    const res = await CandidatesStore.sendCode({phone_number: this.accessForm.getFormData().phoneNumber});
     if (!again) {
       if (res) {
         this.accessForm.clearErrors();
         this.codeStep = true;
-        this.codeForm.phone = this.accessForm.phone;
+        this.codeForm.phone = this.accessForm.getFormData().phoneNumber;
         return true;
       } else {
         this.codeStep = false;

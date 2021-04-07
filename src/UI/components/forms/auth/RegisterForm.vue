@@ -80,13 +80,17 @@
     </div>
 
     <div>
-      <FormGroup v-slot="attrs" :form="form" field="phoneNumber" :is-phone="true" label="Номер телефона">
-        <div id="phoneMask">
+      <FormGroup v-slot="attrs" :form="form" field="phone" :is-phone="true" label="Номер телефона">
+        <div id="phoneMask" class="d-flex flex-row">
+          <vue-country-code
+               enabledCountryCode :defaultCountry="form.defaultCountry" :disabled="true">
+          </vue-country-code>
           <input
-              class="input input__normal"
+              class="input input__normal input-phone"
               v-model="form[attrs.name]"
               v-bind="attrs"
               @input="attrs.change"
+              :disabled="true"
           >
         </div>
       </FormGroup>

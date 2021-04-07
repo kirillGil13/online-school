@@ -1,14 +1,5 @@
 <template>
   <v-col class="mt-3 pa-0">
-    <v-alert
-        text
-        border="top"
-        type="info"
-        class="contact-info"
-    >
-      <div class="contact-info__text">Заполняйте контактные данные корректно! <br>
-        На основе этих данных вам будет создаваться персональный лендинг для привлечения новых партнеров.</div>
-    </v-alert>
     <div class="mb-3">
       <FormGroup v-slot="attrs" :form="form" field="email" show-custom-error label="Email">
         <input
@@ -23,16 +14,19 @@
       </FormGroup>
     </div>
     <div class="mb-3">
-      <FormGroup v-slot="attrs" :form="form" field="username" show-custom-error label="Телефон">
-        <input
-            class="input input__normal"
-            type="text" name="username"
-            id="username"
-            :disabled="true"
-            v-model="form[attrs.name]"
-            v-bind="attrs"
-            @input="attrs.change"
-        >
+      <FormGroup v-slot="attrs" :form="form" field="phone" show-custom-error label="Телефон">
+        <div id="phoneMask" class="d-flex flex-row">
+          <vue-country-code
+              enabledCountryCode :defaultCountry="form.defaultCountry" :disabled="true">
+          </vue-country-code>
+          <input
+              class="input input__normal input-phone"
+              v-model="form[attrs.name]"
+              v-bind="attrs"
+              @input="attrs.change"
+              :disabled="true"
+          >
+        </div>
       </FormGroup>
     </div>
     <div class="mb-3">

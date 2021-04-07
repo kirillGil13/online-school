@@ -42,12 +42,12 @@ export default class Chosen extends Vue {
     return CoursesFavouriteStore.coursesFavouriteLoaded;
   }
 
-  async created(): Promise<void> {
-    await CoursesFavouriteStore.fetchAll();
-  }
-
   proceed(id: number): void {
     this.$router.push({path: `/course/${id}`});
+  }
+
+  async created(): Promise<void> {
+    await CoursesFavouriteStore.fetchAll();
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <FormInput v-slot="attrs" :messages="form.getMessages(field)" :server-errors="serverErrors" :validator="validator">
-      <label v-if="label">{{label}}</label>
+      <label class="d-flex justify-start" v-if="label">{{label}}</label>
         <slot v-bind="attributes(attrs)" />
         <div v-if="showCustomError">
             <span v-for="(error, i) in attrs.errorMessages" :key="i" class="red--text ml-4"> {{ error }} </span>
@@ -39,11 +39,6 @@ export default class FormGroup extends Vue {
         attrs.change = (): void => {
             this.form.$v[this.field].$touch();
             this.form.clearErrors();
-            if (this.isPhone) {
-              if (this.form[this.field].length === 0 || this.form[this.field][0] !== '+') {
-                this.form[this.field] = '+';
-              }
-            }
         };
         return attrs;
     }

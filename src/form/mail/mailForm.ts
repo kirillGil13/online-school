@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import {maxLength, minLength, required, sameAs} from 'vuelidate/lib/validators';
+import {maxLength, minLength, numeric, required} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {IMailFormList, MailFormRequestType} from '@/form/mail/mailForm.types';
@@ -9,19 +9,17 @@ import {ICourseLevels} from '@/entity/courseLevels/courseLevels.types';
 export class MailForm extends Form {
     public levelId: number | null = 0;
     public levelList: IMailFormList[] = [];
-
-    @Validate(maxLength(15), 'Номер не должен превышать 15 символов')
-    @Validate(minLength(11), 'Номер должен быть не меньше 11 символов')
-    public phone = '+';
+    public region = '';
 
 
-    public phoneMask = '';
+    @Validate(numeric, 'Поле должно содержать только цифры')
+    @Validate(minLength(8), 'Номер должен быть не меньше 8 символов')
+    @Validate(maxLength(12), 'Номер должен быть не больше 12 символов')
+    @Validate(required, 'Введите номер')
+    public phone = '';
 
     @Validate(required, 'Введите имя')
     public name = '';
-
-    @Validate(sameAs(() => true), (form: MailForm): string => 'Введите номер в формате ' + form.phoneMask)
-    public phoneValid = true;
 
     @Validate(required, 'Введите название курса')
     @Validate(minLength(3), 'Название должно содержать не меньше 3 символов')
@@ -38,7 +36,7 @@ export class MailForm extends Form {
             name: this.name,
             topic: this.topic,
             description: this.description,
-            phoneNumber: this.phone,
+            phoneNumber: this.region + this.phone,
             levelId: this.levelId
         };
     }

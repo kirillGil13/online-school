@@ -13,14 +13,6 @@ import {AuthStore} from '@/store/modules/Auth';
 @Component
 export default class App extends Vue {
 
-  // ws: WebSocket;
-  // message = {
-  //   type: 'send-message-service_type',
-  //   data: {
-  //     purposeAccountId: 20,
-  //     text: 'hi',
-  //   }
-  // }
   @Watch('$vuetify.breakpoint.name')
   onBreakpointChange(): void {
     this.$adaptive.isMobile = this.resolveAdaptiveMobile();
@@ -29,16 +21,6 @@ export default class App extends Vue {
   async created(): Promise<void> {
     this.$adaptive.isMobile = this.resolveAdaptiveMobile();
     await AuthStore.load();
-    // this.ws = new WebSocket(`${process.env.VUE_APP_WSS_URL}?token=` + localStorage.getItem('token'));
-    // this.ws.onopen = function(): void {
-    //   console.log('WS подключенно')
-    // };
-    // this.ws.onclose = function(eventclose: any): void {
-    //   console.log('соеденение закрыто причина: ' + eventclose)
-    // }
-    // this.ws.onmessage = function(msg: any): void {
-    //   console.log('Сообщение ' + msg)
-    // }
   }
 
   resolveAdaptiveMobile(): boolean {

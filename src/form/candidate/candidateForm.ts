@@ -2,7 +2,7 @@ import {Component} from 'vue-property-decorator';
 import {Form} from '@/form/form';
 import {CandidateFormRequestType, ICandidateForm, ICandidateFormList} from '@/form/candidate/candidateForm.types';
 import {Validate} from '@/plugins/Vuelidate/Decorators';
-import {required, sameAs, email, requiredIf, maxLength} from 'vuelidate/lib/validators';
+import {required, sameAs, email, requiredIf, maxLength, numeric, minLength} from 'vuelidate/lib/validators';
 import {IStatuses} from '@/entity/statuses/statuses.types';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 /* eslint-disable */
@@ -10,7 +10,6 @@ import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 /* tslint:disable */
 @Component
 export class CandidateForm extends Form implements ICandidateForm {
-    public phoneMask = '';
     public product: number | null = 0;
     public statusId = 0;
     public isFiction = true;
@@ -19,30 +18,30 @@ export class CandidateForm extends Form implements ICandidateForm {
     public callTime = 0;
     public productList: ICandidateFormList[] = [];
     public statusList: ICandidateFormList[] = [];
+    public region = '';
 
     public serverErrors: { [key: string]: string[] } = {};
 
     @Validate(requiredIf(function (vm): boolean {
         return vm.email === '';
     }), 'Введите телефон или email')
-    @Validate(maxLength(15), 'Номер не должен превышать 15 символов')
-    public phone = '+';
-
-    @Validate(sameAs(() => true), (form: CandidateForm): string => 'Введите номер в формате ' + form.phoneMask)
-    public phoneValid = true;
+    @Validate(numeric, 'Поле должно содержать только цифры')
+    @Validate(minLength(8), 'Номер должен быть не меньше 8 символов')
+    @Validate(maxLength(12), 'Номер должен быть не больше 12 символов')
+    public phone = '';
 
     @Validate(required, 'Введите имя ')
     public name = '';
 
     @Validate(requiredIf(function (vm): boolean {
-        return vm.phone.length <= 1;
+        return vm.phone === '';
     }), 'Введите телефон или email')
     @Validate(email, 'Введите корректный email')
     public email = '';
 
     getFormData(): CandidateFormRequestType {
         return {
-            phoneNumber: this.phone.length === 1 ? undefined : this.phone,
+            phoneNumber: this.phone === '' ? undefined : this.region + this.phone,
             name: this.name,
             email: this.email === '' ? undefined : this.email,
             account_id: this.accountId,
