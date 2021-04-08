@@ -11,7 +11,9 @@ export class RegisterForm extends Form {
 
     public photoLink = '';
     public defaultCountry = '';
-    public region = '';
+
+    @Validate(required, 'Введите номер')
+    public resultPhone = '';
 
     @Validate(required, 'Введите имя')
     @Validate(minLength(2), 'Имя должно быть не меньше двух символов')
@@ -36,7 +38,7 @@ export class RegisterForm extends Form {
 
     getFormData(): RegisterRequestType {
         return {
-            phoneNumber: this.region + this.phone,
+            phoneNumber: this.resultPhone,
             name: this.name,
             lastName: this.lastName,
             email: this.email,
@@ -51,7 +53,6 @@ export class RegisterForm extends Form {
                 if (data.indexOf('+' + countries[i].code) >= 0) {
                     this.defaultCountry = countries[i].iso;
                     this.phone = data.replace('+' + countries[i].code, '');
-                    this.region = '+' + countries[i].code;
                 }
             }
             else {

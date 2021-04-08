@@ -81,18 +81,16 @@
 
     <div>
       <FormGroup v-slot="attrs" :form="form" field="phone" :is-phone="true" label="Номер телефона">
-        <div id="phoneMask" class="d-flex flex-row">
-          <vue-country-code
-               enabledCountryCode :defaultCountry="form.defaultCountry" :disabled="true">
-          </vue-country-code>
-          <input
-              class="input input__normal input-phone"
-              v-model="form[attrs.name]"
-              v-bind="attrs"
-              @input="attrs.change"
-              :disabled="true"
-          >
-        </div>
+        <vue-phone-number-input
+            v-model="form[attrs.name]"
+            v-bind="attrs"
+            size="lg"
+            :translations="translations"
+            :disabled="true"
+            :default-country-code="form.defaultCountry"
+            @update="changeCode"
+            no-example
+        />
       </FormGroup>
     </div>
     <div>
@@ -129,6 +127,20 @@ export default class RegisterFormVue extends Vue {
 
   activateInput(): void {
     document.getElementById('upload')!.click();
+  }
+
+  translations = {
+    countrySelectorLabel: 'Код страны',
+    countrySelectorError: '',
+    phoneNumberLabel: '',
+    example: 'Пример :'
+  }
+
+  changeCode(e: any): void {
+    if (this.form.phone !== '') {
+      this.form.$v['resultPhone'].$touch();
+    }
+    this.form.resultPhone = e.formattedNumber;
   }
 }
 </script>

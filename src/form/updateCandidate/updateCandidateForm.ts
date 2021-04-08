@@ -1,7 +1,7 @@
 import {Component} from 'vue-property-decorator';
 import {Form} from '@/form/form';
 import {Validate} from '@/plugins/Vuelidate/Decorators';
-import {required, sameAs, email, requiredIf, maxLength, numeric, minLength} from 'vuelidate/lib/validators';
+import {required, email, requiredIf} from 'vuelidate/lib/validators';
 import {IStatuses} from '@/entity/statuses/statuses.types';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 import {
@@ -24,35 +24,32 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
     public statusList: IUpdateCandidateFormList[] = [];
     public callTime: number | null = 0;
     public callTimeFake = '';
-    public region = '';
     public defaultCountry = '';
 
     constructor() {
         super();
     }
+    public phone = '';
 
     public serverErrors: { [key: string]: string[] } = {};
 
     @Validate(requiredIf(function (vm): boolean {
         return vm.email === '';
     }), 'Введите телефон или email')
-    @Validate(numeric, 'Поле должно содержать только цифры')
-    @Validate(minLength(5), 'Номер должен быть не меньше 5 символов')
-    @Validate(maxLength(12), 'Номер должен быть не больше 12 символов')
-    public phone = '';
+    public resultPhone = '';
 
     @Validate(required, 'Введите имя ')
     public name = '';
 
     @Validate(requiredIf(function (vm): boolean {
-        return vm.phone === '';
+        return vm.phone === null;
     }), 'Введите телефон или email')
     @Validate(email, 'Введите корректный Email')
     public email = '';
 
     getFormData(): UpdateCandidateFormRequestType {
         return {
-            phoneNumber: this.phone === '' ? null : this.region + this.phone,
+            phoneNumber: this.resultPhone === '' ? null : this.resultPhone,
             name: this.name,
             email: this.email === '' ? null : this.email,
             account_id: this.accountId,
@@ -83,7 +80,6 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
                 if (data.phoneNumber.indexOf('+' + countries[i].code) >= 0) {
                     this.defaultCountry = countries[i].iso;
                     this.phone = data.phoneNumber.replace('+' + countries[i].code, '');
-                    this.region = '+' + countries[i].code;
                 }
             }
             else {

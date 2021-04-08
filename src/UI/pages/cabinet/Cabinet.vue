@@ -19,17 +19,17 @@
       <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease">
         <template v-slot:title>Заработано</template>
         <template v-slot:default>{{ myStatistic.purchasesIncomeCurrent.current | currency('RUB') }}</template>
-        <template v-slot:stats>{{myStatistic.purchasesIncomeCurrent.change}}</template>
+        <template v-slot:stats>{{myStatistic.purchasesIncomeCurrent.change}}%</template>
       </Badge>
       <Badge :profit="myStatistic.viewCountCurrent.isIncrease">
         <template v-slot:title>Просмотров</template>
         <template v-slot:default>{{ myStatistic.viewCountCurrent.current }}</template>
-        <template v-slot:stats>{{ myStatistic.viewCountCurrent.change }}</template>
+        <template v-slot:stats>{{ myStatistic.viewCountCurrent.change }}%</template>
       </Badge>
       <Badge :profit="myStatistic.ratingCurrent.isIncrease">
         <template v-slot:title>Средняя оценка</template>
-        <template v-slot:default>{{ myStatistic.ratingCurrent.current }}0</template>
-        <template v-slot:stats>{{ myStatistic.ratingCurrent.change }}</template>
+        <template v-slot:default>{{ myStatistic.ratingCurrent.current }}</template>
+        <template v-slot:stats>{{ myStatistic.ratingCurrent.change }}%</template>
       </Badge>
     </v-row>
     <v-col class="events__content">

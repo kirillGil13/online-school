@@ -13,18 +13,16 @@
           @input="attrs.change"
       >
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
-      <div id="phoneMask" class="d-flex flex-row">
-        <vue-country-code
-            @onSelect="changeCode" enabledCountryCode defaultCountry="RU">
-        </vue-country-code>
-        <input
-            class="input input__normal input-phone"
-            v-model="form[attrs.name]"
+    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="resultPhone" :is-phone="true" show-custom-error label="Номер телефона">
+        <vue-phone-number-input
+            v-model="form.phone"
             v-bind="attrs"
-            @input="attrs.change"
-        >
-      </div>
+            size="lg"
+            :translations="translations"
+            @update="changeCode"
+            ref="phoneMaskInput"
+            no-example
+        />
     </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
       <Button class="secondary_blue mr-3" @submit="$emit('close')">Отмена</Button>
@@ -41,7 +39,6 @@ import Button from '../../common/Button.vue';
 import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {VideoAccessForm} from '../../../../form/videoAccess/videoAccessForm';
-import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
 
 @Component({
   components: {FormGroup, Button, PhoneMaskInput}
@@ -51,14 +48,23 @@ export default class VideoAccessFormComponent extends Vue {
   @Prop() readonly accountId!: number;
   @Prop() readonly infoPackId!: number;
 
+  translations = {
+    countrySelectorLabel: 'Код страны',
+    countrySelectorError: '',
+    phoneNumberLabel: '',
+    example: 'Пример :'
+  }
+
+  changeCode(e: any): void {
+    if (this.form.phone !== '') {
+      this.form.$v['resultPhone'].$touch();
+    }
+    this.form.resultPhone = e.formattedNumber;
+  }
+
   constructor() {
     super();
     this.form.setFormData(this.accountId, this.infoPackId);
-  }
-
-  changeCode(data: ISelectRegion): void {
-    this.form.region = '+' + data.dialCode;
-    console.log(this.form.region);
   }
 }
 </script>

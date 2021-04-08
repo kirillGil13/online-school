@@ -1,4 +1,6 @@
 import Vue from 'vue';
-import VueCountryCode from 'vue-country-code';
+import VuePhoneNumberInput from 'vue-phone-number-input';
 
-Vue.use(VueCountryCode);
+import 'vue-phone-number-input/dist/vue-phone-number-input.css';
+
+Vue.component('vue-phone-number-input', VuePhoneNumberInput);

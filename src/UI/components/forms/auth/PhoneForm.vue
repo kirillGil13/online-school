@@ -1,18 +1,16 @@
 <template>
   <v-form class="form" @submit.prevent>
     <div class="mt-9">
-      <FormGroup v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
-        <div id="phoneMask" class="d-flex flex-row">
-          <vue-country-code
-              @onSelect="changeCode" enabledCountryCode defaultCountry="RU">
-          </vue-country-code>
-          <input
-              class="input input__normal input-phone"
-              v-model="form[attrs.name]"
-              v-bind="attrs"
-              @input="attrs.change"
-          >
-        </div>
+      <FormGroup v-slot="attrs" :form="form" field="resultPhone" :is-phone="true" show-custom-error label="Номер телефона">
+        <vue-phone-number-input
+            v-model="form.phone"
+            v-bind="attrs"
+            size="lg"
+            :translations="translations"
+            @update="changeCode"
+            ref="phoneMaskInput"
+            no-example
+        />
       </FormGroup>
     </div>
     <v-divider class="mt-3"></v-divider>
@@ -37,7 +35,6 @@ import {PhoneForm} from '../../../../form/phone/phoneForm';
 import FormGroup from '../../common/form/FormGroup.vue';
 import Button from '../../common/Button.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
-import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
 
 @Component({
   components: {Button, FormGroup, PhoneMaskInput}
@@ -45,8 +42,18 @@ import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
 export default class PhoneFormVue extends Vue {
   @Prop() readonly form!: PhoneForm;
 
-  changeCode(data: ISelectRegion): void {
-    this.form.region = '+' + data.dialCode;
+  translations = {
+    countrySelectorLabel: 'Код страны',
+    countrySelectorError: '',
+    phoneNumberLabel: '',
+    example: 'Пример :'
+  }
+
+  changeCode(e: any): void {
+    if (this.form.phone !== '') {
+      this.form.$v['resultPhone'].$touch();
+    }
+    this.form.resultPhone = e.formattedNumber;
   }
 }
 </script>
@@ -55,14 +62,5 @@ export default class PhoneFormVue extends Vue {
 .captcha {
   color: #828282;
   font-size: 12px;
-}
-.region {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 50px;
-  border: 1px solid #F2F2F2;
-  background-color: #F2F2F2;
-  border-radius: 5px 0 0 5px;
 }
 </style>

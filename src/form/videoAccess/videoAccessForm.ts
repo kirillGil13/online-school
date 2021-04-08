@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import {maxLength, minLength, numeric, required} from 'vuelidate/lib/validators';
+import {required} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {VideoAccessFormRequestType} from '@/form/videoAccess/videoAccessForm.types';
@@ -8,13 +8,10 @@ import {VideoAccessFormRequestType} from '@/form/videoAccess/videoAccessForm.typ
 @Component
 export class VideoAccessForm extends Form {
 
-    @Validate(numeric, 'Поле должно содержать только цифры')
-    @Validate(minLength(5), 'Номер должен быть не меньше 5 символов')
-    @Validate(maxLength(12), 'Номер должен быть не больше 12 символов')
-    @Validate(required, 'Введите номер')
     public phone = '';
 
-    public region = '';
+    @Validate(required, 'Введите номер')
+    public resultPhone = '';
 
     public accountId = 0;
     public statusId = 1;
@@ -28,7 +25,7 @@ export class VideoAccessForm extends Form {
 
     getFormData(): VideoAccessFormRequestType {
         return {
-            phoneNumber: this.region + this.phone,
+            phoneNumber: this.resultPhone,
             name: this.name,
             account_id: this.accountId,
             status_id: this.statusId,

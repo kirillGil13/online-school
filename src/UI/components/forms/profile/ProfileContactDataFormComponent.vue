@@ -14,19 +14,17 @@
       </FormGroup>
     </div>
     <div class="mb-3">
-      <FormGroup v-slot="attrs" :form="form" field="phone" show-custom-error label="Телефон">
-        <div id="phoneMask" class="d-flex flex-row">
-          <vue-country-code
-              enabledCountryCode :defaultCountry="form.defaultCountry" :disabled="true">
-          </vue-country-code>
-          <input
-              class="input input__normal input-phone"
-              v-model="form[attrs.name]"
-              v-bind="attrs"
-              @input="attrs.change"
-              :disabled="true"
-          >
-        </div>
+      <FormGroup v-slot="attrs" :form="form" field="resultPhone" show-custom-error label="Телефон">
+        <vue-phone-number-input
+            v-model="form.phone"
+            v-bind="attrs"
+            size="lg"
+            :translations="translations"
+            :default-country-code="form.defaultCountry"
+            @update="changeCode"
+            :disabled="true"
+            no-example
+        />
       </FormGroup>
     </div>
     <div class="mb-3">
@@ -98,6 +96,16 @@ import FormGroup from '../../common/form/FormGroup.vue';
 })
 export default class ProfileContactDataFormComponent extends Vue {
   @Prop({ required: true }) readonly form!: ProfileContactDataForm;
+  translations = {
+    countrySelectorLabel: 'Код страны',
+    countrySelectorError: '',
+    phoneNumberLabel: '',
+    example: 'Пример :'
+  }
+
+  changeCode(e: any): void {
+    this.form.resultPhone = e.formattedNumber;
+  }
 }
 </script>
 

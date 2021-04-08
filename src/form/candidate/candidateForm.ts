@@ -2,7 +2,7 @@ import {Component} from 'vue-property-decorator';
 import {Form} from '@/form/form';
 import {CandidateFormRequestType, ICandidateForm, ICandidateFormList} from '@/form/candidate/candidateForm.types';
 import {Validate} from '@/plugins/Vuelidate/Decorators';
-import {required, sameAs, email, requiredIf, maxLength, numeric, minLength} from 'vuelidate/lib/validators';
+import {required, email, requiredIf} from 'vuelidate/lib/validators';
 import {IStatuses} from '@/entity/statuses/statuses.types';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 /* eslint-disable */
@@ -18,30 +18,28 @@ export class CandidateForm extends Form implements ICandidateForm {
     public callTime = 0;
     public productList: ICandidateFormList[] = [];
     public statusList: ICandidateFormList[] = [];
-    public region = '';
 
     public serverErrors: { [key: string]: string[] } = {};
 
     @Validate(requiredIf(function (vm): boolean {
         return vm.email === '';
     }), 'Введите телефон или email')
-    @Validate(numeric, 'Поле должно содержать только цифры')
-    @Validate(minLength(5), 'Номер должен быть не меньше 5 символов')
-    @Validate(maxLength(12), 'Номер должен быть не больше 12 символов')
+    public resultPhone = '';
+
     public phone = '';
 
     @Validate(required, 'Введите имя ')
     public name = '';
 
     @Validate(requiredIf(function (vm): boolean {
-        return vm.phone === '';
+        return vm.phone === null;
     }), 'Введите телефон или email')
     @Validate(email, 'Введите корректный email')
     public email = '';
 
     getFormData(): CandidateFormRequestType {
         return {
-            phoneNumber: this.phone === '' ? undefined : this.region + this.phone,
+            phoneNumber: this.resultPhone === '' ? undefined : this.resultPhone,
             name: this.name,
             email: this.email === '' ? undefined : this.email,
             account_id: this.accountId,

@@ -1,18 +1,14 @@
 import { Component } from 'vue-property-decorator';
-import {maxLength, minLength, numeric, required} from 'vuelidate/lib/validators';
+import {required} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {PhoneRequestType} from '@/form/phone/phoneForm.types';
 
 @Component
 export class PhoneForm extends Form {
-
-    public region = '';
-
-    @Validate(numeric, 'Поле должно содержать только цифры')
-    @Validate(minLength(5), 'Номер должен быть не меньше 5 символов')
-    @Validate(maxLength(12), 'Номер должен быть не больше 12 символов')
     @Validate(required, 'Введите номер')
+    public resultPhone = '';
+
     public phone = '';
 
     public token = '';
@@ -24,7 +20,7 @@ export class PhoneForm extends Form {
             /* eslint-disable */
             /* tslint:disable */
             // @ts-ignore
-            phone_number: this.region + this.phone,
+            phone_number: this.resultPhone,
             recaptcha_token: this.token
         };
     }

@@ -12,8 +12,7 @@ export class ProfileContactDataForm extends Form {
     public serverErrors: { [key: string]: string[] } = {};
 
     public defaultCountry = '';
-    public region = '';
-
+    public resultPhone = '';
     @Validate(maxLength(30), 'Ссылка на страницу vk не должна превышать 30 символов')
     public vk = '';
 
@@ -45,7 +44,6 @@ export class ProfileContactDataForm extends Form {
                 if (user.phoneNumber.indexOf('+' + countries[i].code) >= 0) {
                     this.defaultCountry = countries[i].iso;
                     this.phone = user.phoneNumber.replace('+' + countries[i].code, '');
-                    this.region = '+' + countries[i].code;
                 }
             }
             else {
