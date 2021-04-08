@@ -21,7 +21,7 @@ Vue.use(auth, {
     // Redirects
     authRedirect: { name: RouterNameEnum.AuthLogin },
     forbiddenRedirect: { path: '/403' },
-    notFoundRedirect: { path: '/404' },
+    notFoundRedirect: { path: '/' },
     // Http
     loginData: {
         url: '/accounts/auth/base',

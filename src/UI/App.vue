@@ -20,7 +20,6 @@ export default class App extends Vue {
 
   async created(): Promise<void> {
     this.$adaptive.isMobile = this.resolveAdaptiveMobile();
-    console.log(AuthStore.user);
     await AuthStore.load();
   }
 
