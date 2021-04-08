@@ -37,7 +37,8 @@
     </v-row>
     <v-col :class="['box-container', $adaptive.isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
       <h5>ОПИСАНИЕ</h5>
-      <span class="desc">{{ lesson.description }}</span>
+      <div class="desc wrap-text" v-html="lesson">
+      </div>
     </v-col>
     <v-col
         v-if="lessonLoaded && (questions !== null || result !== null) && lesson.homeworkId && lesson.status !== lessonTypes.LOCKED"

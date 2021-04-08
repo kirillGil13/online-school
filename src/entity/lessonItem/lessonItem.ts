@@ -18,7 +18,7 @@ export default class LessonItem implements ILessonItem {
         this.name = data.name;
         this.number = data.number;
         this.status = data.status;
-        this.description = data.description;
+        this.description = this.resolveDescription(data.description);
         this.m3u8FileLink = data.m3u8FileLink;
         this.photoLink = data.photoLink;
         this.homeworkId = data.homeworkId;
@@ -28,5 +28,17 @@ export default class LessonItem implements ILessonItem {
         for (let i = 0; i < data.files.length; i++) {
             this.files.push(data.files[i]);
         }
+    }
+
+    urlRegex = /([^\s]+\.(com|ru|net|рф|info|org|me|by|biz|pro|travel|tel|name|art|dev|online)[\S]*)/g;
+    httpRegex = /https?:\/\//;
+
+    resolveDescription(s: string): string {
+        return s.replace(this.urlRegex, (url) => {
+            const startsWithHttp = url.startsWith('http');
+            if (this.httpRegex.test(url) && !startsWithHttp) return url;
+            const url2 = startsWithHttp ? url : `https://${url}`;
+            return `<a class="desc_link" target="_blank" href="${url2}">${url}</a>`;
+        });
     }
 }

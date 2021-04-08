@@ -11,6 +11,7 @@ export interface ILessonItem {
     duration: number;
     homeworkIsDone: boolean;
     files: ILessonItemFiles[];
+    resolveDescription(s: string): string;
 }
 export interface ILessonItemFiles {
     name: string;

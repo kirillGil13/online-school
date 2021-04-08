@@ -13,6 +13,7 @@ export interface ICourseItem {
     lessons: ICourseLessons[];
     level: ICourseLevels;
     resolveType(index: number, routeParam: string): string;
+    resolveDescription(s: string): string;
 }
 export interface ICourseLessons {
     id: number;
