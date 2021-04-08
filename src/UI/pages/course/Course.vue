@@ -25,7 +25,8 @@
             </v-responsive>
             <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
               <h5>ОПИСАНИЕ</h5>
-              <span class="desc">{{ course.description }}</span>
+              <div class="desc wrap-text" v-html="course.description">
+              </div>
             </v-col>
           </div>
           <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"

@@ -17,7 +17,7 @@ export default class CourseItem implements ICourseItem {
     constructor(data: CourseItemResponseType) {
         this.id = data.id;
         this.name = data.name;
-        this.description = data.description;
+        this.description = this.resolveDescription(data.description);
         this.cost = data.cost;
         this.account_id = data.account_id;//eslint-disable-line
         this.level = data.level;
@@ -47,5 +47,17 @@ export default class CourseItem implements ICourseItem {
             }
         }
         return type;
+    }
+
+    urlRegex = /([^\s]+\.(com|ru|net|рф|info|org|me|by|biz|pro|travel|tel|name|art|dev|online)[\S]*)/g;
+    httpRegex = /https?:\/\//;
+
+    resolveDescription(s: string): string {
+        return s.replace(this.urlRegex, (url) => {
+            const startsWithHttp = url.startsWith('http');
+            if (this.httpRegex.test(url) && !startsWithHttp) return url;
+            const url2 = startsWithHttp ? url : `https://${url}`;
+            return `<a class="desc_link" target="_blank" href="${url2}">${url}</a>`;
+        });
     }
 }
