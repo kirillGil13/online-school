@@ -1,1 +1,1 @@
-declare module 'vue-country-code';
+declare module 'vue-phone-number-input';

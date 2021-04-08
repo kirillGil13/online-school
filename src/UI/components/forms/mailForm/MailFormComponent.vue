@@ -14,18 +14,16 @@
           @input="attrs.change"
       >
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
-      <div id="phoneMask" class="d-flex flex-row">
-        <vue-country-code
-            @onSelect="changeCode" enabledCountryCode defaultCountry="RU">
-        </vue-country-code>
-        <input
-            class="input input__normal input-phone"
-            v-model="form[attrs.name]"
-            v-bind="attrs"
-            @input="attrs.change"
-        >
-      </div>
+    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="resultPhone" :is-phone="true" show-custom-error label="Номер телефона">
+      <vue-phone-number-input
+          v-model="form.phone"
+          v-bind="attrs"
+          size="lg"
+          :translations="translations"
+          @update="changeCode"
+          ref="phoneMaskInput"
+          no-example
+      />
     </FormGroup>
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="topic" show-custom-error label="Название"
@@ -89,7 +87,6 @@ import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {ICourseLevels} from '../../../../entity/courseLevels/courseLevels.types';
 import {MailForm} from '../../../../form/mail/mailForm';
-import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
 
 @Component({
   components: {FormGroup, Button, PhoneMaskInput}
@@ -97,14 +94,23 @@ import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
 export default class MailFormComponent extends Vue {
   @Prop() readonly form!: MailForm;
   @Prop() readonly levels!: ICourseLevels[];
+  translations = {
+    countrySelectorLabel: 'Код страны',
+    countrySelectorError: '',
+    phoneNumberLabel: '',
+    example: 'Пример :'
+  }
 
   constructor() {
     super();
     this.form.setFormData(this.levels);
   }
 
-  changeCode(data: ISelectRegion): void {
-    this.form.region = '+' + data.dialCode;
+  changeCode(e: any): void {
+    if (this.form.phone !== '') {
+      this.form.$v['resultPhone'].$touch();
+    }
+    this.form.resultPhone = e.formattedNumber;
   }
 }
 </script>

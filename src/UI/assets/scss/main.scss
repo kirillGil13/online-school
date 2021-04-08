@@ -905,3 +905,27 @@ iframe {
 .desc_link {
   font-size: 14px !important;
 }
+
+/*phone mask*/
+.country-selector__list__item {
+  color: #1d1d1f !important;
+}
+.country-selector__input {
+  border: 1px solid #F2F2F2 !important;
+  &:disabled {
+    color: #1d1d1f !important;
+  }
+}
+.input-tel__input {
+  border: 1px solid #F2F2F2 !important;
+  &:disabled {
+    color: #1d1d1f !important;
+  }
+}
+.country-selector__label {
+  color: #828282 !important;
+}
+
+.input-tel__input {
+  padding-top: 0 !important;
+}

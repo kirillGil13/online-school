@@ -1,7 +1,12 @@
 <template>
   <v-row no-gutters :class="['message-container d-flex flex-row align-start mt-2', form.author ? '' : 'pt-6']">
-    <v-avatar size="36" class="mr-3">
-      <v-img :src="user.photoLink" alt=""/>
+    <v-avatar size="36" class="mr-3" color="#F0F2F6">
+      <template v-slot:default v-if="user.photoLink">
+        <v-img :src="user.photoLink" alt=""/>
+      </template>
+      <template v-else v-slot:default>
+        <svg-icon name="Camera" ></svg-icon>
+      </template>
     </v-avatar>
     <v-col class="pa-0 d-flex flex-row align-end">
       <div class="message-container-full">

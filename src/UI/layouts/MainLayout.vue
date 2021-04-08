@@ -18,7 +18,7 @@
             </v-col>
             <v-col class="py-0" v-else-if="!error && $route.query.accountId && showSuccess">
               <Confirm
-                  :text="`Ваша почта ${user.email} успешно подверждена`"
+                  :text="`Ваша почта ${user.email} успешно подтверждена`"
                   @show="showNote"
                   icon
                   :show="show"

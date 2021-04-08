@@ -11,18 +11,16 @@
           @input="attrs.change"
       >
     </FormGroup>
-    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
-      <div id="phoneMask" class="d-flex flex-row">
-        <vue-country-code
-            @onSelect="changeCode" enabledCountryCode :defaultCountry="form.defaultCountry">
-        </vue-country-code>
-        <input
-            class="input input__normal input-phone"
-            v-model="form[attrs.name]"
-            v-bind="attrs"
-            @input="attrs.change"
-        >
-      </div>
+    <FormGroup class="mt-4" v-slot="attrs" :form="form" field="resultPhone" :is-phone="true" show-custom-error label="Номер телефона">
+      <vue-phone-number-input
+          v-model="form.phone"
+          v-bind="attrs"
+          size="lg"
+          :translations="translations"
+          :default-country-code="form.defaultCountry"
+          @update="changeCode"
+          no-example
+      />
     </FormGroup>
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="email" show-custom-error label="Email"
@@ -92,7 +90,6 @@ import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {UpdateCandidateForm} from '../../../../form/updateCandidate/updateCandidateForm';
 import {Datetime} from 'vue-datetime';
-import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
 
 @Component({
   components: {FormGroup, Button, PhoneMaskInput, Datetime}
@@ -101,8 +98,18 @@ export default class UpdateCandidateFormComponent extends Vue {
   @Prop() readonly form!: UpdateCandidateForm;
   @Prop() readonly accountId!: number;
 
-  changeCode(data: ISelectRegion): void {
-    this.form.region = '+' + data.dialCode;
+  translations = {
+    countrySelectorLabel: 'Код страны',
+    countrySelectorError: '',
+    phoneNumberLabel: '',
+    example: 'Пример :'
+  }
+
+  changeCode(e: any): void {
+    if (this.form.phone !== '') {
+      this.form.$v['resultPhone'].$touch();
+    }
+    this.form.resultPhone = e.formattedNumber;
   }
 
   clear(): void {
