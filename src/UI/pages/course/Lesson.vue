@@ -37,7 +37,7 @@
     </v-row>
     <v-col :class="['box-container', $adaptive.isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
       <h5>ОПИСАНИЕ</h5>
-      <div class="desc wrap-text" v-html="lesson">
+      <div class="desc wrap-text" v-html="lesson.description">
       </div>
     </v-col>
     <v-col
