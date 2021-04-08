@@ -17,7 +17,7 @@
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="phone" :is-phone="true" show-custom-error label="Номер телефона">
       <div id="phoneMask" class="d-flex flex-row">
         <vue-country-code
-            @onSelect="changeCode" enabledCountryCode>
+            @onSelect="changeCode" enabledCountryCode defaultCountry="RU">
         </vue-country-code>
         <input
             class="input input__normal input-phone"
