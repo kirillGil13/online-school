@@ -16,7 +16,6 @@ import {countries} from '@/countries';
 @Component
 export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
     public candidateId = 0;
-    public phoneMask = '';
     public product: number | null = 0;
     public statusId = 0;
     public isFiction = false;
@@ -38,7 +37,7 @@ export class UpdateCandidateForm extends Form implements IUpdateCandidateForm {
         return vm.email === '';
     }), 'Введите телефон или email')
     @Validate(numeric, 'Поле должно содержать только цифры')
-    @Validate(minLength(8), 'Номер должен быть не меньше 8 символов')
+    @Validate(minLength(5), 'Номер должен быть не меньше 5 символов')
     @Validate(maxLength(12), 'Номер должен быть не больше 12 символов')
     public phone = '';
 
