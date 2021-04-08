@@ -13,7 +13,7 @@ export class MailForm extends Form {
 
 
     @Validate(numeric, 'Поле должно содержать только цифры')
-    @Validate(minLength(8), 'Номер должен быть не меньше 8 символов')
+    @Validate(minLength(5), 'Номер должен быть не меньше 5 символов')
     @Validate(maxLength(12), 'Номер должен быть не больше 12 символов')
     @Validate(required, 'Введите номер')
     public phone = '';
