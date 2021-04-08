@@ -1,8 +1,13 @@
 <template>
   <div>
     <div class="d-flex flex-row cont">
-      <v-avatar size="36" class="mr-3">
-        <v-img :src="comment.author.photoLink" alt=""/>
+      <v-avatar size="36" class="mr-3" color="#F0F2F6">
+        <template v-slot:default v-if="comment.author.photoLink">
+          <v-img :src="comment.author.photoLink" alt=""/>
+        </template>
+        <template v-else v-slot:default>
+          <svg-icon name="Camera" ></svg-icon>
+        </template>
       </v-avatar>
       <div class="d-flex flex-column comment-container">
         <div class="comment py-3 px-4">
@@ -38,8 +43,13 @@
             <div class="mt-4 ml-4 d-flex flex-row cont"
                  v-for="(item, index) in comment.answers"
                  :key="index">
-              <v-avatar size="24" class="mr-3">
-                <v-img :src="item.author.photoLink" alt=""/>
+              <v-avatar size="24" class="mr-3" color="#F0F2F6">
+                <template v-slot:default v-if="item.author.photoLink">
+                  <v-img :src="item.author.photoLink" alt=""/>
+                </template>
+                <template v-else v-slot:default>
+                  <svg-icon name="Camera" ></svg-icon>
+                </template>
               </v-avatar>
               <div class="d-flex flex-column comment-container">
                 <div class="comment child py-3 px-4">
@@ -92,6 +102,9 @@ export default class Comments extends Vue {
     if (val > oldVal) {
       this.show = true;
     }
+  }
+  constructor() {
+    super();
   }
 }
 </script>
