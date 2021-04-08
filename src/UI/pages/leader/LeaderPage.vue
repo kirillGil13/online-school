@@ -23,8 +23,7 @@
               <!--              <Button class="py-3">Подписаться</Button>-->
             </v-col>
           </div>
-          <div :class="['leader_page__desc', $adaptive.isMobile ? 'mt-1' : 'mt-3']" v-if="leader.description !== null">
-            {{ leader.description }}
+          <div :class="['leader_page__desc wrap-text', $adaptive.isMobile ? 'mt-1' : 'mt-3']" v-if="leader.description !== null" v-html="leader.description">
           </div>
           <div class="d-flex flex-row px-2 py-1 mt-2">
             <a :href="`https://facebook.com/${leader.facebookLink}`" target="_blank" v-if="leader.facebookLink">
