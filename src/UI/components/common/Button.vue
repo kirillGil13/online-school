@@ -1,5 +1,5 @@
 <template>
-    <button :class="[fullWidth ? 'btn-full-width' : '', small ? 'small' : '']" :disabled="disabled" @click="$emit('submit')"><slot></slot></button>
+    <button :class="[fullWidth ? 'btn-full-width' : '', small ? 'small' : '']" @dblclick.stop :disabled="disabled" @click="$emit('submit')"><slot></slot></button>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
