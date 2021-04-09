@@ -113,6 +113,7 @@ import Button from '../../common/Button.vue';
 import {RegisterForm} from '../../../../form/register/RegisterForm';
 import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
+import {translations} from '../../../../plugins';
 
 @Component({
   components: {
@@ -129,12 +130,7 @@ export default class RegisterFormVue extends Vue {
     document.getElementById('upload')!.click();
   }
 
-  translations = {
-    countrySelectorLabel: 'Код страны',
-    countrySelectorError: '',
-    phoneNumberLabel: '',
-    example: 'Пример :'
-  }
+  translations = translations;
 
   changeCode(e: any): void {
     if (this.form.phone !== '') {

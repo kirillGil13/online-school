@@ -24,10 +24,10 @@
               <div class="d-flex flex-row justify-space-between">
                 <Relation class="mr-3" svg-name="Finger" :title="comment.countLikes"
                           :svg-class="comment.isLiked !== null && comment.isLiked ? 'active-like' : ''"
-                          @click="$emit('handleLike', {id: comment.id, like: true, type: commentType.Comment})"/>
+                          @click="$emit('handleLike', {id: comment.id, like: true, type: commentType.Comment, kind: 'like'})"/>
                 <Relation svg-name="Finger" :title="comment.countDislikes"
                           :svg-class="['svg-down', comment.isLiked !== null && !comment.isLiked ? 'active-dislike' : '']"
-                          @click="$emit('handleDislike', {id: comment.id, like: false, type: commentType.Comment})"/>
+                          @click="$emit('handleLike', {id: comment.id, like: false, type: commentType.Comment, kind: 'dislike'})"/>
               </div>
             </v-row>
           </v-col>
@@ -66,10 +66,10 @@
                       <div class="d-flex flex-row justify-space-between">
                         <Relation class="mr-3" svg-name="Finger" :title="item.countLikes"
                                   :svg-class="item.isLiked !== null && item.isLiked ? 'active-like' : ''"
-                                  @click="$emit('handleLike', {id: comment.id, like: true, type: commentType.Answer, answerId: item.id})"/>
+                                  @click="$emit('handleLike', {id: comment.id, like: true, type: commentType.Answer, answerId: item.id, kind: 'like'})"/>
                         <Relation svg-name="Finger" :title="item.countDislikes"
                                   :svg-class="['svg-down', item.isLiked !== null && !item.isLiked ? 'active-dislike' : '']"
-                                  @click="$emit('handleDislike', {id: comment.id, like: false, type: commentType.Answer, answerId: item.id})"/>
+                                  @click="$emit('handleLike', {id: comment.id, like: false, type: commentType.Answer, answerId: item.id, kind: 'dislike'})"/>
                       </div>
                     </v-row>
                   </v-col>
@@ -102,9 +102,6 @@ export default class Comments extends Vue {
     if (val > oldVal) {
       this.show = true;
     }
-  }
-  constructor() {
-    super();
   }
 }
 </script>

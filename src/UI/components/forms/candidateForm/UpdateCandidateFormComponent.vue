@@ -90,6 +90,7 @@ import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {UpdateCandidateForm} from '../../../../form/updateCandidate/updateCandidateForm';
 import {Datetime} from 'vue-datetime';
+import {translations} from '../../../../plugins';
 
 @Component({
   components: {FormGroup, Button, PhoneMaskInput, Datetime}
@@ -98,12 +99,7 @@ export default class UpdateCandidateFormComponent extends Vue {
   @Prop() readonly form!: UpdateCandidateForm;
   @Prop() readonly accountId!: number;
 
-  translations = {
-    countrySelectorLabel: 'Код страны',
-    countrySelectorError: '',
-    phoneNumberLabel: '',
-    example: 'Пример :'
-  }
+  translations = translations;
 
   changeCode(e: any): void {
     if (this.form.phone !== '') {

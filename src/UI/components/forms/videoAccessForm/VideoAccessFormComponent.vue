@@ -39,6 +39,7 @@ import Button from '../../common/Button.vue';
 import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {VideoAccessForm} from '../../../../form/videoAccess/videoAccessForm';
+import {translations} from '../../../../plugins';
 
 @Component({
   components: {FormGroup, Button, PhoneMaskInput}
@@ -48,12 +49,7 @@ export default class VideoAccessFormComponent extends Vue {
   @Prop() readonly accountId!: number;
   @Prop() readonly infoPackId!: number;
 
-  translations = {
-    countrySelectorLabel: 'Код страны',
-    countrySelectorError: '',
-    phoneNumberLabel: '',
-    example: 'Пример :'
-  }
+  translations = translations;
 
   changeCode(e: any): void {
     if (this.form.phone !== '') {

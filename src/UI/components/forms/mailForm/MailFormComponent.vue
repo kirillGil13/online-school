@@ -87,6 +87,7 @@ import FormGroup from '../../common/form/FormGroup.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {ICourseLevels} from '../../../../entity/courseLevels/courseLevels.types';
 import {MailForm} from '../../../../form/mail/mailForm';
+import {translations} from '../../../../plugins';
 
 @Component({
   components: {FormGroup, Button, PhoneMaskInput}
@@ -94,12 +95,7 @@ import {MailForm} from '../../../../form/mail/mailForm';
 export default class MailFormComponent extends Vue {
   @Prop() readonly form!: MailForm;
   @Prop() readonly levels!: ICourseLevels[];
-  translations = {
-    countrySelectorLabel: 'Код страны',
-    countrySelectorError: '',
-    phoneNumberLabel: '',
-    example: 'Пример :'
-  }
+  translations = translations;
 
   constructor() {
     super();

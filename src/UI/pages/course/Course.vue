@@ -32,30 +32,6 @@
           <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"
                :style="{width: $adaptive.isMobile ? '100%' : ''}">
             <Lessons ref="lessons" :course="course" @moveToNextLesson="moveToNextLesson"/>
-            <!--todo -->
-            <!--            <div class="contacts" v-if="!$adaptive.isMobile">-->
-            <!--              <div class="contacts__content">-->
-            <!--                <div class="contacts__item d-flex flex-row">-->
-            <!--                  <v-avatar class="mr-3">-->
-            <!--                    <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">-->
-            <!--                  </v-avatar>-->
-            <!--                  <div class="details d-flex flex-column justify-center">-->
-            <!--                    <h3 class="ma-0">Ильгиз Шакиров</h3>-->
-            <!--                    <div class="details-desc">Автор курса</div>-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--                <v-divider class="mt-4 mb-4"></v-divider>-->
-            <!--                <div class="contacts__item d-flex flex-row">-->
-            <!--                  <v-avatar class="mr-3">-->
-            <!--                    <img src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" alt="">-->
-            <!--                  </v-avatar>-->
-            <!--                  <div class="details d-flex flex-column justify-center">-->
-            <!--                    <h3 class="ma-0">Ильгиз Шакиров</h3>-->
-            <!--                    <div class="details-desc">Ваш лидер</div>-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--              </div>-->
-            <!--            </div>-->
             <v-col class="box-container pa-6 pb-8 materials" v-if="!$adaptive.isMobile && files === []">
               <h5>МАТЕРИАЛЫ К УРОКУ</h5>
               <Doc v-for="(item, index) in files" :key="index" :material="item"/>
