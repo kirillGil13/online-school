@@ -97,6 +97,7 @@ import {IInfoPackage} from '../../../../entity/infoPackages/infoPackage.types';
 import Modal from '../../common/Modal.vue';
 import {Datetime} from 'vue-datetime';
 import {ISelectRegion} from '../../../../entity/common/selectRegion.types';
+import {translations} from '../../../../plugins';
 
 @Component({
   components: {Modal, FormGroup, Button, PhoneMaskInput, Datetime}
@@ -107,12 +108,7 @@ export default class CandidateFormComponent extends Vue {
   @Prop() readonly infoPacks!: IInfoPackage[];
   @Prop() readonly accountId!: number;
   activatorDate = false;
-  translations = {
-    countrySelectorLabel: 'Код страны',
-    countrySelectorError: '',
-    phoneNumberLabel: '',
-    example: 'Пример :'
-  }
+  translations = translations;
 
   constructor() {
     super();

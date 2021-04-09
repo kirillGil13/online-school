@@ -87,6 +87,7 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import {ProfileContactDataForm} from '../../../../form/profile/contactData/ProfileContactDataForm';
 import Button from '../../common/Button.vue';
 import FormGroup from '../../common/form/FormGroup.vue';
+import {translations} from '../../../../plugins';
 
 @Component({
   components: {
@@ -96,12 +97,7 @@ import FormGroup from '../../common/form/FormGroup.vue';
 })
 export default class ProfileContactDataFormComponent extends Vue {
   @Prop({ required: true }) readonly form!: ProfileContactDataForm;
-  translations = {
-    countrySelectorLabel: 'Код страны',
-    countrySelectorError: '',
-    phoneNumberLabel: '',
-    example: 'Пример :'
-  }
+  translations = translations;
 
   changeCode(e: any): void {
     this.form.resultPhone = e.formattedNumber;

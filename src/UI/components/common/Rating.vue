@@ -19,8 +19,8 @@ export default class Rating extends Vue {
     align-items: center;
     padding: 0 3px 0 3px;
     position: absolute;
-    bottom: 8px;
-    left: 8px;
+    top: 8px;
+    right: 8px;
     border-radius: 3px;
     color: #ffffff;
     font-size: 12px;

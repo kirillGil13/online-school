@@ -8,6 +8,7 @@ export default class LeaderCourses implements ILeaderCourses {
     countLessons: number;
     rating: number;
     countDoneLessons: number;
+    countViews: number;
     constructor(data: LeaderCoursesResponseType) {
         this.id = data.id;
         this.name = data.name;
@@ -16,6 +17,7 @@ export default class LeaderCourses implements ILeaderCourses {
         this.countLessons = data.count_lessons;
         this.rating = data.rating;
         this.countDoneLessons = data.count_done_lessons;
+        this.countViews = data.count_views;
     }
     get fullName(): string {
         return this.account.name + ' ' + this.account.lastName;

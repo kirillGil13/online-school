@@ -10,6 +10,7 @@
             <ProgressCircle class="mr-2" :progress="course.progress" color="#27AE60" empty-color="rgba(39, 174, 96, 0.24)"/>
             <div class="text">Прогресс: {{ course.countDoneLessons }} из {{ course.countLessons }}</div>
           </div>
+          <div class="course-info views"><v-icon color="#ffffff" class="mr-1" x-small>mdi-eye</v-icon>{{course.countViews}}</div>
           <Rating v-if="course.rating" :rating="course.rating"/>
           <div class="course-info duration">{{ course.lessonsCount() }}</div>
         </div>

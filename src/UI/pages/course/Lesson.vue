@@ -56,7 +56,7 @@
       />
     </v-col>
     <Discussion :comments="comments" :form="commentsForm" @postComment="postComment"
-                @respond="respond" @handleLike="handleLike" @handleDislike="handleDislike"/>
+                @respond="respond" @handleLike="handleLike"/>
     <v-col v-if="!commentsLoaded" class="mt-1 pa-0">
         <v-progress-linear
             :active="true"
@@ -139,7 +139,7 @@ export default class  Lesson extends Vue {
     if (this.$route.params.lessonId !== undefined) {
       CommentsStore.setCommentsToEmpty();
       await this.fetchData();
-      this.interval = setInterval(() => CommentsStore.fetchAll(this.$route.params.lessonId), 20000);
+      this.interval = setInterval(() => {CommentsStore.fetchAll(this.$route.params.lessonId); console.log(1)}, 20000);
     } else clearInterval(this.interval);
   }
 
@@ -270,7 +270,7 @@ export default class  Lesson extends Vue {
 
   async created(): Promise<void> {
     if (this.$route.params.lessonId) {
-      this.interval = setInterval(() => CommentsStore.fetchAll(this.$route.params.lessonId), 10000);
+      this.interval = setInterval(() => {CommentsStore.fetchAll(this.$route.params.lessonId); console.log(1)}, 10000);
       await this.fetchData();
     }
   }
@@ -323,7 +323,10 @@ export default class  Lesson extends Vue {
     if (data.type === CommentTypesEnum.Comment) {
       if (this.comments.find(item => item.id === data.id)!.isLiked !== null) {
         await CommentsStore.deleteLikeDislikeComment(data.id.toString());
-        if (!this.comments.find(item => item.id === data.id)!.isLiked) {
+        if (this.comments.find(item => item.id === data.id)!.isLiked && data.kind === 'dislike') {
+          await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
+        }
+        if (!this.comments.find(item => item.id === data.id)!.isLiked && data.kind === 'like') {
           await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
         }
         await CommentsStore.fetchAll(this.$route.params.lessonId);
@@ -334,33 +337,10 @@ export default class  Lesson extends Vue {
     } else {
       if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked !== null) {
         await CommentsStore.deleteLikeDislikeAnswer(data.answerId.toString());
-        if (!this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked) {
+        if (!this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked && data.kind === 'like') {
           await CommentsStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
         }
-        await CommentsStore.fetchAll(this.$route.params.lessonId);
-      } else {
-        await CommentsStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
-        await CommentsStore.fetchAll(this.$route.params.lessonId);
-      }
-    }
-  }
-
-  async handleDislike(data: any): Promise<void> {
-    if (data.type === CommentTypesEnum.Comment) {
-      if (this.comments.find(item => item.id === data.id)!.isLiked !== null) {
-        await CommentsStore.deleteLikeDislikeComment(data.id.toString());
-        if (this.comments.find(item => item.id === data.id)!.isLiked) {
-          await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
-        }
-        await CommentsStore.fetchAll(this.$route.params.lessonId);
-      } else {
-        await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
-        await CommentsStore.fetchAll(this.$route.params.lessonId);
-      }
-    } else {
-      if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked !== null) {
-        await CommentsStore.deleteLikeDislikeAnswer(data.id.toString());
-        if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked) {
+        if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked && data.kind === 'dislike') {
           await CommentsStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
         }
         await CommentsStore.fetchAll(this.$route.params.lessonId);

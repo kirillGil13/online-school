@@ -35,6 +35,7 @@ import {PhoneForm} from '../../../../form/phone/phoneForm';
 import FormGroup from '../../common/form/FormGroup.vue';
 import Button from '../../common/Button.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
+import {translations} from '../../../../plugins';
 
 @Component({
   components: {Button, FormGroup, PhoneMaskInput}
@@ -42,12 +43,7 @@ import PhoneMaskInput from 'vue-phone-mask-input';
 export default class PhoneFormVue extends Vue {
   @Prop() readonly form!: PhoneForm;
 
-  translations = {
-    countrySelectorLabel: 'Код страны',
-    countrySelectorError: '',
-    phoneNumberLabel: '',
-    example: 'Пример :'
-  }
+  translations = translations;
 
   changeCode(e: any): void {
     if (this.form.phone !== '') {
