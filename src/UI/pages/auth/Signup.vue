@@ -124,6 +124,7 @@ export default class Signup extends Vue {
   }
 
   async submitPhone(again?: boolean): Promise<boolean> {
+    this.form.sendingRequest = true;
     if (process.env.NODE_ENV === 'production') {
       await this.$recaptchaLoaded();
       const token = await this.$recaptcha('sendCode');

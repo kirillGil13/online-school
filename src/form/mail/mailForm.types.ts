@@ -6,6 +6,7 @@ export type MailFormRequestType = RequestType & {
     levelId: number | null;
     topic: string;
     description: string;
+    mlm_level: string;
 };
 export interface IMailFormList {
     text: string;

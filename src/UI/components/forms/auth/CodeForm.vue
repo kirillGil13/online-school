@@ -25,8 +25,10 @@
     </div>
     <div class="d-flex justify-center form-desc mt-3">
       <div class="d-flex justify-center flex-row">
-        <span v-if="!show" class="mr-1">Вы сможете отправить код повторно через</span>
-        <Timer v-if="!show" :current-time="60" @stop="show = true"/>
+        <div v-if="!show">
+          <span class="mr-1">Вы сможете отправить код повторно через</span>
+          <Timer :current-time="60" @stop="show = true"/>
+        </div>
         <div v-else class="d-flex justify-center">
           <div class="form-second-action" @click="$emit('sendAgain', true)">Отправить код повторно</div>
         </div>

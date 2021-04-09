@@ -2,7 +2,7 @@ import { IForm, RequestType } from '@/form/form.types';
 import { Vue } from 'vue-property-decorator';
 
 export abstract class Form extends Vue implements IForm {
-    private sendingRequest = false;
+    public sendingRequest = false;
     status = 0;
 
     serverErrors: { [property: string]: string[] } = {};
