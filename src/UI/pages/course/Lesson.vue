@@ -122,9 +122,8 @@ export default class  Lesson extends Vue {
   @Prop() readonly isDisliked!: boolean;
   @Prop() readonly isFavourite!: boolean;
   @Prop({default: false}) readonly lastLesson!: number;
-  interval = setInterval(() => {
-    return '';
-  }, 0);
+  //@ts-ignore
+  interval!: NodeJS.Timeout;
   activator = false;
   alertType = AlertTypeEnum;
   show = false;
@@ -139,8 +138,8 @@ export default class  Lesson extends Vue {
     if (this.$route.params.lessonId !== undefined) {
       CommentsStore.setCommentsToEmpty();
       await this.fetchData();
-      this.interval = setInterval(() => {CommentsStore.fetchAll(this.$route.params.lessonId); console.log(1)}, 20000);
-    } else clearInterval(this.interval);
+      this.startTimer();
+    } else this.stopTimer();
   }
 
   @Watch('questionsLoaded')
@@ -188,6 +187,17 @@ export default class  Lesson extends Vue {
 
   get commentsLoaded(): boolean {
     return CommentsStore.commentsLoaded;
+  }
+
+  startTimer(): void {
+    this.interval = setTimeout(() => {
+      CommentsStore.fetchAll(this.$route.params.lessonId);
+      this.startTimer();
+    }, 10000);
+  }
+
+  stopTimer(): void {
+    clearTimeout(this.interval);
   }
 
   passFiles(): void {
@@ -243,7 +253,7 @@ export default class  Lesson extends Vue {
   }
 
   beforeDestroy(): void {
-    clearInterval(this.interval);
+    this.stopTimer();
     CommentsStore.setCommentsToEmpty();
   }
 
@@ -270,7 +280,7 @@ export default class  Lesson extends Vue {
 
   async created(): Promise<void> {
     if (this.$route.params.lessonId) {
-      this.interval = setInterval(() => {CommentsStore.fetchAll(this.$route.params.lessonId); console.log(1)}, 10000);
+      this.startTimer();
       await this.fetchData();
     }
   }
