@@ -1,5 +1,5 @@
 <template>
-  <v-form class="form mt-8" @submit.prevent enctype="multipart/form-data">
+  <v-form class="form mt-8" @submit.prevent="$emit('submit')" enctype="multipart/form-data">
     <div class="d-flex align-center flex-column">
       <v-avatar width="100" height="100" color="#F0F2F6">
         <template v-slot:default v-if="link">
@@ -94,7 +94,7 @@
       </FormGroup>
     </div>
     <div>
-      <Button small full-width :disabled="form.disabled" type="submit" v-on="$listeners">Завершить регистрацию
+      <Button small full-width :disabled="form.disabled" type="submit" @submit="$emit('submit')">Завершить регистрацию
       </Button>
       <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div>
     </div>
