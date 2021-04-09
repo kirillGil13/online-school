@@ -7,8 +7,11 @@
         class="badge-avatar"
         :starSize="AvatarSizeEnum.SMALL"
     />
-    <div class="account-badge__account-info">
-      <span class="user_name">{{ `${userInfo.name} ${userInfo.lastName}` }}</span>
+    <div class="account-badge__account-info d-flex align-center">
+      <div class="user_name d-flex justify-center flex-column">
+        <div>{{userInfo.name}}</div>
+        <div>{{userInfo.lastName}}</div>
+      </div>
     </div>
     <div class="proceed d-flex justify-end">
       <svg-icon name="Arrow_Down"></svg-icon>
@@ -69,13 +72,15 @@ export default class AccountBadge extends Vue {
 
     .user_name {
       width: 100%;
-      max-width: 116px;
-      font-weight: bold;
-      cursor: pointer;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 5px;
+      div {
+        width: 100%;
+        max-width: 116px;
+        font-weight: bold;
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 
