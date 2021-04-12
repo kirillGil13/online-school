@@ -28,7 +28,7 @@ c<template>
     </div>
     <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
       <template v-slot:content>
-        <VideoAccessFormComponent :form="accessForm" @close="close" @access="submitPhone"
+        <VideoAccessFormComponent v-if="!codeStep" :form="accessForm" @close="close" @access="access"
                                   :account-id="+$route.query.account_id" :info-pack-id="+$route.params.id"/>
       </template>
     </Modal>
