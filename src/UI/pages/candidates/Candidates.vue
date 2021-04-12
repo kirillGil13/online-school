@@ -39,7 +39,7 @@
     <!--      </v-row>-->
     <v-row>
       <v-col class="mt-6">
-        <FilterComponent :isOnRight="false" :button="true" :search="true"
+        <FilterComponent :isCondidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
                          :filters="filters" @filter="onFilter">
           <template v-slot:search>
             <Search @search="search"/>
@@ -163,6 +163,7 @@ export default class Candidates extends Vue {
   destroy = true;
   candidateId = 0;
   searchBody = '';
+  isArchive = false;
 
   constructor() {
     super();
@@ -296,6 +297,10 @@ export default class Candidates extends Vue {
 
   async onFilter(): Promise<void> {
     await this.filtration();
+  }
+
+  toggleIsArchive():void {
+    this.isArchive = !this.isArchive
   }
 
   async filtration(): Promise<void> {

@@ -1,7 +1,10 @@
 <template>
   <v-col class="py-0">
     <v-row class="tab-controls d-flex flex-row flex-wrap">
-      <div class="filter-tabs d-flex flex-row justify-center mt-2" :style="{order: isOnRight ? '2' : '1'}">
+      <div class="filter-tabs d-flex flex-row justify-center  mt-2" :style="{order: isOnRight ? '2' : '1'}">
+        <v-col class="filter-tabs__archive" v-show="isCondidates">
+          <Button class="mt-0 secondary_white" :style="{background: isArchive ? '#426DF6' : '#F0F2F6', color: isArchive ? '#ffff !important' : '#5A606F !important'}" @submit="$emit('toggleArchive');">Архивные</Button>
+        </v-col>
         <v-col v-for="(item, index) in filters.filterBody" id="select" :key="index" cols="auto"
                :class="['pa-0 d-flex flex-column', index + 1 === filters.filterBody.length && $adaptive.isMobile ? 'mr-0' : '']">
           <label :for="index">{{ item.filterType }}</label>
@@ -34,20 +37,33 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import Filters from '../../../entity/filters/filters';
-
+import Button from '@/UI/components/common/Button.vue';
 @Component({
-  components: {}
+  components: {Button}
 })
 export default class FilterComponent extends Vue {
   @Prop() readonly search!: boolean;
   @Prop() readonly button!: boolean;
   @Prop() readonly filters!: Filters;
   @Prop() readonly isOnRight: boolean | undefined;
+  @Prop() readonly isArchive!: boolean;
+  @Prop() readonly isCondidates?: boolean
 }
 </script>
 <style lang="scss">
 .tab-controls {
   .filter-tabs {
+    &__archive {
+      padding: 0;
+      display: flex;
+      align-items: flex-end;
+      margin-right: .9rem;
+
+      button {
+        font-size: 14px;
+        padding: 9px 20px;
+      }
+    }
     #select {
       margin-right: 12px;
     }
