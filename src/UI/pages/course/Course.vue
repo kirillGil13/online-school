@@ -24,9 +24,35 @@
               </v-img>
             </v-responsive>
             <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
-              <h5>ОПИСАНИЕ</h5>
-              <div class="desc wrap-text" v-html="course.description">
+                
+                <div class="desc__container">
+                  <div class="desc__container--title">Автор курса</div>
+                  <div class="desc__container--author"> 
+                    <div class="author--title">
+                      <v-avatar>
+                        <img
+                          src="https://www.eg.ru/wp-content/uploads/2020/06/kto-iz-znamenitostey-prazdnuet-25-iyunya-den-rojdeniya103921.jpg"
+                          alt="John"/>
+                      </v-avatar>
+                      {{defaultCourse.author}}
+                    </div>
+                    <div class="author--socials">
+                        <a target="_blank" v-for="social of defaultCourse.socials" :key="social.id">
+                          <v-btn
+                              class="white--text mr-2 mt-0"
+                              icon
+                              small
+                          >
+                            <v-icon small>
+                              mdi-{{social.id}}
+                            </v-icon>
+                          </v-btn>
+                        </a>
+                    </div>
+                  </div>
               </div>
+                <h5>ОПИСАНИЕ</h5>
+                <div class="desc wrap-text" v-html="course.description"/>
             </v-col>
           </div>
           <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"
@@ -63,6 +89,7 @@ import Doc from '@/UI/components/common/Doc.vue';
 import {LessonsTypesEnum} from '../../../entity/common/lessons.types';
 import {ILessonItemFiles} from '../../../entity/lessonItem/lessonItem.types';
 import {RelationStore} from '../../../store/modules/Relation';
+import { IDefaultCourseItem } from '@/entity/courseItem/courseItemDefault';
 
 @Component({
   components: {
@@ -93,6 +120,10 @@ export default class Course extends Vue {
 
   get course(): ICourseItem | null {
     return CourseItemStore.courseItem;
+  }
+
+  get defaultCourse(): IDefaultCourseItem {
+    return CourseItemStore.courseItemDefault
   }
 
   get courseLoaded(): boolean {
@@ -238,6 +269,38 @@ export default class Course extends Vue {
       }
     }
   }
+}
+
+.desc__container {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #F2F2F2;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+
+  &--title {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #5F739C;
+    margin: 0 0 1.3rem 0;
+  }
+
+  &--author {
+    display: flex;
+    justify-content: space-between;
+
+    .author--socials {
+      display: flex;
+    }
+  }
+
+   
 }
 
 .play-button {
