@@ -22,15 +22,4 @@ export const mainGuard = (to: any, from: any, next: any): any => {
     } else return next();
 };
 
-export const confirmGuard = (to: any, from: any, next: any): any => {
-    const isEmailConfirmed = AuthStore.user!.isEmailConfirmed;
-    if (to.matched.some((route: any) => route.meta?.confirm)) {
-        if (isEmailConfirmed) {
-            return next('/');
-        } else {
-            return next();
-        }
-    } else return next();
-};
-
 
