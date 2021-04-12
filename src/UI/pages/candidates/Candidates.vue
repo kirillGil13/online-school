@@ -163,6 +163,12 @@ export default class Candidates extends Vue {
   destroy = true;
   candidateId = 0;
   searchBody = '';
+  fetchCandidates = (): void => {
+      const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+      if (bottomOfWindow && this.candidates.length % 100 === 0) {
+          CandidatesStore.fetchAll({skip: this.candidates.length, limit: 100});
+      }
+    };
 
   constructor() {
     super();
@@ -280,6 +286,14 @@ export default class Candidates extends Vue {
 
   created(): void {
     this.fetchData();
+  }
+
+  mounted(): void {
+    window.addEventListener('scroll', this.fetchCandidates);
+  }
+
+  beforeDestroy(): void {
+    window.removeEventListener('scroll', this.fetchCandidates);
   }
 
   fetchData(): void {

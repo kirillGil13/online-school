@@ -56,7 +56,13 @@
       />
     </v-col>
     <Discussion :comments="comments" :form="commentsForm" @postComment="postComment"
-                @respond="respond" @handleLike="handleLike"/>
+                @respond="respond" @handleLike="handleLike" :selects="selectsComments"
+                @extraAction="extraAction"
+                @extraActionAnswer="extraActionAnswer"
+                @changeComment="changeComment"
+                @changeAnswer="changeAnswer"
+                :change-form="commentsChangeForm"
+    />
     <v-col v-if="!commentsLoaded" class="mt-1 pa-0">
         <v-progress-linear
             :active="true"
@@ -103,6 +109,10 @@ import {CommentsStore} from '../../../store/modules/Comments';
 import {IComments} from '../../../entity/comments/comments.types';
 import {CommentsForm} from '../../../form/comments/commentsForm';
 import {CommentTypesEnum} from '../../../entity/common/comment.types';
+import {ISelect} from '../../../entity/select/select.types';
+import {SelectsStore} from '../../../store/modules/Selects';
+import {CommentsAnswersStore} from '../../../store/modules/CommentsAnswers';
+import {CommentsChangeForm} from '../../../form/commentsChange/commentsChangeForm';
 
 @Component({
   components: {
@@ -130,8 +140,15 @@ export default class  Lesson extends Vue {
   lessonTypes = LessonsTypesEnum;
   testingForm = new TestingForm();
   commentsForm = new CommentsForm();
+  commentsChangeForm = new CommentsChangeForm();
   isPlaying = false;
   play = false;
+  fetchComments = (): void => {
+      const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+      if (bottomOfWindow && this.comments.length % 100 === 0) {
+        CommentsStore.fetchAll({route: this.$route.params.lessonId.toString(), pagination:{skip: this.comments.length, limit: 100}});
+      }
+    }
 
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
@@ -189,9 +206,13 @@ export default class  Lesson extends Vue {
     return CommentsStore.commentsLoaded;
   }
 
+  get selectsComments(): ISelect[] {
+    return SelectsStore.selectsComments;
+  }
+
   startTimer(): void {
     this.interval = setTimeout(() => {
-      CommentsStore.fetchAll(this.$route.params.lessonId);
+      CommentsStore.fetchAll({route: this.$route.params.lessonId});
       this.startTimer();
     }, 10000);
   }
@@ -252,14 +273,19 @@ export default class  Lesson extends Vue {
     document.getElementById('message')!.focus();
   }
 
+  mounted(): void {
+    window.addEventListener('scroll', this.fetchComments);
+  }
+
   beforeDestroy(): void {
     this.stopTimer();
     CommentsStore.setCommentsToEmpty();
+    window.removeEventListener('scroll', this.fetchComments);
   }
 
   async fetchData(): Promise<void> {
     await LessonItemStore.fetchData(this.$route.params.lessonId.toString());
-    await CommentsStore.fetchAll(this.$route.params.lessonId);
+    await CommentsStore.fetchAll({route: this.$route.params.lessonId});
     this.commentsForm = new CommentsForm();
     this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
     if (this.lessonLoaded) {
@@ -275,6 +301,45 @@ export default class  Lesson extends Vue {
         this.testingForm = new TestingForm(this.questions!.tests);
         this.testingForm.activeStep[0].active = true;
       }
+    }
+  }
+
+  async extraAction(id: number): Promise<void> {
+    if (id === 0) {
+      if (await CommentsStore.deleteComment(id.toString())) {
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+      }
+    } else {
+      this.commentsChangeForm.setFormData(this.comments!.find(item => item.id === id)!.message);
+      this.commentsChangeForm.commentId = id;
+      this.commentsChangeForm.showChangeComment = true;
+    }
+  }
+
+  async extraActionAnswer(data: any): Promise<void> {
+    if (data.comment === 0) {
+      if (await CommentsAnswersStore.deleteAnswer(data.comment.toString())) {
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+      }
+    }else {
+      this.commentsChangeForm.setFormData(this.comments!.find(item => item.id === data.comment)!.answers.find(item => item.id === data.answer)!.message);
+      this.commentsChangeForm.answerId = data.answer;
+      this.commentsChangeForm.showChangeAnswer = true;
+    }
+  }
+
+  async changeComment(id: number): Promise<void> {
+    if (await this.commentsChangeForm.submit(CommentsStore.patchComment, id.toString())) {
+      this.comments.find(item => item.id === id)!.message = this.commentsChangeForm.message;
+      this.commentsChangeForm.showChangeComment = false;
+    }
+  }
+
+  async changeAnswer(data: any): Promise<void> {
+    console.log(data);
+    if (await this.commentsChangeForm.submit(CommentsAnswersStore.patchAnswer, data.answer.toString())) {
+      this.comments!.find(item => item.id === data.comment)!.answers.find(item => item.id === data.answer)!.message = this.commentsChangeForm.message;
+      this.commentsChangeForm.showChangeAnswer = false;
     }
   }
 
@@ -314,15 +379,15 @@ export default class  Lesson extends Vue {
 
   async postComment(): Promise<void> {
     if (this.commentsForm.commentId) {
-      if (await this.commentsForm.submit(CommentsStore.postAnswer)) {
-        await CommentsStore.fetchAll(this.$route.params.lessonId);
+      if (await this.commentsForm.submit(CommentsAnswersStore.postAnswer)) {
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
         document.getElementById(`comment${this.commentsForm.commentId}`)!.scrollIntoView();
         this.commentsForm = new CommentsForm();
         this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
       }
     } else {
       if (await this.commentsForm.submit(CommentsStore.postComment)) {
-        await CommentsStore.fetchAll(this.$route.params.lessonId);
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
         this.commentsForm = new CommentsForm();
         this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
       }
@@ -339,24 +404,24 @@ export default class  Lesson extends Vue {
         if (!this.comments.find(item => item.id === data.id)!.isLiked && data.kind === 'like') {
           await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
         }
-        await CommentsStore.fetchAll(this.$route.params.lessonId);
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
       } else {
         await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
-        await CommentsStore.fetchAll(this.$route.params.lessonId);
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
       }
     } else {
       if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked !== null) {
-        await CommentsStore.deleteLikeDislikeAnswer(data.answerId.toString());
+        await CommentsAnswersStore.deleteLikeDislikeAnswer(data.answerId.toString());
         if (!this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked && data.kind === 'like') {
-          await CommentsStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
+          await CommentsAnswersStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
         }
         if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked && data.kind === 'dislike') {
-          await CommentsStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
+          await CommentsAnswersStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
         }
-        await CommentsStore.fetchAll(this.$route.params.lessonId);
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
       } else {
-        await CommentsStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
-        await CommentsStore.fetchAll(this.$route.params.lessonId);
+        await CommentsAnswersStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
       }
     }
   }
@@ -380,5 +445,9 @@ export default class  Lesson extends Vue {
 
 .materials {
   margin-top: 66px;
+}
+.text-area {
+  width: 100%;
+  border: 1px solid #f2f2f2 !important;
 }
 </style>

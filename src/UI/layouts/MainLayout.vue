@@ -127,7 +127,7 @@ export default class MainLayout extends Vue {
 </script>
 <style lang="scss">
 .main-view {
-  font-family: 'Ubuntu' !important;
+  font-family: 'Inter', sans-serif !important;
   width: 100%;
 
   &__container {

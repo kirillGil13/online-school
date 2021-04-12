@@ -1,6 +1,7 @@
 @import './const/const.scss';
 @import './fonts/Manrope/manrope.scss';
 @import './fonts/Ubuntu/ubuntu.scss';
+@import './fonts/Inter/inter.scss';
 @import './common/button.scss';
 @import './common/link.scss';
 @import './common/search.scss';
@@ -16,7 +17,7 @@ html,
 body {
   overflow-x: hidden;
   color: $black;
-  font-family: 'Ubuntu' !important;
+  font-family: 'Inter', sans-serif !important;
   background-color: $background;
   padding: 0;
   margin: 0;
@@ -170,7 +171,7 @@ h5 {
   }
 
   &__descripton {
-    font-family: Ubuntu;
+    font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: normal;
     color: $secondary_text;
@@ -186,7 +187,7 @@ h5 {
   }
 
   &__button {
-    font-family: $font-family-base;
+    font-family: 'Inter', sans-serif;
     height: 50px;
     border-radius: $main_border_radius;
     padding: 16px 24px;
@@ -321,7 +322,7 @@ h5 {
 }
 
 .infoPackageItem {
-  font-family: 'Ubuntu';
+  font-family: 'Inter', sans-serif;
   .landing_title {
     font-size: 36px;
     line-height: 1.0625;
