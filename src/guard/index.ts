@@ -8,7 +8,7 @@ export const leaderGuard = (to: any, from: any, next: any): any => {
         if (isLeader) {
             return next();
         } else {
-            return next({name: RouterNameEnum.Main});
+            return next('/');
         }
     } else {
         return next();
@@ -21,3 +21,5 @@ export const mainGuard = (to: any, from: any, next: any): any => {
         return next();
     } else return next();
 };
+
+

@@ -25,6 +25,7 @@ import {IRecoverRepository} from '@/repository/recover/RecoverRepository.types';
 import {IMessagesRepository} from '@/repository/messages/MessagesRepository.types';
 import {IDialogsRepository} from '@/repository/dialogs/DialogsRepository.types';
 import {IConfirmEmailRepository} from '@/repository/confirmEmail/ConfirmEmailRepository.types';
+import {IChangeEmailRepository} from '@/repository/changeEmail/ChangeEmailRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -54,4 +55,5 @@ export interface IProvider {
     messages: IMessagesRepository;
     dialogs: IDialogsRepository;
     confirmEmail: IConfirmEmailRepository;
+    changeEmail: IChangeEmailRepository;
 }

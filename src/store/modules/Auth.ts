@@ -51,12 +51,6 @@ class AuthModule extends VuexModule {
         });
     }
 
-   /* @Action({ rawError: true })
-    async getTwofaCode(phone: string): Promise<any> {
-        const response = await Api.post('users/auth', {phone});
-        return response.data.phone;
-    }*/
-
     @Action({ rawError: true })
     async sendCode(data: PhoneRequestType): Promise<any> {
         const response = await Api.post('/accounts/send_code', data);
@@ -71,11 +65,20 @@ class AuthModule extends VuexModule {
 
     @Action({ rawError: true })
     async register(data: RegisterRequestType): Promise<any> {
-        return await Vue.auth.register({
+        if (await Vue.auth.register({
             data: data,
             fetchUser: true,
             staySignedIn: true,
-        });
+        })) {
+            const formData = new FormData();
+            formData.append('username', data.email);
+            formData.append('password', data.password);
+            return await Vue.auth.login({
+                data: formData,
+                fetchUser: true,
+                staySignedIn: true,
+            })
+        }
     }
 
     @Action

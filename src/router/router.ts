@@ -173,6 +173,14 @@ const routes = [
                 },
                 beforeEnter: leaderGuard
             },
+            {
+                path: 'confirm/:type',
+                meta: {
+                    confirm: true
+                },
+                component: () => import('../UI/pages/confirm/ConfirmPage.vue'),
+                name: RouterNameEnum.Confirm
+            },
 
         ],
     },
