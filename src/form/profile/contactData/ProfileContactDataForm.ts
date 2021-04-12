@@ -1,5 +1,5 @@
 import {Component} from 'vue-property-decorator';
-import {email, maxLength, required} from 'vuelidate/lib/validators';
+import {maxLength, required} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import {IUser} from '@/entity/user';
 import {ProfileContactDataRequestType} from '@/form/profile/contactData/ProfileContactDataForm.types';
@@ -25,15 +25,10 @@ export class ProfileContactDataForm extends Form {
     @Validate(maxLength(30), 'Ссылка на страницу telegram не должна превышать 30 символов')
     public telegram = '';
 
-    @Validate(required, 'Введите email')
-    @Validate(email, 'Введите корректный email')
-    public email = '';
-
     @Validate(required, 'Введите номер телефона')
     public phone = '';
 
     setFormData(user: IUser): void {
-        this.email = user.email;
         this.vk = user.vkLink;
         this.facebook = user.facebookLink;
         this.instagram = user.instagramLink;
@@ -54,7 +49,6 @@ export class ProfileContactDataForm extends Form {
     }
     getFormData(): ProfileContactDataRequestType {
         return {
-            email: this.email,
             vk: this.vk,
             facebook: this.facebook,
             instagram: this.instagram,

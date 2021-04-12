@@ -74,10 +74,6 @@ export default class ProfileMainFormComponent extends Vue {
     width: 100%;
     border: 1px solid #f2f2f2 !important;
   }
-  .info-desc {
-    color: #818C99;
-    font-size: 12px;
-  }
 }
 
 </style>

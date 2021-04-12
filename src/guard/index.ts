@@ -8,7 +8,7 @@ export const leaderGuard = (to: any, from: any, next: any): any => {
         if (isLeader) {
             return next();
         } else {
-            return next({name: RouterNameEnum.Main});
+            return next('/');
         }
     } else {
         return next();
@@ -21,3 +21,16 @@ export const mainGuard = (to: any, from: any, next: any): any => {
         return next();
     } else return next();
 };
+
+export const confirmGuard = (to: any, from: any, next: any): any => {
+    const isEmailConfirmed = AuthStore.user!.isEmailConfirmed;
+    if (to.matched.some((route: any) => route.meta?.confirm)) {
+        if (isEmailConfirmed) {
+            return next('/');
+        } else {
+            return next();
+        }
+    } else return next();
+};
+
+

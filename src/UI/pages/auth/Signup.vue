@@ -186,7 +186,6 @@ export default class Signup extends Vue {
       this.registerForm.photoLink = this.picture!.shortLink;
     }
     if (await this.registerForm.submit(AuthStore.register)) {
-      await AuthStore.login({username: this.registerForm.email, password: this.registerForm.password});
       return true;
     } else return false;
   }

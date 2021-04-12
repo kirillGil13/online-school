@@ -1,18 +1,6 @@
 <template>
   <v-col class="mt-3 pa-0">
-    <div class="mb-3">
-      <FormGroup v-slot="attrs" :form="form" field="email" show-custom-error label="Email">
-        <input
-            class="input input__normal"
-            type="email" name="email"
-            id="email"
-            :disabled="true"
-            v-model="form[attrs.name]"
-            v-bind="attrs"
-            @input="attrs.change"
-        >
-      </FormGroup>
-    </div>
+    <ChangeEmailFormComponent :form="changeEmailForm" @submit="$emit('changeEmail')"/>
     <div class="mb-3">
       <FormGroup v-slot="attrs" :form="form" field="resultPhone" show-custom-error label="Телефон">
         <vue-phone-number-input
@@ -88,15 +76,19 @@ import {ProfileContactDataForm} from '../../../../form/profile/contactData/Profi
 import Button from '../../common/Button.vue';
 import FormGroup from '../../common/form/FormGroup.vue';
 import {translations} from '../../../../plugins';
+import ChangeEmailFormComponent from '../changeEmail/ChangeEmailFormComponent.vue';
+import {ChangeEmailForm} from '../../../../form/changeEmail/changeEmail';
 
 @Component({
   components: {
+    ChangeEmailFormComponent,
     FormGroup,
     Button
   }
 })
 export default class ProfileContactDataFormComponent extends Vue {
   @Prop({ required: true }) readonly form!: ProfileContactDataForm;
+  @Prop({ required: true }) readonly changeEmailForm!: ChangeEmailForm;
   translations = translations;
 
   changeCode(e: any): void {
@@ -118,5 +110,8 @@ export default class ProfileContactDataFormComponent extends Vue {
     color: #4F4F4F;
     font-size: 12px;
   }
+}
+.desc {
+  color: #828282;
 }
 </style>

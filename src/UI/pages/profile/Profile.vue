@@ -45,8 +45,10 @@
                             :is="item.component"
                             :contactForm="contactDataForm"
                             :mainForm="mainInfoForm"
+                            :changeEmailForm="changeEmailForm"
                             @saveMain="saveMain"
                             @saveContact="saveContact"
+                            @changeEmail="changeEmail"
                         />
                       </keep-alive>
                     </v-tab-item>
@@ -66,6 +68,9 @@
     <Alert :show="show" :type="alertType.Success"
            text="Данные успешно изменены"
            @show="showAlert"/>
+    <Alert :show="showEmail" :type="alertType.Success"
+           text="Ссылка успешно отправлена"
+           @show="showEmailAlert"/>
   </v-row>
 </template>
 
@@ -94,6 +99,8 @@ import {TabsStore} from '../../../store/modules/Tabs';
 import ProfileMain from '@/UI/components/profile/sections/ProfileMain.vue';
 import ProfileContact from '@/UI/components/profile/sections/ProfileContact.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
+import {ChangeEmailForm} from '../../../form/changeEmail/changeEmail';
+import {ChangeEmailStore} from '../../../store/modules/ChangeEmail';
 
 @Component({
   components: {
@@ -108,12 +115,13 @@ import {AlertTypeEnum} from '../../../entity/common/alert.types';
     Header,
     Alert,
     ProfileMain,
-    ProfileContact
+    ProfileContact,
   },
 })
 export default class Profile extends Vue {
   mainInfoForm: ProfileMainInfoForm;
   contactDataForm: ProfileContactDataForm;
+  changeEmailForm: ChangeEmailForm;
   pictureChanged = false;
   success = false;
   activeName = 0;
@@ -122,6 +130,7 @@ export default class Profile extends Vue {
   activator = false;
   destroy = true;
   show = false;
+  showEmail = false;
   alertType = AlertTypeEnum;
   reader = new FileReader();
 
@@ -131,7 +140,8 @@ export default class Profile extends Vue {
     this.mainInfoForm.setFormData(this.user!);
     this.contactDataForm = new ProfileContactDataForm();
     this.contactDataForm.setFormData(this.user!);
-
+    this.changeEmailForm = new ChangeEmailForm();
+    this.changeEmailForm.setFormData(this.user!.email);
   }
 
   @Watch('user.photoLink')
@@ -185,6 +195,10 @@ export default class Profile extends Vue {
     this.show = show;
   }
 
+  showEmailAlert(show: boolean): void {
+    this.show = show;
+  }
+
   activatorChange(act: boolean): void {
     this.activator = act;
   }
@@ -213,6 +227,12 @@ export default class Profile extends Vue {
 
   created(): void {
     document.title = this.user!.fullName + ' - ' + 'ONELINKS';
+  }
+
+  async changeEmail(): Promise<void> {
+    if (await this.changeEmailForm.submit(ChangeEmailStore.sendCode)) {
+      this.showEmail = true;
+    }
   }
 
   async setImage(data: any): Promise<void> {
