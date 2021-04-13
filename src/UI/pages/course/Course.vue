@@ -28,6 +28,7 @@
               <div class="desc wrap-text" v-html="course.description">
               </div>
             </v-col>
+            <Discussion isRewiew="true"/>
           </div>
           <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"
                :style="{width: $adaptive.isMobile ? '100%' : ''}">
@@ -63,6 +64,7 @@ import Doc from '@/UI/components/common/Doc.vue';
 import {LessonsTypesEnum} from '../../../entity/common/lessons.types';
 import {ILessonItemFiles} from '../../../entity/lessonItem/lessonItem.types';
 import {RelationStore} from '../../../store/modules/Relation';
+import Discussion from '../../components/discussion/Discussion.vue';
 
 @Component({
   components: {
@@ -70,7 +72,8 @@ import {RelationStore} from '../../../store/modules/Relation';
     Header,
     Button,
     Relation,
-    Doc
+    Doc,
+    Discussion
   },
 })
 export default class Course extends Vue {

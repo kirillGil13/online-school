@@ -30,7 +30,6 @@ export type CommentsResponseType = {
     count_likes: number;
     count_dislikes: number;
     is_liked: boolean | null;
-    answers: CommentsAnswersResponseType[];
 }
 
 export type CommentsAuthorResponseType = {
