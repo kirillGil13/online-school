@@ -24,7 +24,6 @@
               </v-img>
             </v-responsive>
             <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
-                
                 <div class="desc__container">
                   <div class="desc__container--title">Автор курса</div>
                   <div class="desc__container--author"> 
@@ -53,6 +52,31 @@
               </div>
                 <h5>ОПИСАНИЕ</h5>
                 <div class="desc wrap-text" v-html="course.description"/>
+            </v-col>
+            <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
+              <div class="desc__review">
+                <div class="desc__reiting">
+                <div class="desc__reiting--count">9.9</div>
+                <div class="desc__reiting00subtitle">общий рейтинг</div>
+              </div>
+
+              <div class="desc__icons">
+                <div class="desc__icons--like">
+                  <Relation svg-name="Finger" :active="isLiked" :title="$adaptive.isMobile ? '' : '1788'"
+                    @click="$emit('handleLike', true)"/>
+                </div>
+
+                <div  class="desc__icons--dislike">
+                   <Relation svg-class="svg-down" :active="isDisliked" svg-name="Finger" :title="$adaptive.isMobile ? '' : '876'"
+                    @click="$emit('handleDisLike', false)"/>
+                </div>
+              </div>
+
+              <div class="desc__btn-send-review"> 
+                <button>Написать отзыв</button>
+              </div>
+
+              </div>
             </v-col>
           </div>
           <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"
@@ -123,6 +147,7 @@ export default class Course extends Vue {
   }
 
   get defaultCourse(): IDefaultCourseItem {
+    console.log(CourseItemStore.courseItem)
     return CourseItemStore.courseItemDefault
   }
 
@@ -298,9 +323,83 @@ export default class Course extends Vue {
     .author--socials {
       display: flex;
     }
+  }  
+}
+
+.desc__review {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+}
+
+.desc__reiting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  border-right: 1px solid #F2F2F2;
+  margin-right: 2rem ;
+
+  &--count {
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 58px;
+    display: flex;
+    color: #27AE60;
+    align-items: center;
   }
 
-   
+  &--subtitle {
+    font-size: 12px;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
+    color: #5F739C;
+  }
+}
+
+.desc__icons {
+  display: flex;
+  width: 30%;
+  border-right: 1px solid #F2F2F2;
+  margin-right: 2rem ;
+  height: 100%;
+  align-items: center;
+
+  &--dislike {
+    .icon-container {
+      background: rgba(230, 70, 70, 0.12);
+
+      svg path {
+        fill: #E64646;
+      }
+    }
+  }
+
+  &--like {
+    .icon-container {
+      background: rgba(39, 174, 96, 0.12);
+
+      svg path {
+        fill: #27AE60;
+      }
+    }
+  }
+  
+  
+}
+
+.desc__btn-send-review {
+  display: flex;
+  align-items: center;
+  width: 40%;
+  height: 100%;
+
+    button {
+      padding: 10px 16px;
+      font-size: 12px;
+    }
 }
 
 .play-button {
