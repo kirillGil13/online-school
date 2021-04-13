@@ -36,6 +36,32 @@
       <Relation svg-name="Message" :title="$adaptive.isMobile ? '' : 'Обсудить'" @click="discuss"/>
     </v-row>
     <v-col :class="['box-container', $adaptive.isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
+      <div class="desc__container">
+          <div class="desc__container--title">Автор курса</div>
+          <div class="desc__container--author"> 
+            <div class="author--title">
+              <v-avatar>
+                <img
+                  src="https://www.eg.ru/wp-content/uploads/2020/06/kto-iz-znamenitostey-prazdnuet-25-iyunya-den-rojdeniya103921.jpg"
+                  alt="John"/>
+              </v-avatar>
+              {{defaultCourse.author}}
+            </div>
+            <div class="author--socials">
+                <a target="_blank" v-for="social of defaultCourse.socials" :key="social.id">
+                  <v-btn
+                      class="white--text mr-2 mt-0"
+                      icon
+                      small
+                  >
+                    <v-icon small>
+                      mdi-{{social.id}}
+                    </v-icon>
+                  </v-btn>
+                </a>
+            </div>
+          </div>
+      </div>
       <h5>ОПИСАНИЕ</h5>
       <div class="desc wrap-text" v-html="lesson.description">
       </div>
@@ -103,6 +129,8 @@ import {CommentsStore} from '../../../store/modules/Comments';
 import {IComments} from '../../../entity/comments/comments.types';
 import {CommentsForm} from '../../../form/comments/commentsForm';
 import {CommentTypesEnum} from '../../../entity/common/comment.types';
+import { IDefaultCourseItem } from '@/entity/courseItem/courseItemDefault';
+import {CourseItemStore} from '@/store/modules/CourseItem';
 
 @Component({
   components: {
@@ -187,6 +215,10 @@ export default class  Lesson extends Vue {
 
   get commentsLoaded(): boolean {
     return CommentsStore.commentsLoaded;
+  }
+
+  get defaultCourse(): IDefaultCourseItem {
+    return CourseItemStore.courseItemDefault
   }
 
   startTimer(): void {

@@ -24,11 +24,60 @@
               </v-img>
             </v-responsive>
             <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
-              <h5>ОПИСАНИЕ</h5>
-              <div class="desc wrap-text" v-html="course.description">
+                <div class="desc__container">
+                  <div class="desc__container--title">Автор курса</div>
+                  <div class="desc__container--author"> 
+                    <div class="author--title">
+                      <v-avatar>
+                        <img
+                          src="https://www.eg.ru/wp-content/uploads/2020/06/kto-iz-znamenitostey-prazdnuet-25-iyunya-den-rojdeniya103921.jpg"
+                          alt="John"/>
+                      </v-avatar>
+                      {{defaultCourse.author}}
+                    </div>
+                    <div class="author--socials">
+                        <a target="_blank" v-for="social of defaultCourse.socials" :key="social.id">
+                          <v-btn
+                              class="white--text mr-2 mt-0"
+                              icon
+                              small
+                          >
+                            <v-icon small>
+                              mdi-{{social.id}}
+                            </v-icon>
+                          </v-btn>
+                        </a>
+                    </div>
+                  </div>
+              </div>
+                <h5>ОПИСАНИЕ</h5>
+                <div class="desc wrap-text" v-html="course.description"/>
+            </v-col>
+            <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
+              <div class="desc__review">
+                <div class="desc__reiting">
+                <div class="desc__reiting--count">9.9</div>
+                <div class="desc__reiting00subtitle">общий рейтинг</div>
+              </div>
+
+              <div class="desc__icons">
+                <div class="desc__icons--like">
+                  <Relation svg-name="Finger" :active="isLiked" :title="$adaptive.isMobile ? '' : '1788'"
+                    @click="$emit('handleLike', true)"/>
+                </div>
+
+                <div  class="desc__icons--dislike">
+                   <Relation svg-class="svg-down" :active="isDisliked" svg-name="Finger" :title="$adaptive.isMobile ? '' : '876'"
+                    @click="$emit('handleDisLike', false)"/>
+                </div>
+              </div>
+
+              <div class="desc__btn-send-review"> 
+                <button>Написать отзыв</button>
+              </div>
+                <Discussion isRewiew="true"/>
               </div>
             </v-col>
-            <Discussion isRewiew="true"/>
           </div>
           <div :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"
                :style="{width: $adaptive.isMobile ? '100%' : ''}">
@@ -65,6 +114,7 @@ import {LessonsTypesEnum} from '../../../entity/common/lessons.types';
 import {ILessonItemFiles} from '../../../entity/lessonItem/lessonItem.types';
 import {RelationStore} from '../../../store/modules/Relation';
 import Discussion from '../../components/discussion/Discussion.vue';
+import { IDefaultCourseItem } from '@/entity/courseItem/courseItemDefault';
 
 @Component({
   components: {
@@ -96,6 +146,11 @@ export default class Course extends Vue {
 
   get course(): ICourseItem | null {
     return CourseItemStore.courseItem;
+  }
+
+  get defaultCourse(): IDefaultCourseItem {
+    console.log(CourseItemStore.courseItem)
+    return CourseItemStore.courseItemDefault
   }
 
   get courseLoaded(): boolean {
@@ -241,6 +296,112 @@ export default class Course extends Vue {
       }
     }
   }
+}
+
+.desc__container {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #F2F2F2;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+
+  &--title {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #5F739C;
+    margin: 0 0 1.3rem 0;
+  }
+
+  &--author {
+    display: flex;
+    justify-content: space-between;
+
+    .author--socials {
+      display: flex;
+    }
+  }  
+}
+
+.desc__review {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+}
+
+.desc__reiting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  border-right: 1px solid #F2F2F2;
+  margin-right: 2rem ;
+
+  &--count {
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 58px;
+    display: flex;
+    color: #27AE60;
+    align-items: center;
+  }
+
+  &--subtitle {
+    font-size: 12px;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
+    color: #5F739C;
+  }
+}
+
+.desc__icons {
+  display: flex;
+  width: 30%;
+  border-right: 1px solid #F2F2F2;
+  margin-right: 2rem ;
+  height: 100%;
+  align-items: center;
+
+  &--dislike {
+    .icon-container {
+      background: rgba(230, 70, 70, 0.12);
+
+      svg path {
+        fill: #E64646;
+      }
+    }
+  }
+
+  &--like {
+    .icon-container {
+      background: rgba(39, 174, 96, 0.12);
+
+      svg path {
+        fill: #27AE60;
+      }
+    }
+  }
+  
+  
+}
+
+.desc__btn-send-review {
+  display: flex;
+  align-items: center;
+  width: 40%;
+  height: 100%;
+
+    button {
+      padding: 10px 16px;
+      font-size: 12px;
+    }
 }
 
 .play-button {
