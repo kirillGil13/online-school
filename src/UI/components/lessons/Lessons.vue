@@ -64,7 +64,7 @@ export default class Lessons extends Vue {
 <style lang="scss">
 .border {
   border-radius: 12px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 14px 12px rgba(0, 0, 0, 0.01);
 }
 
 .course-lessons-block {

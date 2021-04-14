@@ -21,7 +21,7 @@
                 <div class="desc">{{ comment.createdAt }}</div>
               </div>
               <div class="pr-0" v-if="comment.isMy">
-                <Select class-name="select_content action" :selects="selects" v-on="$listeners" :id="comment.id">
+                <Select class-name="select_content_comment action" :selects="selects" v-on="$listeners" :id="comment.id">
                   <template v-slot:act>
                     <div class="d-flex justify-end pr-0">
                       <svg-icon
@@ -81,7 +81,7 @@
                         <div class="desc">{{ item.createdAt }}</div>
                       </div>
                       <div class="pr-0" v-if="item.isMy">
-                        <Select class-name="select_content action" :selects="selects" @extraAction="$emit('extraActionAnswer', {answer: item.id, comment: comment.id})" :id="comment.id">
+                        <Select class-name="select_content_comment action" :selects="selects" @extraAction="extraActionAnswer" :id="item.id">
                           <template v-slot:act>
                             <div class="d-flex justify-end pr-0">
                               <svg-icon
@@ -154,6 +154,10 @@ export default class Comments extends Vue {
   closeChangeAnswer(): void {
     this.form.showChangeAnswer = false;
   }
+
+  extraActionAnswer(answerId: number, index: number): void {
+    this.$emit('extraActionAnswer', answerId, this.comment.id, index);
+  }
 }
 </script>
 
@@ -204,20 +208,7 @@ export default class Comments extends Vue {
     }
   }
 }
-
-.comment-action {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-size: 12px;
-  color: #426DF6;
-
-  .svg-up {
-    transform: rotate(180deg);
-  }
-}
-
-.select_content {
+.select_content_comment {
   margin-top: 20px !important;
   border-radius: 12px !important;
   min-width: 100px !important;
@@ -229,6 +220,17 @@ export default class Comments extends Vue {
         color: #EB5757 !important;
       }
     }
+  }
+}
+.comment-action {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 12px;
+  color: #426DF6;
+
+  .svg-up {
+    transform: rotate(180deg);
   }
 }
 

@@ -10,23 +10,22 @@
           <v-main>
             <v-col class="py-0" v-if="!user.isEmailConfirmed && !$route.query.accountId">
               <Confirm
-                  :text="`Для полноценной работы необходимо подтвердить почту ${user.email}`"
+                  :text="`Мы отправили на почту ${user.email} письмо с ссылкой на подтверждение. Пожалуйста, откройте вашу почту и перейдите по ссылке в письме.`"
                   @show="showNote"
                   :show="show"
                   @submit="sendCode"
               />
             </v-col>
-            <v-col class="py-0" v-else-if="!error && $route.query.accountId && showSuccess">
-              <Confirm
-                  :text="`Ваша почта ${user.email} успешно подтверждена`"
-                  @show="showNote"
-                  icon
-                  :show="show"
-              />
-            </v-col>
+<!--            <v-col class="py-0" v-else-if="!error && $route.query.accountId && showSuccess">-->
+<!--              <Confirm-->
+<!--                  :text="`Ваша почта ${user.email} успешно подтверждена`"-->
+<!--                  @show="showNote"-->
+<!--                  icon-->
+<!--                  :show="show"-->
+<!--              />-->
+<!--            </v-col>-->
             <Alert :show="success" :type="alertType.Success" text="Ссылка успешно отправлена" @show="showAlert"/>
-            <Error v-if="error"/>
-            <router-view v-else></router-view>
+            <router-view></router-view>
           </v-main>
         </div>
       </v-container>
@@ -66,8 +65,6 @@ export default class MainLayout extends Vue {
   show = true;
   success = false;
   alertType = AlertTypeEnum;
-  error = false;
-  showSuccess = false;
 
   showAlert(show: boolean): void {
     this.success = show;
@@ -98,18 +95,18 @@ export default class MainLayout extends Vue {
   }
 
   async mounted(): Promise<void> {
-    if (this.$route.query.accountId && !this.user!.isEmailConfirmed) {
-      if (await ConfirmEmailStore.confirm({
-        code: this.$route.query.code.toString(),
-        accountId: parseInt(this.$route.query.accountId.toString())
-      })) {
-        await AuthStore.fetch();
-        this.showSuccess = true;
-      }
-      else {
-        this.error = true;
-      }
-    }
+    // if (this.$route.query.accountId && !this.user!.isEmailConfirmed) {
+    //   if (await ConfirmEmailStore.confirm({
+    //     code: this.$route.query.code.toString(),
+    //     accountId: parseInt(this.$route.query.accountId.toString())
+    //   })) {
+    //     await AuthStore.fetch();
+    //     this.showSuccess = true;
+    //   }
+    //   else {
+    //     this.error = true;
+    //   }
+    // }
     if (TourStore.newUser) {
       this.$tours['tour'].start();
     }
