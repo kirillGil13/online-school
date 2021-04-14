@@ -34,9 +34,10 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import Filters from '../../../entity/filters/filters';
+import Button from '../common/Button.vue';
 
 @Component({
-  components: {}
+  components: {Button}
 })
 export default class FilterComponent extends Vue {
   @Prop() readonly search!: boolean;

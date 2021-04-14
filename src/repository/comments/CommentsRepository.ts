@@ -8,20 +8,28 @@ import Comments from '@/entity/comments/comments';
 import {CommentsFormRequestType} from '@/form/comments/commentsForm.types';
 import {CommentsAnswersResponseType, ICommentsAnswers} from '@/entity/commentsAnswers/commentsAnswers.types';
 import CommentsAnswers from '@/entity/commentsAnswers/commentsAnswers';
+import {CommentsChangeRequestType} from '@/form/commentsChange/commentsChangeForm.types';
 
 export class CommentsRepository implements ICommentsRepository {
-    async fetchAll(route: string): Promise<IComments[]> {
-        const response = await Api.get(`/comments/lessons/${route}`);
-        const data = response.data as CommentsResponseType[];
-        return data.map((comment: CommentsResponseType) => new Comments(comment));
+    async fetchAll(route: string, data?: FormData): Promise<IComments[]> {
+        const response = await Api.get(`/comments/lessons/${route}`, {params: data, paramsSerializer: function paramsSerializer(params) {
+                return new URLSearchParams(params).toString()
+            }});
+        const responseData = response.data as CommentsResponseType[];
+        return responseData.map((comment: CommentsResponseType) => new Comments(comment));
     }
-    async postComment(data: CommentsFormRequestType): Promise<ICommentsAnswers> {
-        const response = await Api.post('/comments', data);
+    async deleteComment(route: string): Promise<boolean> {
+        const response = await Api.delete(`/comments/${route}`);
+        const responseData = response.data;
+        return responseData.result;
+    }
+    async patchComment(data: CommentsChangeRequestType, route: string): Promise<ICommentsAnswers> {
+        const response = await Api.patch(`/comments/${route}`, data);
         const responseData = response.data as CommentsAnswersResponseType;
         return new CommentsAnswers(responseData);
     }
-    async postAnswer(data: CommentsFormRequestType): Promise<ICommentsAnswers> {
-        const response = await Api.post('/comment_answers', data);
+    async postComment(data: CommentsFormRequestType): Promise<ICommentsAnswers> {
+        const response = await Api.post('/comments', data);
         const responseData = response.data as CommentsAnswersResponseType;
         return new CommentsAnswers(responseData);
     }
@@ -30,18 +38,8 @@ export class CommentsRepository implements ICommentsRepository {
         const responseData = response.data;
         return responseData.result;
     }
-    async setLikeDislikeAnswer(data: {is_like: boolean}, route: string): Promise<boolean> {
-        const response = await Api.post(`comment_answers/${route}/likes-dislikes`, data);
-        const responseData = response.data;
-        return responseData.result;
-    }
     async deleteLikeDislikeComment(route: string): Promise<boolean> {
         const response = await Api.delete(`comments/${route}/likes-dislikes`);
-        const responseData = response.data;
-        return responseData.result;
-    }
-    async deleteLikeDislikeAnswer(route: string): Promise<boolean> {
-        const response = await Api.delete(`comment_answers/${route}/likes-dislikes`);
         const responseData = response.data;
         return responseData.result;
     }

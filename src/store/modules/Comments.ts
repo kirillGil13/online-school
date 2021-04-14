@@ -1,8 +1,9 @@
 import {Action, getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import {IComments} from '@/entity/comments/comments.types';
+import {CommentsRequestType, IComments} from '@/entity/comments/comments.types';
 import {CommentsFormRequestType} from '@/form/comments/commentsForm.types';
 import {ICommentsAnswers} from '@/entity/commentsAnswers/commentsAnswers.types';
+import {CommentsChangeRequestType} from '@/form/commentsChange/commentsChangeForm.types';
 
 @Module({
     namespaced: true,
@@ -21,12 +22,25 @@ class CommentsModule extends VuexModule {
     }
 
     @MutationAction
-    async fetchAll(route: string): Promise<{ comments: IComments[]; commentsLoaded: boolean }> {
-        const comments = await store.$repository.comments.fetchAll(route);
+    async fetchAll(data: {route: string; pagination?: CommentsRequestType}): Promise<{ comments: IComments[]; commentsLoaded: boolean }> {
+        const formData = new FormData();
         let commentsLoaded = false;
-        if (comments)
+        if (data.pagination) {
+            if (data.pagination.skip)
+                formData.append('skip', data.pagination.skip.toString());
+            if (data.pagination.limit)
+                formData.append('limit', data.pagination.limit.toString());
+        }
+        let comments = await store.$repository.comments.fetchAll(data.route, formData);
+        if (comments) {
             commentsLoaded = true;
-        return { comments, commentsLoaded };
+        }
+        if (data?.pagination?.skip || data?.pagination?.limit) {
+            if (comments !== []) {
+                comments = this.comments.concat(comments);
+            }
+            return {comments, commentsLoaded};
+        } else return {comments, commentsLoaded};
     }
 
     @Action({rawError: true})
@@ -36,8 +50,14 @@ class CommentsModule extends VuexModule {
     }
 
     @Action({rawError: true})
-    async postAnswer(data: CommentsFormRequestType): Promise<ICommentsAnswers> {
-        const response = await store.$repository.comments.postAnswer(data);
+    async deleteComment(route: string): Promise<boolean> {
+        const response = await store.$repository.comments.deleteComment(route);
+        return response;
+    }
+
+    @Action({rawError: true})
+    async patchComment(data: {data: CommentsChangeRequestType; route: string}): Promise<ICommentsAnswers> {
+        const response = await store.$repository.comments.patchComment(data.data, data.route);
         return response;
     }
 
@@ -48,20 +68,8 @@ class CommentsModule extends VuexModule {
     }
 
     @Action({rawError: true})
-    async setLikeDislikeAnswer(data: {data: {is_like: boolean}; route: string}): Promise<boolean> {
-        const response = await store.$repository.comments.setLikeDislikeAnswer(data.data, data.route);
-        return response;
-    }
-
-    @Action({rawError: true})
     async deleteLikeDislikeComment(route: string): Promise<boolean> {
         const response = await store.$repository.comments.deleteLikeDislikeComment(route);
-        return response;
-    }
-
-    @Action({rawError: true})
-    async deleteLikeDislikeAnswer(route: string): Promise<boolean> {
-        const response = await store.$repository.comments.deleteLikeDislikeAnswer(route);
         return response;
     }
 }

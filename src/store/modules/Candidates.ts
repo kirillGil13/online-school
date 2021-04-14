@@ -18,37 +18,36 @@ class CandidatesModule extends VuexModule {
     async fetchAll(data?: CandidateRequestType): Promise<{ candidates: ICandidate[]; candidatesLoaded: boolean }> {
         const formData = new FormData();
         let candidatesLoaded = false;
-        if(data) {
+        if (data) {
             if (data.statusId) {
                 formData.append('statusId', data.statusId.toString());
-            }
-            else formData.delete('statusId');
+            } else formData.delete('statusId');
             if (data.infoPackId) {
                 formData.append('infoPackId', data.infoPackId.toString());
-            }
-            else formData.delete('infoPackId');
+            } else formData.delete('infoPackId');
             if (data.isFiction !== undefined) {
                 formData.append('isFiction', data.isFiction.toString());
-            }
-            else formData.delete('isFiction');
+            } else formData.delete('isFiction');
             if (data.limit) {
                 formData.append('limit', data.limit.toString());
-            }
-            else formData.delete('limit');
+            } else formData.delete('limit');
             if (data.search) {
                 formData.append('search', data.search);
-            }
-            else formData.delete('search');
+            } else formData.delete('search');
             if (data.skip) {
                 formData.append('skip', data.skip.toString());
-            }
-            else formData.delete('skip');
+            } else formData.delete('skip');
         }
-        const candidates = await store.$repository.candidates.fetchAll(formData);
+        let candidates = await store.$repository.candidates.fetchAll(formData);
         if (candidates) {
             candidatesLoaded = true;
         }
-        return { candidates, candidatesLoaded };
+        if (data?.skip || data?.limit) {
+            if (candidates !== []) {
+                candidates = this.candidates.concat(candidates);
+            }
+            return {candidates, candidatesLoaded};
+        } else return {candidates, candidatesLoaded};
     }
 
     @Action({rawError: true})

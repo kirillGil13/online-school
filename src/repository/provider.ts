@@ -27,6 +27,7 @@ import {DialogsRepository} from '@/repository/dialogs/DialogsRepository';
 import {MessagesRepository} from '@/repository/messages/MessagesRepository';
 import {ConfirmEmailRepository} from '@/repository/confirmEmail/ConfirmEmailRepository';
 import {ChangeEmailRepository} from '@/repository/changeEmail/ChangeEmailRepository';
+import {CommentsAnswersRepository} from '@/repository/commentsAnswers/CommentsAnswersRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -56,6 +57,7 @@ export const provider = (): IProvider => ({
     dialogs: new DialogsRepository(),
     messages: new MessagesRepository(),
     confirmEmail: new ConfirmEmailRepository(),
-    changeEmail: new ChangeEmailRepository()
+    changeEmail: new ChangeEmailRepository(),
+    commentsAnswers: new CommentsAnswersRepository(),
 });
 

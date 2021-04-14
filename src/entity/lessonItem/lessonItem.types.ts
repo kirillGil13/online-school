@@ -10,6 +10,7 @@ export interface ILessonItem {
     timeCode: number;
     duration: number;
     homeworkIsDone: boolean;
+    homeworkType: string;
     files: ILessonItemFiles[];
     resolveDescription(s: string): string;
 }
@@ -29,6 +30,7 @@ export type LessonItemResponseType = {
     timeCode: number;
     duration: number;
     homeworkIsDone: boolean;
+    homeworkType: string;
     files: LessonItemFilesResponseType[];
 }
 export type LessonItemFilesResponseType = {
