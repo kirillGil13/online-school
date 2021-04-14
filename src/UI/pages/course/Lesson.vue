@@ -164,6 +164,7 @@ export default class Lesson extends Vue {
 
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {
+    console.log(123);
     if (this.$route.params.lessonId !== undefined) {
       this.stopTimer();
       CommentsStore.setCommentsToEmpty();
