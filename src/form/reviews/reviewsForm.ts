@@ -8,7 +8,7 @@ import { requiredIf } from 'vuelidate/lib/validators';
 export class ReviewsForm extends Form {
     @Validate(requiredIf(function (vm): boolean {
         return !vm.isLike
-    }), 'Оставьте отзыв долбаеб')
+    }), 'Оставьте отзыв')
     public reviewText = '';
     public reviewId: number | null = null;
     public isLike: boolean | null = null;;

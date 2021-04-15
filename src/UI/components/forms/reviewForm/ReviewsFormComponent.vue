@@ -1,7 +1,7 @@
 <template>
     <v-row no-gutters class="message-containers d-flex flex-row align-start mt-2" :style="{backgroundColor: background ? background : ''}">
         <v-col class="pa-0 d-flex flex-row align-end">
-            <form-group field="review" :form="form" show-custom-error classes="width">
+            <form-group class="width" field="review" :form="form" show-custom-error >
                 <div class="review-text">
                     <div class="review-text__title">оставить отзыв</div>
                     <div class="review-text__actions">
