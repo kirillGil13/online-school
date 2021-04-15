@@ -27,7 +27,7 @@
                     </div>
                     <div class="review-text__button">
                         <Button :disabled="form.disabled" class="btn-send-rewiew" @submit="sendMessage">Отправить</Button>
-                        <Button class="btn-like-dislike ml-3" @submit="buttonFunc">{{course.isLiked ? 'Оценить без отзыва' : 'Отменить оценку'}}</Button>
+                        <Button class="secondary_blue ml-3" @submit="buttonFunc">{{course.isLiked ? 'Оценить без отзыва' : 'Отменить оценку'}}</Button>
                     </div>
                 </div>
             </form-group>
