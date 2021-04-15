@@ -26,11 +26,8 @@ import {IMessagesRepository} from '@/repository/messages/MessagesRepository.type
 import {IDialogsRepository} from '@/repository/dialogs/DialogsRepository.types';
 import {IConfirmEmailRepository} from '@/repository/confirmEmail/ConfirmEmailRepository.types';
 import {IChangeEmailRepository} from '@/repository/changeEmail/ChangeEmailRepository.types';
-<<<<<<< HEAD
-import { IReviewsRepository } from './reviews/ReviewsRepository.types';
-=======
 import {ICommentsAnswersRepository} from '@/repository/commentsAnswers/CommentsAnswersRepository.types';
->>>>>>> dev
+import { IReviewsRepository } from './reviews/ReviewsRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -61,9 +58,6 @@ export interface IProvider {
     dialogs: IDialogsRepository;
     confirmEmail: IConfirmEmailRepository;
     changeEmail: IChangeEmailRepository;
-<<<<<<< HEAD
     reviews: IReviewsRepository
-=======
     commentsAnswers: ICommentsAnswersRepository;
->>>>>>> dev
 }
