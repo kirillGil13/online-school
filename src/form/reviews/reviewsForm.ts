@@ -2,7 +2,7 @@ import { Component } from 'vue-property-decorator';
 import { Form } from '@/form/form';
 import { ReviewsFormRequestType } from './reviewsForm.types';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
-import { requiredIf } from 'vuelidate/lib/validators';
+import { required, requiredIf } from 'vuelidate/lib/validators';
 
 @Component
 export class ReviewsForm extends Form {
@@ -11,6 +11,9 @@ export class ReviewsForm extends Form {
     }), 'Оставьте отзыв')
     public reviewText = '';
     public reviewId: number | null = null;
+    @Validate(requiredIf(function (vm): boolean {
+        return vm.isLike === null
+    }), 'Оставьте отзыв')
     public isLike: boolean | null = null;;
     public serverErrors: { [key: string]: string[] } = {};
 

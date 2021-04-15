@@ -35,14 +35,14 @@
                 svg-name="Finger"
                 :class="isLiked && 'like-active'"
                 :title="$adaptive.isMobile ? '' : 'Нравится'"
-                @click="$emit('handleLike', true)"
+                @click="$emit('sendLikeWithRewiew')"
             />
             <Relation
                 svg-class="svg-down"
                 :class="isDisliked && 'dislike-active'"
                 svg-name="Finger"
                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
-                @click="$emit('handleDisLike', false)"
+                @click="$emit('sendDisLikeWithRewiew')"
             />
             <Relation
                 svg-name="Chosen"
@@ -57,12 +57,13 @@
             />
         </v-row>
         <v-row no-gutters class="mb-4">
-            <template v-if="isSetReview">
-                <reviews-form-component
+            <template v-if="toggleOpenLikeDislikeForm">
+                <ReviewsFormLikesDislikes
                     :form="formReview"
                     :course="course"
                     @setReview="$emit('setReview')"
-                    background="#FFFFFF"
+                    @cancelDislike="$emit('cancelDislike')"
+                    @setMark="$emit('setMark')"
                 />
             </template>
         </v-row>
@@ -216,7 +217,7 @@ import { CommentsForm } from '../../../form/comments/commentsForm';
 import { CommentTypesEnum } from '../../../entity/common/comment.types';
 import { IDefaultCourseItem } from '@/entity/courseItem/courseItemDefault';
 import { CourseItemStore } from '@/store/modules/CourseItem';
-import ReviewsFormComponent from '../../components/forms/reviewForm/ReviewsFormComponent.vue';
+import ReviewsFormComponent from '../../components/forms/reviewForms/ReviewsFormComponent.vue';
 import { ReviewsForm } from '@/form/reviews/reviewsForm';
 import { ICourseItem } from '@/entity/courseItem/courseItem.type';
 import { ISelect } from '../../../entity/select/select.types';
@@ -226,6 +227,7 @@ import { CommentsChangeForm } from '../../../form/commentsChange/commentsChangeF
 import { HomeworkTypesEnum } from '../../../entity/common/homeworkType.types';
 import { FreeTestForm } from '../../../form/freeTest/freeTestForm';
 import { ITestingFree } from '../../../entity/testingFree/testingFree.types';
+import ReviewsFormLikesDislikes from '../../components/forms/reviewForms/ReviewsFormLikesDislikes.vue';
 
 @Component({
     components: {
@@ -239,6 +241,7 @@ import { ITestingFree } from '../../../entity/testingFree/testingFree.types';
         TestingFormComponent,
         Relation,
         ReviewsFormComponent,
+        ReviewsFormLikesDislikes
     },
 })
 export default class Lesson extends Vue {
@@ -249,6 +252,7 @@ export default class Lesson extends Vue {
     @Prop() readonly isSetReview!: boolean;
     @Prop() readonly formReview!: ReviewsForm;
     @Prop() readonly course!: ICourseItem;
+    @Prop() readonly toggleOpenLikeDislikeForm!: boolean;
     //@ts-ignore
 
     interval!: NodeJS.Timeout;

@@ -10,7 +10,7 @@
                                 ref="contentTextArea"
                                 no-resize
                                 id="message"
-                                placeholder="Напишите текст отзыва, чтобы сохранить оценку (обязательно)"
+                                :placeholder="!course.isLiked ? 'Напишите текст отзыва, чтобы сохранить оценку (обязательно)' : 'Напишите текст отзыва' "
                                 rows="5"
                                 hide-details
                                 v-model="form.reviewText"
@@ -26,7 +26,8 @@
                         </div>
                     </div>
                     <div class="review-text__button">
-                        <button @click="sendMessage">Отправить</button>
+                        <Button :disabled="form.disabled" class="btn-send-rewiew" @submit="sendMessage">Отправить</Button>
+                        <Button class="btn-like-dislike ml-3" @submit="buttonFunc">{{course.isLiked ? 'Оценить без отзыва' : 'Отменить оценку'}}</Button>
                     </div>
                 </div>
             </form-group>
@@ -42,14 +43,17 @@ import FormGroup from '../../common/form/FormGroup.vue';
 import { ReviewsForm } from '@/form/reviews/reviewsForm';
 import Relation from '../../common/Relation.vue';
 import { ICourseItem } from '@/entity/courseItem/courseItem.type';
+import Button from '@/UI/components/common/Button.vue';
+
 
 @Component({
     components: {
         FormGroup,
         Relation,
+        Button
     },
 })
-export default class ReviewsFormComponent extends Vue {
+export default class ReviewsFormLikesDislikes extends Vue {
     @Prop() readonly form!: ReviewsForm;
     @Prop({default:''}) readonly background?: string;
     @Prop() readonly course!: ICourseItem;
@@ -93,6 +97,14 @@ export default class ReviewsFormComponent extends Vue {
             this.course!.isLiked = false;
             this.form.isLike = false;
             this.course!.isDisliked = true;
+        }
+    }
+
+    buttonFunc() {
+        if(this.course.isLiked) {
+            this.$emit('setMark')
+        }else{
+            this.$emit('cancelDislike')
         }
     }
 
@@ -172,8 +184,14 @@ export default class ReviewsFormComponent extends Vue {
         }
 
         &__button {
-            button {
+            .btn-send-rewiew {
                 padding: 10px 16px;
+            }
+
+            .btn-like-dislike {
+                padding: 10px 16px;
+                background: rgba(66, 109, 246, 0.12);
+                color: #426DF6 !important;
             }
         }
     }
