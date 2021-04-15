@@ -922,10 +922,16 @@ iframe {
   color: #1d1d1f !important;
 }
 .country-selector__input {
+  padding-top: 0 !important;
   border: 1px solid #F2F2F2 !important;
   &:disabled {
     color: #1d1d1f !important;
   }
+}
+.select-country-container {
+  width: 100% !important;
+  max-width: 110px !important;
+  min-width: auto !important;
 }
 .input-tel__input {
   border: 1px solid #F2F2F2 !important;
@@ -934,6 +940,7 @@ iframe {
   }
 }
 .country-selector__label {
+  display: none;
   color: #828282 !important;
 }
 
@@ -941,5 +948,8 @@ iframe {
   padding-top: 0 !important;
 }
 .country-selector__toggle {
-  top: calc(50% - 4px) !important;
+  top: calc(50% - 12px) !important;
+}
+.country-selector__country-flag {
+  top: 17px !important;
 }
