@@ -28,12 +28,8 @@ c<template>
     </div>
     <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
       <template v-slot:content>
-        <VideoAccessFormComponent v-if="!codeStep" :form="accessForm" @close="close" @access="submitPhone"
+        <VideoAccessFormComponent v-if="!codeStep" :form="accessForm" @close="close" @access="access"
                                   :account-id="+$route.query.account_id" :info-pack-id="+$route.params.id"/>
-        <v-col class="pa-6 text-center" v-else>
-          <h1 class="mx-auto my-0">Получить доступ к видео</h1>
-          <CodeFormVue :form="codeForm" :show-alert="show" @submitCode="submitCode" @sendAgain="submitPhone"/>
-        </v-col>
       </template>
     </Modal>
     <Modal v-if="infoPackageItemLoaded" :video-modal="true" :activator="activatorMainVideo"
