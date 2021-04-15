@@ -156,8 +156,67 @@
             @respond="respond"
             @handleLike="handleLike"
         />
+<<<<<<< HEAD
         <v-col v-if="!commentsLoaded" class="mt-1 pa-0">
             <v-progress-linear :active="true" :indeterminate="true" color="primary accent-4"></v-progress-linear>
+=======
+      </div>
+    </v-responsive>
+    <v-row :class="['course-video-row', $adaptive.isMobile ? 'justify-center' : '']" v-if="lessonLoaded">
+      <Relation svg-name="Finger" :active="isLiked" :title="$adaptive.isMobile ? '' : 'Нравится'"
+                @click="$emit('handleLike', true)"/>
+      <Relation svg-class="svg-down" :active="isDisliked" svg-name="Finger"
+                :title="$adaptive.isMobile ? '' : 'Не нравится'"
+                @click="$emit('handleDisLike', false)"/>
+      <Relation svg-name="Chosen" :active="isFavourite" :title="$adaptive.isMobile ? '' : 'В избранное'"
+                @click="handleFavourite"/>
+      <Relation svg-name="Message" :title="$adaptive.isMobile ? '' : 'Обсудить'" @click="discuss"/>
+    </v-row>
+    <v-col :class="['box-container', $adaptive.isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
+      <h5>ОПИСАНИЕ</h5>
+      <div class="desc wrap-text" v-html="lesson.description">
+      </div>
+    </v-col>
+    <v-col
+        v-if="lessonLoaded && (questions !== null || result !== null || resultFree !== null) && lesson.homeworkId && lesson.status !== lessonTypes.LOCKED"
+        :class="['box-container mt-4', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
+      <TestingComponent
+          :form="testingForm"
+          :result="result"
+          :homework-is-done="lesson.homeworkIsDone"
+          :last-lesson="lesson.number === lastLesson"
+          :type="questions.homeworkType"
+          :free-form="freeTestForm"
+          @send="send()"
+          @moveToNextLesson="$emit('moveToNextLesson', lesson.number)"
+          @passTestAgain="passTestAgain()"
+          @reviewLesson="reviewLesson()"
+          @writeMaster="writeMaster()"
+          @sendFreeTest="sendFreeTest"
+          @showForm="showForm"
+      />
+    </v-col>
+    <Discussion :comments="comments" :form="commentsForm" @postComment="postComment"
+                @respond="respond" @handleLike="handleLike" :selects="selectsComments"
+                @extraAction="extraAction"
+                @extraActionAnswer="extraActionAnswer"
+                @changeComment="changeComment"
+                @changeAnswer="changeAnswer"
+                :change-form="commentsChangeForm"
+    />
+    <v-col v-if="!commentsLoaded" class="mt-1 pa-0">
+      <v-progress-linear
+          :active="true"
+          :indeterminate="true"
+          color="primary accent-4"
+      ></v-progress-linear>
+    </v-col>
+    <Modal :activator="activator" @activatorChange="activatorChange">
+      <template v-slot:content>
+        <v-col class="pa-6">
+          <h1 class="mx-auto my-0 text-center">Поздравляем,<br> Вы прошли весь курс</h1>
+          <Button small full-width class="secondary_blue mt-6" @submit="activator = false">Закрыть</Button>
+>>>>>>> dev
         </v-col>
         <Modal :activator="activator" @activatorChange="activatorChange">
             <template v-slot:content>
@@ -187,11 +246,18 @@ import { ILessonItem } from '@/entity/lessonItem/lessonItem.types';
 import Lessons from '../../components/lessons/Lessons.vue';
 import Button from '../../components/common/Button.vue';
 import Relation from '../../components/common/Relation.vue';
+<<<<<<< HEAD
 import { QuestionsStore } from '@/store/modules/Questions';
 import { ITesting } from '@/entity/testing/testing.types';
 import { RightAnswersStore } from '@/store/modules/RightAnswers';
 import { ITestingResult } from '@/entity/testingResult/testingResult.types';
 import { VideoOptionsStore } from '../../../store/modules/VideoOptions';
+=======
+import {QuestionsStore} from '@/store/modules/Questions';
+import {ITesting} from '@/entity/testing/testing.types';
+import {ITestingResult} from '@/entity/testingResult/testingResult.types';
+import {VideoOptionsStore} from '../../../store/modules/VideoOptions';
+>>>>>>> dev
 import TestingResultComponent from '../../components/forms/testing/TestingResultComponents/TestingResultComponent.vue';
 import TestingFormComponent from '../../components/forms/testing/TestingFormComponent.vue';
 import TestingComponent from '../../components/forms/testing/TestingResultComponents/TestingComponent.vue';
@@ -200,6 +266,7 @@ import { AlertTypeEnum } from '../../../entity/common/alert.types';
 import Alert from '../../components/common/Alert.vue';
 import Modal from '../../components/common/Modal.vue';
 import Discussion from '../../components/discussion/Discussion.vue';
+<<<<<<< HEAD
 import { CommentsStore } from '../../../store/modules/Comments';
 import { IComments } from '../../../entity/comments/comments.types';
 import { CommentsForm } from '../../../form/comments/commentsForm';
@@ -209,6 +276,20 @@ import { CourseItemStore } from '@/store/modules/CourseItem';
 import ReviewsFormComponent from '../../components/forms/reviewForm/ReviewsFormComponent.vue';
 import { ReviewsForm } from '@/form/reviews/reviewsForm';
 import { ICourseItem } from '@/entity/courseItem/courseItem.type';
+=======
+import {CommentsStore} from '../../../store/modules/Comments';
+import {IComments} from '../../../entity/comments/comments.types';
+import {CommentsForm} from '../../../form/comments/commentsForm';
+import {CommentTypesEnum} from '../../../entity/common/comment.types';
+import {ISelect} from '../../../entity/select/select.types';
+import {SelectsStore} from '../../../store/modules/Selects';
+import {CommentsAnswersStore} from '../../../store/modules/CommentsAnswers';
+import {CommentsChangeForm} from '../../../form/commentsChange/commentsChangeForm';
+import {HomeworkTypesEnum} from '../../../entity/common/homeworkType.types';
+import {FreeTestForm} from '../../../form/freeTest/freeTestForm';
+import {RightAnswersStore} from '../../../store/modules/RightAnswers';
+import {ITestingFree} from '../../../entity/testingFree/testingFree.types';
+>>>>>>> dev
 
 @Component({
     components: {
@@ -225,6 +306,7 @@ import { ICourseItem } from '@/entity/courseItem/courseItem.type';
     },
 })
 export default class Lesson extends Vue {
+<<<<<<< HEAD
     @Prop() readonly isLiked!: boolean;
     @Prop() readonly isDisliked!: boolean;
     @Prop() readonly isFavourite!: boolean;
@@ -368,6 +450,295 @@ export default class Lesson extends Vue {
     async fetchData(): Promise<void> {
         await LessonItemStore.fetchData(this.$route.params.lessonId.toString());
         await CommentsStore.fetchAll(this.$route.params.lessonId);
+=======
+  @Prop() readonly isLiked!: boolean;
+  @Prop() readonly isDisliked!: boolean;
+  @Prop() readonly isFavourite!: boolean;
+  @Prop({default: false}) readonly lastLesson!: number;
+  //@ts-ignore
+  interval!: NodeJS.Timeout;
+  activator = false;
+  alertType = AlertTypeEnum;
+  show = false;
+  lessonTypes = LessonsTypesEnum;
+  testingForm = new TestingForm();
+  commentsForm = new CommentsForm();
+  commentsChangeForm = new CommentsChangeForm();
+  freeTestForm = new FreeTestForm();
+  isPlaying = false;
+  play = false;
+  fetchComments = (): void => {
+    const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+    if (bottomOfWindow && this.comments.length % 100 === 0) {
+      CommentsStore.fetchAll({
+        route: this.$route.params.lessonId.toString(),
+        pagination: {skip: this.comments.length, limit: 100}
+      });
+    }
+  }
+
+  @Watch('$route.params.lessonId')
+  async onChangeRoute(): Promise<void> {
+    console.log(123);
+    if (this.$route.params.lessonId !== undefined) {
+      this.stopTimer();
+      CommentsStore.setCommentsToEmpty();
+      await this.fetchData();
+      this.startTimer();
+    } else this.stopTimer();
+  }
+
+  @Watch('questionsLoaded')
+  onChangeLoad(): void {
+    if (this.questionsLoaded === true) {
+      if (this.questions!.homeworkType === HomeworkTypesEnum.Test) {
+        this.testingForm = new TestingForm(this.questions!.tests);
+        this.testingForm.activeStep[0].active = true;
+      }
+    }
+  }
+
+  @Watch('lessonLoaded')
+  async onLessonLoaded(): Promise<void> {
+    if (this.lessonLoaded === true) {
+      this.passFiles();
+    }
+  }
+
+  get lesson(): ILessonItem | null {
+    return LessonItemStore.lessonItem;
+  }
+
+  get questions(): ITesting | null {
+    return QuestionsStore.questions;
+  }
+
+  get questionsLoaded(): boolean {
+    return QuestionsStore.questionsLoaded;
+  }
+
+  get lessonLoaded(): boolean {
+    return LessonItemStore.lessonLoaded;
+  }
+
+  get options(): any {
+    return VideoOptionsStore.options;
+  }
+
+  get result(): ITestingResult | null {
+    return RightAnswersStore.rightAnswers;
+  }
+
+  get resultFree(): ITestingFree | null {
+    return RightAnswersStore.answerFree;
+  }
+
+  get comments(): IComments[] {
+    return CommentsStore.comments;
+  }
+
+  get commentsLoaded(): boolean {
+    return CommentsStore.commentsLoaded;
+  }
+
+  get selectsComments(): ISelect[] {
+    return SelectsStore.selectsComments;
+  }
+
+  startTimer(): void {
+    this.interval = setTimeout(() => {
+      CommentsStore.fetchAll({route: this.$route.params.lessonId});
+      this.startTimer();
+    }, 15000);
+  }
+
+  stopTimer(): void {
+    clearTimeout(this.interval);
+  }
+
+  passFiles(): void {
+    this.$emit('passFile', this.lesson!.files);
+  }
+
+  playerReadied(player: any): void {
+    this.isPlaying = false;
+    player.currentTime(this.lesson!.timeCode);
+  }
+
+  onPlayerPlay(): void {
+    this.isPlaying = true;
+  }
+
+  onPlayerPause(): void {
+    this.isPlaying = false;
+  }
+
+  onPlayerLoadeddata(): void {
+    console.log('player loadedData');
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
+  }
+
+  handleFavourite(): void {
+    this.$emit('handleFavourite');
+    this.show = true;
+  }
+
+  activatorChange(act: boolean): void {
+    this.activator = act;
+  }
+
+  discuss(): void {
+    const item = document.getElementById('message')!;
+    item.scrollIntoView();
+    item.focus();
+  }
+
+  respond(data: any): void {
+    this.commentsForm.commentId = data.id;
+    if (!data.index) {
+      this.commentsForm.message = this.comments.find(item => item.id === data.id)!.fullName + ', ';
+      this.commentsForm.author = this.comments.find(item => item.id === data.id)!.fullName;
+    } else {
+      this.commentsForm.message = this.comments.find(item => item.id === data.id)!.answers[data.index].fullName + ', ';
+      this.commentsForm.author = this.comments.find(item => item.id === data.id)!.answers[data.index].fullName;
+    }
+    document.getElementById('message')!.focus();
+  }
+
+  showForm(): void {
+    this.freeTestForm.passed = false;
+  }
+
+  mounted(): void {
+    window.addEventListener('scroll', this.fetchComments);
+  }
+
+  beforeDestroy(): void {
+    this.stopTimer();
+    CommentsStore.setCommentsToEmpty();
+    window.removeEventListener('scroll', this.fetchComments);
+  }
+
+  async fetchData(): Promise<void> {
+    await LessonItemStore.fetchData(this.$route.params.lessonId.toString());
+    await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+    this.commentsForm = new CommentsForm();
+    this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
+    if (this.lessonLoaded) {
+      VideoOptionsStore.handleVideo({
+        src: this.lesson!.m3u8FileLink,
+        poster: this.lesson!.photoLink,
+        currentTime: this.lesson!.timeCode
+      });
+      if (this.lesson!.homeworkId) {
+        if (this.lesson!.homeworkIsDone) {
+          if (this.lesson!.homeworkType === HomeworkTypesEnum.Test) {
+            await RightAnswersStore.fetchAll(this.lesson!.homeworkId);
+          } else {
+            await QuestionsStore.fetchAll(this.lesson!.homeworkId);
+            await RightAnswersStore.fetchFreeResult(this.lesson!.homeworkId);
+            this.freeTestForm.setFormData(this.lesson!.homeworkId, this.questions!.question, true, this.resultFree!.answer)
+          }
+        } else {
+          await QuestionsStore.fetchAll(this.lesson!.homeworkId);
+          if (this.questions!.homeworkType === HomeworkTypesEnum.Test) {
+            this.testingForm = new TestingForm(this.questions!.tests);
+            this.testingForm.activeStep[0].active = true;
+          } else {
+            this.freeTestForm.setFormData(this.lesson!.homeworkId, this.questions!.question, false, '')
+          }
+        }
+      }
+    }
+  }
+
+  async extraAction(id: number, index: number): Promise<void> {
+    if (index === 1) {
+      if (await CommentsStore.deleteComment(id.toString())) {
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+      }
+    } else {
+      this.commentsChangeForm.setFormData(this.comments!.find(item => item.id === id)!.message);
+      this.commentsChangeForm.commentId = id;
+      this.commentsChangeForm.showChangeComment = true;
+    }
+  }
+
+  async extraActionAnswer(answerId: number, commentId: number, index: number): Promise<void> {
+    if (index === 1) {
+      if (await CommentsAnswersStore.deleteAnswer(answerId.toString())) {
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+      }
+    } else {
+      this.commentsChangeForm.setFormData(this.comments!.find(item => item.id === commentId)!.answers.find(item => item.id === answerId)!.message);
+      this.commentsChangeForm.answerId = answerId;
+      this.commentsChangeForm.showChangeAnswer = true;
+    }
+  }
+
+  async changeComment(id: number): Promise<void> {
+    if (await this.commentsChangeForm.submit(CommentsStore.patchComment, id.toString())) {
+      this.comments.find(item => item.id === id)!.message = this.commentsChangeForm.message;
+      this.commentsChangeForm.showChangeComment = false;
+    }
+  }
+
+  async changeAnswer(data: any): Promise<void> {
+    if (await this.commentsChangeForm.submit(CommentsAnswersStore.patchAnswer, data.answer.toString())) {
+      this.comments!.find(item => item.id === data.comment)!.answers.find(item => item.id === data.answer)!.message = this.commentsChangeForm.message;
+      this.commentsChangeForm.showChangeAnswer = false;
+    }
+  }
+
+  async created(): Promise<void> {
+    if (this.$route.params.lessonId) {
+      this.startTimer();
+      await this.fetchData();
+    }
+  }
+
+  async onPlayerTimeupdate(e: any): Promise<void> {
+    if (parseInt(e.cache_.currentTime) % 5 === 0 && e.cache_.currentTime % 1 > 0.75 && parseInt(e.cache_.currentTime) !== 0) {
+      await LessonItemStore.setTimeCode({
+        lessonId: this.$route.params.lessonId,
+        timeCode: {time_code: parseInt(e.cache_.currentTime)}//eslint-disable-line
+      });
+    }
+  }
+
+  async passTestAgain(): Promise<void> {
+    await QuestionsStore.fetchAll(this.lesson!.homeworkId);
+    this.testingForm = new TestingForm(this.questions!.tests);
+    this.testingForm.activeStep[0].active = true;
+    this.$set(this.lesson!, 'homeworkIsDone', false);
+    this.$set(this.lesson!, 'homeworkId', this.questions!.id);
+  }
+
+  async reviewLesson(): Promise<void> {
+    await LessonItemStore.setTimeCode({
+      lessonId: this.$route.params.lessonId,
+      timeCode: {time_code: 0}//eslint-disable-line
+    });
+    await LessonItemStore.fetchData(this.$route.params.lessonId);
+    (this.$refs.videoPlayer as any).player.currentTime(this.lesson!.timeCode);
+    (this.$refs.videoPlayer as any).player.play();
+  }
+
+  async postComment(): Promise<void> {
+    if (this.commentsForm.commentId) {
+      if (await this.commentsForm.submit(CommentsAnswersStore.postAnswer)) {
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+        document.getElementById(`comment${this.commentsForm.commentId}`)!.scrollIntoView();
+        this.commentsForm = new CommentsForm();
+        this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
+      }
+    } else {
+      if (await this.commentsForm.submit(CommentsStore.postComment)) {
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+>>>>>>> dev
         this.commentsForm = new CommentsForm();
         this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
         if (this.lessonLoaded) {
@@ -404,6 +775,7 @@ export default class Lesson extends Vue {
                 timeCode: { time_code: parseInt(e.cache_.currentTime) }, //eslint-disable-line
             });
         }
+<<<<<<< HEAD
     }
 
     async passTestAgain(): Promise<void> {
@@ -499,6 +871,33 @@ export default class Lesson extends Vue {
                 await CommentsStore.fetchAll(this.$route.params.lessonId);
             }
         }
+=======
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+      } else {
+        await CommentsStore.setLikeDislikeComment({data: {is_like: data.like}, route: data.id.toString()});//eslint-disable-line
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+      }
+    } else {
+      if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked !== null) {
+        await CommentsAnswersStore.deleteLikeDislikeAnswer(data.answerId.toString());
+        if (!this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked && data.kind === 'like') {
+          await CommentsAnswersStore.setLikeDislikeAnswer({
+            data: {is_like: data.like},//eslint-disable-line
+            route: data.answerId.toString()
+          });
+        }
+        if (this.comments.find(item => item.id === data.id)!.answers.find(item => item.id === data.answerId)!.isLiked && data.kind === 'dislike') {
+          await CommentsAnswersStore.setLikeDislikeAnswer({
+            data: {is_like: data.like},//eslint-disable-line
+            route: data.answerId.toString()
+          });
+        }
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+      } else {
+        await CommentsAnswersStore.setLikeDislikeAnswer({data: {is_like: data.like}, route: data.answerId.toString()});//eslint-disable-line
+        await CommentsStore.fetchAll({route: this.$route.params.lessonId});
+      }
+>>>>>>> dev
     }
 
     async send(): Promise<void> {
@@ -512,6 +911,18 @@ export default class Lesson extends Vue {
             this.activator = true;
         }
     }
+<<<<<<< HEAD
+=======
+  }
+
+  async sendFreeTest(): Promise<void> {
+    await RightAnswersStore.postFreeAnswer({
+      data: this.freeTestForm.getFormData(),
+      route: this.lesson!.homeworkId.toString()
+    })
+    await this.fetchData();
+  }
+>>>>>>> dev
 }
 </script>
 
@@ -542,5 +953,11 @@ export default class Lesson extends Vue {
             fill: #e64646;
         }
     }
+}
+
+.text-area {
+  width: 100%;
+  resize: none;
+  border: 1px solid #f2f2f2 !important;
 }
 </style>

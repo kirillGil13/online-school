@@ -12,6 +12,7 @@ export default class LessonItem implements ILessonItem {
     timeCode: number;
     duration: number;
     homeworkIsDone: boolean;
+    homeworkType: string;
     files: ILessonItemFiles[] = [];
     constructor(data: LessonItemResponseType) {
         this.id = data.id;
@@ -25,6 +26,7 @@ export default class LessonItem implements ILessonItem {
         this.timeCode = data.timeCode;
         this.duration = data.duration;
         this.homeworkIsDone = data.homeworkIsDone;
+        this.homeworkType = data.homeworkType;
         for (let i = 0; i < data.files.length; i++) {
             this.files.push(data.files[i]);
         }

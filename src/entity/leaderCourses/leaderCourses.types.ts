@@ -7,7 +7,7 @@ export interface ILeaderCourses {
     rating: number;
     fullName: string;
     countDoneLessons: number;
-    countViews: number;
+    countViews: string;
     lessonsCount(): string;
     progress: number;
 }

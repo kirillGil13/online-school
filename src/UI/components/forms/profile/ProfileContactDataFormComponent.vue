@@ -67,6 +67,7 @@
       <Button small :disabled="form.disabled" v-on="$listeners">Сохранить
       </Button>
     </div>
+    <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div>
   </v-col>
 </template>
 
