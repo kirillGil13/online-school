@@ -225,3 +225,11 @@ router.beforeEach((to, from, next) => {
         .forEach((tag: any) => document.head.appendChild(tag));
     next();
 });
+router.onError((error) => {
+    const pattern = /Loading chunk chunk-(\d)+ failed/g;
+    const isChunkLoadFailed = error.message.match(pattern);
+    const targetPath = router.currentRoute.fullPath;
+    if (isChunkLoadFailed) {
+        router.replace(targetPath);
+    }
+});

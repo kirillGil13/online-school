@@ -9,6 +9,7 @@ export interface ICommentsAnswers{
     countDislikes: string;
     isLiked: boolean | null;
     fullName: string;
+    isMy: boolean;
 }
 export type CommentsAnswersResponseType = {
     id: number;
@@ -18,4 +19,5 @@ export type CommentsAnswersResponseType = {
     is_liked: boolean | null;
     count_likes: number;
     count_dislikes: number;
+    isMy: boolean;
 }

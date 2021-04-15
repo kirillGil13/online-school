@@ -1,16 +1,17 @@
 <template>
   <div>
     <h2 class="discussion-title mt-6">Обсуждение</h2>
-<!--todo-->
-<!--    <v-row no-gutters>-->
-<!--      <Button class="discussion-button with_icon">-->
-<!--        <svg-icon class="mr-2" name="Ring"></svg-icon>-->
-<!--        Подписаться-->
-<!--      </Button>-->
-<!--    </v-row>-->
-    <CommentsFormComponent :form="form" v-on='$listeners' class="mt-5"/>
+    <!--todo-->
+    <!--    <v-row no-gutters>-->
+    <!--      <Button class="discussion-button with_icon">-->
+    <!--        <svg-icon class="mr-2" name="Ring"></svg-icon>-->
+    <!--        Подписаться-->
+    <!--      </Button>-->
+    <!--    </v-row>-->
+    <CommentsFormComponent :form="form" v-on='$listeners'/>
     <v-col class="mt-4 pa-0">
-      <Comments v-for="(item, index) in comments" :key="index" :comment="item" v-on="$listeners" :class="[index !== 0 ? 'mt-8' : '']"/>
+      <Comments :selects="selects" v-for="(item, index) in comments" :key="index" :comment="item" v-on="$listeners"
+                :class="[index !== 0 ? 'mt-8' : '']" :form="changeForm"/>
     </v-col>
   </div>
 </template>
@@ -23,6 +24,8 @@ import {IComments} from '../../../entity/comments/comments.types';
 import CommentsFormComponent from '../forms/commentsForm/CommentsFormComponent.vue';
 import {CommentsForm} from '../../../form/comments/commentsForm';
 import Comments from './comments/Comments.vue';
+import {ISelect} from '../../../entity/select/select.types';
+import {CommentsChangeForm} from '../../../form/commentsChange/commentsChangeForm';
 
 @Component({
   components: {Comments, CommentsFormComponent, Relation, Button}
@@ -30,6 +33,8 @@ import Comments from './comments/Comments.vue';
 export default class Discussion extends Vue {
   @Prop() readonly form!: CommentsForm;
   @Prop({required: true, default: []}) readonly comments!: IComments[];
+  @Prop() readonly changeForm!: CommentsChangeForm;
+  @Prop() readonly selects!: ISelect[];
 }
 </script>
 

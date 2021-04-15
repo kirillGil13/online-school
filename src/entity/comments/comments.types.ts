@@ -9,6 +9,7 @@ export interface IComments {
     countDislikes: string;
     answers: ICommentsAnswers[];
     isLiked: boolean | null;
+    isMy: boolean;
     getTime(sec: number): string;
     getAnswersLength(): string;
     prettierMsg(index: number): string;
@@ -30,6 +31,7 @@ export type CommentsResponseType = {
     count_likes: number;
     count_dislikes: number;
     is_liked: boolean | null;
+    isMy: boolean;
     answers: CommentsAnswersResponseType[];
 }
 
@@ -38,5 +40,10 @@ export type CommentsAuthorResponseType = {
     name: string;
     lastName: string;
     photoLink: string;
+}
+
+export type CommentsRequestType = {
+    skip?: number;
+    limit?: number;
 }
 
