@@ -19,7 +19,7 @@
           dense
           link
           class="selection pr-0"
-          @click="item.extraAction ? $emit('extraAction', id) : $emit('select', {statusId: item.id, id: id})"
+          @click="item.extraAction ? $emit('extraAction', id, index) : $emit('select', {statusId: item.id, id: id})"
       >
         <v-list-item-icon v-if="item.photoLink">
           <v-img :src="item.photoLink" max-width="22" max-height="22"></v-img>

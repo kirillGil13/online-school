@@ -7,6 +7,7 @@ export interface ITestingResult {
     result: string;
     handleTime(sec: number): number;
 }
+
 export type TestingResultResponseType = {
     editedAt: number;
     is_done: boolean;

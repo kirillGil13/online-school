@@ -36,7 +36,8 @@ export default class extends Vue {
   background-color: white;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  border: 1px solid #F2F2F2;
+  box-shadow: 0px 14px 12px rgba(0, 0, 0, 0.01);
 }
 
 </style>

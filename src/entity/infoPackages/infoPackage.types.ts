@@ -3,7 +3,7 @@ export interface IInfoPackage {
     name: string;
     coverLink: string;
     sharedLink: string;
-    countViews: number;
+    countViews: string;
     countCandidates: number;
 }
 export type InfoPackageResponseType = {

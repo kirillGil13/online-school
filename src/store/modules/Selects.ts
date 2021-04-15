@@ -24,6 +24,18 @@ class SelectsModule extends VuexModule {
             id: 2,
             name: 'Поместить в архив',
         },
+    ];
+    selectsComments: ISelect[] =[
+        {
+            id: 0,
+            name: 'Изменить',
+            extraAction: true
+        },
+        {
+            id: 1,
+            name: 'Удалить',
+            extraAction: true
+        },
     ]
 }
 
