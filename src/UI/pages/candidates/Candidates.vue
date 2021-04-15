@@ -313,17 +313,22 @@ export default class Candidates extends Vue {
     await this.filtration();
   }
 
-  toggleIsArchive():void {
-    this.isArchive = !this.isArchive
+  async toggleIsArchive(): Promise<void> {
+    this.isArchive = !this.isArchive;
+    await CandidatesStore.fetchAll({
+      statusId: 4,
+    });
   }
 
   async filtration(): Promise<void> {
+    this.isArchive = false;
     await CandidatesStore.fetchAll({
       statusId: this.filters.default[0],
       infoPackId: this.filters.default[2],
       search: this.searchBody,
       isFiction: this.filters.filterBody.find(item => item.filterType === FiltersCandidatesNameEnum.Type)?.filterValue.find(item => item.value === this.filters.default[1])?.isFiction
     });
+    
   }
 
   async openUpdate(id: number): Promise<void> {
