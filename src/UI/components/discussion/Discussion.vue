@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="discussion-title mt-6">{{isRewiew ? 'Отзывы' : 'Обсуждение'}}</h2>
+    <h2 class="discussion-title mt-6">Обсуждение</h2>
 <!--todo-->
 <!--    <v-row no-gutters>-->
 <!--      <Button class="discussion-button with_icon">-->
@@ -8,16 +8,10 @@
 <!--        Подписаться-->
 <!--      </Button>-->
 <!--    </v-row>-->
-    <template v-if="isRewiew">
-      Is Rewiew
-    </template>
-    <template v-else>
-      <CommentsFormComponent :form="form" v-on='$listeners' class="mt-5"/>
-      <v-col class="mt-4 pa-0">
-        <Comments v-for="(item, index) in comments" :key="index" :comment="item" v-on="$listeners" :class="[index !== 0 ? 'mt-8' : '']"/>
-      </v-col>
-    </template>
-   
+    <CommentsFormComponent :form="form" v-on='$listeners' class="mt-5"/>
+    <v-col class="mt-4 pa-0">
+      <Comments v-for="(item, index) in comments" :key="index" :comment="item" v-on="$listeners" :class="[index !== 0 ? 'mt-8' : '']"/>
+    </v-col>
   </div>
 </template>
 
@@ -34,9 +28,8 @@ import Comments from './comments/Comments.vue';
   components: {Comments, CommentsFormComponent, Relation, Button}
 })
 export default class Discussion extends Vue {
-  @Prop() readonly form?: CommentsForm;
-  @Prop({required: true, default: []}) readonly comments?: IComments[];
-  @Prop() readonly isRewiew?: boolean;
+  @Prop() readonly form!: CommentsForm;
+  @Prop({required: true, default: []}) readonly comments!: IComments[];
 }
 </script>
 
