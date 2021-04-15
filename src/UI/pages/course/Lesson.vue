@@ -431,7 +431,7 @@ export default class Lesson extends Vue {
                 poster: this.lesson!.photoLink,
                 currentTime: this.lesson!.timeCode,
             });
-            
+
             if (this.lesson!.homeworkId) {
                 if (this.lesson!.homeworkIsDone) {
                     if (this.lesson!.homeworkType === HomeworkTypesEnum.Test) {
