@@ -249,9 +249,6 @@ export default class Lesson extends Vue {
     @Prop() readonly isSetReview!: boolean;
     @Prop() readonly formReview!: ReviewsForm;
     @Prop() readonly course!: ICourseItem;
-
-
-
     //@ts-ignore
 
     interval!: NodeJS.Timeout;
