@@ -66,11 +66,6 @@
                                 :title="$adaptive.isMobile ? '' : 'В избранное'"
                                 @click="handleFavourite"
                             />
-                            <Relation
-                                svg-name="Message"
-                                :title="$adaptive.isMobile ? '' : 'Отзыв'"
-                                @click="toggleShowSetReview"
-                            />
                         </v-row>
                         <v-row no-gutters class="mt-4">
                             <template v-if="toggleOpenLikeDislikeForm">

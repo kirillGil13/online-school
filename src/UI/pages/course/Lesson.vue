@@ -52,8 +52,8 @@
             />
             <Relation
                 svg-name="Message"
-                :title="$adaptive.isMobile ? '' : 'Отзыв'"
-                @click="$emit('toggleShowSetReview')"
+                :title="$adaptive.isMobile ? '' : 'Обсудить'"
+                @click="discuss"
             />
         </v-row>
         <v-row no-gutters class="mb-4">
@@ -342,6 +342,8 @@ export default class Lesson extends Vue {
     stopTimer(): void {
         clearTimeout(this.interval);
     }
+
+    
 
     passFiles(): void {
         this.$emit('passFile', this.lesson!.files);
