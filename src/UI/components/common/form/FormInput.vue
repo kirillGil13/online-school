@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :class="classes ? classes : '' ">
         <slot :errorMessages="allErrorsMessages" :hasErrors="hasErrors" :success="hasAnyErrors" />
     </div>
 </template>
@@ -12,6 +12,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 })
 export default class FormInput extends Vue {
     @Prop({ type: Array, default: () => [] }) serverErrors!: string[];
+    @Prop() classes?: string;
 
     get allErrorsMessages(): string[] {
         return this.serverErrors.concat(this.activeErrorMessages);

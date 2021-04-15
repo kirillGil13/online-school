@@ -10,6 +10,7 @@ export default class Comments implements IComments{
     countDislikes: string;
     isLiked: boolean | null;
     answers: ICommentsAnswers[] = [];
+    isMy: boolean;
 
     constructor(data: CommentsResponseType) {
         this.id = data.id;
@@ -19,6 +20,7 @@ export default class Comments implements IComments{
         this.countLikes = data.count_likes === 0 ? '' : data.count_likes.toString();
         this.countDislikes = data.count_dislikes === 0 ? '' : data.count_dislikes.toString();
         this.isLiked = data.is_liked;
+        this.isMy = data.isMy;
         for (let i = 0; i < data.answers.length; i++) {
             this.answers.push({
                 id: data.answers[i].id,
@@ -28,7 +30,8 @@ export default class Comments implements IComments{
                 countLikes: data.answers[i].count_likes === 0 ? '' : data.answers[i].count_likes.toString(),
                 countDislikes: data.answers[i].count_dislikes === 0 ? '' : data.answers[i].count_dislikes.toString(),
                 isLiked: data.answers[i].is_liked,
-                fullName: data.answers[i].author.name + ' ' + data.answers[i].author.lastName
+                fullName: data.answers[i].author.name + ' ' + data.answers[i].author.lastName,
+                isMy: data.answers[i].isMy
             })
         }
     }

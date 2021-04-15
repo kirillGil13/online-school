@@ -13,7 +13,7 @@
     <v-row class="badges pa-0" v-if="myStatisticLoaded">
       <Badge :profit="myStatistic.purchasesCount.isIncrease">
         <template v-slot:title>Продажи (человек)</template>
-        <template v-slot:default>{{myStatistic.purchasesCount.current}}</template>
+        <template v-slot:default>{{myStatistic.purchasesCount.current.toLocaleString()}}</template>
         <template v-slot:stats>{{myStatistic.purchasesCount.change}}</template>
       </Badge>
       <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease">
@@ -23,7 +23,7 @@
       </Badge>
       <Badge :profit="myStatistic.viewCountCurrent.isIncrease">
         <template v-slot:title>Просмотров</template>
-        <template v-slot:default>{{ myStatistic.viewCountCurrent.current }}</template>
+        <template v-slot:default>{{ myStatistic.viewCountCurrent.current.toLocaleString() }}</template>
         <template v-slot:stats>{{ myStatistic.viewCountCurrent.change }}%</template>
       </Badge>
       <Badge :profit="myStatistic.ratingCurrent.isIncrease">
