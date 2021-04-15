@@ -1,7 +1,12 @@
 <template>
     <span class="relation d-flex flex-row align-center" @click="$emit('click')">
       <div :class="['icon-container', active ? 'active' : '']"><svg-icon :name="svgName" :class="[svgClass]"></svg-icon></div>
-        {{ title }}
+        <template v-if="!isRaiting">
+          {{ title }}
+        </template>
+        <template v-else>
+          <p class="mb-0">{{title}}</p>
+        </template>
     </span>
 </template>
 
@@ -12,8 +17,9 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 export default class Relation extends Vue {
   @Prop({default: false}) active!: boolean;
   @Prop() readonly svgName!: string;
-  @Prop() readonly title!: string;
+  @Prop() readonly title!: string | number;
   @Prop({default: ''}) readonly svgClass!: string | string[];
+  @Prop({default: false}) readonly isRaiting?: boolean
 }
 </script>
 
@@ -45,6 +51,15 @@ export default class Relation extends Vue {
         }
       }
     }
+  }
+
+  p {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    color: #060516;
   }
 }
 </style>
