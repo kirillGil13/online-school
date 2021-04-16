@@ -4,11 +4,13 @@ export default class Testing implements ITesting{
     id: number;
     homeworkType: string;
     lessonId: number;
-    question: string;
+    question: string | null = null;
     tests: ITestingQuestions[] = [];
     constructor(data: TestingResponseType) {
         this.id = data.id;
-        this.question = this.resolveQuestion(data.question);
+        if (data.question !== null) {
+            this.question = this.resolveQuestion(data.question);
+        }
         this.homeworkType = data.homeworkType;
         this.lessonId = data.lessonId;
         if (data.tests) {
