@@ -142,7 +142,7 @@
                 :result="result"
                 :homework-is-done="lesson.homeworkIsDone"
                 :last-lesson="lesson.number === lastLesson"
-                :type="questions.homeworkType"
+                :type="lesson.homeworkType"
                 :free-form="freeTestForm"
                 @send="send()"
                 @moveToNextLesson="$emit('moveToNextLesson', lesson.number)"
@@ -441,7 +441,7 @@ export default class Lesson extends Vue {
                         await RightAnswersStore.fetchFreeResult(this.lesson!.homeworkId);
                         this.freeTestForm.setFormData(
                             this.lesson!.homeworkId,
-                            this.questions!.question,
+                            this.questions!.question!,
                             true,
                             this.resultFree!.answer
                         );
@@ -452,7 +452,7 @@ export default class Lesson extends Vue {
                         this.testingForm = new TestingForm(this.questions!.tests);
                         this.testingForm.activeStep[0].active = true;
                     } else {
-                        this.freeTestForm.setFormData(this.lesson!.homeworkId, this.questions!.question, false, '');
+                        this.freeTestForm.setFormData(this.lesson!.homeworkId!, this.questions!.question!, false, '');
                     }
                 }
             }
