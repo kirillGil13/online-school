@@ -165,7 +165,7 @@
             @extraActionAnswer="extraActionAnswer"
             @changeComment="changeComment"
             @changeAnswer="changeAnswer"
-            :change-form="commentsChangeForm"
+            :change-form="commentsChangeForm"{{tset}}
         />
         <v-col v-if="!commentsLoaded" class="mt-1 pa-0">
             <v-progress-linear :active="true" :indeterminate="true" color="primary accent-4"></v-progress-linear>
