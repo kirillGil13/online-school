@@ -78,7 +78,7 @@
                                 />
                             </template>
                         </v-row>
-                        <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
+                        <v-col :class="['box-container', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
                             <div class="desc__container">
                                 <div class="desc__container--title">Автор курса</div>
                                 <div class="desc__container--author d-flex flex-column">
