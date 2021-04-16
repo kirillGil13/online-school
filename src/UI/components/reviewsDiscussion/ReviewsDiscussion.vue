@@ -16,12 +16,11 @@ import { IReviews } from '@/entity/reviews/reviews.types';
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import Button from '../common/Button.vue';
 import Relation from '../common/Relation.vue';
-import ReviewsFormComponent from '../forms/reviewForm/ReviewsFormComponent.vue';
 import Reviews from './reviews/Reviews.vue'
 
 
 @Component({
-  components: {Relation, Button, ReviewsFormComponent, Reviews}
+  components: {Relation, Button,  Reviews}
 })
 export default class ReviewsDiscussion extends Vue {
   @Prop( {default: []}) readonly reviews!: IReviews[];
