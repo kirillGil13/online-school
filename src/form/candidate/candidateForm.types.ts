@@ -27,3 +27,7 @@ export interface ICandidateFormList {
 export type CandidatePhoneRequestType = RequestType & {
     phone_number: string;
 };
+
+export type CandidateStatusCount = RequestType & {
+    status: string
+}
