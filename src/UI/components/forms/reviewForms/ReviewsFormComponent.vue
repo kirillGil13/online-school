@@ -14,6 +14,7 @@
                                 rows="5"
                                 hide-details
                                 v-model="form.reviewText"
+                                type="text"
                             />
                         </div>
                         <div class="review-text__like-dislike">
