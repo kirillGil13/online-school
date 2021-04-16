@@ -35,6 +35,7 @@ class RightAnswersModule extends VuexModule {
 
     @MutationAction
     async fetchAll(param: number): Promise<{rightAnswers: ITestingResult; answersLoaded: boolean}> {
+        console.log(2);
         const rightAnswers = await store.$repository.rightAnswers.fetchAll(param.toString());
         let answersLoaded = false;
         if (rightAnswers) {
