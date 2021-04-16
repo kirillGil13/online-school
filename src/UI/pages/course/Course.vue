@@ -442,7 +442,6 @@ export default class Course extends Vue {
             }
 
             this.reviewsForm.clearData()
-            Vue.set(this.course!, 'countLikes', this.course!.countLikes !== 0 ?  this.course!.countLikes - 1 : 0);
         } else {
             this.course!.isDisliked = false;
             this.course!.isLiked = true;
@@ -471,7 +470,6 @@ export default class Course extends Vue {
             
             this.reviewsForm.isLike = null;
             this.reviewsForm.clearData()
-            Vue.set(this.course!, 'countDislikes', this.course!.countDislikes !== 0 ?  this.course!.countDislikes - 1 : 0);
         } else {
             this.course!.isLiked = false;
             this.course!.isDisliked = true;
