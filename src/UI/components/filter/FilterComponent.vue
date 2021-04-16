@@ -3,7 +3,12 @@
     <v-row class="tab-controls d-flex flex-row flex-wrap">
       <div class="filter-tabs d-flex flex-row justify-center  mt-2" :style="{order: isOnRight ? '2' : '1'}">
         <v-col class="filter-tabs__archive" v-show="isCondidates">
-          <Button  class="mt-0 secondary_white" :style="{background: isArchive ? '#426DF6' : '#F0F2F6', color: isArchive ? '#ffff !important' : '#5A606F !important'}" @submit="$emit('toggleArchive');">Архивные <span class="count-in-arhive ml-3">{{countInArhive}}</span></Button>
+          <Button  class="mt-0 secondary_white" :style="{background: isArchive ? '#426DF6' : '#F0F2F6', color: isArchive ? '#ffff !important' : '#5A606F !important'}" @submit="$emit('toggleArchive');">
+            Архивные 
+            <span class="count-in-arhive ml-3" :style="{color: isArchive ? ' #FFFFFF' : '#060516'}">
+              {{countInArhive}}
+              </span>
+          </Button>
         </v-col>
         <v-col v-for="(item, index) in filters.filterBody" id="select" :key="index" cols="auto"
                :class="['pa-0 d-flex flex-column', index + 1 === filters.filterBody.length && $adaptive.isMobile ? 'mr-0' : '']">
@@ -58,7 +63,6 @@ export default class FilterComponent extends Vue {
 
   .count-in-arhive {
     font-size: 14px;
-    color: #060516;
   }
   .filter-tabs {
     &__archive {
