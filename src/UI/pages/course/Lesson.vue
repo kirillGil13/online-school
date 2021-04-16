@@ -56,8 +56,8 @@
                 @click="discuss"
             />
         </v-row>
-        <v-row no-gutters class="mb-4">
-            <template v-if="toggleOpenLikeDislikeForm">
+        <v-row no-gutters>
+            <template v-if="toggleOpenLikeDislikeForm" class="mb-4">
                 <ReviewsFormLikesDislikes
                     :form="formReview"
                     :course="course"
