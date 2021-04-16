@@ -300,7 +300,7 @@ export default class Course extends Vue {
     }
 
     mounted() {
-        if ((this.$refs.authorDescription as HTMLElement)?.clientHeight > 72) {
+        if ((this.$refs.authorDescription as HTMLElement)?.clientHeight > 62) {
             this.showAll = true;
         }
     }
@@ -745,7 +745,7 @@ export default class Course extends Vue {
 
 .author-description {
     overflow: hidden;
-    max-height: 72px;
+    max-height: 62px;
 }
 
 .show-all {
