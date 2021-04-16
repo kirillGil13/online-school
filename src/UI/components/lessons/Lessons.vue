@@ -12,9 +12,10 @@
                          :class="[ course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED ? 'lesson-locked' : '']">
               <svg-icon class="svg-wh" :name="course.resolveType(index, $route.params.lessonId)"></svg-icon>
               <div class="lesson_name">
-                <span class="desc">Урок {{ lesson.number }}</span>
+                <span class="desc d-flex justify-space-between">Урок {{ lesson.number }} </span>
                 {{ lesson.name }}
               </div>
+              <span class="lesson_duration">{{lesson.duration}}</span>
             </router-link>
           </li>
         </ul>
@@ -130,12 +131,22 @@ export default class Lessons extends Vue {
             .lesson_name {
               display: flex;
               flex-direction: column;
+              width:100%;
 
               .desc {
                 color: #5f739c;
                 font-size: 10px;
                 line-height: 95%;
               }
+            }
+
+            .lesson_duration {
+              font-size: 10px;
+              line-height: 150%;
+              display: flex;
+              align-items: center;
+              text-align: right;
+              color: #5F739C;
             }
           }
         }

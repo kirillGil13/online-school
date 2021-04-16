@@ -272,6 +272,7 @@ h5 {
       &.views {
         left: 8px;
         bottom: 8px;
+
       }
 
       .text {
@@ -884,6 +885,41 @@ iframe {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
+
+  .course-info {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 0 4px 0 4px;
+    background: rgba(6, 5, 22, 0.6);
+    backdrop-filter: blur(4px);
+    border-radius: 3px;
+    color: #ffffff;
+
+    &.progress {
+      top: 12px;
+      left: 12px;
+    }
+
+    &.duration {
+      right: 16px;
+      bottom: 16px;
+    }
+
+    &.views {
+      left: 16px;
+      bottom: 16px;
+
+    }
+
+    .text {
+      margin-left: 4px;
+      text-transform: none;
+    }
+
+  }
+
 
   &.material {
     border-radius: 5px;

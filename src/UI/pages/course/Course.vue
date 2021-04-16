@@ -39,6 +39,8 @@
                                 :src="course.photoLink"
                             >
                                 <div class="play-button"></div>
+                                <div class="course-info views"><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-eye</v-icon>{{course.countViews}}</div>
+                                <div class="course-info duration "><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-clock-time-four-outline</v-icon>{{course.totalDuration}}</div>
                             </v-img>
                         </v-responsive>
                         <v-row
@@ -119,7 +121,7 @@
                                                 v-if="course.author.vk_link"
                                             >
                                                 <v-btn class="white--text mr-2 mt-0" color="primary" icon small>
-                                                    <v-icon small> mdi-vk </v-icon>
+                                                    <v-icon color="#ffffff" small> mdi-vk </v-icon>
                                                 </v-btn>
                                             </a>
                                             <a
@@ -432,6 +434,7 @@ export default class Course extends Vue {
     async handleLike(empty: boolean): Promise<void> {
         if (this.course?.isLiked) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
+            await ReviewsStore.fetchAll(this.$route.params.id);
             this.course!.isLiked = false;
             this.course!.isDisliked = false;
 
@@ -460,6 +463,7 @@ export default class Course extends Vue {
     async handleDisLike(empty: boolean): Promise<void> {
         if (this.course!.isDisliked) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
+            await ReviewsStore.fetchAll(this.$route.params.id);
             this.course!.isDisliked = false;
             this.course!.isLiked = false;
             
@@ -748,4 +752,5 @@ export default class Course extends Vue {
     color: #426df6;
     cursor: pointer;
 }
+
 </style>
