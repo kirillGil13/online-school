@@ -22,3 +22,11 @@ export enum StatusesNameEnum {
     Archive = 'Archive',
     Partner = 'Partner'
 }
+
+export enum  StatusRequestNameEnum {
+    NEW = 'new',
+    EXPECT = 'expect',
+    PHONE = 'phone',
+    ARCHIVE = 'archive',
+    PARTNER = 'partner'
+}

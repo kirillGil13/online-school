@@ -40,10 +40,11 @@
     <v-row>
       <v-col class="mt-6">
         <FilterComponent :isCondidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
-                         :filters="filters" @filter="onFilter">
+                         :filters="filters" @filter="onFilter" :countInArhive="countInArhive">
           <template v-slot:search>
             <Search @search="search"/>
           </template>
+         
           <template v-slot:button>
             <Button @submit="activator = true">Добавить кандидата</Button>
           </template>
@@ -120,7 +121,7 @@ import {CandidateForm} from '@/form/candidate/candidateForm';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 import {InfoPackagesStore} from '@/store/modules/InfoPackages';
 import {StatusesStore} from '../../../store/modules/Statuses';
-import {IStatuses} from '../../../entity/statuses/statuses.types';
+import {IStatuses, StatusRequestNameEnum} from '../../../entity/statuses/statuses.types';
 import {StatusForm} from '../../../form/status/statusForm';
 import StatusFormComponent from '../../components/forms/statusForm/StatusFormComponent.vue';
 import {StatusIconsStore} from '../../../store/modules/StatusIcons';
@@ -244,6 +245,11 @@ export default class Candidates extends Vue {
     return FiltersStore.candidates;
   }
 
+   get countInArhive(): number {
+    return  CandidatesStore.candidateArchiveCount;
+  }
+
+
   activatorChange(act: boolean): void {
     this.destroy = true;
     this.activator = act;
@@ -302,6 +308,8 @@ export default class Candidates extends Vue {
     CandidatesStore.fetchAll();
     InfoPackagesStore.fetchAll();
     StatusIconsStore.fetchAll();
+    CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
+    
   }
 
   async search(searchBody: string): Promise<void> {

@@ -1,7 +1,7 @@
 import Api from '@/repository/api';
 import { ICandidatesRepository } from '@/repository/candidates';
-import {Candidate, CandidateResponseType, ICandidate} from '@/entity/candidates';
-import {CandidateFormRequestType} from '@/form/candidate/candidateForm.types';
+import {Candidate, CandidateResponseType, CandidateStatusResponseType, ICandidate} from '@/entity/candidates';
+import {CandidateFormRequestType, CandidateStatusCount} from '@/form/candidate/candidateForm.types';
 import {PhoneRequestType} from '@/form/phone/phoneForm.types';
 import {CodeRequestType} from '@/form/code/codeForm.types';
 
@@ -27,5 +27,11 @@ export class CandidatesRepository implements ICandidatesRepository {
         const response = await Api.post('/candidates/confirmPhone/do', data);
         const respData = response.data;
         return respData.result;
+    }
+
+    async takeCountStatus(data: CandidateStatusCount): Promise<number> {
+        const responce = await Api.get(`/candidates/${data.status}/count`);
+        const respData = responce.data;
+        return respData;
     }
 }
