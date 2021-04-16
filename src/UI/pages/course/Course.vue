@@ -45,7 +45,7 @@
                         </v-responsive>
                         <v-row
                             no-gutters
-                            :class="['course-video-row mt-4 ml-4', $adaptive.isMobile ? 'justify-center' : '']"
+                            :class="['course-video-row mt-4 ml-6 mb-4', $adaptive.isMobile ? 'justify-center' : '']"
                         >
                             <Relation
                                 svg-name="Finger"
@@ -67,8 +67,8 @@
                                 @click="handleFavourite"
                             />
                         </v-row>
-                        <v-row no-gutters class="mt-4">
-                            <template v-if="toggleOpenLikeDislikeForm">
+                        <v-row no-gutters >
+                            <template v-if="toggleOpenLikeDislikeForm" class="mt-4">
                                 <ReviewsFormLikesDislikes
                                     :form="reviewsForm"
                                     :course="course"
