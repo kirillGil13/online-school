@@ -21,7 +21,6 @@ class ReviewsModule extends VuexModule {
     @MutationAction
     async fetchAll(id: string): Promise<{ reviews: IReviews[]; reviewsLoaded: boolean }> {
         const reviews = await store.$repository.reviews.fetchAll(id);
-        console.log(reviews)
         let reviewsLoaded = false;
         if (reviews)
             reviewsLoaded = true;

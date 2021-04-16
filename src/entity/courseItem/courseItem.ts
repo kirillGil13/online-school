@@ -17,6 +17,8 @@ export default class CourseItem implements ICourseItem {
     level: ICourseLevels;
     countLikes: number;
     countDislikes: number;
+    countViews: number;
+    totalDuration: string;
     constructor(data: CourseItemResponseType) {
         this.id = data.id;
         this.name = data.name;
@@ -31,7 +33,9 @@ export default class CourseItem implements ICourseItem {
         this.isFavourite = data.is_favourite;
         this.photoLink = data.photo_link;
         this.countLikes = data.count_likes,
-        this.countDislikes = data.count_dislikes
+        this.countDislikes = data.count_dislikes,
+        this.countViews = data.count_views,
+        this.totalDuration = this.fullDuration(data.total_duration)
         for (let i = 0; i < data.lessons.length; i++) {
             this.lessons.push({
                 id: data.lessons[i].id,
@@ -66,6 +70,29 @@ export default class CourseItem implements ICourseItem {
             const url2 = startsWithHttp ? url : `https://${url}`;
             return `<a class="desc_link" target="_blank" href="${url2}">${url}</a>`;
         });
+    }
+
+    fullDuration(total_duration: number): string {
+        let h = 0;
+        let m = 0;
+        let s = 0;
+        m = Math.floor(total_duration / 60);
+        s = Math.floor(total_duration % 60);
+        h = Math.floor(m / 60);
+        m = m % 60;
+        let hDisplay = '';
+        let mDisplay = '';
+        if (m < 10 && m > 0) {
+            mDisplay = '0' + m + ':';
+        } else if (m >= 10) {
+            mDisplay = m + ':';
+        } else mDisplay = '0:';
+        let sDisplay = s > 0 ? s.toString() : '';
+        hDisplay = h > 0 ? h + ':' : '';
+        if (h === 0)
+            hDisplay = '0:';
+        sDisplay = s < 10 ? '0' + sDisplay : sDisplay;
+        return hDisplay + mDisplay + sDisplay;
     }
 
 
