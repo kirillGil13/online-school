@@ -35,6 +35,7 @@ export default class FormGroup extends Vue {
     attributes(attrs: any): any {
         attrs.label = this.field;
         attrs.name = this.field;
+        attrs.outlined = true;
         attrs.autocomplete = 'off';
         attrs.change = (): void => {
             this.form.$v[this.field].$touch();
