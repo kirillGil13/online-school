@@ -11,8 +11,6 @@
                         @handleFavourite="handleFavourite"
                         @moveToNextLesson="moveToNextLesson"
                         @send="send"
-                        @sendLikeWithRewiew="sendLikeWithRewiew"
-                        @sendDisLikeWithRewiew="sendDisLikeWithRewiew"
                         @moveToPrevious="moveToPrevious"
                         @toggleShowSetReview="toggleShowSetReview"
                         @setReview="setReview"
@@ -51,13 +49,13 @@
                                 svg-name="Finger"
                                 :title="$adaptive.isMobile ? '' : 'Нравится'"
                                 :class="course.isLiked && 'like-active'"
-                                @click="sendLikeWithRewiew"
+                                @click="handleLike(false)"
                             />
                             <Relation
                                 svg-class="svg-down"
                                 :class="course.isDisliked && 'dislike-active'"
                                 svg-name="Finger"
-                                @click="sendDisLikeWithRewiew"
+                                @click="handleDisLike(false)"
                                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
                             />
                             <Relation
@@ -431,70 +429,63 @@ export default class Course extends Vue {
         await CourseItemStore.fetchData(this.$route.params.id);
     }
 
-    async handleLike(like: boolean): Promise<void> {
+    async handleLike(empty: boolean): Promise<void> {
         if (this.course?.isLiked) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
             this.course!.isLiked = false;
             this.course!.isDisliked = false;
-            this.isSetReview = false;
+
+            if(empty) {
+                this.isSetReview = false;
+            }else {
+                this.toggleOpenLikeDislikeForm = false;
+            }
+
             this.reviewsForm.clearData()
             Vue.set(this.course!, 'countLikes', this.course!.countLikes !== 0 ?  this.course!.countLikes - 1 : 0);
         } else {
             this.course!.isDisliked = false;
             this.course!.isLiked = true;
-            this.isSetReview = true;
+
+            if(empty) {
+                this.isSetReview = true;
+            }else {
+                this.toggleOpenLikeDislikeForm = true;
+            }
+
             this.reviewsForm.isLike = true;
         }
     }
 
-    async sendLikeWithRewiew() {
-       if (this.course?.isLiked) {
-            await RelationStore.deleteLikeDislike(this.$route.params.id);
-            this.course!.isLiked = false;
-            this.course!.isDisliked = false;
-            this.toggleOpenLikeDislikeForm = false;
-            this.reviewsForm.clearData()
-            Vue.set(this.course!, 'countLikes', this.course!.countLikes !== 0 ?  this.course!.countLikes - 1 : 0);
-        } else {
-            this.course!.isDisliked = false;
-            this.course!.isLiked = true;
-            this.toggleOpenLikeDislikeForm = true;
-            this.reviewsForm.isLike = true;
-        }
-    }
-
-    async sendDisLikeWithRewiew() {
-       if (this.course!.isDisliked) {
-            await RelationStore.deleteLikeDislike(this.$route.params.id);
-            this.course!.isDisliked = false;
-            this.course!.isLiked = false;
-            this.toggleOpenLikeDislikeForm = false;
-            this.reviewsForm.clearData()         
-            Vue.set(this.course!, 'countDislikes', this.course!.countDislikes !== 0 ?  this.course!.countDislikes - 1 : 0);
-        } else {
-            this.course!.isLiked = false;
-            this.course!.isDisliked = true;
-            this.toggleOpenLikeDislikeForm = true;
-            this.reviewsForm.isLike = false;
-        }
-    }
-
-    async handleDisLike(dislike: boolean): Promise<void> {
+    async handleDisLike(empty: boolean): Promise<void> {
         if (this.course!.isDisliked) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
             this.course!.isDisliked = false;
             this.course!.isLiked = false;
-            this.isSetReview = false;
+            
+            if(empty) {
+                this.isSetReview = false;
+            }else {
+                this.toggleOpenLikeDislikeForm = false;
+            }
+            
             this.reviewsForm.isLike = null;
             this.reviewsForm.clearData()
             Vue.set(this.course!, 'countDislikes', this.course!.countDislikes !== 0 ?  this.course!.countDislikes - 1 : 0);
         } else {
             this.course!.isLiked = false;
             this.course!.isDisliked = true;
-            this.isSetReview = true;
+
+            if(empty) {
+                this.isSetReview = true;
+            }else {
+                this.toggleOpenLikeDislikeForm = true;
+            }
             this.reviewsForm.isLike = false;
         }
     }
+
+    
 
     async handleFavourite(): Promise<void> {
         if (!this.course!.isFavourite) {
