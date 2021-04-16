@@ -14,7 +14,9 @@ export interface ICourseItem {
     lessons: ICourseLessons[];
     level: ICourseLevels;
     countLikes: number,
-    countDislikes: number
+    countDislikes: number,
+    countViews: number,
+    totalDuration: string,
     resolveType(index: number, routeParam: string): string;
     resolveDescription(s: string): string;
 }
@@ -40,6 +42,7 @@ export interface ICourseLessons {
     name: string;
     status: string;
     number: number;
+    duration: string;
 }
 
 export type CourseItemResponseType = {
@@ -56,13 +59,16 @@ export type CourseItemResponseType = {
     lessons: CourseLessonsResponseType[];
     level: CourseLevelsResponseType;
     count_likes: number,
-    count_dislikes: number
+    count_views: number,
+    count_dislikes: number,
+    total_duration: number,
 }
 export type CourseLessonsResponseType = {
     id: number;
     name: string;
     status: string;
     number: number;
+    duration: number;
 }
 
 export type CourseItemAuthor = {
