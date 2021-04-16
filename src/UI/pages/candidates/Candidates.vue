@@ -183,6 +183,7 @@ export default class Candidates extends Vue {
 
   @Watch('statusesLoaded', {immediate: true})
   onFilterStatusChange(): void {
+   
     for (let i = 0; i < this.statuses.length; i++) {
       this.$set(this.filters.filterBody[0].filterValue, i + 1, {text: this.statuses[i].name, value: this.statuses[i].id});
     }
@@ -322,10 +323,19 @@ export default class Candidates extends Vue {
   }
 
   async toggleIsArchive(): Promise<void> {
-    this.isArchive = !this.isArchive;
-    await CandidatesStore.fetchAll({
+    if(this.isArchive){
+      this.isArchive = false;
+      await CandidatesStore.fetchAll({
+      statusId: 0,
+    });
+    }else {
+      this.isArchive = true;
+      await CandidatesStore.fetchAll({
       statusId: 4,
     });
+
+    }
+    
   }
 
   async filtration(): Promise<void> {
