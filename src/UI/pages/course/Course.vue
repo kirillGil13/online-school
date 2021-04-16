@@ -92,7 +92,9 @@
                                                     <svg-icon name="Camera"></svg-icon>
                                                 </template>
                                             </v-avatar>
-                                            {{ course.author.name }}
+                                            <span style="cursor: pointer" @click="toAuthor(course.author)">
+                                                {{ course.author.name }}
+                                            </span> 
                                             {{ course.author.lastName }}
                                         </div>
 
@@ -397,6 +399,10 @@ export default class Course extends Vue {
 
     send(): void {
         this.fetchData();
+    }
+
+    toAuthor(index: number): void {
+        this.$router.push({ name: this.$routeRules.LeaderPage, params: { id: index.toString() } });
     }
 
     cancelDislike() {
