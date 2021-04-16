@@ -4,7 +4,7 @@
         :isBordered="false"
         title="Кандидаты"
         class="top_bar_p_0"
-        description="Здесь отображаются контактные данные всех людей, которые регистрировались по Вашим партнерским ссылкам"
+        description="Здесь отображаются контактные данные всех людей, которые регистрировались по вашим инфопакетам"
     >
     </Header>
     <!--todo-->
@@ -39,11 +39,12 @@
     <!--      </v-row>-->
     <v-row>
       <v-col class="mt-6">
-        <FilterComponent :isOnRight="false" :button="true" :search="true"
-                         :filters="filters" @filter="onFilter">
+        <FilterComponent :isCondidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
+                         :filters="filters" @filter="onFilter" :countInArhive="countInArhive">
           <template v-slot:search>
             <Search @search="search"/>
           </template>
+         
           <template v-slot:button>
             <Button @submit="activator = true">Добавить кандидата</Button>
           </template>
@@ -120,7 +121,7 @@ import {CandidateForm} from '@/form/candidate/candidateForm';
 import {IInfoPackage} from '@/entity/infoPackages/infoPackage.types';
 import {InfoPackagesStore} from '@/store/modules/InfoPackages';
 import {StatusesStore} from '../../../store/modules/Statuses';
-import {IStatuses} from '../../../entity/statuses/statuses.types';
+import {IStatuses, StatusRequestNameEnum} from '../../../entity/statuses/statuses.types';
 import {StatusForm} from '../../../form/status/statusForm';
 import StatusFormComponent from '../../components/forms/statusForm/StatusFormComponent.vue';
 import {StatusIconsStore} from '../../../store/modules/StatusIcons';
@@ -163,6 +164,13 @@ export default class Candidates extends Vue {
   destroy = true;
   candidateId = 0;
   searchBody = '';
+  isArchive = false;
+  fetchCandidates = (): void => {
+      const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+      if (bottomOfWindow && this.candidates.length % 100 === 0) {
+          CandidatesStore.fetchAll({skip: this.candidates.length, limit: 100});
+      }
+  };
 
   constructor() {
     super();
@@ -175,6 +183,7 @@ export default class Candidates extends Vue {
 
   @Watch('statusesLoaded', {immediate: true})
   onFilterStatusChange(): void {
+   
     for (let i = 0; i < this.statuses.length; i++) {
       this.$set(this.filters.filterBody[0].filterValue, i + 1, {text: this.statuses[i].name, value: this.statuses[i].id});
     }
@@ -237,6 +246,11 @@ export default class Candidates extends Vue {
     return FiltersStore.candidates;
   }
 
+   get countInArhive(): number {
+    return  CandidatesStore.candidateArchiveCount;
+  }
+
+
   activatorChange(act: boolean): void {
     this.destroy = true;
     this.activator = act;
@@ -282,11 +296,21 @@ export default class Candidates extends Vue {
     this.fetchData();
   }
 
+  mounted(): void {
+    window.addEventListener('scroll', this.fetchCandidates);
+  }
+
+  beforeDestroy(): void {
+    window.removeEventListener('scroll', this.fetchCandidates);
+  }
+
   fetchData(): void {
     StatusesStore.fetchAll();
     CandidatesStore.fetchAll();
     InfoPackagesStore.fetchAll();
     StatusIconsStore.fetchAll();
+    CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
+    
   }
 
   async search(searchBody: string): Promise<void> {
@@ -298,13 +322,31 @@ export default class Candidates extends Vue {
     await this.filtration();
   }
 
+  async toggleIsArchive(): Promise<void> {
+    if(this.isArchive){
+      this.isArchive = false;
+      await CandidatesStore.fetchAll({
+      statusId: 0,
+    });
+    }else {
+      this.isArchive = true;
+      await CandidatesStore.fetchAll({
+      statusId: 4,
+    });
+
+    }
+    
+  }
+
   async filtration(): Promise<void> {
+    this.isArchive = false;
     await CandidatesStore.fetchAll({
       statusId: this.filters.default[0],
       infoPackId: this.filters.default[2],
       search: this.searchBody,
       isFiction: this.filters.filterBody.find(item => item.filterType === FiltersCandidatesNameEnum.Type)?.filterValue.find(item => item.value === this.filters.default[1])?.isFiction
     });
+    
   }
 
   async openUpdate(id: number): Promise<void> {

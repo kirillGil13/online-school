@@ -1,6 +1,7 @@
 @import './const/const.scss';
 @import './fonts/Manrope/manrope.scss';
 @import './fonts/Ubuntu/ubuntu.scss';
+@import './fonts/Inter/inter.scss';
 @import './common/button.scss';
 @import './common/link.scss';
 @import './common/search.scss';
@@ -16,7 +17,7 @@ html,
 body {
   overflow-x: hidden;
   color: $black;
-  font-family: 'Ubuntu' !important;
+  font-family: 'Inter', sans-serif !important;
   background-color: $background;
   padding: 0;
   margin: 0;
@@ -60,7 +61,7 @@ a {
 .box-container {
   background: #ffffff;
   border: 1px solid #f2f2f2;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 14px 12px rgba(0, 0, 0, 0.01);
   border-radius: 12px;
 }
 
@@ -170,7 +171,7 @@ h5 {
   }
 
   &__descripton {
-    font-family: Ubuntu;
+    font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: normal;
     color: $secondary_text;
@@ -186,7 +187,7 @@ h5 {
   }
 
   &__button {
-    font-family: $font-family-base;
+    font-family: 'Inter', sans-serifяс ;
     height: 50px;
     border-radius: $main_border_radius;
     padding: 16px 24px;
@@ -271,6 +272,7 @@ h5 {
       &.views {
         left: 8px;
         bottom: 8px;
+
       }
 
       .text {
@@ -321,7 +323,7 @@ h5 {
 }
 
 .infoPackageItem {
-  font-family: 'Ubuntu';
+  font-family: 'Inter', sans-serif;
   .landing_title {
     font-size: 36px;
     line-height: 1.0625;
@@ -884,6 +886,41 @@ iframe {
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
 
+  .course-info {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 0 4px 0 4px;
+    background: rgba(6, 5, 22, 0.6);
+    backdrop-filter: blur(4px);
+    border-radius: 3px;
+    color: #ffffff;
+
+    &.progress {
+      top: 12px;
+      left: 12px;
+    }
+
+    &.duration {
+      right: 16px;
+      bottom: 16px;
+    }
+
+    &.views {
+      left: 16px;
+      bottom: 16px;
+
+    }
+
+    .text {
+      margin-left: 4px;
+      text-transform: none;
+    }
+
+  }
+
+
   &.material {
     border-radius: 5px;
   }
@@ -921,10 +958,16 @@ iframe {
   color: #1d1d1f !important;
 }
 .country-selector__input {
+  padding-top: 0 !important;
   border: 1px solid #F2F2F2 !important;
   &:disabled {
     color: #1d1d1f !important;
   }
+}
+.select-country-container {
+  width: 100% !important;
+  max-width: 110px !important;
+  min-width: auto !important;
 }
 .input-tel__input {
   border: 1px solid #F2F2F2 !important;
@@ -933,6 +976,7 @@ iframe {
   }
 }
 .country-selector__label {
+  display: none;
   color: #828282 !important;
 }
 
@@ -940,5 +984,8 @@ iframe {
   padding-top: 0 !important;
 }
 .country-selector__toggle {
-  top: calc(50% - 4px) !important;
+  top: calc(50% - 12px) !important;
+}
+.country-selector__country-flag {
+  top: 17px !important;
 }

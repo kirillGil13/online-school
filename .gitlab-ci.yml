@@ -1,8 +1,9 @@
 stages:
-  - deploy
+  - deploy-dev
+  - deploy-prod
 
-deploy:
-  stage: deploy
+deploy-prod:
+  stage: deploy-prod
   script:
     - cd /var/www/onelinks.frontend
     - git pull
@@ -13,4 +14,15 @@ deploy:
   tags:
     - deploy
 
+deploy-dev:
+  stage: deploy-dev
+  script:
+    - cd /var/www/dev.onelinks.frontend
+    - git pull
+    - yarn
+    - yarn run build --mode stand
+  only:
+    - dev
+  tags:
+    - deploy
 

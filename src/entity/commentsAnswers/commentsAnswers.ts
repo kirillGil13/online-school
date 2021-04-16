@@ -9,6 +9,7 @@ export default class CommentsAnswers implements ICommentsAnswers {
     countLikes: string;
     countDislikes: string;
     isLiked: boolean | null;
+    isMy: boolean;
 
     constructor(data: CommentsAnswersResponseType) {
         this.id = data.id;
@@ -18,6 +19,7 @@ export default class CommentsAnswers implements ICommentsAnswers {
         this.countLikes = data.count_likes.toString();
         this.countDislikes = data.count_dislikes.toString();
         this.isLiked = data.is_liked;
+        this.isMy = data.isMy;
     }
 
     get fullName(): string {

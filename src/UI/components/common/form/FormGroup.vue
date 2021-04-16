@@ -1,5 +1,5 @@
 <template>
-    <FormInput v-slot="attrs" :messages="form.getMessages(field)" :server-errors="serverErrors" :validator="validator">
+    <FormInput v-slot="attrs" :messages="form.getMessages(field)" :server-errors="serverErrors" :validator="validator" :classes="classes">
       <label class="d-flex justify-start" v-if="label">{{label}}</label>
         <slot v-bind="attributes(attrs)" />
         <div v-if="showCustomError">
@@ -22,6 +22,7 @@ export default class FormGroup extends Vue {
     @Prop({ required: true }) readonly form!: Form;
     @Prop({ type: Boolean, default: false }) readonly showCustomError!: boolean;
     @Prop() readonly label!: string;
+    @Prop({default: ''}) classes?: string;
     @Prop({default: false}) readonly isPhone!: boolean;
     get validator(): Validation {
         return this.form.$v[this.field];

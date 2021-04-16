@@ -6,15 +6,33 @@
           <v-img :src="comment.author.photoLink" alt=""/>
         </template>
         <template v-else v-slot:default>
-          <svg-icon name="Camera" ></svg-icon>
+          <svg-icon name="Camera"></svg-icon>
         </template>
       </v-avatar>
       <div class="d-flex flex-column comment-container">
         <div class="comment py-3 px-4">
-          <v-col class="pa-0">
-            <v-row no-gutters class="mb-1">
-              <h4 class="mr-3">{{ comment.fullName }}</h4>
-              <div class="desc">{{ comment.createdAt }}</div>
+          <v-col class="pa-0" v-if="form.showChangeComment && comment.id === form.commentId">
+            <CommentsChangeFormComponent :form="form" @closeChange="closeChangeComment" @changeComment="$emit('changeComment', comment.id)"/>
+          </v-col>
+          <v-col class="pa-0" v-else>
+            <v-row no-gutters class="mb-1 d-flex justify-space-between">
+              <div class="d-flex flex-row">
+                <h4 class="mr-3">{{ comment.fullName }}</h4>
+                <div class="desc">{{ comment.createdAt }}</div>
+              </div>
+              <div class="pr-0" v-if="comment.isMy">
+                <Select class-name="select_content_comment action" :selects="selects" v-on="$listeners" :id="comment.id">
+                  <template v-slot:act>
+                    <div class="d-flex justify-end pr-0">
+                      <svg-icon
+                          name="Dots"
+                          class="dots"
+                      >
+                      </svg-icon>
+                    </div>
+                  </template>
+                </Select>
+              </div>
             </v-row>
             <v-row no-gutters :id="'comment' + comment.id">
               {{ comment.message }}
@@ -48,17 +66,36 @@
                   <v-img :src="item.author.photoLink" alt=""/>
                 </template>
                 <template v-else v-slot:default>
-                  <svg-icon name="Camera" ></svg-icon>
+                  <svg-icon name="Camera"></svg-icon>
                 </template>
               </v-avatar>
               <div class="d-flex flex-column comment-container">
                 <div class="comment child py-3 px-4">
-                  <v-col class="pa-0">
-                    <v-row no-gutters class="mb-1">
-                      <h4 class="mr-3">{{ item.fullName }}</h4>
-                      <div class="desc">{{ item.createdAt }}</div>
+                  <v-col class="pa-0" v-if="form.showChangeAnswer && item.id === form.answerId">
+                    <CommentsChangeFormComponent :form="form" @closeChange="closeChangeAnswer" @changeComment="$emit('changeAnswer', {answer: item.id, comment: comment.id})"/>
+                  </v-col>
+                  <v-col class="pa-0" v-else>
+                    <v-row no-gutters class="mb-1 d-flex justify-space-between">
+                      <div class="d-flex flex-row">
+                        <h4 class="mr-3">{{ item.fullName }}</h4>
+                        <div class="desc">{{ item.createdAt }}</div>
+                      </div>
+                      <div class="pr-0" v-if="item.isMy">
+                        <Select class-name="select_content_comment action" :selects="selects" @extraAction="extraActionAnswer" :id="item.id">
+                          <template v-slot:act>
+                            <div class="d-flex justify-end pr-0">
+                              <svg-icon
+                                  name="Dots"
+                                  class="dots"
+                              >
+                              </svg-icon>
+                            </div>
+                          </template>
+                        </Select>
+                      </div>
                     </v-row>
-                    <v-row no-gutters :id="'answer' + comment.id" v-html="comment.prettierMsg(index) ? comment.prettierMsg(index) : item.message">
+                    <v-row no-gutters :id="'answer' + comment.id"
+                           v-html="comment.prettierMsg(index) ? comment.prettierMsg(index) : item.message">
                     </v-row>
                     <v-row no-gutters class="d-flex flex-row justify-space-between align-end mt-2">
                     <span class="comment-action"
@@ -88,12 +125,18 @@ import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import {IComments} from '../../../../entity/comments/comments.types';
 import Relation from '../../common/Relation.vue';
 import {CommentTypesEnum} from '../../../../entity/common/comment.types';
+import {ISelect} from '../../../../entity/select/select.types';
+import Select from '../../common/Select.vue';
+import {CommentsChangeForm} from '../../../../form/commentsChange/commentsChangeForm';
+import CommentsChangeFormComponent from '../../forms/commentsChangeForm/CommentsChangeFormComponent.vue';
 
 @Component({
-  components: {Relation}
+  components: {CommentsChangeFormComponent, Select, Relation}
 })
 export default class Comments extends Vue {
   @Prop({required: true, default: []}) readonly comment!: IComments;
+  @Prop() readonly form!: CommentsChangeForm;
+  @Prop() readonly selects!: ISelect[];
   commentType = CommentTypesEnum;
   show = false;
 
@@ -102,6 +145,18 @@ export default class Comments extends Vue {
     if (val > oldVal) {
       this.show = true;
     }
+  }
+
+  closeChangeComment(): void {
+    this.form.showChangeComment = false;
+  }
+
+  closeChangeAnswer(): void {
+    this.form.showChangeAnswer = false;
+  }
+
+  extraActionAnswer(answerId: number, index: number): void {
+    this.$emit('extraActionAnswer', answerId, this.comment.id, index);
   }
 }
 </script>
@@ -116,12 +171,16 @@ export default class Comments extends Vue {
 }
 
 .comment {
-  background: rgba(66, 109, 246, 0.12);
+  background: #FFFFFF;
   border-radius: 2px 16px 16px 16px;
+  border: 1px solid #F2F2F2;
   width: 100%;
+  box-shadow: 0px 14px 12px rgba(0, 0, 0, 0.01);
 
   .desc {
     font-size: 12px;
+    line-height: 180%;
+    color: #5F739C;
   }
 
   .relation {
@@ -135,19 +194,34 @@ export default class Comments extends Vue {
       margin-right: 4px;
     }
   }
+
   .icon-container
   .active-like {
     path {
       fill: #27AE60 !important;
     }
   }
+
   .active-dislike {
     path {
       fill: #eb5757 !important;
     }
   }
 }
+.select_content_comment {
+  margin-top: 20px !important;
+  border-radius: 12px !important;
+  min-width: 100px !important;
+  max-height: 296px !important;
 
+  &.action {
+    #select1 {
+      .v-list-item__title {
+        color: #EB5757 !important;
+      }
+    }
+  }
+}
 .comment-action {
   display: flex;
   align-items: center;
@@ -158,5 +232,9 @@ export default class Comments extends Vue {
   .svg-up {
     transform: rotate(180deg);
   }
+}
+
+.dots {
+  transform: rotate(90deg) !important;
 }
 </style>

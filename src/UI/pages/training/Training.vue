@@ -8,7 +8,6 @@
     <template v-if="leaders.length !== 0">
       <div class="slider-title d-flex flex-row justify-space-between align-end mb-4">
         <h5>Топ лидеры</h5>
-        <router-link :to="''">Показать все</router-link>
       </div>
       <SliderLeaders :leaders="leaders" id="step-2"/>
     </template>

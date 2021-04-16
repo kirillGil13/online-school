@@ -2,8 +2,8 @@ export interface ITesting {
     id: number;
     homeworkType: string;
     lessonId: number;
-    question: string;
-    tests: ITestingQuestions[];
+    question: string | null;
+    tests: ITestingQuestions[] | null;
 }
 export interface ITestingQuestions {
     id: number;
@@ -20,7 +20,7 @@ export type TestingResponseType = {
     homeworkType: string;
     lessonId: number;
     question: string;
-    tests: TestingQuestionsResponseType[];
+    tests: TestingQuestionsResponseType[] | null;
 }
 export type TestingQuestionsResponseType = {
     question: string;
