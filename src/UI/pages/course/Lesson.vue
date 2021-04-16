@@ -35,14 +35,14 @@
                 svg-name="Finger"
                 :class="isLiked && 'like-active'"
                 :title="$adaptive.isMobile ? '' : 'Нравится'"
-                @click="$emit('sendLikeWithRewiew')"
+                @click="$emit('handleLike', false)"
             />
             <Relation
                 svg-class="svg-down"
                 :class="isDisliked && 'dislike-active'"
                 svg-name="Finger"
                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
-                @click="$emit('sendDisLikeWithRewiew')"
+                @click="$emit('handleDisLike', false)"
             />
             <Relation
                 svg-name="Chosen"
