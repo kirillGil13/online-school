@@ -20,7 +20,7 @@ deploy-dev:
     - cd /var/www/dev.onelinks.frontend
     - git pull
     - yarn
-    - yarn run build --mode development
+    - yarn run build --mode stand
   only:
     - dev
   tags:
