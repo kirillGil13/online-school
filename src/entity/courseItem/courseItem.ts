@@ -42,6 +42,7 @@ export default class CourseItem implements ICourseItem {
                 name: data.lessons[i].name,
                 status: data.lessons[i].status,
                 number: data.lessons[i].number,
+                duration: this.fullDuration(data.lessons[i].duration)
             });
         }
     }

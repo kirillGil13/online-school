@@ -42,6 +42,7 @@ export interface ICourseLessons {
     name: string;
     status: string;
     number: number;
+    duration: string;
 }
 
 export type CourseItemResponseType = {
@@ -60,13 +61,14 @@ export type CourseItemResponseType = {
     count_likes: number,
     count_views: number,
     count_dislikes: number,
-    total_duration: number
+    total_duration: number,
 }
 export type CourseLessonsResponseType = {
     id: number;
     name: string;
     status: string;
     number: number;
+    duration: number;
 }
 
 export type CourseItemAuthor = {

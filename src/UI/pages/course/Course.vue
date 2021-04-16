@@ -41,8 +41,8 @@
                                 :src="course.photoLink"
                             >
                                 <div class="play-button"></div>
-                                <div class="course-count-views"><v-icon color="#ffffff" class="mr-1" x-small>mdi-eye</v-icon>{{course.countViews}}</div>
-                                <div class="course-total-duration"><v-icon color="#ffffff" class="mr-1" x-small>mdi-clock-time-four-outline</v-icon>{{course.totalDuration}}</div>
+                                <div class="course-info views"><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-eye</v-icon>{{course.countViews}}</div>
+                                <div class="course-info duration "><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-clock-time-four-outline</v-icon>{{course.totalDuration}}</div>
                             </v-img>
                         </v-responsive>
                         <v-row
@@ -762,25 +762,4 @@ export default class Course extends Vue {
     cursor: pointer;
 }
 
-.course-count-views {
-    font-size: 16px;
-    line-height: 24px;
-    display: flex;
-    align-items: center;
-    color: #FFFFFF;
-    position: absolute;
-    bottom: 27px;
-    left: 25px
-}
-
-.course-total-duration {
-    font-size: 16px;
-    line-height: 24px;
-    display: flex;
-    align-items: center;
-    color: #FFFFFF;
-    position: absolute;
-    bottom: 27px;
-    right: 25px
-}
 </style>
