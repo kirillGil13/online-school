@@ -17,7 +17,7 @@ export default class CourseItem implements ICourseItem {
     level: ICourseLevels;
     countLikes: number;
     countDislikes: number;
-    countViews: number;
+    countViews: string;
     totalDuration: string;
     constructor(data: CourseItemResponseType) {
         this.id = data.id;
@@ -34,7 +34,7 @@ export default class CourseItem implements ICourseItem {
         this.photoLink = data.photo_link;
         this.countLikes = data.count_likes,
         this.countDislikes = data.count_dislikes,
-        this.countViews = data.count_views,
+        this.countViews = data.count_views.toLocaleString(),
         this.totalDuration = this.fullDuration(data.total_duration)
         for (let i = 0; i < data.lessons.length; i++) {
             this.lessons.push({
