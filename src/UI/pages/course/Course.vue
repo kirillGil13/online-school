@@ -365,6 +365,9 @@ export default class Course extends Vue {
 
     mounted() {
         if ((this.$refs.authorDescription as HTMLElement)?.clientHeight > 62) {
+            if((this.$refs.authorDescription as HTMLElement)?.clientHeight < 62){
+                this.showAll = false;    
+            }
             this.showAll = true;
         }
     }
