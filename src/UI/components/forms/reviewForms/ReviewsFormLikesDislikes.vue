@@ -9,11 +9,11 @@
                             <v-textarea 
                                 ref="contentTextArea"
                                 no-resize
+                                @click="focusOnTexarea"
                                 id="message"
                                 :placeholder="!course.isLiked ? 'Напишите текст отзыва, чтобы сохранить оценку (обязательно)' : 'Напишите текст отзыва' "
                                 rows="5"
-                                hide-details
-                                v-model="form.reviewText"
+                                v-model.lazy="form.reviewText"
                                 type="text"
                             />
                         </div>
@@ -75,6 +75,10 @@ export default class ReviewsFormLikesDislikes extends Vue {
 
     sendMessage():void {
       this.$emit('setReview')
+    }
+
+    focusOnTexarea(): void {
+        (this.$refs.contentTextArea as HTMLElement).focus()
     }
 
     setReviewLike() {
