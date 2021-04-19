@@ -17,6 +17,8 @@
         "@websanova/vue-auth": "^3.3.4",
         "axios": "0.21.1",
         "core-js": "3.6.5",
+        "fastclick": "^1.0.6",
+        "fastclick-vue": "^1.0.0",
         "lodash": "^4.17.20",
         "luxon": "^1.26.0",
         "moment-duration-format": "^2.3.2",
@@ -53,6 +55,7 @@
         "weekstart": "^1.0.1"
     },
     "devDependencies": {
+        "@types/fastclick": "^1.0.29",
         "@types/moment-duration-format": "^2.2.2",
         "@types/vue-moment": "^4.0.1",
         "@typescript-eslint/eslint-plugin": "^2.26.0",
