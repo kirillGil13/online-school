@@ -308,11 +308,6 @@ export default class Course extends Vue {
         Vue.set(this.course!, 'countLikes', val);
     }
 
-    mounted(): void {
-                
-    }
-
-
     beforeUpdate() {
         this.componentKey += 0;
     }
