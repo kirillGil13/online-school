@@ -26,14 +26,8 @@ export default class InfoPackageItemVideoComponent extends Vue {
 .infopack-image {
   position: relative;
   border-radius: 12px;
-  &:hover {
-    .play-button {
-      display: block;
-    }
-  }
 }
 .play-button {
-  display: none;
   position: absolute;
   top: 50%;
   left: 50%;
