@@ -1,4 +1,4 @@
-c<template>
+<template>
   <v-col class="infoPackageItem py-14" v-if="infoPackageItemLoaded">
     <div :class="['landing_title text-center', $adaptive.isMobile ? 'mobile' : '']">{{ infoPackageItem.mainVideo.name }}</div>
     <div class="main-video-wrapper mt-10">
