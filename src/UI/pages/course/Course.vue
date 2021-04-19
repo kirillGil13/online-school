@@ -41,7 +41,14 @@
                                 <div class="play-button"></div>
                                 <div class="course-info views">
                                     <v-icon color="#ffffff" class="mr-1" style="margintop: 2px" x-small>mdi-eye</v-icon
-                                    >{{ course.countViews }}
+                                    >
+                                    <template v-if="course.countViews < 1000">
+                                        {{ course.countViews }}
+                                    </template>
+                                    <template v-else>
+                                        {{course.countViews[0] + ' ' + course.countViews.toString().slice(1)}}
+                                    </template>
+                                    
                                 </div>
                                 <div class="course-info duration">
                                     <v-icon color="#ffffff" class="mr-1" style="margintop: 2px" x-small
