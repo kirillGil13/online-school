@@ -15,7 +15,7 @@ export interface ICourseItem {
     level: ICourseLevels;
     countLikes: number,
     countDislikes: number,
-    countViews: number,
+    countViews: string,
     totalDuration: string,
     resolveType(index: number, routeParam: string): string;
     resolveDescription(s: string): string;
