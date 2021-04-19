@@ -1012,6 +1012,11 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/fastclick@^1.0.29":
+  version "1.0.29"
+  resolved "https://registry.yarnpkg.com/@types/fastclick/-/fastclick-1.0.29.tgz#90f43082848187b42250620f13ec93e32393169b"
+  integrity sha512-umkMhdAk3dNAenNuhoKPzZUYN9uBHrK8UAvUKWMLst80Gj4BWC1syLuiNzdBzPpM2b2Xg036vvl6X1wiu1Piuw==
+
 "@types/glob@^7.1.1":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.3.tgz#e6ba80f36b7daad2c685acd9266382e68985c183"
@@ -4106,6 +4111,16 @@ fast-levenshtein@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
+
+fastclick-vue@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/fastclick-vue/-/fastclick-vue-1.0.2.tgz#0a6854d04f67d0e4baa6ccfa4057170804f0a9b8"
+  integrity sha512-Ih1iQMRNeNdanqt2ftVF/YwHHkDEWAp/VIgcPh5z2YK9cP6szWgSikq4dfeTcQXBMwbKzVp824dCbtTSAFiAuQ==
+
+fastclick@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/fastclick/-/fastclick-1.0.6.tgz#161625b27b1a5806405936bda9a2c1926d06be6a"
+  integrity sha1-FhYlsnsaWAZAWTa9qaLBkm0Gvmo=
 
 faye-websocket@^0.10.0:
   version "0.10.0"
