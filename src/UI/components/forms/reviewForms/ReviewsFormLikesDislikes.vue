@@ -7,14 +7,14 @@
                     <div class="review-text__actions">
                         <div class="review-text__set-review">
                             <v-textarea 
+                                class="like-dislike-text"
                                 ref="contentTextArea"
-                                no-resize
-                                @click="focusOnTexarea"
+                                no-resize                            
+                                @click.stop="focusOnTexarea"
                                 id="message"
                                 :placeholder="!course.isLiked ? 'Напишите текст отзыва, чтобы сохранить оценку (обязательно)' : 'Напишите текст отзыва' "
                                 rows="5"
-                                v-model.lazy="form.reviewText"
-                                type="text"
+                                v-model="form.reviewText"
                             />
                         </div>
                         <div class="review-text__like-dislike">
@@ -45,8 +45,7 @@ import { ReviewsForm } from '@/form/reviews/reviewsForm';
 import Relation from '../../common/Relation.vue';
 import { ICourseItem } from '@/entity/courseItem/courseItem.type';
 import Button from '@/UI/components/common/Button.vue';
-
-
+import FastClick from 'fastclick';
 @Component({
     components: {
         FormGroup,
@@ -54,13 +53,16 @@ import Button from '@/UI/components/common/Button.vue';
         Button
     },
 })
+
 export default class ReviewsFormLikesDislikes extends Vue {
     @Prop() readonly form!: ReviewsForm;
     @Prop({default:''}) readonly background?: string;
     @Prop() readonly course!: ICourseItem;
-
+    
     mounted(): void {
-        (this.$refs.contentTextArea as HTMLElement).focus()
+        setTimeout(() => {
+            (this.$refs.contentTextArea as HTMLElement).focus();
+        },1)
     }
 
     get user(): IUser | null {
@@ -78,7 +80,9 @@ export default class ReviewsFormLikesDislikes extends Vue {
     }
 
     focusOnTexarea(): void {
-        (this.$refs.contentTextArea as HTMLElement).focus()
+        setTimeout(() => {
+            (this.$refs.contentTextArea as HTMLElement).focus();
+        },1)
     }
 
     setReviewLike() {
@@ -117,6 +121,12 @@ export default class ReviewsFormLikesDislikes extends Vue {
 </script>
 
 <style lang="scss">
+body input, body textarea {
+    -webkit-touch-callout: text;
+    -webkit-user-select: text;
+    user-select: text;
+}
+
 .message-containers {
     flex-wrap: nowrap;
     padding: 24px;
@@ -124,6 +134,12 @@ export default class ReviewsFormLikesDislikes extends Vue {
     box-sizing: border-box;
     box-shadow: 0px 14px 12px rgba(0, 0, 0, 0.01);
     border-radius: 12px;
+
+    .like-dislike-text {
+        -webkit-touch-callout: text;
+        -webkit-user-select: text;
+        user-select: text;
+    }
 
     .review-text {
         &__title {
