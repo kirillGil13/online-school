@@ -138,10 +138,11 @@
 
                                     <div
                                         class="author-description my-4 ml-2 wrap-text"
+                                        id="authorDescription"
                                         ref="authorDescription"
                                         v-html="course.author.description"
                                     />
-                                    <div v-if="!showAll" class="show-all ml-2" @click="showAll = true">
+                                    <div v-if="showAll === false" class="show-all ml-2" @click="showAll = true">
                                         Показать полностью
                                     </div>
                                 </div>
@@ -280,13 +281,23 @@ export default class Course extends Vue {
     async onChangeRoute(val: string, oldVal: string): Promise<void> {
         await this.fetchData();
         await ReviewsStore.fetchAll(this.$route.params.id);
+        await this.autoDescriptionHeight();
         await this.reviewsForm.clearData();
         this.isSetReview = false;
     }
 
+
+    autoDescriptionHeight(): void {
+        if((this.$refs.authorDescription as HTMLElement)?.clientHeight <= 52){
+            this.showAll = true;
+        }else{
+            this.showAll = false;
+        }
+    }
+
     @Watch('showAll')
     onChangeShall(): void {
-        if (this.showAll) {
+        if (this.showAll === true) {
             (this.$refs.authorDescription as HTMLElement).style.overflow = 'none';
             (this.$refs.authorDescription as HTMLElement).style.maxHeight = 'unset';
         }
@@ -295,12 +306,6 @@ export default class Course extends Vue {
     @Watch('course.countLikes')
     onChangeLike(val: string, oldVal: string): void {
         Vue.set(this.course!, 'countLikes', val);
-    }
-
-    mounted() {
-        if ((this.$refs.authorDescription as HTMLElement)?.clientHeight > 72) {
-            this.showAll = true;
-        }
     }
 
     beforeUpdate() {
