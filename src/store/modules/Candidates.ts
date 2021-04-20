@@ -1,4 +1,4 @@
-import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
+import {Action, getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import {CandidateRequestType, ICandidate} from '@/entity/candidates';
 import {CandidateFormRequestType, CandidatePhoneRequestType, CandidateStatusCount} from '@/form/candidate/candidateForm.types';
@@ -15,40 +15,47 @@ class CandidatesModule extends VuexModule {
     candidatesLoaded = false;
     candidateArchiveCount = 0;
 
-    @MutationAction
-    async fetchAll(data?: CandidateRequestType): Promise<{ candidates: ICandidate[]; candidatesLoaded: boolean }> {
+    @Mutation
+    setCandidates(data: {candidates: ICandidate[]; candidatesLoaded: boolean; scroll: boolean}): void {
+        if (!data.scroll) {
+            this.candidates = data.candidates;
+        } else this.candidates = this.candidates.concat(data.candidates);
+        this.candidatesLoaded = data.candidatesLoaded;
+    }
+
+    @Action({commit: 'setCandidates'})
+    async fetchAll(data?: {data?: CandidateRequestType; scroll?: boolean}): Promise<{ candidates: ICandidate[]; candidatesLoaded: boolean; scroll: boolean }> {
         const formData = new FormData();
         let candidatesLoaded = false;
-        if (data) {
-            if (data.statusId) {
-                formData.append('statusId', data.statusId.toString());
+        let scroll = false;
+        if (data && data.data) {
+            if (data.scroll) {
+                scroll = data.scroll;
+            }
+            if (data.data.statusId) {
+                formData.append('statusId', data.data.statusId.toString());
             } else formData.delete('statusId');
-            if (data.infoPackId) {
-                formData.append('infoPackId', data.infoPackId.toString());
+            if (data.data.infoPackId) {
+                formData.append('infoPackId', data.data.infoPackId.toString());
             } else formData.delete('infoPackId');
-            if (data.isFiction !== undefined) {
-                formData.append('isFiction', data.isFiction.toString());
+            if (data.data.isFiction !== undefined) {
+                formData.append('isFiction', data.data.isFiction.toString());
             } else formData.delete('isFiction');
-            if (data.limit) {
-                formData.append('limit', data.limit.toString());
+            if (data.data.limit) {
+                formData.append('limit', data.data.limit.toString());
             } else formData.delete('limit');
-            if (data.search) {
-                formData.append('search', data.search);
+            if (data.data.search) {
+                formData.append('search', data.data.search);
             } else formData.delete('search');
-            if (data.skip) {
-                formData.append('skip', data.skip.toString());
+            if (data.data.skip) {
+                formData.append('skip', data.data.skip.toString());
             } else formData.delete('skip');
         }
-        let candidates = await store.$repository.candidates.fetchAll(formData);
+        const candidates = await store.$repository.candidates.fetchAll(formData);
         if (candidates) {
             candidatesLoaded = true;
         }
-        if (data?.skip || data?.limit) {
-            if (candidates !== []) {
-                candidates = this.candidates.concat(candidates);
-            }
-            return {candidates, candidatesLoaded};
-        } else return {candidates, candidatesLoaded};
+        return {candidates, candidatesLoaded, scroll};
     }
 
     @Action({rawError: true})
@@ -73,6 +80,12 @@ class CandidatesModule extends VuexModule {
     async takeCountStatusCandidates(data: CandidateStatusCount): Promise<{candidateArchiveCount: number}> {
         const candidateArchiveCount  = await store.$repository.candidates.takeCountStatus(data);
         return {candidateArchiveCount}
+    }
+
+    @Action({rawError: true})
+    async delete(route: string): Promise<boolean> {
+        const response = await store.$repository.candidates.delete(route);
+        return response;
     }
 }
 
