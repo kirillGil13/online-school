@@ -17,6 +17,7 @@
                 <avatar
                     :size="$adaptive.isMobile ? 73 : 143"
                     :imageSource="user.photoLink"
+                    :id="user.id"
                     :starSize="AvatarSizeEnum.MEDIUM"
                     :avatar-size="AvatarSizeEnum.MEDIUM"
                     :picture-changed="pictureChanged"

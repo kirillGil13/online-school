@@ -15,6 +15,7 @@
                   :starSize="AvatarSizeEnum.MEDIUM"
                   :avatar-size="AvatarSizeEnum.MEDIUM"
                   :image-source="''"
+                  :id="0"
               />
               <div class="badges">
                 <Badge :subs="true">

@@ -1,11 +1,11 @@
 <template>
   <v-row no-gutters :class="['message-container d-flex flex-row align-start mt-2', form.author ? '' : 'pt-3']">
-    <v-avatar size="36" class="mr-3" color="#F0F2F6">
+    <v-avatar size="36" class="mr-3" :color="randomColor(comment.author.id % 10)">
       <template v-slot:default v-if="user.photoLink">
         <v-img :src="user.photoLink" alt=""/>
       </template>
       <template v-else v-slot:default>
-        <svg-icon name="Camera" ></svg-icon>
+        <span>{{ (user.name[0] + user.lastName[0]).toUpperCase() }}</span>
       </template>
     </v-avatar>
     <v-col class="pa-0 d-flex flex-row align-end">
@@ -52,6 +52,29 @@ export default class CommentsFormComponent extends Vue {
     this.form.author = '';
     this.form.commentId = null;
     this.form.message = '';
+  }
+
+  randomColor(i: number) {
+    const COLORS = [
+      '#56CCF2',
+      '#BB6BD9',
+      '#6FCF97',
+      '#F2C94C',
+      '#967CBA',
+      '#FF9960',
+      '#566FF2',
+      '#FF5733',
+      '#FF89C9',
+      '#56F2DF',
+      '#F38460',
+      '#939ED6',
+      '#F271A0',
+      '#2ABF93',
+      '#FF9C9C',
+      '#6EC1F0',
+      '#3B4244'
+    ];
+    return COLORS[i || 0];
   }
 }
 </script>
