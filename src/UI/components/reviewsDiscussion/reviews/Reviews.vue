@@ -18,7 +18,7 @@
             <div class="d-flex flex-column review-container">
                 <div class="review py-3 px-4">
                     <v-col class="pa-0">
-                        <v-row no-gutters class="d-flex align-center justify-space-between mb-3">
+                        <v-row no-gutters class="d-flex align-center justify-space-between mb-1">
                             <h4 class="mr-3">{{ review.fullName }}</h4>
                             <div class="desc">{{ review.createdAt }}</div>
                         </v-row>
