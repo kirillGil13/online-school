@@ -11,8 +11,9 @@
                     </v-avatar>
                 </template>
 
-                <v-avatar size="60">
-                    <v-img :src="review.author.photoLink"></v-img>
+                <v-avatar size="60" :color="randomColor(review.author.id % 10)">
+                    <v-img :src="review.author.photoLink" v-if="review.author.photoLink"></v-img>
+                    <span style="color: #fff" class="font-weight-bold" v-else>{{(review.author.name[0] + review.author.lastName[0].toUpperCase())}}</span>
                 </v-avatar>
             </v-badge>
             <div class="d-flex flex-column review-container">
@@ -44,6 +45,29 @@ import { IReviews } from '@/entity/reviews/reviews.types';
 export default class Reviews extends Vue {
     @Prop({ required: true, default: [] }) readonly review!: IReviews;
     reviewType = ReviewTypesEnum;
+
+    randomColor(i: number) {
+    const COLORS = [
+      '#56CCF2',
+      '#BB6BD9',
+      '#6FCF97',
+      '#F2C94C',
+      '#967CBA',
+      '#FF9960',
+      '#566FF2',
+      '#FF5733',
+      '#FF89C9',
+      '#56F2DF',
+      '#F38460',
+      '#939ED6',
+      '#F271A0',
+      '#2ABF93',
+      '#FF9C9C',
+      '#6EC1F0',
+      '#3B4244'
+    ];
+    return COLORS[i || 0];
+  }
 }
 </script>
 

@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="d-flex flex-row cont">
-      <v-avatar size="36" class="mr-3" color="#F0F2F6">
+      <v-avatar size="36" class="mr-3" :color="randomColor(comment.author.id % 10)">
         <template v-slot:default v-if="comment.author.photoLink">
           <v-img :src="comment.author.photoLink" alt=""/>
         </template>
         <template v-else v-slot:default>
-          <svg-icon name="Camera"></svg-icon>
+          <span class="font-weight-bold" style="color: #fff">{{(comment.author.name[0] + comment.author.lastName[0]).toUpperCase()}}</span>
         </template>
       </v-avatar>
       <div class="d-flex flex-column comment-container">
@@ -157,6 +157,29 @@ export default class Comments extends Vue {
 
   extraActionAnswer(answerId: number, index: number): void {
     this.$emit('extraActionAnswer', answerId, this.comment.id, index);
+  }
+
+  randomColor(i: number) {
+    const COLORS = [
+      '#56CCF2',
+      '#BB6BD9',
+      '#6FCF97',
+      '#F2C94C',
+      '#967CBA',
+      '#FF9960',
+      '#566FF2',
+      '#FF5733',
+      '#FF89C9',
+      '#56F2DF',
+      '#F38460',
+      '#939ED6',
+      '#F271A0',
+      '#2ABF93',
+      '#FF9C9C',
+      '#6EC1F0',
+      '#3B4244'
+    ];
+    return COLORS[i || 0];
   }
 }
 </script>

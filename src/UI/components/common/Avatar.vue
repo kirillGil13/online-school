@@ -2,7 +2,7 @@
     <div>
         <div class="avatar-wrapper">
           <slot name="inputFile"></slot>
-            <v-avatar color="#F0F2F6" rounded tile :size="size">
+            <v-avatar rounded tile :size="size" :color="randomColor(user.id % 10)">
               <template v-slot:default v-if="pictureChanged">
                 <v-row
                     class="fill-height ma-0"
@@ -37,7 +37,7 @@
                 </v-img>
               </template>
               <template v-else v-slot:default>
-                <svg-icon :class="{'medium-size-icon': avatarSize === sizes.MEDIUM}" name="Camera" ></svg-icon>
+                <span class="font-weight-bold" :style="{color:'#fff', fontSize: size === 143 ? '24px' : size === 73 ? '14px' : size === 48 ? '10px' : '6px' }">{{ (user.name[0] + user.lastName[0]).toUpperCase()}}</span>
               </template>
             </v-avatar>
         </div>
@@ -45,8 +45,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { AvatarSizeEnum } from '@/entity/common/avatar.types';
+import { IUser } from '@/entity/user';
+import { AuthStore } from '@/store/modules/Auth';
 
 @Component
 export default class Avatar extends Vue {
@@ -58,7 +60,6 @@ export default class Avatar extends Vue {
     @Prop({ default: AvatarSizeEnum.SMALL }) readonly avatarSize!: AvatarSizeEnum;
     sizes = AvatarSizeEnum;
     @Prop() readonly pictureChanged!: boolean;
-
     get showStar(): boolean {
         return this.starSize !== AvatarSizeEnum.NONE;
     }
@@ -73,6 +74,33 @@ export default class Avatar extends Vue {
                 return '';
         }
     }
+
+    get user(): IUser | null {
+      return AuthStore.user
+    }
+
+    randomColor(i: number) {
+    const COLORS = [
+      '#56CCF2',
+      '#BB6BD9',
+      '#6FCF97',
+      '#F2C94C',
+      '#967CBA',
+      '#FF9960',
+      '#566FF2',
+      '#FF5733',
+      '#FF89C9',
+      '#56F2DF',
+      '#F38460',
+      '#939ED6',
+      '#F271A0',
+      '#2ABF93',
+      '#FF9C9C',
+      '#6EC1F0',
+      '#3B4244'
+    ];
+    return COLORS[i || 0];
+  }
 }
 </script>
 
