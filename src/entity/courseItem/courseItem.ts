@@ -19,6 +19,7 @@ export default class CourseItem implements ICourseItem {
     countDislikes: number;
     countViews: string;
     totalDuration: string;
+    rating: number;
     constructor(data: CourseItemResponseType) {
         this.id = data.id;
         this.name = data.name;
@@ -35,6 +36,7 @@ export default class CourseItem implements ICourseItem {
         this.countLikes = data.count_likes,
         this.countDislikes = data.count_dislikes,
         this.countViews = data.count_views.toLocaleString(),
+        this.rating = data.rating,
         this.totalDuration = this.fullDuration(data.total_duration)
         for (let i = 0; i < data.lessons.length; i++) {
             this.lessons.push({
