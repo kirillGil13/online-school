@@ -19,10 +19,10 @@
                         </div>
                         <div class="review-text__like-dislike">
                             <div :class="course.isLiked === true ? 'like--active' : 'like'">
-                                <Relation svg-name="Finger"  @click="setReviewLike" />
+                                <Relation svg-name="Finger"  @click="$emit('handleLike', true)" />
                             </div>
                             <div :class="course.isDisliked === true ? 'dislike--active' : 'dislike'">
-                                <Relation svg-class="svg-down" svg-name="Finger" @click="setReviewDisLike" />
+                                <Relation svg-class="svg-down" svg-name="Finger" @click="$emit('handleDisLike', true)" />
                             </div>
                         </div>
                     </div>
@@ -74,30 +74,6 @@ export default class ReviewsFormComponent extends Vue {
 
     sendMessage():void {
       this.$emit('setReview')
-    }
-
-    setReviewLike() {
-        if(this.course!.isLiked){
-            this.course!.isLiked = false;
-            this.course!.isDisliked = false;
-            this.form.isLike = true
-        }else {
-            this.course!.isLiked = true;
-            this.form.isLike = true
-            this.course!.isDisliked = false;
-        }
-    }
-
-    setReviewDisLike() {
-        if(this.course!.isDisliked){
-            this.course!.isLiked = false;
-            this.course!.isDisliked = false;
-            this.form.isLike = false
-        }else {
-            this.course!.isLiked = false;
-            this.form.isLike = false;
-            this.course!.isDisliked = true;
-        }
     }
 
 }
