@@ -199,8 +199,10 @@
                                 <template v-if="isSetReview">
                                     <reviews-form-component
                                         :form="reviewsForm"
-                                        @setReview="setReview"
                                         :course="course"
+                                        @setReview="setReview"
+                                        @handleLike="handleLike"
+                                        @handleDisLike="handleDisLike"
                                     />
                                 </template>
                             </div>
