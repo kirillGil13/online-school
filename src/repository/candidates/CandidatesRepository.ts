@@ -4,6 +4,7 @@ import {Candidate, CandidateResponseType, CandidateStatusResponseType, ICandidat
 import {CandidateFormRequestType, CandidateStatusCount} from '@/form/candidate/candidateForm.types';
 import {PhoneRequestType} from '@/form/phone/phoneForm.types';
 import {CodeRequestType} from '@/form/code/codeForm.types';
+import { CandidateItem } from '@/entity/candidateItem/candidateItem';
 
 export class CandidatesRepository implements ICandidatesRepository {
     async fetchAll(data?: FormData): Promise<ICandidate[]> {
@@ -11,6 +12,9 @@ export class CandidatesRepository implements ICandidatesRepository {
                 return new URLSearchParams(params).toString()
             }});
         const respData = response.data as CandidateResponseType[];
+
+        const candidateTodate =  {};
+        const candidates = respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
         return respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
     }
     async create(data: CandidateFormRequestType): Promise<boolean> {
@@ -33,5 +37,10 @@ export class CandidatesRepository implements ICandidatesRepository {
         const responce = await Api.get(`/candidates/${data.status}/count`);
         const respData = responce.data;
         return respData;
+    }
+
+    getTime(createdAt: number): string {
+        const date = new Date(createdAt * 1000)
+        return date.toLocaleString().slice(0,5) + date.toLocaleString().slice(10,17)
     }
 }
