@@ -13,7 +13,7 @@
 
                 <v-avatar size="60" :color="randomColor(review.author.id % 10)">
                     <v-img :src="review.author.photoLink" v-if="review.author.photoLink"></v-img>
-                    <span class="font-weight-bold" v-else>{{(review.author.name[0] + review.author.lastName[0].toUpperCase())}}</span>
+                    <span style="color: #fff" class="font-weight-bold" v-else>{{(review.author.name[0] + review.author.lastName[0].toUpperCase())}}</span>
                 </v-avatar>
             </v-badge>
             <div class="d-flex flex-column review-container">

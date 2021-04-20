@@ -6,7 +6,7 @@
           <v-img :src="comment.author.photoLink" alt=""/>
         </template>
         <template v-else v-slot:default>
-          <span>{{(comment.author.name[0] + comment.author.lastName[0]).toUpperCase()}}</span>
+          <span class="font-weight-bold" style="color: #fff">{{(comment.author.name[0] + comment.author.lastName[0]).toUpperCase()}}</span>
         </template>
       </v-avatar>
       <div class="d-flex flex-column comment-container">

@@ -21,7 +21,7 @@
         <v-img :src="course.account.photoLink" v-if="course.account.photoLink">
         </v-img>
 
-        <span class="font-weight-bold" v-else>{{(course.account.name[0] + course.account.lastName[0]).toUpperCase()}}</span>
+        <span style="color: #fff" class="font-weight-bold" v-else>{{(course.account.name[0] + course.account.lastName[0]).toUpperCase()}}</span>
       </v-avatar>
       <span class="desc">{{ course.fullName}}</span>
     </div>

@@ -37,7 +37,7 @@
                 </v-img>
               </template>
               <template v-else v-slot:default>
-                <span class="font-weight-bold" :style="{ fontSize: size === 143 ? '24px' : size === 73 ? '14px' : size === 48 ? '10px' : '6px' }">{{ (user.name[0] + user.lastName[0]).toUpperCase()}}</span>
+                <span class="font-weight-bold" :style="{color:'#fff', fontSize: size === 143 ? '24px' : size === 73 ? '14px' : size === 48 ? '10px' : '6px' }">{{ (user.name[0] + user.lastName[0]).toUpperCase()}}</span>
               </template>
             </v-avatar>
         </div>

@@ -5,7 +5,7 @@
         <v-img :src="user.photoLink" alt=""/>
       </template>
       <template v-else v-slot:default>
-        <span>{{ (user.name[0] + user.lastName[0]).toUpperCase() }}</span>
+        <span class="font-weight-bold" style="color: #fff">{{ (user.name[0] + user.lastName[0]).toUpperCase() }}</span>
       </template>
     </v-avatar>
     <v-col class="pa-0 d-flex flex-row align-end">

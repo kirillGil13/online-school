@@ -8,7 +8,7 @@
               <Rating v-if="leader.rating" :rating="leader.rating" class="master-rating"/>
             </v-img>
 
-            <span class="font-weight-bold" v-else>{{(leader.name[0] + leader.lastName[0]).toUpperCase()}}</span>
+            <span style="color: #fff" class="font-weight-bold" v-else>{{(leader.name[0] + leader.lastName[0]).toUpperCase()}}</span>
           </v-avatar>
           <h4>{{ leader.fullName }}</h4>
         </div>
