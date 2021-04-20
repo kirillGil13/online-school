@@ -1,6 +1,6 @@
 <template>
     <div class="course" :style="{ width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : '' }">
-        <v-responsive v-if="lessonLoaded" :aspect-ratio="16 / 9" content-class="course-container">
+        <v-responsive v-if="lessonLoaded" :aspect-ratio="16 / 9" :style="{borderRadius: '12px'}" class="rounded" content-class="course-container">
             <div
                 v-if="lesson.status === lessonTypes.LOCKED"
                 class="course-locked"
@@ -254,7 +254,8 @@ export default class Lesson extends Vue {
     @Prop() readonly course!: ICourseItem;
     @Prop() readonly toggleOpenLikeDislikeForm!: boolean;
     //@ts-ignore
-
+    skip = 0;
+    limit = 100;
     interval!: NodeJS.Timeout;
     activator = false;
     alertType = AlertTypeEnum;
@@ -330,9 +331,10 @@ export default class Lesson extends Vue {
     }
 
     startTimer(): void {
-        this.interval = setTimeout(() => {
-            CommentsStore.fetchAll({ route: this.$route.params.lessonId });
-        }, 10000);
+        // this.interval = setTimeout(() => {
+        //   console.log(this.skip);
+        //     CommentsStore.fetchAll({ route: this.$route.params.lessonId, pagination: {skip: this.skip, limit: this.limit} });
+        // }, 10000);
     }
 
     get resultFree(): ITestingFree | null {
@@ -343,7 +345,7 @@ export default class Lesson extends Vue {
         clearTimeout(this.interval);
     }
 
-    
+
 
     passFiles(): void {
         this.$emit('passFile', this.lesson!.files);
@@ -401,10 +403,13 @@ export default class Lesson extends Vue {
         const bottomOfWindow =
             document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
         if (bottomOfWindow && this.comments.length % 100 === 0) {
+          this.skip = this.comments.length;
+          setTimeout(e => {
             CommentsStore.fetchAll({
-                route: this.$route.params.lessonId.toString(),
-                pagination: { skip: this.comments.length, limit: 100 },
+              route: this.$route.params.lessonId.toString(),
+              pagination: { skip: this.skip, limit: 100 },
             });
+          }, 300);
         }
     };
 
@@ -428,7 +433,7 @@ export default class Lesson extends Vue {
 
     async fetchData(): Promise<void> {
         await LessonItemStore.fetchData(this.$route.params.lessonId.toString());
-        await CommentsStore.fetchAll({ route: this.$route.params.lessonId });
+        await CommentsStore.fetchAll({ route: this.$route.params.lessonId, pagination: {limit: 100} });
         this.commentsForm = new CommentsForm();
         this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
         if (this.lessonLoaded) {

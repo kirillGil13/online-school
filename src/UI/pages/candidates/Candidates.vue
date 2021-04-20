@@ -44,7 +44,7 @@
           <template v-slot:search>
             <Search @search="search"/>
           </template>
-         
+
           <template v-slot:button>
             <Button @submit="activator = true">Добавить кандидата</Button>
           </template>
@@ -168,7 +168,7 @@ export default class Candidates extends Vue {
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
       if (bottomOfWindow && this.candidates.length % 100 === 0) {
-          CandidatesStore.fetchAll({skip: this.candidates.length, limit: 100});
+          CandidatesStore.fetchAll({data: {skip: this.candidates.length, limit: 100}, scroll: true});
       }
   };
 
@@ -183,7 +183,7 @@ export default class Candidates extends Vue {
 
   @Watch('statusesLoaded', {immediate: true})
   onFilterStatusChange(): void {
-   
+
     for (let i = 0; i < this.statuses.length; i++) {
       this.$set(this.filters.filterBody[0].filterValue, i + 1, {text: this.statuses[i].name, value: this.statuses[i].id});
     }
@@ -310,7 +310,7 @@ export default class Candidates extends Vue {
     InfoPackagesStore.fetchAll();
     StatusIconsStore.fetchAll();
     CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
-    
+
   }
 
   async search(searchBody: string): Promise<void> {
@@ -325,28 +325,28 @@ export default class Candidates extends Vue {
   async toggleIsArchive(): Promise<void> {
     if(this.isArchive){
       this.isArchive = false;
-      await CandidatesStore.fetchAll({
+      await CandidatesStore.fetchAll({data: {
       statusId: 0,
-    });
+    }});
     }else {
       this.isArchive = true;
-      await CandidatesStore.fetchAll({
+      await CandidatesStore.fetchAll({data: {
       statusId: 4,
-    });
+    }});
 
     }
-    
+
   }
 
   async filtration(): Promise<void> {
     this.isArchive = false;
-    await CandidatesStore.fetchAll({
+    await CandidatesStore.fetchAll({data: {
       statusId: this.filters.default[0],
       infoPackId: this.filters.default[2],
       search: this.searchBody,
       isFiction: this.filters.filterBody.find(item => item.filterType === FiltersCandidatesNameEnum.Type)?.filterValue.find(item => item.value === this.filters.default[1])?.isFiction
-    });
-    
+    }});
+
   }
 
   async openUpdate(id: number): Promise<void> {
@@ -358,12 +358,19 @@ export default class Candidates extends Vue {
 
   async selectStatus(data: { statusId: number; id: number }): Promise<void> {
     this.candidateId = data.id
-    if (data.statusId !== 3) {
-      await this.setStatus(data);
+    if (data.statusId !== 4) {
+      if (data.statusId !== 3) {
+        await this.setStatus(data);
+      } else {
+        await this.setStatus(data);
+        this.activatorCallTime = true;
+      }
     } else {
-      await this.setStatus(data);
-      this.activatorCallTime = true;
+      await CandidatesStore.delete(data.id.toString());
+      await CandidatesStore.fetchAll({data: {statusId: data.statusId}});
+      await CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
     }
+
   }
 
   async setStatus(data: { statusId: number; id: number }): Promise<void> {
