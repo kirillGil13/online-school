@@ -85,44 +85,8 @@
                             {{ course.author.lastName }}
                         </div>
 
-                        <div class="author--socials">
-                            <a
-                                :href="`https://facebook.com/${course.author.facebook_link}`"
-                                target="_blank"
-                                v-if="course.author.facebook_link"
-                            >
-                                <v-btn class="white--text mr-2 mt-0" icon small>
-                                    <v-icon small> mdi-facebook </v-icon>
-                                </v-btn>
-                            </a>
-                            <a
-                                :href="`https://instagram.com/${course.author.instagram_link}`"
-                                target="_blank"
-                                v-if="course.author.instagram_link"
-                            >
-                                <v-btn class="white--text mr-2 mt-0" color="red lighten-3" icon small>
-                                    <v-icon small> mdi-instagram </v-icon>
-                                </v-btn>
-                            </a>
-                            <a
-                                :href="`https://vk.com/${course.author.vk_link}`"
-                                target="_blank"
-                                v-if="course.author.vk_link"
-                            >
-                                <v-btn class="white--text mr-2 mt-0" color="primary" icon small>
-                                    <v-icon small> mdi-vk </v-icon>
-                                </v-btn>
-                            </a>
-                            <a
-                                :href="`https://t.me/${course.author.telegram}`"
-                                target="_blank"
-                                v-if="course.author.telegram"
-                            >
-                                <v-btn class="white--text mt-0" color="white" icon small>
-                                    <v-icon small> mdi-telegram </v-icon>
-                                </v-btn>
-                            </a>
-                        </div>
+                      <Socials :vk="course.author.vk_link" :facebook-link="course.author.facebook_link"
+                               :instagram-link="course.author.instagram_link" :telegram="course.author.telegram" :site-link="course.author.site_link"/>
                     </div>
                 </div>
             </div>
@@ -228,9 +192,11 @@ import { HomeworkTypesEnum } from '../../../entity/common/homeworkType.types';
 import { FreeTestForm } from '../../../form/freeTest/freeTestForm';
 import { ITestingFree } from '../../../entity/testingFree/testingFree.types';
 import ReviewsFormLikesDislikes from '../../components/forms/reviewForms/ReviewsFormLikesDislikes.vue';
+import Socials from '../../components/socials/Socials.vue';
 
 @Component({
     components: {
+      Socials,
         Discussion,
         Modal,
         Alert,

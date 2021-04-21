@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters :class="['message-container d-flex flex-row align-start mt-2', form.author ? '' : 'pt-3']">
-    <v-avatar size="36" class="mr-3" :color="randomColor(comment.author.id % 10)">
+    <v-avatar size="36" class="mr-3" :color="randomColor(user.id % 10)">
       <template v-slot:default v-if="user.photoLink">
         <v-img :src="user.photoLink" alt=""/>
       </template>
@@ -54,7 +54,7 @@ export default class CommentsFormComponent extends Vue {
     this.form.message = '';
   }
 
-  randomColor(i: number) {
+  randomColor(i: number): string {
     const COLORS = [
       '#56CCF2',
       '#BB6BD9',

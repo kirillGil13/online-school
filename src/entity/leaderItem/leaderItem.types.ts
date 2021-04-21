@@ -13,6 +13,7 @@ export interface ILeaderItem {
     isLeader: boolean;
     instagramLink: string;
     facebookLink: string;
+    siteLink: string;
 }
 export type LeaderItemResponseType = {
     id: number;
@@ -28,4 +29,5 @@ export type LeaderItemResponseType = {
     isLeader: boolean;
     instagram_link: string;
     facebook_link: string;
+    site_link: string;
 }

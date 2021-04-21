@@ -13,29 +13,30 @@ export interface ICourseItem {
     photoLink: string;
     lessons: ICourseLessons[];
     level: ICourseLevels;
-    countLikes: number,
-    countDislikes: number,
-    countViews: string,
-    totalDuration: string,
-    rating: number,
+    countLikes: number;
+    countDislikes: number;
+    countViews: string;
+    totalDuration: string;
+    rating: number;
     resolveType(index: number, routeParam: string): string;
     resolveDescription(s: string): string;
 }
 
 export interface ICourseItemAuthor {
-    id: number,
-    name: string,
-    lastName: string,
-    email: string,
-    phoneNumber: string,
-    photoLink: string,
-    isLeader: boolean,
-    description: string,
-    is_email_confirmed: boolean,
-    telegram: string,
-    vk_link: string,
-    instagram_link: string,
-    facebook_link: string,
+    id: number;
+    name: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    photoLink: string;
+    isLeader: boolean;
+    description: string;
+    is_email_confirmed: boolean;
+    telegram: string;
+    vk_link: string;
+    instagram_link: string;
+    facebook_link: string;
+    site_link: string;
 }
 
 export interface ICourseLessons {
@@ -51,7 +52,7 @@ export type CourseItemResponseType = {
     name: string;
     description: string;
     cost: number;
-    author: CourseItemAuthor;
+    author: CourseItemAuthorResponseType;
     account_id: number;
     is_liked: boolean;
     is_disliked: boolean;
@@ -59,11 +60,11 @@ export type CourseItemResponseType = {
     photo_link: string;
     lessons: CourseLessonsResponseType[];
     level: CourseLevelsResponseType;
-    count_likes: number,
-    count_views: number,
-    count_dislikes: number,
-    total_duration: number,
-    rating: number
+    count_likes: number;
+    count_views: number;
+    count_dislikes: number;
+    total_duration: number;
+    rating: number;
 }
 export type CourseLessonsResponseType = {
     id: number;
@@ -73,18 +74,19 @@ export type CourseLessonsResponseType = {
     duration: number;
 }
 
-export type CourseItemAuthor = {
-    id: number,
-    name: string,
-    lastName: string,
-    email: string,
-    phoneNumber: string,
-    photoLink: string,
-    isLeader: boolean,
-    description: string,
-    is_email_confirmed: boolean,
-    telegram: string,
-    vk_link: string,
-    instagram_link: string,
-    facebook_link: string
+export type CourseItemAuthorResponseType = {
+    id: number;
+    name: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    photoLink: string;
+    isLeader: boolean;
+    description: string;
+    is_email_confirmed: boolean;
+    telegram: string;
+    vk_link: string;
+    instagram_link: string;
+    facebook_link: string;
+    site_link: string;
 }
