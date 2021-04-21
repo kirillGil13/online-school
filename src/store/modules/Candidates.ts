@@ -11,20 +11,33 @@ import {CodeRequestType} from '@/form/code/codeForm.types';
     dynamic: true,
 })
 class CandidatesModule extends VuexModule {
-    candidates: ICandidate[] = [];
+    candidates: {[params: string]: ICandidate[]}= {};
     candidatesLoaded = false;
     candidateArchiveCount = 0;
 
+
     @Mutation
-    setCandidates(data: {candidates: ICandidate[]; candidatesLoaded: boolean; scroll: boolean}): void {
+    setCandidates(data: {candidates: {[params: string]: ICandidate[]}; candidatesLoaded: boolean; scroll: boolean}): void {
         if (!data.scroll) {
             this.candidates = data.candidates;
-        } else this.candidates = this.candidates.concat(data.candidates);
+        } else {
+            const candidatesData = [...Object.values(this.candidates), ...Object.values(data.candidates)].flat();
+            const candidateTodate:{[params: string]: ICandidate[]} =  {};
+
+            candidatesData.forEach(el => {
+                const data = el.createdAt.split(',')[0];
+    
+                if(!candidateTodate[data]) {
+                    candidateTodate[data] = [...candidatesData.filter(el => el.createdAt.split(',')[0] === data)];
+                }
+            })
+            this.candidates
+        }  
         this.candidatesLoaded = data.candidatesLoaded;
     }
 
     @Action({commit: 'setCandidates'})
-    async fetchAll(data?: {data?: CandidateRequestType; scroll?: boolean}): Promise<{ candidates: ICandidate[]; candidatesLoaded: boolean; scroll: boolean }> {
+    async fetchAll(data?: {data?: CandidateRequestType; scroll?: boolean}): Promise<{ candidates: {[params: string]: ICandidate[]}; candidatesLoaded: boolean; scroll: boolean }> {
         const formData = new FormData();
         let candidatesLoaded = false;
         let scroll = false;

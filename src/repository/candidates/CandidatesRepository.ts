@@ -4,14 +4,42 @@ import {Candidate, CandidateResponseType, ICandidate} from '@/entity/candidates'
 import {CandidateFormRequestType, CandidateStatusCount} from '@/form/candidate/candidateForm.types';
 import {PhoneRequestType} from '@/form/phone/phoneForm.types';
 import {CodeRequestType} from '@/form/code/codeForm.types';
+import {MONTHS} from '../../constants/month/index';
 
 export class CandidatesRepository implements ICandidatesRepository {
-    async fetchAll(data?: FormData): Promise<ICandidate[]> {
+    async fetchAll(data?: FormData): Promise<{[params: string]: ICandidate[]}> {
         const response = await Api.get('/candidates', {params: data, paramsSerializer: function paramsSerializer(params) {
                 return new URLSearchParams(params).toString()
             }});
         const respData = response.data as CandidateResponseType[];
-        return respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
+
+        const candidateTodate:{[params: string]: ICandidate[]} =  {};
+        const candidates = respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
+
+        const today = `${new Date().getDate()}.${new Date().getMonth() + 1 < 10 && 0}${new Date().getMonth() + 1}`;
+        const yesterday = `${new Date().getDate() - 1}.${new Date().getMonth() + 1 < 10 && 0}${new Date().getMonth() + 1}`;
+
+        candidates.forEach(el => {
+            const data = el.createdAt.split(',')[0];
+            const month = MONTHS.filter(month => data.split('.')[1].includes(month.id.toString()) && month.value )
+
+            if(!candidateTodate[`${ data.split('.')[1]} ${month}`]) {
+                if(data !== today && data !== yesterday) {
+                    candidateTodate[`${ data.split('.')[1]} ${month}`] = [...candidates.filter(el => el.createdAt.split(',')[0] === data)];
+                }
+
+                if(!candidateTodate['Сегодня']) {
+                    candidateTodate['Сегодня'] = [...candidates.filter(el => el.createdAt.split(',')[0] === today)]
+                }
+
+                if(!candidateTodate['Вчера']) {
+                    candidateTodate['Вчера'] = [...candidates.filter(el => el.createdAt.split(',')[0] === yesterday)]
+                }
+                
+            }
+        })
+    
+        return candidateTodate
     }
     async create(data: CandidateFormRequestType): Promise<boolean> {
         const response = await Api.post('/candidates', data);
@@ -40,5 +68,10 @@ export class CandidatesRepository implements ICandidatesRepository {
         const responce = await Api.get(`/candidates/${data.status}/count`);
         const respData = responce.data;
         return respData;
+    }
+
+    getTime(createdAt: number): string {
+        const date = new Date(createdAt * 1000)
+        return date.toLocaleString().slice(0,5) + date.toLocaleString().slice(10,17)
     }
 }

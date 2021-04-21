@@ -1,7 +1,40 @@
 <template>
   <div>
-    <div class="table" v-if="!$adaptive.isMobile">
-      <div class="tr">
+    <div class="d-flex flex-column" >
+      <div class="d-flex flex-column candidate-list" v-for="(candidate, index) in candidates" :key="index">
+        <div class="candidate-list-title"> <v-icon color="#000">mdi-chevron-down</v-icon> {{index}}</div>
+        <div class="d-flex candidates-list-item" v-for="(el, idx) in candidate" :key="idx">
+          <div class="status_select ">
+            <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="flex:1">
+              <template v-slot:act>
+                <div class="d-flex flex-row align-center">
+                  <v-img :src="el.status.photoLink" max-width="22" max-height="22"></v-img>
+                  <svg-icon class="ml-1" name="Arrow_Down"></svg-icon>
+                </div>
+              </template>
+              <template v-slot:action>
+                <v-list-item class="selection" @click="$emit('addStatus')">
+                  <v-list-item-icon>
+                    <svg-icon name="Add_Status"></svg-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title class="status_action">Добавить статус</v-list-item-title>
+                </v-list-item>
+              </template>
+            </Select>
+          </div>
+          <div class="name d-flex align-start justify-center flex-column ml-3 " style="flex:2">
+            <div class="name_text" style="color:#101010; font-size:14px; font-weight: 500" >{{ el.name }}</div>
+            <div class="caption" v-if="el.callTime" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{el.callTime}}</div>
+            <div class="caption"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
+            <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{el.status.name}}</div>
+          </div>
+          <a class="link" :href="'tel:' + el.phoneNumber" style="flex:2">{{ el.phoneNumber }}</a>
+          <div style="flex:2">
+            <div class="product">{{el.infoPackName}}</div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="tr">
         <div></div>
         <div>Имя</div>
         <div>Номер телефона</div>
@@ -11,6 +44,8 @@
         <div></div>
       </div>
       <div class="tr tbody py-3" v-for="(candidate, index) in candidates" :key="index">
+
+        
         <div class="status_select">
           <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="candidate.id">
             <template v-slot:act>
@@ -109,7 +144,7 @@
           <div class="label">Дата</div>
           <div>{{ candidate.createdAt }}</div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -168,5 +203,33 @@ export default class TableCandidates extends Vue {
 }
 .status_action {
   color: #426DF6 !important;
+}
+.candidate-list-title {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 170%;
+  display: flex;
+  align-items: center;
+  color: #101010;
+}
+
+.candidates-list-item {
+  background: #FFFFFF;
+  padding: 8px 16px;
+  border: 1px solid #F2F2F2;
+  align-items: center;
+
+   &:nth-child(2) {
+    border-radius: 5px 5px 0 0;
+  }
+
+  &:last-child{
+    border-radius: 0px 0px 5px 5px;
+  }
+}
+
+.candidate-list {
+ 
 }
 </style>

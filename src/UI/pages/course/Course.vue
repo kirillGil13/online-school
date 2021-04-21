@@ -121,10 +121,11 @@
                                             :style="{ color: course.raiting > 6.5 ? '#27AE60' : '#5F739C' }"
                                         >
                                             {{ course.raiting ? course.raiting : 0 }}
+                                            
                                         </div>
                                         <div class="desc__reiting--subtitle">общий рейтинг</div>
                                     </div>
-
+                                    {{course.raiting}}
                                     <div class="desc__icons">
                                         <div class="desc__icons--like">
                                             <Relation

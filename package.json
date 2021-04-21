@@ -39,6 +39,7 @@
         "vue-image-crop-upload": "^2.5.0",
         "vue-infinite-loading": "^2.4.5",
         "vue-moment": "^4.1.0",
+        "vue-native-websocket": "^2.0.14",
         "vue-phone-mask-input": "^1.1.11",
         "vue-phone-number-input": "^1.1.10",
         "vue-property-decorator": "^8.4.1",

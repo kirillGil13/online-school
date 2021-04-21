@@ -53,7 +53,7 @@
     <v-row v-if="candidates.length !== 0 || candidatesLoaded">
       <v-col class="mt-6">
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
-                         @extraAction="openUpdate" @addStatus="activatorStatus = true" @changeCallTime="changeCallTime"/>
+                         @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
       </v-col>
     </v-row>
     <v-row v-else-if="candidates === []">
@@ -91,7 +91,7 @@
     <Modal :activator="activatorCallTime" @activatorChange="activatorChangeCallTime">
       <template v-slot:content>
         <CallTimeFormComponent :form="callTimeForm" v-if="destroy" @close="close"
-                               :candidate="candidates.find(item => item.id === candidateId)"
+                               :candidate="Object.values(candidates).find(item => item.id === candidateId)"
                                @delete="deleteCallTime"
                                @save="saveCallTime"/>
       </template>
@@ -166,8 +166,9 @@ export default class Candidates extends Vue {
   isArchive = false;
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-      if (bottomOfWindow && this.candidates.length % 100 === 0) {
-          CandidatesStore.fetchAll({data: {skip: this.candidates.length, limit: 100}, scroll: true});
+
+      if (bottomOfWindow && Object.values(this.candidates).length % 100 === 0) {
+          CandidatesStore.fetchAll({data: {skip: Object.values(this.candidates).length, limit: 100}, scroll: true});
       }
   };
 
@@ -202,7 +203,7 @@ export default class Candidates extends Vue {
     return AuthStore.user;
   }
 
-  get candidates(): ICandidate[] {
+  get candidates(): {[params: string]: ICandidate[]} {
     return CandidatesStore.candidates;
   }
 
@@ -286,10 +287,10 @@ export default class Candidates extends Vue {
     });
   }
 
-  changeCallTime(data: {index: number; callTime: string}): void {
-    this.candidateId = this.candidates[data.index].id;
-    this.activatorCallTime = true;
-  }
+  // changeCallTime(data: {index: number; callTime: string}): void {
+  //   this.candidateId = this.candidates[data.index].id;
+  //   this.activatorCallTime = true;
+  // }
 
   created(): void {
     this.fetchData();

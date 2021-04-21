@@ -84,7 +84,7 @@ export default class CandidatesStatistics extends Vue {
     return AuthStore.user;
   }
 
-  get candidates(): ICandidate[] {
+  get candidates():  {[params: string]: ICandidate[]} {
     return CandidatesStore.candidates;
   }
 
