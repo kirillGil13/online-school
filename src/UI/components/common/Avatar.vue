@@ -2,7 +2,7 @@
     <div>
         <div class="avatar-wrapper">
           <slot name="inputFile"></slot>
-            <v-avatar rounded tile :size="size" :color="randomColor(user.id % 10)">
+            <v-avatar rounded tile :size="size" :color="imageSource ? '#F0F2F6' : randomColor(user.id % 10)">
               <template v-slot:default v-if="pictureChanged">
                 <v-row
                     class="fill-height ma-0"

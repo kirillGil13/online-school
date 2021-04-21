@@ -11,7 +11,7 @@
                     </v-avatar>
                 </template>
 
-                <v-avatar size="60" :color="randomColor(review.author.id % 10)">
+                <v-avatar size="60" :color="review.author.photoLink ? '#F0F2F6' :randomColor(review.author.id % 10)">
                     <v-img :src="review.author.photoLink" v-if="review.author.photoLink"></v-img>
                     <span style="color: #fff" class="font-weight-bold" v-else>{{(review.author.name[0] + review.author.lastName[0].toUpperCase())}}</span>
                 </v-avatar>
