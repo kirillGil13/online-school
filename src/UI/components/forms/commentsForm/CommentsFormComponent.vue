@@ -54,7 +54,7 @@ export default class CommentsFormComponent extends Vue {
     this.form.message = '';
   }
 
-  randomColor(i: number) {
+  randomColor(i: number): string {
     const COLORS = [
       '#56CCF2',
       '#BB6BD9',

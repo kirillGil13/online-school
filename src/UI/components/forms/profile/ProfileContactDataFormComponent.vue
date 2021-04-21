@@ -16,6 +16,17 @@
       </FormGroup>
     </div>
     <div class="mb-3">
+      <FormGroup v-slot="attrs" :form="form" field="siteLink" show-custom-error label="Ссылка на сайт">
+        <input
+            class="input input__normal"
+            type="text"
+            v-model="form[attrs.name]"
+            v-bind="attrs"
+            @input="attrs.change"
+        >
+      </FormGroup>
+    </div>
+    <div class="mb-3">
       <FormGroup v-slot="attrs" :form="form" field="telegram" show-custom-error label="Telegram ID (без @)">
         <input
             class="input input__normal"

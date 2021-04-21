@@ -23,57 +23,11 @@
               <!--              <Button class="py-3">Подписаться</Button>-->
             </v-col>
           </div>
-          <div :class="['leader_page__desc wrap-text', $adaptive.isMobile ? 'mt-1' : 'mt-3']" v-if="leader.description !== null" v-html="leader.description">
+          <div :class="['leader_page__desc wrap-text', $adaptive.isMobile ? 'mt-1' : 'mt-3']"
+               v-if="leader.description !== null" v-html="leader.description">
           </div>
-          <div class="d-flex flex-row px-2 py-1 mt-2">
-            <a :href="`https://facebook.com/${leader.facebookLink}`" target="_blank" v-if="leader.facebookLink">
-              <v-btn
-                  class="white--text mr-2 mt-0"
-                  icon
-                  small
-              >
-                <v-icon small>
-                  mdi-facebook
-                </v-icon>
-              </v-btn>
-            </a>
-            <a :href="`https://instagram.com/${leader.instagramLink}`" target="_blank" v-if="leader.instagramLink">
-              <v-btn
-                  class="white--text mr-2 mt-0"
-                  color="red lighten-3"
-                  icon
-                  small
-              >
-                <v-icon small>
-                  mdi-instagram
-                </v-icon>
-              </v-btn>
-            </a>
-            <a :href="`https://vk.com/${leader.vkLink}`" target="_blank" v-if="leader.vkLink">
-              <v-btn
-                  class="white--text mr-2 mt-0"
-                  color="primary"
-                  icon
-                  small
-              >
-                <v-icon small>
-                  mdi-vk
-                </v-icon>
-              </v-btn>
-            </a>
-            <a :href="`https://t.me/${leader.telegram}`" target="_blank" v-if="leader.telegram">
-              <v-btn
-                  class="white--text mt-0"
-                  color="white"
-                  icon
-                  small
-              >
-                <v-icon small>
-                  mdi-telegram
-                </v-icon>
-              </v-btn>
-            </a>
-          </div>
+          <Socials class="px-2 py-1 mt-2" :vk="leader.vkLink" :facebook-link="leader.facebookLink"
+                   :instagram-link="leader.instagramLink" :telegram="leader.telegram" :site-link="leader.siteLink"/>
         </v-col>
         <v-col class="box-container mt-6 pa-4">
           <Header class="top_bar_small" title="Курсы" action>
@@ -117,9 +71,11 @@ import {ICourseLevels} from '../../../entity/courseLevels/courseLevels.types';
 import {CourseLevelsStore} from '../../../store/modules/CourseLevels';
 import {LeadersCoursesStore} from '../../../store/modules/LeadersCourses';
 import {ILeaderCourses} from '../../../entity/leaderCourses/leaderCourses.types';
+import Socials from '../../components/socials/Socials.vue';
 
 @Component({
   components: {
+    Socials,
     FilterComponent,
     LeaderCourseItem,
     SliderLeaders,
@@ -255,13 +211,6 @@ export default class LeaderPage extends Vue {
       margin-right: 0;
     }
   }
-
-  .social {
-    cursor: pointer;
-    width: 17px !important;
-    height: 17px !important;
-  }
-
 }
 
 </style>
