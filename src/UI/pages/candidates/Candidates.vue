@@ -358,7 +358,7 @@ export default class Candidates extends Vue {
 
   async selectStatus(data: { statusId: number; id: number}): Promise<void> {
     this.candidateId = data.id;
-    if (!(this.candidates.find(item => item.id === this.candidateId)!.status.id === data.statusId) ) {
+    if (!(Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status.id === data.statusId) ) {
       if (data.statusId !== 3) {
         await this.setStatus(data);
       } else {
