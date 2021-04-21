@@ -30,7 +30,7 @@
                         v-if="!$route.params.lessonId"
                         :style="{ width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : '' }"
                     >
-                        <v-responsive :aspect-ratio="16 / 9" content-class="course-container" @click="user.isSubscriptionActual ? pushToCurrent : activator = true">
+                        <v-responsive :aspect-ratio="16 / 9" content-class="course-container" @click="pushToCurrent">
                             <v-img
                                 :aspect-ratio="16 / 9"
                                 width="100%"
@@ -363,10 +363,13 @@ export default class Course extends Vue {
     }
 
     pushToCurrent(): void {
-        this.$router.push({
-            name: this.$routeRules.Lesson,
-            params: { lessonId: this.findCurrent(this.course!.lessons).toString() },
-        });
+     if (this.user.isSubscriptionActual) {
+       this.$router.push({
+         name: this.$routeRules.Lesson,
+         params: { lessonId: this.findCurrent(this.course!.lessons).toString() },
+       });
+     } else this.activator = true;
+
     }
 
     getLessonId(lessons: ICourseLessons[], number: number, next: boolean): number {
