@@ -44,7 +44,7 @@
           <template v-slot:search>
             <Search @search="search"/>
           </template>
-         
+
           <template v-slot:button>
             <Button @submit="activator = true">Добавить кандидата</Button>
           </template>
@@ -54,7 +54,7 @@
     <v-row v-if="candidates.length !== 0 || candidatesLoaded">
       <v-col class="mt-6">
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
-                         @extraAction="openUpdate" @addStatus="activatorStatus = true" @changeCallTime="changeCallTime"/>
+                         @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
       </v-col>
     </v-row>
     <v-row v-else-if="candidates === []">
@@ -92,7 +92,7 @@
     <Modal :activator="activatorCallTime" @activatorChange="activatorChangeCallTime">
       <template v-slot:content>
         <CallTimeFormComponent :form="callTimeForm" v-if="destroy" @close="close"
-                               :candidate="candidates.find(item => item.id === candidateId)"
+                               :candidate="Object.values(candidates).find(item => item.id === candidateId)"
                                @delete="deleteCallTime"
                                @save="saveCallTime"/>
       </template>
@@ -167,8 +167,9 @@ export default class Candidates extends Vue {
   isArchive = false;
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+
       if (bottomOfWindow && Object.values(this.candidates).length % 100 === 0) {
-          CandidatesStore.fetchAll({skip: Object.values(this.candidates).length, limit: 100});
+          CandidatesStore.fetchAll({data: {skip: Object.values(this.candidates).length, limit: 100}, scroll: true});
       }
   };
 
@@ -183,7 +184,7 @@ export default class Candidates extends Vue {
 
   @Watch('statusesLoaded', {immediate: true})
   onFilterStatusChange(): void {
-   
+
     for (let i = 0; i < this.statuses.length; i++) {
       this.$set(this.filters.filterBody[0].filterValue, i + 1, {text: this.statuses[i].name, value: this.statuses[i].id});
     }
@@ -287,10 +288,10 @@ export default class Candidates extends Vue {
     });
   }
 
-  changeCallTime(data: {index: number; callTime: string}): void {
-    this.candidateId = this.candidates[data.index].id;
-    this.activatorCallTime = true;
-  }
+  // changeCallTime(data: {index: number; callTime: string}): void {
+  //   this.candidateId = this.candidates[data.index].id;
+  //   this.activatorCallTime = true;
+  // }
 
   created(): void {
     this.fetchData();
@@ -310,7 +311,7 @@ export default class Candidates extends Vue {
     InfoPackagesStore.fetchAll();
     StatusIconsStore.fetchAll();
     CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
-    
+
   }
 
   async search(searchBody: string): Promise<void> {
@@ -325,28 +326,28 @@ export default class Candidates extends Vue {
   async toggleIsArchive(): Promise<void> {
     if(this.isArchive){
       this.isArchive = false;
-      await CandidatesStore.fetchAll({
+      await CandidatesStore.fetchAll({data: {
       statusId: 0,
-    });
+    }});
     }else {
       this.isArchive = true;
-      await CandidatesStore.fetchAll({
+      await CandidatesStore.fetchAll({data: {
       statusId: 4,
-    });
+    }});
 
     }
-    
+
   }
 
   async filtration(): Promise<void> {
     this.isArchive = false;
-    await CandidatesStore.fetchAll({
+    await CandidatesStore.fetchAll({data: {
       statusId: this.filters.default[0],
       infoPackId: this.filters.default[2],
       search: this.searchBody,
       isFiction: this.filters.filterBody.find(item => item.filterType === FiltersCandidatesNameEnum.Type)?.filterValue.find(item => item.value === this.filters.default[1])?.isFiction
-    });
-    
+    }});
+
   }
 
   async openUpdate(id: number): Promise<void> {
@@ -358,12 +359,19 @@ export default class Candidates extends Vue {
 
   async selectStatus(data: { statusId: number; id: number }): Promise<void> {
     this.candidateId = data.id
-    if (data.statusId !== 3) {
-      await this.setStatus(data);
+    if (data.statusId !== 4) {
+      if (data.statusId !== 3) {
+        await this.setStatus(data);
+      } else {
+        await this.setStatus(data);
+        this.activatorCallTime = true;
+      }
     } else {
-      await this.setStatus(data);
-      this.activatorCallTime = true;
+      await CandidatesStore.delete(data.id.toString());
+      await CandidatesStore.fetchAll({data: {statusId: data.statusId}});
+      await CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
     }
+
   }
 
   async setStatus(data: { statusId: number; id: number }): Promise<void> {

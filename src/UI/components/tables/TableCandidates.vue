@@ -75,7 +75,7 @@
         <div class="product">{{candidate.infoPackName}}</div>
         <div>{{ candidate.createdAt }}</div>
         <div class="pr-0">
-          <Select class-name="select_content action" :selects="selects" v-on="$listeners" :id="candidate.id">
+          <Select class-name="select_content action" :selects="candidate.status.id === 4 ? newSelect : selects" v-on="$listeners" :id="candidate.id">
             <template v-slot:act>
               <div class="d-flex justify-end pr-0">
                 <svg-icon
@@ -168,6 +168,15 @@ export default class TableCandidates extends Vue {
   @Prop() readonly candidates!: Candidate[];
   @Prop() readonly statuses!: IStatuses[];
   @Prop() readonly selects!: ISelect[];
+  archiveSelects: ISelect[] = []
+
+  get newSelect(): ISelect[] {
+    for (let i = 0; i < this.selects.length; i++) {
+      this.archiveSelects.push(this.selects[i]);
+    }
+    this.archiveSelects[this.archiveSelects.length - 1].name = 'Удалить кандидата'
+    return this.archiveSelects;
+  }
 }
 </script>
 
