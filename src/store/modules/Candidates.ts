@@ -11,12 +11,12 @@ import {CodeRequestType} from '@/form/code/codeForm.types';
     dynamic: true,
 })
 class CandidatesModule extends VuexModule {
-    candidates: ICandidate[] = [];
+    candidates: {[params: string]: ICandidate[]}= {};
     candidatesLoaded = false;
     candidateArchiveCount = 0;
 
     @MutationAction
-    async fetchAll(data?: CandidateRequestType): Promise<{ candidates: ICandidate[]; candidatesLoaded: boolean }> {
+    async fetchAll(data?: CandidateRequestType): Promise<{ candidates: {[params: string]: ICandidate[]}; candidatesLoaded: boolean }> {
         const formData = new FormData();
         let candidatesLoaded = false;
         if (data) {
@@ -43,12 +43,13 @@ class CandidatesModule extends VuexModule {
         if (candidates) {
             candidatesLoaded = true;
         }
-        if (data?.skip || data?.limit) {
-            if (candidates !== []) {
-                candidates = this.candidates.concat(candidates);
-            }
-            return {candidates, candidatesLoaded};
-        } else return {candidates, candidatesLoaded};
+        // if (data?.skip || data?.limit) {
+        //     if (candidates !== []) {
+        //         candidates = this.candidates.concat(candidates);
+        //     }
+        //     return {candidates, candidatesLoaded};
+        // } else 
+        return {candidates, candidatesLoaded};
     }
 
     @Action({rawError: true})

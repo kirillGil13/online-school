@@ -3,7 +3,7 @@ import {CandidateFormRequestType, CandidatePhoneRequestType,CandidateStatusCount
 import {CodeRequestType} from '@/form/code/codeForm.types';
 
 export interface ICandidatesRepository {
-    fetchAll(data?: FormData): Promise<ICandidate[]>;
+    fetchAll(data?: FormData): Promise<{[params: string]: ICandidate[]}>;
     create(data: CandidateFormRequestType): Promise<boolean>;
     sendCode(data: CandidatePhoneRequestType): Promise<boolean>;
     checkCode(data: CodeRequestType): Promise<boolean>;

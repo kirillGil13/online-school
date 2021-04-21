@@ -7,15 +7,24 @@ import {CodeRequestType} from '@/form/code/codeForm.types';
 import { CandidateItem } from '@/entity/candidateItem/candidateItem';
 
 export class CandidatesRepository implements ICandidatesRepository {
-    async fetchAll(data?: FormData): Promise<ICandidate[]> {
+    async fetchAll(data?: FormData): Promise<{[params: string]: ICandidate[]}> {
         const response = await Api.get('/candidates', {params: data, paramsSerializer: function paramsSerializer(params) {
                 return new URLSearchParams(params).toString()
             }});
         const respData = response.data as CandidateResponseType[];
 
-        const candidateTodate =  {};
+        const candidateTodate:{[params: string]: ICandidate[]} =  {};
         const candidates = respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
-        return respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
+
+        candidates.forEach(el => {
+            const data = el.createdAt.split(',')[0];
+
+            if(!candidateTodate[data]) {
+                candidateTodate[data] = [...candidates.filter(el => el.createdAt.split(',')[0] === data)];
+            }
+        })
+    
+        return candidateTodate
     }
     async create(data: CandidateFormRequestType): Promise<boolean> {
         const response = await Api.post('/candidates', data);

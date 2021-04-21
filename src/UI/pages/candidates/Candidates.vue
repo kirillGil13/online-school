@@ -167,8 +167,8 @@ export default class Candidates extends Vue {
   isArchive = false;
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-      if (bottomOfWindow && this.candidates.length % 100 === 0) {
-          CandidatesStore.fetchAll({skip: this.candidates.length, limit: 100});
+      if (bottomOfWindow && Object.values(this.candidates).length % 100 === 0) {
+          CandidatesStore.fetchAll({skip: Object.values(this.candidates).length, limit: 100});
       }
   };
 
@@ -203,7 +203,7 @@ export default class Candidates extends Vue {
     return AuthStore.user;
   }
 
-  get candidates(): ICandidate[] {
+  get candidates(): {[params: string]: ICandidate[]} {
     return CandidatesStore.candidates;
   }
 
