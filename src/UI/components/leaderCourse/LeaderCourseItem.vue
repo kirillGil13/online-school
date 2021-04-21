@@ -17,7 +17,7 @@
       </v-img>
     </div>
     <div class="leader">
-      <v-avatar size="24" class="course-avatar" :color="randomColor(course.account.id % 10)">
+      <v-avatar size="24" class="course-avatar" :color="course.account.photoLink ? '#F0F2F6' :randomColor(course.account.id % 10)">
         <v-img :src="course.account.photoLink" v-if="course.account.photoLink">
         </v-img>
 

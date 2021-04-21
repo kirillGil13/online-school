@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex flex-row cont">
-      <v-avatar size="36" class="mr-3" :color="randomColor(comment.author.id % 10)">
+      <v-avatar size="36" class="mr-3" :color="comment.author.photoLink ? '#F0F2F6' :randomColor(comment.author.id % 10)">
         <template v-slot:default v-if="comment.author.photoLink">
           <v-img :src="comment.author.photoLink" alt=""/>
         </template>
@@ -61,12 +61,12 @@
             <div class="mt-4 ml-4 d-flex flex-row cont"
                  v-for="(item, index) in comment.answers"
                  :key="index">
-              <v-avatar size="24" class="mr-3" color="#F0F2F6">
+              <v-avatar size="24" class="mr-3" :color="item.author.photoLink ? '#F0F2F6' :randomColor(item.author.id % 10)">
                 <template v-slot:default v-if="item.author.photoLink">
                   <v-img :src="item.author.photoLink" alt=""/>
                 </template>
                 <template v-else v-slot:default>
-                  <svg-icon name="Camera"></svg-icon>
+                  <span class="font-weight-bold" style="color: #fff">{{(item.author.name[0] + item.author.lastName[0]).toUpperCase()}}</span>
                 </template>
               </v-avatar>
               <div class="d-flex flex-column comment-container">

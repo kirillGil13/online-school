@@ -3,7 +3,7 @@
     <swiper :class="['swiper component', $adaptive.isMobile ? 'mx-0' : '']" :options="swiperComponentOption" ref="swiper">
       <swiper-slide v-for="(leader, index) in leaders" :key="index" :id="index">
         <div :class=" ['slide', $route.params.id === leader.id.toString() ? 'active_leader' : '' ]" @click="proceed(leader.id)">
-          <v-avatar size="72" class="leader-photo">
+          <v-avatar size="72" class="leader-photo" :color="leader.photoLink ? '#F0F2F6' :randomColor(leader.id % 10)">
             <v-img :src="leader.photoLink" v-if="leader.photoLink">
               <Rating v-if="leader.rating" :rating="leader.rating" class="master-rating"/>
             </v-img>
