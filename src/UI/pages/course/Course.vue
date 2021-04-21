@@ -363,7 +363,7 @@ export default class Course extends Vue {
     }
 
     pushToCurrent(): void {
-     if (this.user.isSubscriptionActual) {
+     if (this.user!.isSubscriptionActual) {
        this.$router.push({
          name: this.$routeRules.Lesson,
          params: { lessonId: this.findCurrent(this.course!.lessons).toString() },
