@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="d-flex flex-column" >
-      <div class="d-flex flex-column candidate-list" v-for="(candidate, index) in candidates" :key="index">
-        <div class="candidate-list-title"> <v-icon color="#000">mdi-chevron-down</v-icon> {{index}}</div>
-        <div class="d-flex candidates-list-item" v-for="(el, idx) in candidate" :key="idx">
+      <div class="d-flex flex-column candidate-list mt-6" v-for="(candidate, index) in candidates" :key="index">
+        <div class="candidate-list-title mb-1"> <v-icon color="#000">mdi-chevron-down</v-icon> {{index}}</div>
+        <div class="candidates-list-item" v-for="(el, idx) in candidate" :key="idx">
           <div class="status_select ">
             <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
               <template v-slot:act>
@@ -22,7 +22,7 @@
               </template>
             </Select>
           </div>
-          <div class="name d-flex align-start justify-center flex-column ml-3 " style="flex:2">
+          <div class="name d-flex align-start justify-center flex-column" style="flex:2">
             <div class="name_text" style="color:#101010; font-size:14px; font-weight: 500" >{{ el.name }}</div>
             <div class="caption" v-if="el.callTime" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{el.callTime}}</div>
             <div class="caption"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
@@ -215,17 +215,19 @@ export default class TableCandidates extends Vue {
 }
 
 .candidates-list-item {
+  display: grid;
+  grid-template-columns: 5% 40% 25% 25% 5%;
   background: #FFFFFF;
   padding: 8px 16px;
   border: 1px solid #F2F2F2;
   align-items: center;
 
    &:nth-child(2) {
-    border-radius: 5px 5px 0 0;
+    border-radius: 4px 4px 0 0;
   }
 
   &:last-child{
-    border-radius: 0px 0px 5px 5px;
+    border-radius: 0px 0px 4px 4px;
   }
 }
 

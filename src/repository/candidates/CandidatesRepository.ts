@@ -13,7 +13,7 @@ export class CandidatesRepository implements ICandidatesRepository {
             }});
         const respData = response.data as CandidateResponseType[];
 
-        const candidateTodate:{[params: string]: ICandidate[]} =  {};
+        const candidateTodate: {[params: string]: ICandidate[]} =  {};
         const candidates = respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
 
         const today = `${new Date().getDate()}.${new Date().getMonth() + 1 < 10 && 0}${new Date().getMonth() + 1}`;
@@ -26,14 +26,26 @@ export class CandidatesRepository implements ICandidatesRepository {
             if(!candidateTodate[`${ data.split('.')[1]} ${month[0].value}`]) {
                 if(data !== today && data !== yesterday) {
                     candidateTodate[`${ data.split('.')[1]} ${month[0].value}`] = [...candidates.filter(el => el.createdAt.split(',')[0] === data)];
+
+                    if(candidateTodate[`${ data.split('.')[1]} ${month[0].value}`].length === 0) {
+                        delete candidateTodate[`${ data.split('.')[1]} ${month[0].value}`];
+                    }
                 }
 
                 if(!candidateTodate['Сегодня']) {
                     candidateTodate['Сегодня'] = [...candidates.filter(el => el.createdAt.split(',')[0] === today)]
+                    
+                    if(candidateTodate['Сегодня'].length === 0) {
+                        delete candidateTodate['Сегодня']
+                    }
                 }
 
                 if(!candidateTodate['Вчера']) {
                     candidateTodate['Вчера'] = [...candidates.filter(el => el.createdAt.split(',')[0] === yesterday)]
+
+                    if(candidateTodate['Вчера'].length === 0) {
+                        delete candidateTodate['Вчера']
+                    }
                 }
                 
             }
