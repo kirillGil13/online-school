@@ -25,7 +25,7 @@ export class ProfileContactDataForm extends Form {
     @Validate(maxLength(30), 'Ссылка на страницу telegram не должна превышать 30 символов')
     public telegram = '';
 
-    @Validate(maxLength(200), 'Ссылка на страницу telegram не должна превышать 200 символов')
+    @Validate(maxLength(500), 'Ссылка на web страницу не должна превышать 500 символов')
     public siteLink = '';
 
     @Validate(required, 'Введите номер телефона')

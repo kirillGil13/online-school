@@ -1,6 +1,6 @@
 <template>
     <div class="course" :style="{ width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : '' }">
-        <v-responsive v-if="lessonLoaded" :aspect-ratio="16 / 9" :style="{borderRadius: '12px'}" class="rounded" content-class="course-container">
+        <v-responsive v-if="lessonLoaded && user.isSubscriptionActual" :aspect-ratio="16 / 9" :style="{borderRadius: '12px'}" class="rounded" content-class="course-container">
             <div
                 v-if="lesson.status === lessonTypes.LOCKED"
                 class="course-locked"
@@ -30,19 +30,30 @@
                 />
             </div>
         </v-responsive>
+      <v-responsive v-else-if="lessonLoaded && !user.isSubscriptionActual" :aspect-ratio="16 / 9" content-class="course-container" @click="activatorSub = true">
+        <v-img
+            :aspect-ratio="16 / 9"
+            width="100%"
+            height="100%"
+            class="course-cover"
+            :src="lesson.photoLink"
+        >
+          <div class="play-button"></div>
+        </v-img>
+      </v-responsive>
         <v-row :class="['course-video-row', $adaptive.isMobile ? 'justify-center' : '']" v-if="lessonLoaded">
             <Relation
                 svg-name="Finger"
                 :class="isLiked && 'like-active'"
                 :title="$adaptive.isMobile ? '' : 'Нравится'"
-                @click="$emit('handleLike', false)"
+                @click="user.isSubscriptionActual ? $emit('handleLike', false) : ''"
             />
             <Relation
                 svg-class="svg-down"
                 :class="isDisliked && 'dislike-active'"
                 svg-name="Finger"
                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
-                @click="$emit('handleDisLike', false)"
+                @click="user.isSubscriptionActual ? $emit('handleDisLike', false) : ''"
             />
             <Relation
                 svg-name="Chosen"
@@ -53,7 +64,7 @@
             <Relation
                 svg-name="Message"
                 :title="$adaptive.isMobile ? '' : 'Обсудить'"
-                @click="discuss"
+                @click="user.isSubscriptionActual ? discuss : ''"
             />
         </v-row>
         <v-row no-gutters>
@@ -67,6 +78,10 @@
                 />
             </template>
         </v-row>
+      <v-col v-if="!user.isSubscriptionActual" :class="['box-container d-flex flex-column justify-center align-center mb-4', $adaptive.isMobile ? 'pa-4' : 'pa-6']">
+        <Subscription/>
+        <Button class="with_icon subs_button" @submit="activatorSub = true"><svg-icon name="Subs_Play_Btn" class="mr-2 svg-16"></svg-icon>Смотреть по подписке</Button>
+      </v-col>
         <v-col :class="['box-container', $adaptive.isMobile ? 'pa-3' : 'pa-5']" v-if="lessonLoaded">
             <div class="desc__container">
                 <div class="desc__container--title">Автор курса</div>
@@ -145,6 +160,11 @@
                 </v-col>
             </template>
         </Modal>
+      <Modal :activator="activatorSub" :max-width="1000" @activatorChange="activatorSubChange" color="#F2F2F2">
+        <template v-slot:content>
+          <SubscribeFormalization/>
+        </template>
+      </Modal>
         <Alert
             :show="show"
             :type="isFavourite ? alertType.Success : alertType.Error"
@@ -193,9 +213,15 @@ import { FreeTestForm } from '../../../form/freeTest/freeTestForm';
 import { ITestingFree } from '../../../entity/testingFree/testingFree.types';
 import ReviewsFormLikesDislikes from '../../components/forms/reviewForms/ReviewsFormLikesDislikes.vue';
 import Socials from '../../components/socials/Socials.vue';
+import {IUser} from '../../../entity/user';
+import {AuthStore} from '../../../store/modules/Auth';
+import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
+import Subscription from '../../components/subscription/Subscription.vue';
 
 @Component({
     components: {
+      Subscription,
+      SubscribeFormalization,
       Socials,
         Discussion,
         Modal,
@@ -224,6 +250,7 @@ export default class Lesson extends Vue {
     limit = 100;
     interval!: NodeJS.Timeout;
     activator = false;
+    activatorSub = false;
     alertType = AlertTypeEnum;
     show = false;
     lessonTypes = LessonsTypesEnum;
@@ -259,6 +286,10 @@ export default class Lesson extends Vue {
             this.passFiles();
         }
     }
+
+  get user(): IUser | null {
+    return AuthStore.user;
+  }
 
     get lesson(): ILessonItem | null {
         return LessonItemStore.lessonItem;
@@ -347,6 +378,10 @@ export default class Lesson extends Vue {
         this.activator = act;
     }
 
+    activatorSubChange(act: boolean): void {
+        this.activatorSub = act;
+    }
+
     respond(data: any): void {
         this.commentsForm.commentId = data.id;
         if (!data.index) {
@@ -402,7 +437,7 @@ export default class Lesson extends Vue {
         await CommentsStore.fetchAll({ route: this.$route.params.lessonId, pagination: {limit: 100} });
         this.commentsForm = new CommentsForm();
         this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
-        if (this.lessonLoaded) {
+        if (this.lessonLoaded && this.user!.isSubscriptionActual) {
             VideoOptionsStore.handleVideo({
                 src: this.lesson!.m3u8FileLink,
                 poster: this.lesson!.photoLink,

@@ -7,36 +7,6 @@
         description="Здесь отображаются контактные данные всех людей, которые зарегистрировались по вашим инфопакетам"
     >
     </Header>
-    <!--todo-->
-    <!--      <v-row class="badges d-flex justify-space-between flex-nowrap mt-6" no-gutters>-->
-    <!--        <Badge class="badges__container" :subs="true" :profit="true">-->
-    <!--          <template v-slot:title>Просмотров инфопакетов</template>-->
-    <!--          <template v-slot:default>172</template>-->
-    <!--          <template v-slot:stats>19</template>-->
-    <!--        </Badge>-->
-    <!--        <Badge class="badges__container" :profit="true">-->
-    <!--          <template v-slot:title>Оставлено заявок</template>-->
-    <!--          <template v-slot:default>50</template>-->
-    <!--          <template v-slot:stats>5.3</template>-->
-    <!--        </Badge>-->
-    <!--        <Badge class="badges__container" :profit="true">-->
-    <!--          <template v-slot:title>Конверсия</template>-->
-    <!--          <template v-slot:default>37%</template>-->
-    <!--          <template v-slot:stats>12</template>-->
-    <!--        </Badge>-->
-    <!--        <Badge class="badges__container" :profit="true">-->
-    <!--          <template v-slot:title>Новых партнеров</template>-->
-    <!--          <template v-slot:default>25</template>-->
-    <!--          <template v-slot:stats>0.2</template>-->
-    <!--        </Badge>-->
-    <!--        <Badge class="badges__container" :link-name="$routeRules.CandidatesStatistics">-->
-    <!--          <template v-slot:title>Подробная аналитика</template>-->
-    <!--          <template v-slot:link>Посмотреть</template>-->
-    <!--        </Badge>-->
-    <!--      </v-row>-->
-    <!--      <v-row no-gutters>-->
-    <!--        <span class="desc mt-2">Данные за последние 30 дней</span>-->
-    <!--      </v-row>-->
     <v-row>
       <v-col class="mt-6">
         <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
@@ -50,13 +20,13 @@
         </FilterComponent>
       </v-col>
     </v-row>
-    <v-row v-if="candidates.length !== 0 || candidatesLoaded">
-      <v-col>
+    <v-row v-if="candidates !== {} || candidatesLoaded">
+      <v-col class="mt-6">
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
       </v-col>
     </v-row>
-    <v-row v-else-if="candidates === []">
+    <v-row v-else-if="candidates === {}">
       <v-col class="mt-10 d-flex justify-center align-center">
         К сожалению данные не найдены
       </v-col>
