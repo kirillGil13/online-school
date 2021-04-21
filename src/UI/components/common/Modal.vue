@@ -4,9 +4,9 @@
       activator="activatorChange"
       :value="activator"
       content-class="modal-window"
-      :max-width="videoModal ? 600 : 500"
+      :max-width="modalMaxWidth"
   >
-    <v-card class="modal-content">
+    <v-card class="modal-content" :color="color ? color : ''">
       <slot name="content"/>
     </v-card>
   </v-dialog>
@@ -19,6 +19,8 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 export default class Modal extends Vue {
   @Prop({required: true}) readonly activator!: boolean;
   @Prop() readonly videoModal!: boolean;
+  @Prop() readonly maxWidth!: number;
+  @Prop() readonly color!: string;
 
   set activatorChange(activator: boolean) {
     this.$emit('activatorChange', activator);
@@ -26,6 +28,14 @@ export default class Modal extends Vue {
 
   get activatorChange(): boolean {
     return this.activator;
+  }
+
+  get modalMaxWidth(): number {
+    if (this.maxWidth) {
+      return this.maxWidth;
+    } else if (this.videoModal) {
+      return 600;
+    } else return 600;
   }
 }
 </script>

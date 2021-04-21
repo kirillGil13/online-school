@@ -5,7 +5,7 @@
         <div class="candidate-list-title"> <v-icon color="#000">mdi-chevron-down</v-icon> {{index}}</div>
         <div class="d-flex candidates-list-item" v-for="(el, idx) in candidate" :key="idx">
           <div class="status_select ">
-            <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="flex:1">
+            <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
               <template v-slot:act>
                 <div class="d-flex flex-row align-center">
                   <v-img :src="el.status.photoLink" max-width="22" max-height="22"></v-img>
@@ -45,7 +45,7 @@
       </div>
       <div class="tr tbody py-3" v-for="(candidate, index) in candidates" :key="index">
 
-        
+
         <div class="status_select">
           <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="candidate.id">
             <template v-slot:act>
@@ -230,6 +230,6 @@ export default class TableCandidates extends Vue {
 }
 
 .candidate-list {
- 
+
 }
 </style>
