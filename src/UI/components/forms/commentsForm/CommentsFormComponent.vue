@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters :class="['message-container d-flex flex-row align-start mt-2', form.author ? '' : 'pt-3']">
-    <v-avatar size="36" class="mr-3" :color="randomColor(user.id % 10)">
+    <v-avatar size="36" class="mr-3" :color="user.photoLink ? '#F0F2F6' :randomColor(user.id % 10)">
       <template v-slot:default v-if="user.photoLink">
         <v-img :src="user.photoLink" alt=""/>
       </template>
