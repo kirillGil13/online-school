@@ -23,9 +23,9 @@ export class CandidatesRepository implements ICandidatesRepository {
             const data = el.createdAt.split(',')[0];
             const month = MONTHS.filter(month => data.split('.')[1].includes(month.id.toString()) && month.value )
 
-            if(!candidateTodate[`${ data.split('.')[1]} ${month}`]) {
+            if(!candidateTodate[`${ data.split('.')[1]} ${month[0].value}`]) {
                 if(data !== today && data !== yesterday) {
-                    candidateTodate[`${ data.split('.')[1]} ${month}`] = [...candidates.filter(el => el.createdAt.split(',')[0] === data)];
+                    candidateTodate[`${ data.split('.')[1]} ${month[0].value}`] = [...candidates.filter(el => el.createdAt.split(',')[0] === data)];
                 }
 
                 if(!candidateTodate['Сегодня']) {
