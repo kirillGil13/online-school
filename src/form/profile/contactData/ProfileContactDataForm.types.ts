@@ -5,4 +5,5 @@ export type ProfileContactDataRequestType = RequestType & {
     facebook: string;
     instagram: string;
     telegram: string;
+    site_link: string;
 };

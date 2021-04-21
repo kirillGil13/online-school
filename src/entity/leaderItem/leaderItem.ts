@@ -14,6 +14,7 @@ export default class LeaderItem implements ILeaderItem {
     isLeader: boolean;
     instagramLink: string;
     facebookLink: string;
+    siteLink: string;
 
     constructor(data: LeaderItemResponseType) {
         this.id = data.id;
@@ -29,6 +30,7 @@ export default class LeaderItem implements ILeaderItem {
         this.isLeader = data.isLeader;
         this.instagramLink = data.instagram_link;
         this.facebookLink = data.facebook_link;
+        this.siteLink = data.site_link;
     }
 
     get fullName(): string {

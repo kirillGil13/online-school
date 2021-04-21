@@ -39,12 +39,11 @@
     <!--      </v-row>-->
     <v-row>
       <v-col class="mt-6">
-        <FilterComponent :isCondidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
-                         :filters="filters" @filter="onFilter" :countInArhive="countInArhive">
+        <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
+                         :filters="filters" @filter="onFilter" :countInArchive="countInArchive">
           <template v-slot:search>
             <Search @search="search"/>
           </template>
-
           <template v-slot:button>
             <Button @submit="activator = true">Добавить кандидата</Button>
           </template>
@@ -247,7 +246,7 @@ export default class Candidates extends Vue {
     return FiltersStore.candidates;
   }
 
-   get countInArhive(): number {
+   get countInArchive(): number {
     return  CandidatesStore.candidateArchiveCount;
   }
 
@@ -357,9 +356,9 @@ export default class Candidates extends Vue {
     this.activatorCandidate = true;
   }
 
-  async selectStatus(data: { statusId: number; id: number }): Promise<void> {
-    this.candidateId = data.id
-    if (data.statusId !== 4) {
+  async selectStatus(data: { statusId: number; id: number}): Promise<void> {
+    this.candidateId = data.id;
+    if (!(this.candidates.find(item => item.id === this.candidateId)!.status.id === data.statusId) ) {
       if (data.statusId !== 3) {
         await this.setStatus(data);
       } else {

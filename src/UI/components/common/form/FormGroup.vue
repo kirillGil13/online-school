@@ -22,7 +22,7 @@ export default class FormGroup extends Vue {
     @Prop({ required: true }) readonly form!: Form;
     @Prop({ type: Boolean, default: false }) readonly showCustomError!: boolean;
     @Prop() readonly label!: string;
-    @Prop({default: ''}) classes?: string;
+    @Prop({default: ''}) classes!: string;
     @Prop({default: false}) readonly isPhone!: boolean;
     get validator(): Validation {
         return this.form.$v[this.field];
