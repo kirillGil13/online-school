@@ -81,7 +81,7 @@
             </div>
           </div>
           <div class="pr-0">
-            <Select class-name="select_content action" :selects="selects" v-on="$listeners" :id="candidate.id">
+            <Select class-name="select_content action" :selects="candidate.status.id === 4 ? newSelect : selects" v-on="$listeners" :id="candidate.id">
               <template v-slot:act>
                 <div class="d-flex justify-end pr-0">
                   <svg-icon

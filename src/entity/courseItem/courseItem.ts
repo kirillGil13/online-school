@@ -75,11 +75,14 @@ export default class CourseItem implements ICourseItem {
         });
     }
 
+    // eslint-disable-next-line @typescript-eslint/camelcase
     fullDuration(total_duration: number): string {
         let h = 0;
         let m = 0;
         let s = 0;
+        // eslint-disable-next-line @typescript-eslint/camelcase
         m = Math.floor(total_duration / 60);
+        // eslint-disable-next-line @typescript-eslint/camelcase
         s = Math.floor(total_duration % 60);
         h = Math.floor(m / 60);
         m = m % 60;

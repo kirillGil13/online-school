@@ -2,11 +2,11 @@
   <v-col class="py-0">
     <v-row class="tab-controls d-flex flex-row flex-wrap">
       <div class="filter-tabs d-flex flex-row justify-center  mt-2" :style="{order: isOnRight ? '2' : '1'}">
-        <v-col class="filter-tabs__archive" v-show="isCondidates">
+        <v-col class="filter-tabs__archive" v-show="isCandidates">
           <Button  class="mt-0 secondary_white" :style="{background: isArchive ? '#426DF6' : '#F0F2F6', color: isArchive ? '#ffff !important' : '#5A606F !important'}" @submit="$emit('toggleArchive');">
-            Архивные 
+            Архивные
             <span class="count-in-arhive ml-3" :style="{color: isArchive ? ' #FFFFFF' : '#060516'}">
-              {{countInArhive}}
+              {{countInArchive}}
               </span>
           </Button>
         </v-col>
@@ -23,7 +23,7 @@
               dense
               solo
           >
-         
+
             <template v-slot:append >
               <svg-icon name="Filter"></svg-icon>
             </template>
@@ -54,8 +54,8 @@ export default class FilterComponent extends Vue {
   @Prop() readonly filters!: Filters;
   @Prop() readonly isOnRight: boolean | undefined;
   @Prop() readonly isArchive!: boolean;
-  @Prop() readonly isCondidates?: boolean;
-  @Prop() readonly countInArhive?: number;
+  @Prop() readonly isCandidates!: boolean;
+  @Prop() readonly countInArchive!: number;
 }
 </script>
 <style lang="scss">

@@ -95,47 +95,9 @@
                                             {{ course.author.name }}
                                             {{ course.author.lastName }}
                                         </div>
-
-                                        <div class="author--socials">
-                                            <a
-                                                :href="`https://facebook.com/${course.author.facebook_link}`"
-                                                target="_blank"
-                                                v-if="course.author.facebook_link"
-                                            >
-                                                <v-btn class="white--text mr-2 mt-0" icon small>
-                                                    <v-icon small> mdi-facebook </v-icon>
-                                                </v-btn>
-                                            </a>
-                                            <a
-                                                :href="`https://instagram.com/${course.author.instagram_link}`"
-                                                target="_blank"
-                                                v-if="course.author.instagram_link"
-                                            >
-                                                <v-btn class="white--text mr-2 mt-0" color="red lighten-3" icon small>
-                                                    <v-icon small> mdi-instagram </v-icon>
-                                                </v-btn>
-                                            </a>
-                                            <a
-                                                :href="`https://vk.com/${course.author.vk_link}`"
-                                                target="_blank"
-                                                v-if="course.author.vk_link"
-                                            >
-                                                <v-btn class="white--text mr-2 mt-0" color="primary" icon small>
-                                                    <v-icon color="#ffffff" small> mdi-vk </v-icon>
-                                                </v-btn>
-                                            </a>
-                                            <a
-                                                :href="`https://t.me/${course.author.telegram}`"
-                                                target="_blank"
-                                                v-if="course.author.telegram"
-                                            >
-                                                <v-btn class="white--text mt-0" color="white" icon small>
-                                                    <v-icon small> mdi-telegram </v-icon>
-                                                </v-btn>
-                                            </a>
-                                        </div>
+                                      <Socials :vk="course.author.vk_link" :facebook-link="course.author.facebook_link"
+                                               :instagram-link="course.author.instagram_link" :telegram="course.author.telegram" :site-link="course.author.site_link"/>
                                     </div>
-
                                     <div
                                         class="author-description my-4 ml-2 wrap-text"
                                         id="authorDescription"
@@ -252,8 +214,10 @@ import { ReviewsStore } from '../../../store/modules/Reviews';
 import ReviewsDiscussion from '../../components/reviewsDiscussion/ReviewsDiscussion.vue';
 import ReviewsFormComponent from '../../components/forms/reviewForms/ReviewsFormComponent.vue';
 import ReviewsFormLikesDislikes from '../../components/forms/reviewForms/ReviewsFormLikesDislikes.vue';
+import Socials from '../../components/socials/Socials.vue';
 @Component({
     components: {
+      Socials,
         Lessons,
         Header,
         Button,
@@ -310,7 +274,7 @@ export default class Course extends Vue {
         Vue.set(this.course!, 'countLikes', val);
     }
 
-    beforeUpdate() {
+    beforeUpdate(): void {
         this.componentKey += 0;
     }
 
@@ -406,12 +370,12 @@ export default class Course extends Vue {
         this.fetchData();
     }
 
-    cancelDislike() {
+    cancelDislike(): void {
         this.course!.isDisliked = false;
         this.course!.isLiked = false;
         this.toggleOpenLikeDislikeForm = false;
         this.reviewsForm.clearData()
-        this.reviewsForm.isLike = null;       
+        this.reviewsForm.isLike = null;
         Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
     }
 
@@ -423,7 +387,7 @@ export default class Course extends Vue {
         }
     }
 
-    async setMark() {
+    async setMark(): Promise<void> {
         await RelationStore.postLikeDislike({
             param: this.$route.params.id,
             relation: { is_like: this.reviewsForm.isLike},
@@ -487,19 +451,19 @@ export default class Course extends Vue {
             this.course!.isDisliked = false;
             this.course!.isLiked = false;
             Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
-            
+
             if(empty) {
                 this.isSetReview = false;
             }else {
                 this.toggleOpenLikeDislikeForm = false;
             }
-            
+
             this.reviewsForm.isLike = null;
             this.reviewsForm.clearData()
         } else {
             this.course!.isLiked = false;
             this.course!.isDisliked = true;
-  
+
             Vue.set(this.course!, 'countDislikes', this.course!.countDislikes + 1);
 
             if(empty) {
@@ -511,7 +475,7 @@ export default class Course extends Vue {
         }
     }
 
-    
+
 
     async handleFavourite(): Promise<void> {
         if (!this.course!.isFavourite) {
@@ -528,12 +492,12 @@ export default class Course extends Vue {
             param: this.$route.params.id,
             relation: { is_like: this.reviewsForm.isLike, reviewText: this.reviewsForm.reviewText },
         });
-        
+
         await ReviewsStore.fetchAll(this.$route.params.id);
         await this.reviewsForm.clearData();
         this.isSetReview = false;
         this.toggleOpenLikeDislikeForm = false;
-        
+
     }
 }
 </script>

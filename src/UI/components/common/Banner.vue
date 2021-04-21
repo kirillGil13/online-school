@@ -48,9 +48,6 @@ export default class Banner extends Vue {
             case this.$routeRules.Candidates:
                 this.bannerType = BannerTypeEnum.QRCODE;
                 break;
-            case this.$routeRules.Partners:
-                this.bannerType = BannerTypeEnum.PRO_ACCOUNT_PROMO;
-                break;
             default:
                 this.bannerType = BannerTypeEnum.INVITE_BUNNER;
                 break;
