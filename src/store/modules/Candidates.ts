@@ -30,7 +30,6 @@ class CandidatesModule extends VuexModule {
                 if(!candidateTodate[data]) {
                     candidateTodate[data] = [...candidatesData.filter(el => el.createdAt.split(',')[0] === data)];
                 }
-                console.log(el)
             })
             this.candidates
         }  

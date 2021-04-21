@@ -4,7 +4,7 @@ import {Candidate, CandidateResponseType, ICandidate} from '@/entity/candidates'
 import {CandidateFormRequestType, CandidateStatusCount} from '@/form/candidate/candidateForm.types';
 import {PhoneRequestType} from '@/form/phone/phoneForm.types';
 import {CodeRequestType} from '@/form/code/codeForm.types';
-import { CandidateItem } from '@/entity/candidateItem/candidateItem';
+import {MONTHS} from '../../constants/month/index';
 
 export class CandidatesRepository implements ICandidatesRepository {
     async fetchAll(data?: FormData): Promise<{[params: string]: ICandidate[]}> {
@@ -16,11 +16,26 @@ export class CandidatesRepository implements ICandidatesRepository {
         const candidateTodate:{[params: string]: ICandidate[]} =  {};
         const candidates = respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
 
+        const today = `${new Date().getDate()}.${new Date().getMonth() + 1 < 10 && 0}${new Date().getMonth() + 1}`;
+        const yesterday = `${new Date().getDate() - 1}.${new Date().getMonth() + 1 < 10 && 0}${new Date().getMonth() + 1}`;
+
         candidates.forEach(el => {
             const data = el.createdAt.split(',')[0];
+            const month = MONTHS.filter(month => data.split('.')[1].includes(month.id.toString()) && month.value )
 
-            if(!candidateTodate[data]) {
-                candidateTodate[data] = [...candidates.filter(el => el.createdAt.split(',')[0] === data)];
+            if(!candidateTodate[`${ data.split('.')[1]} ${month}`]) {
+                if(data !== today && data !== yesterday) {
+                    candidateTodate[`${ data.split('.')[1]} ${month}`] = [...candidates.filter(el => el.createdAt.split(',')[0] === data)];
+                }
+
+                if(!candidateTodate['Сегодня']) {
+                    candidateTodate['Сегодня'] = [...candidates.filter(el => el.createdAt.split(',')[0] === today)]
+                }
+
+                if(!candidateTodate['Вчера']) {
+                    candidateTodate['Вчера'] = [...candidates.filter(el => el.createdAt.split(',')[0] === yesterday)]
+                }
+                
             }
         })
     
