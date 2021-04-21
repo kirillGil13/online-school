@@ -51,7 +51,7 @@
       </v-col>
     </v-row>
     <v-row v-if="candidates.length !== 0 || candidatesLoaded">
-      <v-col class="mt-6">
+      <v-col>
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
       </v-col>

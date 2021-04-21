@@ -13,7 +13,7 @@ export class CandidatesRepository implements ICandidatesRepository {
             }});
         const respData = response.data as CandidateResponseType[];
 
-        const candidateTodate:{[params: string]: ICandidate[]} =  {};
+        const candidateTodate: {[params: string]: ICandidate[]} =  {};
         const candidates = respData.map((candidate: CandidateResponseType) => new Candidate(candidate));
 
         const today = `${new Date().getDate()}.${new Date().getMonth() + 1 < 10 && 0}${new Date().getMonth() + 1}`;
