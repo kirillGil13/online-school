@@ -4,8 +4,8 @@
       <div class="d-flex flex-column candidate-list mt-6" v-for="(candidate, index) in candidates" :key="index">
         <div class="candidate-list-title mb-2" @click="showList(index)"> <v-icon :class="{active: listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index}}</div>
         
-            <div class="candidates-list-item" v-show="listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el, idx)" v-for="(el, idx) in candidate" :key="idx">
-              <div class="status_select ">
+            <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}" v-show="listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el, idx)" v-for="(el, idx) in candidate" :key="idx">
+              <div class="status_select">
                 <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
                   <template v-slot:act>
                     <div class="d-flex flex-row align-center">
@@ -23,14 +23,14 @@
                   </template>
                 </Select>
               </div>
-              <div class="name d-flex align-start justify-center flex-column" style="flex:2">
+              <div class="name d-flex align-start justify-center flex-column pl-1" style="flex:2">
                 <div class="name_text" style="color:#101010; font-size:14px; font-weight: 500" >{{ el.name }}</div>
                 <div class="caption" v-if="el.callTime" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{el.callTime}}</div>
                 <div class="caption"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
                 <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{el.status.name}}</div>
               </div>
-              <a class="link" :href="'tel:' + el.phoneNumber" style="flex:2; font-size: 14px">{{ el.phoneNumber }}</a>
-              <div style="flex:2">
+              <a class="link" v-if="!$adaptive.isMobile" :href="'tel:' + el.phoneNumber" style="flex:2; font-size: 14px">{{ el.phoneNumber }}</a>
+              <div style="flex:2" v-if="!$adaptive.isMobile">
                 <div class="product">{{el.infoPackName}}</div>
               </div>
               <div class="pr-0 selects-dots">
@@ -272,8 +272,7 @@ export default class TableCandidates extends Vue {
 }
 
 .candidates-list-item {
-  display: grid;
-  grid-template-columns: 5% 40% 25% 25% 5%;
+  grid-template-columns: 6% 37% 25% 25% 5%;
   background: #FFFFFF;
   padding: 8px 16px;
   border: 1px solid #F2F2F2;

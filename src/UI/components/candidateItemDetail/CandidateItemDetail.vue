@@ -41,9 +41,9 @@
                 </div>
             </div>
         </div>
-        <div class="candidate-item-detail__product mt-2">
+        <div class="candidate-item-detail__product mt-2" >
             <div class="candidate-item-detail__product--title">Продукт</div>
-            <div class="candidate-item-detail__product--info">{{item && item.infoPackName}}</div>
+            <div class="candidate-item-detail__product--info">{{item && item.infoPackName ? item.infoPackName : 'Нет данных'}}</div>
         </div>
 
          <div class="candidate-item-detail__phone mt-2">
@@ -57,7 +57,7 @@
 
         <div class="candidate-item-detail__email mt-2">
             <div class="candidate-item-detail__email--title">Email</div>
-            <div class="candidate-item-detail__email--info">{{item && item.email}}</div>
+            <div class="candidate-item-detail__email--info">{{item && item.email ? item.email : 'Нет данных'}}</div>
         </div>
 
         <div class="candidate-item-detail__data mt-2">

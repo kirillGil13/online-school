@@ -25,7 +25,7 @@
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"  @changeCallTime="changeCallTime" @choseCandidate="choseCandidate"/>
       </v-col>
-      <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="chosenCandidate ">
+      <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="!$adaptive.isMobile && chosenCandidate ">
         <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :candidate="choseCandidate" :item="chosenCandidate"/>
       </div>
     </v-row>
@@ -67,6 +67,11 @@
                                :candidate="Object.values(candidates).flat().find(item => item.id === candidateId)"
                                @delete="deleteCallTime"
                                @save="saveCallTime"/>
+      </template>
+    </Modal>
+    <Modal :activator="$adaptive.isMobile && chosenCandidate">
+      <template v-slot:content>
+        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :candidate="choseCandidate" :item="chosenCandidate"/>
       </template>
     </Modal>
   </v-col>
