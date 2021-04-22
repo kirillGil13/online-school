@@ -1,57 +1,36 @@
 <template>
     <div class="banner__wrapper">
         <QrCodeBanner v-if="isQrCode"/>
-        <PromoBanner v-else-if="isProAccountPromo" />
+        <Subscribe v-else-if="isSubscribeBanner" v-on="$listeners"/>
         <InviteBanner v-else-if="isInviteBanner" />
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { BannerTypeEnum } from '@/entity/common/baner.types';
-import PromoBanner from './banners/Promo.vue';
 import QrCodeBanner from './banners/QrCode.vue';
 import InviteBanner from './banners/Invite.vue';
-import { Route } from 'vue-router';
+import Subscribe from './banners/Subscribe.vue';
 
 @Component({
     components: {
-        PromoBanner,
+      Subscribe,
         QrCodeBanner,
         InviteBanner,
     },
 })
 export default class Banner extends Vue {
-    bannerType: BannerTypeEnum = BannerTypeEnum.PRO_ACCOUNT_PROMO;
-
-    created(): void {
-        this.getBannerFromRoute(this.$route);
-    }
-
-    @Watch('$route')
-    onRouteChange(route: Route): void {
-        this.getBannerFromRoute(route);
-    }
+    bannerType: BannerTypeEnum = BannerTypeEnum.SUBSCRIBE;
 
     get isQrCode(): boolean {
         return this.bannerType === BannerTypeEnum.QRCODE;
     }
     get isInviteBanner(): boolean {
-        return this.bannerType === BannerTypeEnum.INVITE_BUNNER;
+        return this.bannerType === BannerTypeEnum.INVITE;
     }
-    get isProAccountPromo(): boolean {
-        return this.bannerType === BannerTypeEnum.PRO_ACCOUNT_PROMO;
-    }
-
-    getBannerFromRoute(route: Route): void {
-        switch (route.name) {
-            case this.$routeRules.Candidates:
-                this.bannerType = BannerTypeEnum.QRCODE;
-                break;
-            default:
-                this.bannerType = BannerTypeEnum.INVITE_BUNNER;
-                break;
-        }
+    get isSubscribeBanner(): boolean {
+        return this.bannerType === BannerTypeEnum.SUBSCRIBE;
     }
 }
 </script>

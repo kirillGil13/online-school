@@ -15,6 +15,7 @@ export interface IUser {
     initials: string;
     fullName: string;
     siteLink: string;
+    isSubscriptionActual: boolean;
 }
 
 export type UserResponseType = {
@@ -32,6 +33,7 @@ export type UserResponseType = {
     description: string;
     photoLink: string;
     site_link: string;
+    is_subscription_actual: boolean;
 };
 
 export type UserUpdateRequestType = {

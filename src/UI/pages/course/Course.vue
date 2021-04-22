@@ -51,13 +51,13 @@
                                 svg-name="Finger"
                                 :title="$adaptive.isMobile ? '' : 'Нравится'"
                                 :class="course.isLiked && 'like-active'"
-                                @click="handleLike(false)"
+                                @click="user.isSubscriptionActual ? handleLike(false) : ''"
                             />
                             <Relation
                                 svg-class="svg-down"
                                 :class="course.isDisliked && 'dislike-active'"
                                 svg-name="Finger"
-                                @click="handleDisLike(false)"
+                                @click="user.isSubscriptionActual ? handleDisLike(false) : ''"
                                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
                             />
                             <Relation
@@ -78,6 +78,10 @@
                                 />
                             </template>
                         </v-row>
+                      <v-col v-if="!user.isSubscriptionActual" :class="['box-container d-flex flex-column justify-center align-center', $adaptive.isMobile ? 'pa-4' : 'pa-6']">
+                        <Subscription/>
+                        <Button class="with_icon subs_button" @submit="activator = true"><svg-icon name="Subs_Play_Btn" class="mr-2 svg-16"></svg-icon>Смотреть по подписке</Button>
+                      </v-col>
                         <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
                             <div class="desc__container">
                                 <div class="desc__container--title">Автор курса</div>
@@ -118,14 +122,14 @@
                                     <div class="desc__reiting">
                                         <div
                                             class="desc__reiting--count"
-                                            :style="{ color: course.raiting > 6.5 ? '#27AE60' : '#5F739C' }"
+                                            :style="{ color: course.rating > 6.5 ? '#27AE60' : '#5F739C' }"
                                         >
-                                            {{ course.raiting ? course.raiting : 0 }}
-                                            
+                                            {{ course.rating ? course.rating : 0 }}
+
                                         </div>
                                         <div class="desc__reiting--subtitle">общий рейтинг</div>
                                     </div>
-                                    {{course.raiting}}
+                                    {{course.rating}}
                                     <div class="desc__icons">
                                         <div class="desc__icons--like">
                                             <Relation
@@ -155,7 +159,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="desc__btn-send-review">
+                                    <div class="desc__btn-send-review" v-if="user.isSubscriptionActual">
                                         <Button @submit="toggleShowSetReview">Написать отзыв</Button>
                                     </div>
                                 </div>
@@ -191,6 +195,11 @@
                     <v-progress-circular indeterminate :size="150"></v-progress-circular>
                 </v-overlay>
             </v-col>
+          <Modal :activator="activator" :max-width="1000" @activatorChange="activatorChange" color="#F2F2F2">
+            <template v-slot:content>
+              <SubscribeFormalization/>
+            </template>
+          </Modal>
         </v-row>
     </v-col>
 </template>
@@ -216,8 +225,16 @@ import ReviewsDiscussion from '../../components/reviewsDiscussion/ReviewsDiscuss
 import ReviewsFormComponent from '../../components/forms/reviewForms/ReviewsFormComponent.vue';
 import ReviewsFormLikesDislikes from '../../components/forms/reviewForms/ReviewsFormLikesDislikes.vue';
 import Socials from '../../components/socials/Socials.vue';
+import {IUser} from '../../../entity/user';
+import {AuthStore} from '../../../store/modules/Auth';
+import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
+import Subscription from '../../components/subscription/Subscription.vue';
+import Modal from '../../components/common/Modal.vue';
 @Component({
     components: {
+      Modal,
+      Subscription,
+      SubscribeFormalization,
       Socials,
         Lessons,
         Header,
@@ -235,7 +252,7 @@ export default class Course extends Vue {
         name: this.$routeRules.TrainingMain,
         label: 'Вернуться к списку курсов',
     };
-
+    activator = false;
     interval!: NodeJS.Timeout;
     files: ILessonItemFiles[] = [];
     reviewsForm = new ReviewsForm();
@@ -278,6 +295,15 @@ export default class Course extends Vue {
     beforeUpdate(): void {
         this.componentKey += 0;
     }
+
+  activatorChange(act: boolean): void {
+    this.activator = act;
+  }
+
+
+  get user(): IUser | null {
+    return AuthStore.user;
+  }
 
     get reviews(): IReviews[] {
         return ReviewsStore.reviews;
@@ -337,10 +363,13 @@ export default class Course extends Vue {
     }
 
     pushToCurrent(): void {
-        this.$router.push({
-            name: this.$routeRules.Lesson,
-            params: { lessonId: this.findCurrent(this.course!.lessons).toString() },
-        });
+     if (this.user!.isSubscriptionActual) {
+       this.$router.push({
+         name: this.$routeRules.Lesson,
+         params: { lessonId: this.findCurrent(this.course!.lessons).toString() },
+       });
+     } else this.activator = true;
+
     }
 
     getLessonId(lessons: ICourseLessons[], number: number, next: boolean): number {

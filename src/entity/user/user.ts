@@ -15,6 +15,7 @@ export class User implements IUser {
     photoLink: string;
     isEmailConfirmed: boolean;
     siteLink: string;
+    isSubscriptionActual: boolean
 
     constructor(data: UserResponseType) {
         this.id = data.id;
@@ -31,6 +32,7 @@ export class User implements IUser {
         this.isLeader = data.isLeader;
         this.isEmailConfirmed = data.is_email_confirmed;
         this.siteLink = data.site_link;
+        this.isSubscriptionActual = data.is_subscription_actual;
     }
 
     get initials(): string {

@@ -27,6 +27,14 @@ body {
   justify-content: center;
 }
 
+.font-16 {
+  font-size: 16px;
+}
+
+.font-18 {
+  font-size: 18px;
+}
+
 #app {
   height: 100%;
   max-width: 1440px;
@@ -61,7 +69,7 @@ a {
 .box-container {
   background: #ffffff;
   border: 1px solid #f2f2f2;
-  box-shadow: 0px 14px 12px rgba(0, 0, 0, 0.01);
+  box-shadow: 0px 20px 17px rgba(0, 0, 0, 0.04);
   border-radius: 12px;
 }
 
@@ -117,6 +125,10 @@ h5 {
 }
 
 /* recommended css code for vue-svgicon */
+.svg-16 {
+  width: 16px !important;
+  height: 16px !important;
+}
 .svg-icon {
   display: inline-block;
   width: 16px;
@@ -159,10 +171,8 @@ h5 {
   max-width: 330px;
   display: flex;
   align-items: center;
-  background-color: $white;
   justify-content: center;
   padding: 16px 0px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
   border-radius: $main_border_radius;
 
   &__title {
@@ -992,4 +1002,9 @@ iframe {
 }
 .country-selector__country-flag {
   top: 17px !important;
+}
+
+.subs_button {
+  font-size: 14px !important;
+  padding: 16px 36px !important;
 }

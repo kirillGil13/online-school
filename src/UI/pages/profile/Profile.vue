@@ -27,6 +27,7 @@
                   </template>
                 </avatar>
               </div>
+              <Button v-if="user.isSubscriptionActual" @submit="unSub" full-width small class="py-3 mt-2">Отменить подписку</Button>
               <Button @submit="logOut" full-width small class="secondary_blue py-3 mt-2">Выйти</Button>
             </div>
           </v-col>
@@ -102,6 +103,7 @@ import ProfileContact from '@/UI/components/profile/sections/ProfileContact.vue'
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import {ChangeEmailForm} from '../../../form/changeEmail/changeEmail';
 import {ChangeEmailStore} from '../../../store/modules/ChangeEmail';
+import {SubscriptionStore} from '../../../store/modules/Subscription';
 
 @Component({
   components: {
@@ -233,6 +235,12 @@ export default class Profile extends Vue {
   async changeEmail(): Promise<void> {
     if (await this.changeEmailForm.submit(ChangeEmailStore.sendCode)) {
       this.showEmail = true;
+    }
+  }
+
+  async unSub(): Promise<void> {
+    if (await SubscriptionStore.delete()) {
+      window.location.reload();
     }
   }
 
