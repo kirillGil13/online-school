@@ -1,50 +1,51 @@
 <template>
   <div>
     <div class="d-flex flex-column" >
-      <div class="d-flex flex-column candidate-list" v-for="(candidate, index) in candidates" :key="index">
-        <div class="candidate-list-title" @click="showList(index)"> <v-icon :class="{active: isShowList}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index}}</div>
-        <div class="d-flex candidates-list-item" v-if="listId.includes(index)" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el, idx)" v-for="(el, idx) in candidate" :key="idx">
-          <div class="status_select ">
-            <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
-              <template v-slot:act>
-                <div class="d-flex flex-row align-center">
-                  <v-img :src="el.status.photoLink" max-width="22" max-height="22"></v-img>
-                  <svg-icon class="ml-1" name="Arrow_Down"></svg-icon>
-                </div>
-              </template>
-              <template v-slot:action>
-                <v-list-item class="selection" @click="$emit('addStatus')">
-                  <v-list-item-icon>
-                    <svg-icon name="Add_Status"></svg-icon>
-                  </v-list-item-icon>
-                  <v-list-item-title class="status_action">Добавить статус</v-list-item-title>
-                </v-list-item>
-              </template>
-            </Select>
-          </div>
-          <div class="name d-flex align-start justify-center flex-column" style="flex:2">
-            <div class="name_text" style="color:#101010; font-size:14px; font-weight: 500" >{{ el.name }}</div>
-            <div class="caption" v-if="el.callTime" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{el.callTime}}</div>
-            <div class="caption"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
-            <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{el.status.name}}</div>
-          </div>
-          <a class="link" :href="'tel:' + el.phoneNumber" style="flex:2; font-size: 14px">{{ el.phoneNumber }}</a>
-          <div style="flex:2">
-            <div class="product">{{el.infoPackName}}</div>
-          </div>
-          <div class="pr-0 selects-dots">
-            <Select class-name="select_content action" :selects="el.status.id === 4 ? newSelect : selects" v-on="$listeners" :id="el.id">
-              <template v-slot:act>
-                <div class="d-flex justify-end pr-0">
-                  <svg-icon
-                      name="Dots"
-                  >
-                  </svg-icon>
-                </div>
-              </template>
-            </Select>
-        </div>
-        </div>
+      <div class="d-flex flex-column candidate-list mt-6" v-for="(candidate, index) in candidates" :key="index">
+        <div class="candidate-list-title mb-2" @click="showList(index)"> <v-icon :class="{active: listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index}}</div>
+        
+            <div class="candidates-list-item" v-show="listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el, idx)" v-for="(el, idx) in candidate" :key="idx">
+              <div class="status_select ">
+                <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
+                  <template v-slot:act>
+                    <div class="d-flex flex-row align-center">
+                      <v-img :src="el.status.photoLink" max-width="22" max-height="22"></v-img>
+                      <svg-icon class="ml-1" name="Arrow_Down"></svg-icon>
+                    </div>
+                  </template>
+                  <template v-slot:action>
+                    <v-list-item class="selection" @click="$emit('addStatus')">
+                      <v-list-item-icon>
+                        <svg-icon name="Add_Status"></svg-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="status_action">Добавить статус</v-list-item-title>
+                    </v-list-item>
+                  </template>
+                </Select>
+              </div>
+              <div class="name d-flex align-start justify-center flex-column" style="flex:2">
+                <div class="name_text" style="color:#101010; font-size:14px; font-weight: 500" >{{ el.name }}</div>
+                <div class="caption" v-if="el.callTime" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{el.callTime}}</div>
+                <div class="caption"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
+                <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{el.status.name}}</div>
+              </div>
+              <a class="link" :href="'tel:' + el.phoneNumber" style="flex:2; font-size: 14px">{{ el.phoneNumber }}</a>
+              <div style="flex:2">
+                <div class="product">{{el.infoPackName}}</div>
+              </div>
+              <div class="pr-0 selects-dots">
+                <Select class-name="select_content action" :selects="el.status.id === 4 ? newSelect : selects" v-on="$listeners" :id="el.id">
+                  <template v-slot:act>
+                    <div class="d-flex justify-end pr-0">
+                      <svg-icon
+                          name="Dots"
+                      >
+                      </svg-icon>
+                    </div>
+                  </template>
+                </Select>
+              </div>
+            </div>
       </div>
       <!-- <div class="tr">
         <div></div>
@@ -208,7 +209,7 @@ export default class TableCandidates extends Vue {
 
   showList(id: number):void {
     const idx = this.listId?.findIndex((el) => el === id)
-    this.isShowList = this.isShowList ?  false : this.isShowList;
+    this.isShowList = !this.isShowList;
     
     if(this.listId?.includes(id)){
       this.listId.splice(idx!, 1);
@@ -257,6 +258,7 @@ export default class TableCandidates extends Vue {
   align-items: center;
   color: #101010;
   cursor: pointer;
+
 }
 
 .selects-dots {
@@ -265,12 +267,8 @@ export default class TableCandidates extends Vue {
   transition: opacity ease 200ms, visibility ease 200ms;
 }
 
-.chevron-down {
-  transition: transform ease 200ms;
-}
-
 .active {
-    transform: rotate(180deg)  !important;
+  transform: rotate(180deg);
 }
 
 .candidates-list-item {
@@ -280,18 +278,18 @@ export default class TableCandidates extends Vue {
   padding: 8px 16px;
   border: 1px solid #F2F2F2;
   align-items: center;
-  transition: background-color ease 200ms;
+  transition: background-color ease 200ms, all 1s linear;
 
-    &:hover {
-      background-color: rgba(87, 81, 183, 0.12);
+  &:hover {
+    background-color: rgba(87, 81, 183, 0.12);
 
-      .selects-dots {
-        opacity: 1;
-        visibility: visible;
-      }
+    .selects-dots {
+      opacity: 1;
+      visibility: visible;
     }
+  }
 
-   &:nth-child(2) {
+  &:nth-child(2) {
     border-radius: 4px 4px 0 0;
   }
 
@@ -300,11 +298,4 @@ export default class TableCandidates extends Vue {
   }
 }
 
-<<<<<<< HEAD
-
-=======
-.candidate-list {
-
-}
->>>>>>> dev
 </style>

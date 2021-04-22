@@ -20,12 +20,12 @@
         </FilterComponent>
       </v-col>
     </v-row>
-    <v-row v-if="candidates !== {} || candidatesLoaded">
+    <v-row no-gutters  v-if="candidates !== {} || candidatesLoaded" class="d-flex">
       <v-col class="mt-6">
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"  @changeCallTime="changeCallTime" @choseCandidate="choseCandidate"/>
       </v-col>
-      <div style="width: 29%;" class="ml-4 mt-13" v-show="chosenCandidate ">
+      <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="chosenCandidate ">
         <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :candidate="choseCandidate" :item="chosenCandidate"/>
       </div>
     </v-row>

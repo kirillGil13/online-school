@@ -3,14 +3,14 @@
       <div class="d-flex candidate-item-detail__header">
           <div class="candidate-item-detail__header--title">{{item && item.name}}</div>
           <div class="candidate-item-detail__header--btn-header">
-                <div class="pr-0">
+                <div class="pr-0 mr-4">
                     <Select class-name="select_content action" :selects="item && item.status.id === 4 ? newSelect : selects" v-on="$listeners" :id=" item && item.id">
                         <template v-slot:act>
                             <v-icon color="#5F739C">mdi-dots-horizontal</v-icon>
                         </template>
                     </Select>
                 </div>
-                <button @click="closeDialogForm" class="btn-more"><v-icon color="#5F739C">mdi-close</v-icon></button>
+                <button @click="closeDialogForm" class="btn-close"><v-icon color="#5F739C">mdi-close</v-icon></button>
           </div>
           
       </div>
@@ -171,16 +171,17 @@ export default class CandidateItemDetail extends Vue {
             justify-content: flex-end;
 
             .btn-more {
-                background: none;
-                margin: 0;
-                padding: 0;
+                
+               
                 width: 24px;
                 height: 24px;
             }
 
             .btn-close {
-                background-color: 0 !important;
+                background: none;
                 width: 24px;
+                margin: 0;
+                padding: 0;
                 height: 24px;
             }
         }        
