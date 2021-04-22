@@ -2,8 +2,8 @@
   <div>
     <div class="d-flex flex-column" >
       <div class="d-flex flex-column candidate-list" v-for="(candidate, index) in candidates" :key="index">
-        <div class="candidate-list-title"> <v-icon color="#000">mdi-chevron-down</v-icon> {{index}}</div>
-        <div class="d-flex candidates-list-item" v-for="(el, idx) in candidate" :key="idx">
+        <div class="candidate-list-title" @click="showList(index)"> <v-icon :class="{active: isShowList}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index}}</div>
+        <div class="d-flex candidates-list-item" v-if="listId.includes(index)" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el, idx)" v-for="(el, idx) in candidate" :key="idx">
           <div class="status_select ">
             <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="flex:1">
               <template v-slot:act>
@@ -28,10 +28,22 @@
             <div class="caption"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
             <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{el.status.name}}</div>
           </div>
-          <a class="link" :href="'tel:' + el.phoneNumber" style="flex:2">{{ el.phoneNumber }}</a>
+          <a class="link" :href="'tel:' + el.phoneNumber" style="flex:2; font-size: 14px">{{ el.phoneNumber }}</a>
           <div style="flex:2">
             <div class="product">{{el.infoPackName}}</div>
           </div>
+          <div class="pr-0 selects-dots">
+            <Select class-name="select_content action" :selects="el.status.id === 4 ? newSelect : selects" v-on="$listeners" :id="el.id">
+              <template v-slot:act>
+                <div class="d-flex justify-end pr-0">
+                  <svg-icon
+                      name="Dots"
+                  >
+                  </svg-icon>
+                </div>
+              </template>
+            </Select>
+        </div>
         </div>
       </div>
       <!-- <div class="tr">
@@ -153,7 +165,7 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 
 import Button from '@/UI/components/common/Button.vue';
-import {Candidate} from '@/entity/candidates';
+import {Candidate, ICandidate} from '@/entity/candidates';
 import {ISelect} from '@/entity/select/select.types';
 import Select from '@/UI/components/common/Select.vue';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
@@ -168,7 +180,11 @@ export default class TableCandidates extends Vue {
   @Prop() readonly candidates!: Candidate[];
   @Prop() readonly statuses!: IStatuses[];
   @Prop() readonly selects!: ISelect[];
-  archiveSelects: ISelect[] = []
+  archiveSelects: ISelect[] = [];
+  isHover = false;
+  isShowList = false;
+  listId: null | number[] = [];
+
 
   get newSelect(): ISelect[] {
     for (let i = 0; i < this.selects.length; i++) {
@@ -176,6 +192,34 @@ export default class TableCandidates extends Vue {
     }
     this.archiveSelects[this.archiveSelects.length - 1].name = 'Удалить кандидата'
     return this.archiveSelects;
+  }
+
+  setChosenCandidate(el: ICandidate, idx: number): void {
+    this.$emit('choseCandidate', {el, index: idx})
+  }
+
+  onHover(e: EventTarget):  void {
+    this.isHover = true;
+  }
+
+  onOutHover(e: EventTarget): void {
+    this.isHover = false;
+  }
+
+  showList(id: number):void {
+    const idx = this.listId?.findIndex((el) => el === id)
+    this.isShowList = this.isShowList ?  false : this.isShowList;
+    
+    if(this.listId?.includes(id)){
+      this.listId.splice(idx!, 1);
+      return
+
+    }
+
+    if(!this.listId?.includes(id)) {
+      this.listId!.push(id);
+      return;
+    }
   }
 }
 </script>
@@ -212,6 +256,21 @@ export default class TableCandidates extends Vue {
   display: flex;
   align-items: center;
   color: #101010;
+  cursor: pointer;
+}
+
+.selects-dots {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity ease 200ms, visibility ease 200ms;
+}
+
+.chevron-down {
+  transition: transform ease 200ms;
+}
+
+.active {
+    transform: rotate(180deg)  !important;
 }
 
 .candidates-list-item {
@@ -219,6 +278,16 @@ export default class TableCandidates extends Vue {
   padding: 8px 16px;
   border: 1px solid #F2F2F2;
   align-items: center;
+  transition: background-color ease 200ms;
+
+    &:hover {
+      background-color: rgba(87, 81, 183, 0.12);
+
+      .selects-dots {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
 
    &:nth-child(2) {
     border-radius: 5px 5px 0 0;
@@ -229,7 +298,5 @@ export default class TableCandidates extends Vue {
   }
 }
 
-.candidate-list {
- 
-}
+
 </style>
