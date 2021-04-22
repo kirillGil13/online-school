@@ -118,26 +118,25 @@
                         </v-col>
                         <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-6']" class="reviews">
                             <div class="desc__review">
-                                <div class="desc__review--container">
-                                    <div class="desc__reiting">
-                                        <div
-                                            class="desc__reiting--count"
-                                            :style="{ color: course.rating > 6.5 ? '#27AE60' : '#5F739C' }"
-                                        >
-                                            {{ course.rating ? course.rating : 0 }}
+                                <div class="desc__review--container" :style="{flexDirection: $adaptive.isMobile && 'column'}">
+                                    <div class="d-flex align-center" style="height: 100%">
+                                        <div class="desc__reiting" :style="{borderRight: $adaptive.isMobile && 'none'}">
+                                            <div
+                                                class="desc__reiting--count"
+                                                :style="{ color: course.rating > 6.5 ? '#27AE60' : '#5F739C' }"
+                                            >
+                                                {{ course.rating ? course.rating : 0 }}
 
-                                        </div>
+                                            </div>
                                         <div class="desc__reiting--subtitle">общий рейтинг</div>
                                     </div>
                                     {{course.rating}}
-                                    <div class="desc__icons">
+                                    <div class="desc__icons" style="height: 100%" :style="{borderRight: $adaptive.isMobile && 'none', marginRight: $adaptive.isMobile && '0'}">
                                         <div class="desc__icons--like">
                                             <Relation
                                                 :key="componentKey"
                                                 svg-name="Finger"
-                                                :title="
-                                                    $adaptive.isMobile ? '' : course.countLikes ? course.countLikes : 0
-                                                "
+                                                :title="course.countLikes"
                                                 isRaiting="true"
                                             />
                                         </div>
@@ -148,19 +147,15 @@
                                                 isRaiting="true"
                                                 svg-class="svg-down"
                                                 svg-name="Finger"
-                                                :title="
-                                                    $adaptive.isMobile
-                                                        ? ''
-                                                        : course.countDislikes
-                                                        ? course.countDislikes
-                                                        : 0
-                                                "
+                                                :title="course.countDislikes"
                                             />
                                         </div>
                                     </div>
-
-                                    <div class="desc__btn-send-review" v-if="user.isSubscriptionActual">
-                                        <Button @submit="toggleShowSetReview">Написать отзыв</Button>
+                                    </div>
+                                   
+                                        <!-- v-if="user.isSubscriptionActual" -->
+                                    <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}">
+                                        <Button @submit="toggleShowSetReview" :style="{width: $adaptive.isMobile && '100%'}">Написать отзыв</Button>
                                     </div>
                                 </div>
                                 <template v-if="isSetReview">
@@ -624,7 +619,6 @@ export default class Course extends Vue {
 
     &--container {
         display: flex;
-        justify-content: space-around;
         align-items: baseline;
         margin-bottom: 24px;
     }
@@ -640,7 +634,7 @@ export default class Course extends Vue {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 30%;
+    padding-right: 24px;
     border-right: 1px solid #f2f2f2;
     margin-right: 2rem;
 
@@ -663,7 +657,6 @@ export default class Course extends Vue {
 
 .desc__icons {
     display: flex;
-    width: 30%;
     border-right: 1px solid #f2f2f2;
     margin-right: 2rem;
     height: 100%;
@@ -693,7 +686,6 @@ export default class Course extends Vue {
 .desc__btn-send-review {
     display: flex;
     align-items: center;
-    width: 40%;
     height: 100%;
 
     button {
