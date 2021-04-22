@@ -2,9 +2,9 @@
   <div>
     <div class="d-flex flex-column" >
       <div class="d-flex flex-column candidate-list mt-6" v-for="(candidate, index) in candidates" :key="index">
-        <div class="candidate-list-title mb-2" @click="showList(index)"> <v-icon :class="{active: listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index}}</div>
+        <div class="candidate-list-title mb-2" @click="showList(index)"> <v-icon :class="{active: !listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index}}</div>
         
-            <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}" v-show="listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el, idx)" v-for="(el, idx) in candidate" :key="idx">
+            <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}" v-show="!listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el, idx)" v-for="(el, idx) in candidate" :key="idx">
               <div class="status_select">
                 <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
                   <template v-slot:act>
