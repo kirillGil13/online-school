@@ -20,11 +20,14 @@
         </FilterComponent>
       </v-col>
     </v-row>
-    <v-row v-if="candidates !== {} || candidatesLoaded">
+    <v-row no-gutters  v-if="candidates !== {} || candidatesLoaded" class="d-flex">
       <v-col class="mt-6">
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
-                         @extraAction="openUpdate" @addStatus="activatorStatus = true"/>
+                         @extraAction="openUpdate" @addStatus="activatorStatus = true"  @changeCallTime="changeCallTime" @choseCandidate="choseCandidate"/>
       </v-col>
+      <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="!$adaptive.isMobile && chosenCandidate ">
+        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :candidate="choseCandidate" :item="chosenCandidate"/>
+      </div>
     </v-row>
     <v-row v-else-if="candidates === {}">
       <v-col class="mt-10 d-flex justify-center align-center">
@@ -61,9 +64,14 @@
     <Modal :activator="activatorCallTime" @activatorChange="activatorChangeCallTime">
       <template v-slot:content>
         <CallTimeFormComponent :form="callTimeForm" v-if="destroy" @close="close"
-                               :candidate="Object.values(candidates).find(item => item.id === candidateId)"
+                               :candidate="Object.values(candidates).flat().find(item => item.id === candidateId)"
                                @delete="deleteCallTime"
                                @save="saveCallTime"/>
+      </template>
+    </Modal>
+    <Modal :activator="$adaptive.isMobile && chosenCandidate">
+      <template v-slot:content>
+        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :candidate="choseCandidate" :item="chosenCandidate"/>
       </template>
     </Modal>
   </v-col>
@@ -103,6 +111,7 @@ import {FiltersCandidatesNameEnum, IFilters} from '../../../entity/filters/filte
 import {FiltersStore} from '../../../store/modules/Filters';
 import {CallTimeForm} from '../../../form/callTime/callTimeForm';
 import CallTimeFormComponent from '../../components/forms/callTimeForm/CallTimeFormComponent.vue';
+import CandidateItemDetail from '../../components/candidateItemDetail/CandidateItemDetail.vue';
 
 @Component({
   components: {
@@ -117,6 +126,7 @@ import CallTimeFormComponent from '../../components/forms/callTimeForm/CallTimeF
     Header,
     Search,
     TableCandidates,
+    CandidateItemDetail
   },
 })
 export default class Candidates extends Vue {
@@ -134,6 +144,11 @@ export default class Candidates extends Vue {
   candidateId = 0;
   searchBody = '';
   isArchive = false;
+  chosenCandidate: null | ICandidate = null;
+  openItemId = null;
+  indexCandidate: null | number = null;
+  
+
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
 
@@ -250,6 +265,15 @@ export default class Candidates extends Vue {
     this.activatorCallTime = false;
   }
 
+  choseCandidate(item: {el: ICandidate, index: number}): void {
+    this.chosenCandidate = {...item.el};
+    this.indexCandidate = item.index;
+  }
+
+  closeCandidateItemDetail(): void {
+    this.chosenCandidate = null;
+  }
+
   rerender(): void {
     this.destroy = false;
     this.$nextTick(() => {
@@ -257,10 +281,11 @@ export default class Candidates extends Vue {
     });
   }
 
-  // changeCallTime(data: {index: number; callTime: string}): void {
-  //   this.candidateId = this.candidates[data.index].id;
-  //   this.activatorCallTime = true;
-  // }
+  changeCallTime(data: {index: number; callTime: string}): void {
+    this.candidateId = Object.values(this.candidates).flat()[data.index].id;
+    console.log(this.candidateId)
+    this.activatorCallTime = true;
+  }
 
   created(): void {
     this.fetchData();
@@ -327,6 +352,7 @@ export default class Candidates extends Vue {
   }
 
   async selectStatus(data: { statusId: number; id: number}): Promise<void> {
+    console.log(data)
     this.candidateId = data.id;
     if (!(Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status.id === data.statusId) ) {
       if (data.statusId !== 3) {
