@@ -119,7 +119,7 @@
                         <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-6']" class="reviews">
                             <div class="desc__review">
                                 <div class="desc__review--container" :style="{flexDirection: $adaptive.isMobile && 'column'}">
-                                    <div class="d-flex align-center" style="width: 100%; height: 100%">
+                                    <div class="d-flex align-center" style="height: 100%">
                                         <div class="desc__reiting" :style="{borderRight: $adaptive.isMobile && 'none'}">
                                             <div
                                                 class="desc__reiting--count"
@@ -131,7 +131,7 @@
                                         <div class="desc__reiting--subtitle">общий рейтинг</div>
                                     </div>
                                     {{course.rating}}
-                                    <div class="desc__icons" style="height: 100%" :style="{borderRight: $adaptive.isMobile && 'none'}">
+                                    <div class="desc__icons" style="height: 100%" :style="{borderRight: $adaptive.isMobile && 'none', marginRight: $adaptive.isMobile && '0'}">
                                         <div class="desc__icons--like">
                                             <Relation
                                                 :key="componentKey"
@@ -153,8 +153,8 @@
                                     </div>
                                     </div>
                                    
-
-                                    <div class="desc__btn-send-review" v-if="user.isSubscriptionActual">
+                                        <!-- v-if="user.isSubscriptionActual" -->
+                                    <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}">
                                         <Button @submit="toggleShowSetReview" :style="{width: $adaptive.isMobile && '100%'}">Написать отзыв</Button>
                                     </div>
                                 </div>
@@ -634,7 +634,7 @@ export default class Course extends Vue {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 30%;
+    padding-right: 24px;
     border-right: 1px solid #f2f2f2;
     margin-right: 2rem;
 
@@ -657,7 +657,6 @@ export default class Course extends Vue {
 
 .desc__icons {
     display: flex;
-    width: 30%;
     border-right: 1px solid #f2f2f2;
     margin-right: 2rem;
     height: 100%;
@@ -687,7 +686,6 @@ export default class Course extends Vue {
 .desc__btn-send-review {
     display: flex;
     align-items: center;
-    width: 40%;
     height: 100%;
 
     button {
