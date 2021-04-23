@@ -71,7 +71,7 @@
     </Modal>
     <Modal :activator="$adaptive.isMobile && openItemDetails">
       <template v-slot:content>
-        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="chosenCandidate"/>
+        <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </template>
     </Modal>
   </v-col>
