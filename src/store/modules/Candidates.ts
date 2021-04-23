@@ -35,7 +35,7 @@ class CandidatesModule extends VuexModule {
         this.candidatesLoaded = data.candidatesLoaded;
     }
 
-    @Action({commit: 'setCandidates'})
+    @Action({commit: 'setCandidates', rawError: true})
     async fetchAll(data?: {data?: CandidateRequestType; scroll?: boolean}): Promise<{ candidates: {[params: string]: ICandidate[]}; candidatesLoaded: boolean; scroll: boolean }> {
         const formData = new FormData();
         let candidatesLoaded = false;
