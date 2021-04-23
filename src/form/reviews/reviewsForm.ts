@@ -2,7 +2,7 @@ import { Component } from 'vue-property-decorator';
 import { Form } from '@/form/form';
 import { ReviewsFormRequestType } from './reviewsForm.types';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
-import { required, requiredIf } from 'vuelidate/lib/validators';
+import { requiredIf } from 'vuelidate/lib/validators';
 
 @Component
 export class ReviewsForm extends Form {
@@ -20,7 +20,9 @@ export class ReviewsForm extends Form {
     getFormData(): ReviewsFormRequestType {
         return {
             reviewText: this.reviewText,
+            // eslint-disable-next-line @typescript-eslint/camelcase
             review_id: this.reviewId === 0 ? null : this.reviewId,//eslint-disable-line,
+            // eslint-disable-next-line @typescript-eslint/camelcase
             is_like: this.isLike
         };
     }
