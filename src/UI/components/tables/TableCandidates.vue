@@ -25,8 +25,8 @@
               </div>
               <div class="name d-flex align-start justify-center flex-column pl-1" style="flex:2">
                 <div class="name_text" style="color:#101010; font-size:14px; font-weight: 500" >{{ el.name }}</div>
-                <div class="caption" style="color:#5F739C; font-size:12px" v-if="el.callTime" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{el.callTime}}</div>
-                <div class="caption" style="color:#5F739C; font-size:12px"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
+                <div class="captions" style="color:#5F739C; font-size:12px; line-hight: 1.5" v-if="el.callTime" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{el.callTime}}</div>
+                <div class="captions" style="color:#5F739C; font-size:12px; line-hight: 1.5"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
                 <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{el.status.name}}</div>
               </div>
               <a class="link" v-if="!$adaptive.isMobile" :href="'tel:' + el.phoneNumber" style="flex:2; font-size: 14px">{{ el.phoneNumber }}</a>
@@ -277,7 +277,7 @@ export default class TableCandidates extends Vue {
 }
 
 .candidates-list-item {
-  grid-template-columns: 6% 37% 25% 25% 5%;
+  grid-template-columns: 50px 37% 25% 25% 5%;
   background: #FFFFFF;
   padding: 8px 16px;
   border: 1px solid #F2F2F2;
@@ -301,6 +301,9 @@ export default class TableCandidates extends Vue {
   &:last-child{
     border-radius: 0px 0px 4px 4px;
   }
+}
+.captions {
+  
 }
 
 </style>
