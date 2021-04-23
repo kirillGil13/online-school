@@ -33,18 +33,16 @@ export class CandidatesRepository implements ICandidatesRepository {
             if(keys.includes(dateKey)) {
                 if(candidateTodate[dateKey]){
                     candidateTodate[dateKey].push(el)
-                    return
                 }else {
                     candidateTodate[dateKey] = [];
                     candidateTodate[dateKey].push(el)
-                    return
                 }
 
-            } else return;
+            }
         })
 
 
-       
+
         return candidateTodate;
     }
     async create(data: CandidateFormRequestType): Promise<boolean> {
