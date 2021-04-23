@@ -164,9 +164,9 @@
                                     <div class="desc__reiting">
                                         <div
                                             class="desc__reiting--count"
-                                            :style="{ color: course.raiting > 6.5 ? '#27AE60' : '#5F739C' }"
+                                            :style="{ color: course.rating > 6.5 ? '#27AE60' : '#5F739C' }"
                                         >
-                                            {{ course.raiting ? course.raiting : 0 }}
+                                            {{ course.rating ? course.rating : 0 }}
                                         </div>
                                         <div class="desc__reiting--subtitle">общий рейтинг</div>
                                     </div>
