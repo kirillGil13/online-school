@@ -29,7 +29,7 @@
                 <div class="captions" style="color:#5F739C; font-size:12px; line-hight: 1.5"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
                 <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{el.status.name}}</div>
               </div>
-              <a class="link" v-if="!$adaptive.isMobile" :href="'tel:' + el.phoneNumber" style="flex:2; font-size: 14px">{{ el.phoneNumber }}</a>
+              <a class="link" v-if="!$adaptive.isMobile" :href="'tel:' + el.phoneNumber" style="flex:2; font-size: 14px; color: #426DF6 !important;">{{ el.phoneNumber }}</a>
               <div style="flex:2" v-if="!$adaptive.isMobile">
                 <div class="product">{{el.infoPackName}}</div>
               </div>
