@@ -20,7 +20,7 @@
     <div class="landing_text-block mt-12 d-flex justify-center align-center flex-column">
       <blockquote class="blockquote">
         <div class="landing_title text-center">
-          Занимайся чем хочешь, а деньги должны быть.
+          Занимайся чем хочешь, деньги должны быть.
           <p></p>
         </div>
         <cite>Finiko</cite>
