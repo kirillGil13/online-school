@@ -37,7 +37,6 @@ export class CandidatesRepository implements ICandidatesRepository {
                 }else {
                     candidateTodate[dateKey] = [];
                     candidateTodate[dateKey].push(el)
-                    return
                 }
                 
             }
