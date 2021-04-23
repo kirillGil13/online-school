@@ -22,17 +22,16 @@ class CandidatesModule extends VuexModule {
             this.candidates = data.candidates;
         } else {
             const candidatesData = [...Object.values(this.candidates), ...Object.values(data.candidates)].flat();
-            const candidateTodate:{[params: string]: ICandidate[]} =  {};
+            const candidateTodate: {[params: string]: ICandidate[]} =  {};
 
             candidatesData.forEach(el => {
                 const data = el.createdAt.split(',')[0];
-    
+
                 if(!candidateTodate[data]) {
                     candidateTodate[data] = [...candidatesData.filter(el => el.createdAt.split(',')[0] === data)];
                 }
             })
-            this.candidates
-        }  
+        }
         this.candidatesLoaded = data.candidatesLoaded;
     }
 

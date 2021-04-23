@@ -270,9 +270,15 @@ export default class Candidates extends Vue {
     this.activatorCallTime = false;
   }
 
+<<<<<<< HEAD
   choseCandidate(index: number): void {
     this.indexCandidate = index;
     this.openItemDetails = true;
+=======
+  choseCandidate(item: {el: ICandidate; index: number}): void {
+    this.chosenCandidate = {...item.el};
+    this.indexCandidate = item.index;
+>>>>>>> dev
   }
 
   closeCandidateItemDetail(): void {

@@ -205,10 +205,10 @@ export default class TableCandidates extends Vue {
     this.isHover = false;
   }
 
-  showList(id: number):void {
+  showList(id: number): void {
     const idx = this.listId?.findIndex((el) => el === id)
     this.isShowList = !this.isShowList;
-    
+
     if(this.listId?.includes(id)){
       this.listId.splice(idx!, 1);
       return
