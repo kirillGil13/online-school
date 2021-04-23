@@ -130,7 +130,6 @@
                                             </div>
                                         <div class="desc__reiting--subtitle">общий рейтинг</div>
                                     </div>
-                                    {{course.rating}}
                                     <div class="desc__icons" style="height: 100%" :style="{borderRight: $adaptive.isMobile && 'none', marginRight: $adaptive.isMobile && '0'}">
                                         <div class="desc__icons--like">
                                             <Relation
