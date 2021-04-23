@@ -154,7 +154,7 @@ export default class Candidates extends Vue {
   openItemDetails = false;
   show = false;
   alertType = AlertTypeEnum;
-  
+
 
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
@@ -343,6 +343,7 @@ export default class Candidates extends Vue {
   }
 
   async toggleIsArchive(): Promise<void> {
+    this.openItemDetails = false;
     if(this.isArchive){
       this.isArchive = false;
       await CandidatesStore.fetchAll({data: {
