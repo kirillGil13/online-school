@@ -282,7 +282,7 @@ export default class TableCandidates extends Vue {
   padding: 8px 16px;
   border: 1px solid #F2F2F2;
   align-items: center;
-  transition: background-color ease-in-out  1ms, all 1s linear;
+  transition: background-color ease-in-out  0.3s;
   cursor: pointer;
 
   &:hover {
