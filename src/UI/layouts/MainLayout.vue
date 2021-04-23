@@ -5,6 +5,7 @@
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
           <Sidebar :userInfo="user" :userId="user.id" @proceed="proceed"/>
+          <Banner v-if="!user.isSubscriptionActual" @show="activator = true"/>
         </div>
         <div class="content-main pt-0 mb-16">
           <v-main>
@@ -16,20 +17,17 @@
                   @submit="sendCode"
               />
             </v-col>
-<!--            <v-col class="py-0" v-else-if="!error && $route.query.accountId && showSuccess">-->
-<!--              <Confirm-->
-<!--                  :text="`Ваша почта ${user.email} успешно подтверждена`"-->
-<!--                  @show="showNote"-->
-<!--                  icon-->
-<!--                  :show="show"-->
-<!--              />-->
-<!--            </v-col>-->
             <Alert :show="success" :type="alertType.Success" text="Ссылка успешно отправлена" @show="showAlert"/>
             <router-view></router-view>
           </v-main>
         </div>
       </v-container>
       <v-tour name="tour" :steps="steps" :options="options"></v-tour>
+      <Modal :activator="activator" :max-width="1000" @activatorChange="activatorChange" color="#F2F2F2">
+        <template v-slot:content>
+          <SubscribeFormalization/>
+        </template>
+      </Modal>
     </v-main>
   </v-app>
 </template>
@@ -48,10 +46,14 @@ import {AlertTypeEnum} from '../../entity/common/alert.types';
 import Alert from '../components/common/Alert.vue';
 import Error from '../components/common/banners/Error.vue';
 import {startIntercomMessenger} from '../../plugins/Intercom';
+import Modal from '../components/common/Modal.vue';
+import SubscribeFormalization from '../components/subscribeFormalization/SubscribeFormalization.vue';
 
 
 @Component({
   components: {
+    SubscribeFormalization,
+    Modal,
     Error,
     Alert,
     Confirm,
@@ -61,7 +63,7 @@ import {startIntercomMessenger} from '../../plugins/Intercom';
   },
 })
 export default class MainLayout extends Vue {
-
+  activator = false;
   show = true;
   success = false;
   alertType = AlertTypeEnum;
@@ -82,6 +84,10 @@ export default class MainLayout extends Vue {
       startIntercomMessenger(AuthStore.user!);
   }
 
+  activatorChange(act: boolean): void {
+    this.activator = act;
+  }
+
   get user(): IUser | null {
     return AuthStore.user;
   }
@@ -95,18 +101,6 @@ export default class MainLayout extends Vue {
   }
 
   async mounted(): Promise<void> {
-    // if (this.$route.query.accountId && !this.user!.isEmailConfirmed) {
-    //   if (await ConfirmEmailStore.confirm({
-    //     code: this.$route.query.code.toString(),
-    //     accountId: parseInt(this.$route.query.accountId.toString())
-    //   })) {
-    //     await AuthStore.fetch();
-    //     this.showSuccess = true;
-    //   }
-    //   else {
-    //     this.error = true;
-    //   }
-    // }
     if (TourStore.newUser) {
       this.$tours['tour'].start();
     }

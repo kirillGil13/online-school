@@ -1,6 +1,6 @@
 <template>
   <v-col class="pa-6 d-flex justify-center flex-column call-time-form">
-    <h1 class="mx-auto my-0">Позвонить {{candidate.name}}</h1>
+    <h1 class="mx-auto my-0">Позвонить {{candidate && candidate.name}}</h1>
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="callTimeFake" show-custom-error label="Укажите время звонка"
     >

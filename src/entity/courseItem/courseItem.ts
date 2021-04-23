@@ -17,9 +17,9 @@ export default class CourseItem implements ICourseItem {
     level: ICourseLevels;
     countLikes: number;
     countDislikes: number;
-    countViews: number;
+    countViews: string;
     totalDuration: string;
-    rating: number | null;
+    rating: number;
     constructor(data: CourseItemResponseType) {
         this.id = data.id;
         this.name = data.name;
@@ -33,11 +33,11 @@ export default class CourseItem implements ICourseItem {
         this.isDisliked = data.is_disliked;
         this.isFavourite = data.is_favourite;
         this.photoLink = data.photo_link;
-        this.countLikes = data.count_likes;
-        this.countDislikes = data.count_dislikes;
-        this.countViews = data.count_views;
-        this.totalDuration = this.fullDuration(data.total_duration);
-        this.rating = data.rating;
+        this.countLikes = data.count_likes,
+        this.countDislikes = data.count_dislikes,
+        this.countViews = data.count_views.toLocaleString(),
+        this.rating = data.rating,
+        this.totalDuration = this.fullDuration(data.total_duration)
         for (let i = 0; i < data.lessons.length; i++) {
             this.lessons.push({
                 id: data.lessons[i].id,
@@ -75,11 +75,14 @@ export default class CourseItem implements ICourseItem {
         });
     }
 
+    // eslint-disable-next-line @typescript-eslint/camelcase
     fullDuration(total_duration: number): string {
         let h = 0;
         let m = 0;
         let s = 0;
+        // eslint-disable-next-line @typescript-eslint/camelcase
         m = Math.floor(total_duration / 60);
+        // eslint-disable-next-line @typescript-eslint/camelcase
         s = Math.floor(total_duration % 60);
         h = Math.floor(m / 60);
         m = m % 60;

@@ -4,60 +4,32 @@
         :isBordered="false"
         title="Кандидаты"
         class="top_bar_p_0"
-        description="Здесь отображаются контактные данные всех людей, которые регистрировались по вашим инфопакетам"
+        description="Здесь отображаются контактные данные всех людей, которые зарегистрировались по вашим инфопакетам"
     >
     </Header>
-    <!--todo-->
-    <!--      <v-row class="badges d-flex justify-space-between flex-nowrap mt-6" no-gutters>-->
-    <!--        <Badge class="badges__container" :subs="true" :profit="true">-->
-    <!--          <template v-slot:title>Просмотров инфопакетов</template>-->
-    <!--          <template v-slot:default>172</template>-->
-    <!--          <template v-slot:stats>19</template>-->
-    <!--        </Badge>-->
-    <!--        <Badge class="badges__container" :profit="true">-->
-    <!--          <template v-slot:title>Оставлено заявок</template>-->
-    <!--          <template v-slot:default>50</template>-->
-    <!--          <template v-slot:stats>5.3</template>-->
-    <!--        </Badge>-->
-    <!--        <Badge class="badges__container" :profit="true">-->
-    <!--          <template v-slot:title>Конверсия</template>-->
-    <!--          <template v-slot:default>37%</template>-->
-    <!--          <template v-slot:stats>12</template>-->
-    <!--        </Badge>-->
-    <!--        <Badge class="badges__container" :profit="true">-->
-    <!--          <template v-slot:title>Новых партнеров</template>-->
-    <!--          <template v-slot:default>25</template>-->
-    <!--          <template v-slot:stats>0.2</template>-->
-    <!--        </Badge>-->
-    <!--        <Badge class="badges__container" :link-name="$routeRules.CandidatesStatistics">-->
-    <!--          <template v-slot:title>Подробная аналитика</template>-->
-    <!--          <template v-slot:link>Посмотреть</template>-->
-    <!--        </Badge>-->
-    <!--      </v-row>-->
-    <!--      <v-row no-gutters>-->
-    <!--        <span class="desc mt-2">Данные за последние 30 дней</span>-->
-    <!--      </v-row>-->
     <v-row>
       <v-col class="mt-6">
-        <FilterComponent :isCondidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
-                         :filters="filters" @filter="onFilter" :countInArhive="countInArhive">
+        <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
+                         :filters="filters" @filter="onFilter" :countInArchive="countInArchive">
           <template v-slot:search>
             <Search @search="search"/>
           </template>
-         
           <template v-slot:button>
             <Button @submit="activator = true">Добавить кандидата</Button>
           </template>
         </FilterComponent>
       </v-col>
     </v-row>
-    <v-row v-if="candidates.length !== 0 || candidatesLoaded">
+    <v-row no-gutters  v-if="candidates !== {} || candidatesLoaded" class="d-flex">
       <v-col class="mt-6">
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
-                         @extraAction="openUpdate" @addStatus="activatorStatus = true" @changeCallTime="changeCallTime"/>
+                         @extraAction="openUpdate" @addStatus="activatorStatus = true"  @candidateChangeCallTimeDetails="candidateChangeCallTimeDetails" @choseCandidate="choseCandidate"/>
       </v-col>
+      <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="!$adaptive.isMobile && openItemDetails ">
+        <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
+      </div>
     </v-row>
-    <v-row v-else-if="candidates === []">
+    <v-row v-else-if="candidates === {}">
       <v-col class="mt-10 d-flex justify-center align-center">
         К сожалению данные не найдены
       </v-col>
@@ -92,11 +64,17 @@
     <Modal :activator="activatorCallTime" @activatorChange="activatorChangeCallTime">
       <template v-slot:content>
         <CallTimeFormComponent :form="callTimeForm" v-if="destroy" @close="close"
-                               :candidate="candidates.find(item => item.id === candidateId)"
+                               :candidate="Object.values(candidates).flat().find(item => item.id === candidateId)"
                                @delete="deleteCallTime"
                                @save="saveCallTime"/>
       </template>
     </Modal>
+    <Modal :activator="$adaptive.isMobile && openItemDetails"  @activatorChange="activatorItemDetail">
+      <template v-slot:content>
+        <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
+      </template>
+    </Modal>
+    <Alert :show="show" :type="alertType.Success" text="Заметка добавлена" @show="showAlert"/>
   </v-col>
 </template>
 
@@ -134,6 +112,9 @@ import {FiltersCandidatesNameEnum, IFilters} from '../../../entity/filters/filte
 import {FiltersStore} from '../../../store/modules/Filters';
 import {CallTimeForm} from '../../../form/callTime/callTimeForm';
 import CallTimeFormComponent from '../../components/forms/callTimeForm/CallTimeFormComponent.vue';
+import CandidateItemDetail from '../../components/candidateItemDetail/CandidateItemDetail.vue';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
+import Alert from '../../components/common/Alert.vue';
 
 @Component({
   components: {
@@ -148,6 +129,8 @@ import CallTimeFormComponent from '../../components/forms/callTimeForm/CallTimeF
     Header,
     Search,
     TableCandidates,
+    CandidateItemDetail,
+    Alert
   },
 })
 export default class Candidates extends Vue {
@@ -165,10 +148,19 @@ export default class Candidates extends Vue {
   candidateId = 0;
   searchBody = '';
   isArchive = false;
+  chosenCandidate: null | ICandidate = null;
+  openItemId = null;
+  indexCandidate: null | number = null;
+  openItemDetails = false;
+  show = false;
+  alertType = AlertTypeEnum;
+  
+
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-      if (bottomOfWindow && this.candidates.length % 100 === 0) {
-          CandidatesStore.fetchAll({skip: this.candidates.length, limit: 100});
+
+      if (bottomOfWindow && Object.values(this.candidates).length % 100 === 0) {
+          CandidatesStore.fetchAll({data: {skip: Object.values(this.candidates).length, limit: 100}, scroll: true});
       }
   };
 
@@ -183,7 +175,7 @@ export default class Candidates extends Vue {
 
   @Watch('statusesLoaded', {immediate: true})
   onFilterStatusChange(): void {
-   
+
     for (let i = 0; i < this.statuses.length; i++) {
       this.$set(this.filters.filterBody[0].filterValue, i + 1, {text: this.statuses[i].name, value: this.statuses[i].id});
     }
@@ -203,7 +195,7 @@ export default class Candidates extends Vue {
     return AuthStore.user;
   }
 
-  get candidates(): ICandidate[] {
+  get candidates(): {[params: string]: ICandidate[]} {
     return CandidatesStore.candidates;
   }
 
@@ -246,10 +238,13 @@ export default class Candidates extends Vue {
     return FiltersStore.candidates;
   }
 
-   get countInArhive(): number {
+   get countInArchive(): number {
     return  CandidatesStore.candidateArchiveCount;
   }
 
+  get getcandidateItemDetail(): ICandidate {
+    return Object.values(this.candidates).flat().find(el => el.id === this.indexCandidate)!
+  }
 
   activatorChange(act: boolean): void {
     this.destroy = true;
@@ -273,11 +268,25 @@ export default class Candidates extends Vue {
     this.activatorCallTime = act;
   }
 
+  activatorItemDetail(act: boolean) :void {
+    this.openItemDetails = act;
+
+  }
+
   close(): void {
     this.activator = false;
     this.activatorStatus = false;
     this.activatorCandidate = false;
     this.activatorCallTime = false;
+  }
+
+  choseCandidate(index: number): void {
+    this.indexCandidate = index;
+    this.openItemDetails = true;
+  }
+
+  closeCandidateItemDetail(): void {
+    this.openItemDetails = false;
   }
 
   rerender(): void {
@@ -287,8 +296,15 @@ export default class Candidates extends Vue {
     });
   }
 
+  candidateChangeCallTimeDetails(id: number): void {
+    const index = Object.values(this.candidates).flat().findIndex((el) => el.id === id);
+    const callTime = Object.values(this.candidates).flat().find(el => el.id === id)!.callTime!;
+
+    this.changeCallTime({index, callTime})
+  }
+
   changeCallTime(data: {index: number; callTime: string}): void {
-    this.candidateId = this.candidates[data.index].id;
+    this.candidateId = Object.values(this.candidates).flat()[data.index].id;
     this.activatorCallTime = true;
   }
 
@@ -310,7 +326,11 @@ export default class Candidates extends Vue {
     InfoPackagesStore.fetchAll();
     StatusIconsStore.fetchAll();
     CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
-    
+
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
   }
 
   async search(searchBody: string): Promise<void> {
@@ -325,28 +345,28 @@ export default class Candidates extends Vue {
   async toggleIsArchive(): Promise<void> {
     if(this.isArchive){
       this.isArchive = false;
-      await CandidatesStore.fetchAll({
+      await CandidatesStore.fetchAll({data: {
       statusId: 0,
-    });
+    }});
     }else {
       this.isArchive = true;
-      await CandidatesStore.fetchAll({
+      await CandidatesStore.fetchAll({data: {
       statusId: 4,
-    });
+    }});
 
     }
-    
+
   }
 
   async filtration(): Promise<void> {
     this.isArchive = false;
-    await CandidatesStore.fetchAll({
+    await CandidatesStore.fetchAll({data: {
       statusId: this.filters.default[0],
       infoPackId: this.filters.default[2],
       search: this.searchBody,
       isFiction: this.filters.filterBody.find(item => item.filterType === FiltersCandidatesNameEnum.Type)?.filterValue.find(item => item.value === this.filters.default[1])?.isFiction
-    });
-    
+    }});
+
   }
 
   async openUpdate(id: number): Promise<void> {
@@ -356,14 +376,36 @@ export default class Candidates extends Vue {
     this.activatorCandidate = true;
   }
 
-  async selectStatus(data: { statusId: number; id: number }): Promise<void> {
-    this.candidateId = data.id
-    if (data.statusId !== 3) {
-      await this.setStatus(data);
-    } else {
-      await this.setStatus(data);
-      this.activatorCallTime = true;
+  async selectStatus(data: { statusId: number; id: number}): Promise<void> {
+
+
+    if( data.statusId === 4) {
+      this.closeCandidateItemDetail();
     }
+
+    if(data.statusId !== 4) {
+      this.isArchive = false;
+    }
+
+    this.candidateId = data.id;
+    const el = Object.values(this.candidates).flat().find(item => item.id === this.candidateId)
+    if (!(Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status.id === data.statusId) ) {
+      if (data.statusId !== 3) {
+        await this.setStatus(data);
+        return
+      } else {
+        await this.setStatus(data);
+        this.activatorCallTime = true;
+        return
+      }
+    }
+
+    if(data.statusId === 4 && Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status.id === data.statusId ){
+      await CandidatesStore.delete(data.id.toString());
+      await CandidatesStore.fetchAll({data: {statusId: data.statusId}});
+      await CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
+    }
+
   }
 
   async setStatus(data: { statusId: number; id: number }): Promise<void> {
@@ -394,6 +436,11 @@ export default class Candidates extends Vue {
     this.candidateForm = new CandidateForm();
     this.rerender();
     this.activator = false;
+  }
+
+  async updateNote(data: {note: string, id: number}): Promise<void> {
+    await CandidateItemStore.update({data: {description: data.note}, route: data.id.toString()});
+    this.show = true;
   }
 
   async update(): Promise<void> {

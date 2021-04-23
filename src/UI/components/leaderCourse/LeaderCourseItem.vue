@@ -17,9 +17,11 @@
       </v-img>
     </div>
     <div class="leader">
-      <v-avatar size="24" class="course-avatar">
-        <v-img :src="course.account.photoLink">
+      <v-avatar size="24" class="course-avatar" :color="course.account.photoLink ? '#F0F2F6' :randomColor(course.account.id % 10)">
+        <v-img :src="course.account.photoLink" v-if="course.account.photoLink">
         </v-img>
+
+        <span style="color: #fff" class="font-weight-bold" v-else>{{(course.account.name[0] + course.account.lastName[0]).toUpperCase()}}</span>
       </v-avatar>
       <span class="desc">{{ course.fullName}}</span>
     </div>
@@ -43,6 +45,29 @@ import CourseSkeleton from '../common/skeletons/courseSkeleton/CourseSkeleton.vu
 })
 export default class LeaderCourseItem extends Vue {
   @Prop({required: true}) readonly course!: ILeaderCourses;
+
+  randomColor(i: number) {
+    const COLORS = [
+      '#56CCF2',
+      '#BB6BD9',
+      '#6FCF97',
+      '#F2C94C',
+      '#967CBA',
+      '#FF9960',
+      '#566FF2',
+      '#FF5733',
+      '#FF89C9',
+      '#56F2DF',
+      '#F38460',
+      '#939ED6',
+      '#F271A0',
+      '#2ABF93',
+      '#FF9C9C',
+      '#6EC1F0',
+      '#3B4244'
+    ];
+    return COLORS[i || 0];
+  }
 }
 </script>
 

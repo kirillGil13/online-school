@@ -25,6 +25,9 @@ export class ProfileContactDataForm extends Form {
     @Validate(maxLength(30), 'Ссылка на страницу telegram не должна превышать 30 символов')
     public telegram = '';
 
+    @Validate(maxLength(500), 'Ссылка на web страницу не должна превышать 500 символов')
+    public siteLink = '';
+
     @Validate(required, 'Введите номер телефона')
     public phone = '';
 
@@ -53,6 +56,8 @@ export class ProfileContactDataForm extends Form {
             facebook: this.facebook,
             instagram: this.instagram,
             telegram: this.telegram,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            site_link: this.siteLink
         };
     }
 }

@@ -17,6 +17,7 @@
                 <avatar
                     :size="$adaptive.isMobile ? 73 : 143"
                     :imageSource="user.photoLink"
+                    :id="user.id"
                     :starSize="AvatarSizeEnum.MEDIUM"
                     :avatar-size="AvatarSizeEnum.MEDIUM"
                     :picture-changed="pictureChanged"
@@ -26,6 +27,7 @@
                   </template>
                 </avatar>
               </div>
+<!--              <Button v-if="user.isSubscriptionActual" @submit="unSub" full-width small class="py-3 mt-2">Отменить подписку</Button>-->
               <Button @submit="logOut" full-width small class="secondary_blue py-3 mt-2">Выйти</Button>
             </div>
           </v-col>
@@ -35,7 +37,7 @@
                 <v-col cols="12" class="profile__col">
                   <v-tabs show-arrows class="mb-2" color="#426DF6" v-model="activeName">
                     <v-tabs-slider color="#426DF6"></v-tabs-slider>
-                    <v-tab v-for="(item, index) in tabs" :key="index">{{item.title}}</v-tab>
+                    <v-tab v-for="(item, index) in tabs" :key="index">{{ item.title }}</v-tab>
                   </v-tabs>
                   <v-tabs-items v-model="activeName">
                     <v-divider></v-divider>
@@ -101,6 +103,7 @@ import ProfileContact from '@/UI/components/profile/sections/ProfileContact.vue'
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import {ChangeEmailForm} from '../../../form/changeEmail/changeEmail';
 import {ChangeEmailStore} from '../../../store/modules/ChangeEmail';
+import {SubscriptionStore} from '../../../store/modules/Subscription';
 
 @Component({
   components: {
@@ -235,10 +238,16 @@ export default class Profile extends Vue {
     }
   }
 
+  async unSub(): Promise<void> {
+    if (await SubscriptionStore.delete()) {
+      window.location.reload();
+    }
+  }
+
   async setImage(data: any): Promise<void> {
     this.pictureChanged = true;
     const {canvas} = data.getResult();
-    canvas.toBlob( (blob: Blob): void => {
+    canvas.toBlob((blob: Blob): void => {
           ProfilePictureStore.set({file: blob as any});
         }
     );
@@ -265,7 +274,9 @@ export default class Profile extends Vue {
       facebook_link: this.contactDataForm.facebook,
       // eslint-disable-next-line @typescript-eslint/camelcase
       instagram_link: this.contactDataForm.instagram,
-    })){
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      site_link: this.contactDataForm.siteLink
+    })) {
       this.show = true;
       await AuthStore.fetch();
     }
@@ -279,6 +290,7 @@ export default class Profile extends Vue {
   label {
     border: none !important;
   }
+
   .avatar_mobile_container {
     width: 100%;
   }

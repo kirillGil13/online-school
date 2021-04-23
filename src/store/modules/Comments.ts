@@ -21,7 +21,13 @@ class CommentsModule extends VuexModule {
         this.comments = [];
     }
 
-    @MutationAction
+    @Mutation
+    setComments(data: {comments: IComments[]; commentsLoaded: boolean}): void {
+        this.comments = this.comments.concat(data.comments);
+        this.commentsLoaded = data.commentsLoaded;
+    }
+
+    @Action({commit: 'setComments'})
     async fetchAll(data: {route: string; pagination?: CommentsRequestType}): Promise<{ comments: IComments[]; commentsLoaded: boolean }> {
         const formData = new FormData();
         let commentsLoaded = false;
@@ -31,16 +37,11 @@ class CommentsModule extends VuexModule {
             if (data.pagination.limit)
                 formData.append('limit', data.pagination.limit.toString());
         }
-        let comments = await store.$repository.comments.fetchAll(data.route, formData);
+        const comments = await store.$repository.comments.fetchAll(data.route, formData);
         if (comments) {
             commentsLoaded = true;
         }
-        if (data?.pagination?.skip || data?.pagination?.limit) {
-            if (comments !== []) {
-                comments = this.comments.concat(comments);
-            }
-            return {comments, commentsLoaded};
-        } else return {comments, commentsLoaded};
+        return {comments, commentsLoaded};
     }
 
     @Action({rawError: true})

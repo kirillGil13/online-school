@@ -1,4 +1,4 @@
-c<template>
+<template>
   <v-col class="infoPackageItem py-14" v-if="infoPackageItemLoaded">
     <div :class="['landing_title text-center', $adaptive.isMobile ? 'mobile' : '']">{{ infoPackageItem.mainVideo.name }}</div>
     <div class="main-video-wrapper mt-10">
@@ -20,7 +20,7 @@ c<template>
     <div class="landing_text-block mt-12 d-flex justify-center align-center flex-column">
       <blockquote class="blockquote">
         <div class="landing_title text-center">
-          Занимайся чем хочешь, а деньги должны быть.
+          Занимайся чем хочешь, деньги должны быть.
           <p></p>
         </div>
         <cite>Finiko</cite>

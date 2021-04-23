@@ -14,6 +14,8 @@ export interface IUser {
     photoLink: string;
     initials: string;
     fullName: string;
+    siteLink: string;
+    isSubscriptionActual: boolean;
 }
 
 export type UserResponseType = {
@@ -30,6 +32,8 @@ export type UserResponseType = {
     telegram: string;
     description: string;
     photoLink: string;
+    site_link: string;
+    is_subscription_actual: boolean;
 };
 
 export type UserUpdateRequestType = {
@@ -41,5 +45,6 @@ export type UserUpdateRequestType = {
     vk_link?: string;
     instagram_link?: string;
     facebook_link?: string;
+    site_link?: string;
 }
 
