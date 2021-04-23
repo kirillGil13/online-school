@@ -19,7 +19,7 @@ export default class CourseItem implements ICourseItem {
     countDislikes: number;
     countViews: number;
     totalDuration: string;
-    rating: number;
+    rating: number | null;
     constructor(data: CourseItemResponseType) {
         this.id = data.id;
         this.name = data.name;
