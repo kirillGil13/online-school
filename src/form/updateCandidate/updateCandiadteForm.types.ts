@@ -1,14 +1,15 @@
 import { RequestType } from '@/form/form.types';
 
 export type UpdateCandidateFormRequestType = RequestType & {
-    name: string;
-    phoneNumber: string | null;
-    email: string | null;
-    callTime: number | null;
-    is_fiction: boolean;
-    status_id: number;
-    account_id: number;
-    info_pack_id: number | null;
+    name?: string;
+    phoneNumber?: string | null;
+    email?: string | null;
+    callTime?: number | null;
+    is_fiction?: boolean;
+    status_id?: number;
+    account_id?: number;
+    info_pack_id?: number | null;
+    description?: string | null
 };
 export interface IUpdateCandidateForm {
     candidateId: number;
