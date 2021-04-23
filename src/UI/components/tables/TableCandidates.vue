@@ -4,7 +4,7 @@
       <div class="d-flex flex-column candidate-list mt-6" v-for="(candidate, index) in candidates" :key="index">
         <div class="candidate-list-title mb-2" @click="showList(index)"> <v-icon :class="{active: !listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index}}</div>
         
-            <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}" v-show="!listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el, idx)" v-for="(el, idx) in candidate" :key="idx">
+            <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}" v-show="!listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(idx)" v-for="(el, idx) in candidate" :key="idx">
               <div class="status_select">
                 <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
                   <template v-slot:act>
@@ -37,10 +37,8 @@
                 <Select class-name="select_content action" :selects="el.status.id === 4 ? newSelect : selects" v-on="$listeners" :id="el.id">
                   <template v-slot:act>
                     <div class="d-flex justify-end pr-0">
-                      <svg-icon
-                          name="Dots"
-                      >
-                      </svg-icon>
+                      <v-icon class='icon-dots' color="#5F739C">mdi-dots-horizontal
+                      </v-icon>
                     </div>
                   </template>
                 </Select>
@@ -195,8 +193,8 @@ export default class TableCandidates extends Vue {
     return this.archiveSelects;
   }
 
-  setChosenCandidate(el: ICandidate, idx: number): void {
-    this.$emit('choseCandidate', {el, index: idx})
+  setChosenCandidate(idx: number): void {
+    this.$emit('choseCandidate', idx)
   }
 
   onHover(e: EventTarget):  void {
@@ -261,6 +259,13 @@ export default class TableCandidates extends Vue {
 
 }
 
+.icon-dots {
+  &:hover {
+    background: rgba(66, 109, 246, 0.12);
+    border-radius: 4px;
+  }
+}
+
 .selects-dots {
   opacity: 0;
   visibility: hidden;
@@ -277,7 +282,8 @@ export default class TableCandidates extends Vue {
   padding: 8px 16px;
   border: 1px solid #F2F2F2;
   align-items: center;
-  transition: background-color ease 200ms, all 1s linear;
+  transition: background-color ease-in-out  1ms, all 1s linear;
+  cursor: pointer;
 
   &:hover {
     background-color: rgba(87, 81, 183, 0.12);

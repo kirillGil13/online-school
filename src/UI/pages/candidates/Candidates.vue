@@ -25,8 +25,8 @@
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"  @changeCallTime="changeCallTime" @choseCandidate="choseCandidate"/>
       </v-col>
-      <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="!$adaptive.isMobile && chosenCandidate ">
-        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :candidate="choseCandidate" :item="chosenCandidate"/>
+      <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="!$adaptive.isMobile && openItemDetails ">
+        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </div>
     </v-row>
     <v-row v-else-if="candidates === {}">
@@ -69,9 +69,9 @@
                                @save="saveCallTime"/>
       </template>
     </Modal>
-    <Modal :activator="$adaptive.isMobile && chosenCandidate">
+    <Modal :activator="$adaptive.isMobile && openItemDetails">
       <template v-slot:content>
-        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :candidate="choseCandidate" :item="chosenCandidate"/>
+        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="chosenCandidate"/>
       </template>
     </Modal>
   </v-col>
@@ -147,6 +147,7 @@ export default class Candidates extends Vue {
   chosenCandidate: null | ICandidate = null;
   openItemId = null;
   indexCandidate: null | number = null;
+  openItemDetails = false;
   
 
   fetchCandidates = (): void => {
@@ -235,6 +236,10 @@ export default class Candidates extends Vue {
     return  CandidatesStore.candidateArchiveCount;
   }
 
+  get getcandidateItemDetail(): ICandidate {
+    return Object.values(this.candidates).flat()[this.indexCandidate!]
+  }
+
 
   activatorChange(act: boolean): void {
     this.destroy = true;
@@ -265,13 +270,13 @@ export default class Candidates extends Vue {
     this.activatorCallTime = false;
   }
 
-  choseCandidate(item: {el: ICandidate, index: number}): void {
-    this.chosenCandidate = {...item.el};
-    this.indexCandidate = item.index;
+  choseCandidate(index: number): void {
+    this.indexCandidate = index;
+    this.openItemDetails = true;
   }
 
   closeCandidateItemDetail(): void {
-    this.chosenCandidate = null;
+    this.openItemDetails = false;
   }
 
   rerender(): void {
@@ -283,7 +288,6 @@ export default class Candidates extends Vue {
 
   changeCallTime(data: {index: number; callTime: string}): void {
     this.candidateId = Object.values(this.candidates).flat()[data.index].id;
-    console.log(this.candidateId)
     this.activatorCallTime = true;
   }
 
@@ -352,16 +356,30 @@ export default class Candidates extends Vue {
   }
 
   async selectStatus(data: { statusId: number; id: number}): Promise<void> {
-    console.log(data)
+   
+
+    if( data.statusId === 4) {
+      this.closeCandidateItemDetail();
+    }
+
+    if(data.statusId !== 4) {
+      this.isArchive = false;
+    }
+
     this.candidateId = data.id;
+    const el = Object.values(this.candidates).flat().find(item => item.id === this.candidateId)
     if (!(Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status.id === data.statusId) ) {
       if (data.statusId !== 3) {
         await this.setStatus(data);
+        return
       } else {
         await this.setStatus(data);
         this.activatorCallTime = true;
+        return
       }
-    } else {
+    } 
+
+    if(data.statusId === 4 && Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status.id === data.statusId ){
       await CandidatesStore.delete(data.id.toString());
       await CandidatesStore.fetchAll({data: {statusId: data.statusId}});
       await CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});

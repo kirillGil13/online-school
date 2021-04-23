@@ -80,6 +80,11 @@
                     class="notes-field"
                 ></v-textarea>
             </div>
+            <div class="candidate-item-detail__notes--btn-add">
+                <Button small class="btn-add-note" :disabled="candidateNote.length === 0 ||  /^\s*$/.test(candidateNote)">
+                    Добавить заметку
+                </Button>
+            </div>
         </div>
   </div>
 </template>
@@ -104,7 +109,16 @@ export default class CandidateItemDetail extends Vue {
     @Prop() readonly statuses!: IStatuses[];
     @Prop() readonly indexCandidate!: number;
     @Prop() readonly selects!: ISelect[];
-    candidateNote = '';
+    archiveSelects: ISelect[] = [];
+    candidateNote: string = '';
+
+    get newSelect(): ISelect[] {
+    for (let i = 0; i < this.selects.length; i++) {
+      this.archiveSelects.push(this.selects[i]);
+    }
+    this.archiveSelects[this.archiveSelects.length - 1].name = 'Удалить кандидата'
+    return this.archiveSelects;
+  }
 
     getTime(data: string): string {
         const dataInfo = data.split('.')
@@ -309,6 +323,16 @@ export default class CandidateItemDetail extends Vue {
 
                 .v-input__slot::after {
                     border-style: none !important;
+                }
+            }
+        }
+
+        &--btn-add {
+            
+            .btn-add-note {
+
+                &:disabled {
+                    background-color: #F4F6F9;
                 }
             }
         }

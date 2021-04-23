@@ -113,7 +113,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
+                            <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА {{course.rating}}</h5>
                             <div class="desc wrap-text" v-html="course.description" />
                         </v-col>
                         <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-6']" class="reviews">
@@ -153,8 +153,8 @@
                                     </div>
                                     </div>
                                    
-                                        <!-- v-if="user.isSubscriptionActual" -->
-                                    <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}">
+                                        <!--  -->
+                                    <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}" v-if="user.isSubscriptionActual">
                                         <Button @submit="toggleShowSetReview" :style="{width: $adaptive.isMobile && '100%'}">Написать отзыв</Button>
                                     </div>
                                 </div>
