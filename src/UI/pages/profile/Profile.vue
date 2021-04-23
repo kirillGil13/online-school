@@ -27,7 +27,7 @@
                   </template>
                 </avatar>
               </div>
-              <Button v-if="user.isSubscriptionActual" @submit="unSub" full-width small class="py-3 mt-2">Отменить подписку</Button>
+<!--              <Button v-if="user.isSubscriptionActual" @submit="unSub" full-width small class="py-3 mt-2">Отменить подписку</Button>-->
               <Button @submit="logOut" full-width small class="secondary_blue py-3 mt-2">Выйти</Button>
             </div>
           </v-col>
