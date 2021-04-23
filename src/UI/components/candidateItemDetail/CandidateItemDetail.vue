@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column candidate-item-detail">
+  <div class="d-flex flex-column candidate-item-detail" id="detail">
       <div class="d-flex candidate-item-detail__header">
           <div class="candidate-item-detail__header--title">{{item && item.name}}</div>
           <div class="candidate-item-detail__header--btn-header">
@@ -61,7 +61,7 @@
         </div>
 
         <div class="candidate-item-detail__data mt-2">
-            <div class="candidate-item-detail__data--title">Дата добавление</div>
+            <div class="candidate-item-detail__data--title">Дата добавления</div>
             <div class="candidate-item-detail__data--info">{{item && getTime(item.createdAt)}}</div>
         </div>
 
@@ -131,6 +131,17 @@ export default class CandidateItemDetail extends Vue {
         return this.archiveSelects;
     }
 
+    mounted(): void {
+      const detail = document.getElementById('detail');
+      window.addEventListener('scroll', () => {
+        if (document.documentElement.scrollTop >= 220 && !detail!.classList.contains('scrolled') && !this.$adaptive.isMobile) {
+          detail!.classList.add('scrolled');
+        } else if (document.documentElement.scrollTop < 220) {
+          detail!.classList.remove('scrolled');
+        }
+      })
+    }
+
     getTime(data: string): string {
         const dataInfo = data.split('.')
 
@@ -174,6 +185,11 @@ export default class CandidateItemDetail extends Vue {
     width: 100%;
     padding: 16px;
     flex-direction: column;
+  &.scrolled {
+    position: fixed !important;
+    top: 30px !important;
+    max-width: 318px !important;
+  }
 
 
     &__header {
