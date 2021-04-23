@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex flex-column" >
       <div class="d-flex flex-column candidate-list mt-6" v-for="(candidate, index) in candidates" :key="index">
-        <div class="candidate-list-title mb-2" @click="showList(index)"> <v-icon :class="{active: !listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index}}</div>
+        <div class="candidate-list-title mb-2" @click="showList(index)"> <v-icon :class="{active: !listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index === today ? 'Сегодня' : index === yesterday ? 'Вчера' : index}}</div>
         
             <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}" v-show="!listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el.id)" v-for="(el, idx) in candidate" :key="idx">
               <div class="status_select">
@@ -53,10 +53,11 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 
 import Button from '@/UI/components/common/Button.vue';
-import {Candidate, ICandidate} from '@/entity/candidates';
+import {Candidate} from '@/entity/candidates';
 import {ISelect} from '@/entity/select/select.types';
 import Select from '@/UI/components/common/Select.vue';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
+import {MONTHS} from '../../../constants/month/index'
 
 @Component({
   components: {
@@ -72,6 +73,8 @@ export default class TableCandidates extends Vue {
   isHover = false;
   isShowList = false;
   listId: null | number[] = [];
+  today = `${new Date().getDate()} ${MONTHS.find(el => (new Date().getMonth() + 1).toString().includes(el.id.toString()))?.value}`;
+  yesterday = `${new Date().getDate() - 1} ${MONTHS.find(el => (new Date().getMonth() + 1).toString().includes(el.id.toString()))?.value}`;
 
 
   get newSelect(): ISelect[] {

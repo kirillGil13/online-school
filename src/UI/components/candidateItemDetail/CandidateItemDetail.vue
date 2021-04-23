@@ -124,12 +124,12 @@ export default class CandidateItemDetail extends Vue {
     }
 
     get newSelect(): ISelect[] {
-    for (let i = 0; i < this.selects.length; i++) {
-      this.archiveSelects.push(this.selects[i]);
+        for (let i = 0; i < this.selects.length; i++) {
+            this.archiveSelects.push(this.selects[i]);
+        }
+        this.archiveSelects[this.archiveSelects.length - 1].name = 'Удалить кандидата'
+        return this.archiveSelects;
     }
-    this.archiveSelects[this.archiveSelects.length - 1].name = 'Удалить кандидата'
-    return this.archiveSelects;
-  }
 
     getTime(data: string): string {
         const dataInfo = data.split('.')
@@ -142,8 +142,6 @@ export default class CandidateItemDetail extends Vue {
     closeDialogForm(): void {
         this.$emit('closeCandidateItemDetail');
     }
-
-    
 }
 </script>
 
