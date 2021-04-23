@@ -20,38 +20,39 @@ export class CandidatesRepository implements ICandidatesRepository {
         const yesterday = `${new Date().getDate() - 1}.${new Date().getMonth() + 1 < 10 && 0}${new Date().getMonth() + 1}`;
 
         candidates.forEach(el => {
-            const data = el.createdAt.split(',')[0];
-            const month = MONTHS.filter(month => data.split('.')[1].includes(month.id.toString()) && month.value )
+            const data = el.createdAt.split(',')[0].trim();
+            const month = MONTHS.filter(month => data.split('.')[1].includes(month.id.toString()) && month.value );
+            const dateKey = `${ data.split('.')[1]} ${month[0].value}`
 
-            if(!candidateTodate[`${ data.split('.')[1]} ${month[0].value}`]) {
+            if(!candidateTodate[dateKey]) {
                 if(data !== today && data !== yesterday) {
-                    candidateTodate[`${ data.split('.')[1]} ${month[0].value}`] = [...candidates.filter(el => el.createdAt.split(',')[0] === data)];
+                    candidateTodate[dateKey] = [...candidates.filter(el => el.createdAt.split(',')[0].trim() === data)].flat();
 
-                    if(candidateTodate[`${ data.split('.')[1]} ${month[0].value}`].length === 0) {
-                        delete candidateTodate[`${ data.split('.')[1]} ${month[0].value}`];
-                    }
+                    if(candidateTodate[dateKey].length === 0) {
+                        delete candidateTodate[dateKey];
+                    } else return;
                 }
 
                 if(!candidateTodate['Сегодня']) {
-                    candidateTodate['Сегодня'] = [...candidates.filter(el => el.createdAt.split(',')[0] === today)]
-                    
+                    candidateTodate['Сегодня'] = [...candidates.filter(el => el.createdAt.split(',')[0] === today)].flat()
+
                     if(candidateTodate['Сегодня'].length === 0) {
                         delete candidateTodate['Сегодня']
                     }
                 }
 
                 if(!candidateTodate['Вчера']) {
-                    candidateTodate['Вчера'] = [...candidates.filter(el => el.createdAt.split(',')[0] === yesterday)]
+                    candidateTodate['Вчера'] = [...candidates.filter(el => el.createdAt.split(',')[0] === yesterday)].flat()
 
                     if(candidateTodate['Вчера'].length === 0) {
                         delete candidateTodate['Вчера']
                     }
                 }
-                
-            }
+
+            } else return;
         })
-    
-        return candidateTodate
+
+        return candidateTodate;
     }
     async create(data: CandidateFormRequestType): Promise<boolean> {
         const response = await Api.post('/candidates', data);
