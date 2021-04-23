@@ -12,7 +12,7 @@
                 </div>
                 <button @click="closeDialogForm" class="btn-close"><v-icon color="#5F739C">mdi-close</v-icon></button>
           </div>
-          
+
       </div>
       <div class="candidate-item-detail__status mt-5">
             <div class="candidate-item-detail__status--title mb-1">Статус</div>
@@ -133,7 +133,7 @@ export default class CandidateItemDetail extends Vue {
 
     getTime(data: string): string {
         const dataInfo = data.split('.')
-        
+
         const month = MONTHS.find(el => data && dataInfo[1].split(',')[0].includes(el.id.toString()))
 
         return dataInfo[0] + ' ' +  month?.value + ',' + dataInfo[1].split(',')[1];
@@ -195,8 +195,8 @@ export default class CandidateItemDetail extends Vue {
             justify-content: flex-end;
 
             .btn-more {
-                
-               
+
+
                 width: 24px;
                 height: 24px;
             }
@@ -208,7 +208,7 @@ export default class CandidateItemDetail extends Vue {
                 padding: 0;
                 height: 24px;
             }
-        }        
+        }
     }
 
     &__status {
@@ -263,7 +263,7 @@ export default class CandidateItemDetail extends Vue {
             font-size: 16px;
             color: #426DF6 !important;
             cursor: pointer;
-            
+
         }
     }
 
@@ -338,7 +338,7 @@ export default class CandidateItemDetail extends Vue {
         }
 
         &--btn-add {
-            
+
             .btn-add-note {
 
                 &:disabled {

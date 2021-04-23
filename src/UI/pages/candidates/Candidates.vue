@@ -148,7 +148,7 @@ export default class Candidates extends Vue {
   openItemId = null;
   indexCandidate: null | number = null;
   openItemDetails = false;
-  
+
 
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
@@ -367,7 +367,7 @@ export default class Candidates extends Vue {
   }
 
   async selectStatus(data: { statusId: number; id: number}): Promise<void> {
-   
+
 
     if( data.statusId === 4) {
       this.closeCandidateItemDetail();
@@ -388,7 +388,7 @@ export default class Candidates extends Vue {
         this.activatorCallTime = true;
         return
       }
-    } 
+    }
 
     if(data.statusId === 4 && Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status.id === data.statusId ){
       await CandidatesStore.delete(data.id.toString());
