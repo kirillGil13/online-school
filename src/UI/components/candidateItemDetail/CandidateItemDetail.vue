@@ -49,7 +49,7 @@
          <div class="candidate-item-detail__phone mt-2">
             <div class="candidate-item-detail__phone--title">Номер телефона</div>
             <div class="candidate-item-detail__phone--info">
-                <a :href="'tel:' + (item && item.phoneNumber)" style="font-size: 16px">
+                <a :href="'tel:' + (item && item.phoneNumber)" style="font-size: 16px; color: #426DF6 !important;">
                     {{item && item.phoneNumber}}
                 </a>
             </div>
@@ -57,7 +57,7 @@
 
         <div class="candidate-item-detail__email mt-2">
             <div class="candidate-item-detail__email--title">Email</div>
-            <div class="candidate-item-detail__email--info" :style="{color: item && item.email ? '#426DF6' : '#101010' }">{{item && item.email ? item.email : 'Нет данных'}}</div>
+            <div class="candidate-item-detail__email--info" :style="{color: item && item.email ? '#426DF6 !important' : '#101010 !important' }">{{item && item.email ? item.email : 'Нет данных'}}</div>
         </div>
 
         <div class="candidate-item-detail__data mt-2">
@@ -263,7 +263,7 @@ export default class CandidateItemDetail extends Vue {
         &--info {
             margin-top: 4px;
             font-size: 16px;
-            color: #426DF6;
+            color: #426DF6 !important;
             cursor: pointer;
             
         }
