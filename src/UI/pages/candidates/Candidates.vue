@@ -74,6 +74,7 @@
         <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </template>
     </Modal>
+    <Alert :show="show" :type="alertType.Success" text="Заметка добавлена" @show="showAlert"/>
   </v-col>
 </template>
 
@@ -112,6 +113,8 @@ import {FiltersStore} from '../../../store/modules/Filters';
 import {CallTimeForm} from '../../../form/callTime/callTimeForm';
 import CallTimeFormComponent from '../../components/forms/callTimeForm/CallTimeFormComponent.vue';
 import CandidateItemDetail from '../../components/candidateItemDetail/CandidateItemDetail.vue';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
+import Alert from '../../components/common/Alert.vue';
 
 @Component({
   components: {
@@ -126,7 +129,8 @@ import CandidateItemDetail from '../../components/candidateItemDetail/CandidateI
     Header,
     Search,
     TableCandidates,
-    CandidateItemDetail
+    CandidateItemDetail,
+    Alert
   },
 })
 export default class Candidates extends Vue {
@@ -148,7 +152,9 @@ export default class Candidates extends Vue {
   openItemId = null;
   indexCandidate: null | number = null;
   openItemDetails = false;
-
+  show = false;
+  alertType = AlertTypeEnum;
+  
 
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
@@ -240,7 +246,6 @@ export default class Candidates extends Vue {
     return Object.values(this.candidates).flat().find(el => el.id === this.indexCandidate)!
   }
 
-
   activatorChange(act: boolean): void {
     this.destroy = true;
     this.activator = act;
@@ -265,6 +270,7 @@ export default class Candidates extends Vue {
 
   activatorItemDetail(act: boolean) :void {
     this.openItemDetails = act;
+
   }
 
   close(): void {
@@ -321,6 +327,10 @@ export default class Candidates extends Vue {
     StatusIconsStore.fetchAll();
     CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
 
+  }
+
+  showAlert(show: boolean): void {
+    this.show = show;
   }
 
   async search(searchBody: string): Promise<void> {
@@ -429,7 +439,8 @@ export default class Candidates extends Vue {
   }
 
   async updateNote(data: {note: string, id: number}): Promise<void> {
-    await CandidateItemStore.update({data: {description: data.note}, route: data.id.toString()} )
+    await CandidateItemStore.update({data: {description: data.note}, route: data.id.toString()});
+    this.show = true;
   }
 
   async update(): Promise<void> {
