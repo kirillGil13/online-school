@@ -17,6 +17,7 @@ export interface ICourseItem {
     countDislikes: number,
     countViews: number,
     totalDuration: string,
+    rating: number | null,
     resolveType(index: number, routeParam: string): string;
     resolveDescription(s: string): string;
 }
@@ -62,6 +63,7 @@ export type CourseItemResponseType = {
     count_views: number,
     count_dislikes: number,
     total_duration: number,
+    rating: number | null,
 }
 export type CourseLessonsResponseType = {
     id: number;
