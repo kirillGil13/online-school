@@ -26,7 +26,7 @@
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"  @changeCallTime="changeCallTime" @choseCandidate="choseCandidate"/>
       </v-col>
       <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="!$adaptive.isMobile && chosenCandidate ">
-        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :candidate="choseCandidate" :item="chosenCandidate"/>
+        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="chosenCandidate"/>
       </div>
     </v-row>
     <v-row v-else-if="candidates === {}">
@@ -71,7 +71,7 @@
     </Modal>
     <Modal :activator="$adaptive.isMobile && chosenCandidate">
       <template v-slot:content>
-        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :candidate="choseCandidate" :item="chosenCandidate"/>
+        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="chosenCandidate"/>
       </template>
     </Modal>
   </v-col>
@@ -147,7 +147,7 @@ export default class Candidates extends Vue {
   chosenCandidate: null | ICandidate = null;
   openItemId = null;
   indexCandidate: null | number = null;
-  
+
 
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
@@ -265,7 +265,7 @@ export default class Candidates extends Vue {
     this.activatorCallTime = false;
   }
 
-  choseCandidate(item: {el: ICandidate, index: number}): void {
+  choseCandidate(item: {el: ICandidate; index: number}): void {
     this.chosenCandidate = {...item.el};
     this.indexCandidate = item.index;
   }
