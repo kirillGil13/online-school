@@ -152,7 +152,7 @@
                                         </div>
                                     </div>
                                     </div>
-                                   
+
                                         <!--  -->
                                     <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}" v-if="user.isSubscriptionActual">
                                         <Button @submit="toggleShowSetReview" :style="{width: $adaptive.isMobile && '100%'}">Написать отзыв</Button>
