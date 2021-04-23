@@ -152,13 +152,9 @@ export default class Candidates extends Vue {
   openItemId = null;
   indexCandidate: null | number = null;
   openItemDetails = false;
-<<<<<<< HEAD
   show = false;
   alertType = AlertTypeEnum;
   
-=======
-
->>>>>>> dev
 
   fetchCandidates = (): void => {
       const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
