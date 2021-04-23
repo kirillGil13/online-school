@@ -14,6 +14,7 @@ export class CandidateItem implements ICandidateItem {
     email: string | null;
     callTime: number | null;
     infoPack: CandidateItemInfoPackResponseType | null;
+    description: string
 
     constructor(data: CandidateItemResponseType) {
         this.id = data.id;
@@ -24,6 +25,7 @@ export class CandidateItem implements ICandidateItem {
         this.status = data.status;
         this.infoPack = data.info_pack;
         this.callTime = data.callTime;
+        this.description = data.description ? data.description : '';
     }
 
     getTime(createdAt: number): string {

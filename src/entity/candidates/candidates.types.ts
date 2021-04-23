@@ -9,6 +9,7 @@ export interface ICandidate {
     email: string | null;
     isFiction: boolean;
     infoPackName: string | null;
+    description: string
 }
 export interface ICandidateStatus {
     id: number;
@@ -25,6 +26,7 @@ export type CandidateResponseType = {
     email: string | null;
     isFiction: boolean;
     infoPackName: string | null;
+    description: string
 };
 export type CandidateStatusResponseType = {
     id: number;

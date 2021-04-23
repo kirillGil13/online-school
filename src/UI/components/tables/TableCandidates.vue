@@ -4,7 +4,7 @@
       <div class="d-flex flex-column candidate-list mt-6" v-for="(candidate, index) in candidates" :key="index">
         <div class="candidate-list-title mb-2" @click="showList(index)"> <v-icon :class="{active: !listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index}}</div>
         
-            <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}" v-show="!listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(idx)" v-for="(el, idx) in candidate" :key="idx">
+            <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}" v-show="!listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el.id)" v-for="(el, idx) in candidate" :key="idx">
               <div class="status_select">
                 <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
                   <template v-slot:act>
@@ -25,8 +25,8 @@
               </div>
               <div class="name d-flex align-start justify-center flex-column pl-1" style="flex:2">
                 <div class="name_text" style="color:#101010; font-size:14px; font-weight: 500" >{{ el.name }}</div>
-                <div class="caption" v-if="el.callTime" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{el.callTime}}</div>
-                <div class="caption"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
+                <div class="caption" style="color:#5F739C; font-size:12px" v-if="el.callTime" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{el.callTime}}</div>
+                <div class="caption" style="color:#5F739C; font-size:12px"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
                 <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{el.status.name}}</div>
               </div>
               <a class="link" v-if="!$adaptive.isMobile" :href="'tel:' + el.phoneNumber" style="flex:2; font-size: 14px">{{ el.phoneNumber }}</a>

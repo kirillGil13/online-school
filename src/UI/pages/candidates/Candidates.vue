@@ -23,10 +23,10 @@
     <v-row no-gutters  v-if="candidates !== {} || candidatesLoaded" class="d-flex">
       <v-col class="mt-6">
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
-                         @extraAction="openUpdate" @addStatus="activatorStatus = true"  @changeCallTime="changeCallTime" @choseCandidate="choseCandidate"/>
+                         @extraAction="openUpdate" @addStatus="activatorStatus = true"  @candidateChangeCallTimeDetails="candidateChangeCallTimeDetails" @choseCandidate="choseCandidate"/>
       </v-col>
       <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="!$adaptive.isMobile && openItemDetails ">
-        <candidate-item-detail @extraAction="openUpdate" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
+        <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </div>
     </v-row>
     <v-row v-else-if="candidates === {}">
@@ -237,7 +237,7 @@ export default class Candidates extends Vue {
   }
 
   get getcandidateItemDetail(): ICandidate {
-    return Object.values(this.candidates).flat()[this.indexCandidate!]
+    return Object.values(this.candidates).flat().find(el => el.id === this.indexCandidate)!
   }
 
 
@@ -270,15 +270,9 @@ export default class Candidates extends Vue {
     this.activatorCallTime = false;
   }
 
-<<<<<<< HEAD
   choseCandidate(index: number): void {
     this.indexCandidate = index;
     this.openItemDetails = true;
-=======
-  choseCandidate(item: {el: ICandidate; index: number}): void {
-    this.chosenCandidate = {...item.el};
-    this.indexCandidate = item.index;
->>>>>>> dev
   }
 
   closeCandidateItemDetail(): void {
@@ -290,6 +284,13 @@ export default class Candidates extends Vue {
     this.$nextTick(() => {
       this.destroy = true;
     });
+  }
+
+  candidateChangeCallTimeDetails(id: number): void {
+    const index = Object.values(this.candidates).flat().findIndex((el) => el.id === id);
+    const callTime = Object.values(this.candidates).flat().find(el => el.id === id)!.callTime!;
+
+    this.changeCallTime({index, callTime})
   }
 
   changeCallTime(data: {index: number; callTime: string}): void {
@@ -421,6 +422,10 @@ export default class Candidates extends Vue {
     this.candidateForm = new CandidateForm();
     this.rerender();
     this.activator = false;
+  }
+
+  async updateNote(data: {note: string, id: number}): Promise<void> {
+    await CandidateItemStore.update({data: {description: data.note}, route: data.id.toString()} )
   }
 
   async update(): Promise<void> {

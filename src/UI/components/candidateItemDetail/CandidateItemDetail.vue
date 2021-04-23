@@ -35,8 +35,8 @@
                 </Select>
 
                 <div class="d-flex align-start justify-center flex-column ml-3">
-                    <div class="caption" v-if="item && item.callTime" @click="$emit('changeCallTime', {index: indexCandidate, callTime: item.callTime})">Позвонить {{item.callTime}}</div>
-                    <div class="caption"  v-else-if="item && item.status.id === 3" @click="$emit('changeCallTime', {index: indexCandidate, callTime: item.callTime})">{{item && item.status.name}}</div>
+                    <div class="caption" v-if="item && item.callTime" @click="$emit('candidateChangeCallTimeDetails', item.id)">Позвонить {{item.callTime}}</div>
+                    <div class="caption"  v-else-if="item && item.status.id === 3" @click="$emit('candidateChangeCallTimeDetails', item.id)">{{item && item.status.name}}</div>
                     <div class="caption__origin" style="font-size: 16px; color: #101010;" v-else>{{ item && item.status.name}}</div>
                 </div>
             </div>
@@ -57,7 +57,7 @@
 
         <div class="candidate-item-detail__email mt-2">
             <div class="candidate-item-detail__email--title">Email</div>
-            <div class="candidate-item-detail__email--info">{{item && item.email ? item.email : 'Нет данных'}}</div>
+            <div class="candidate-item-detail__email--info" :style="{color: item && item.email ? '#426DF6' : '#101010' }">{{item && item.email ? item.email : 'Нет данных'}}</div>
         </div>
 
         <div class="candidate-item-detail__data mt-2">
@@ -69,7 +69,7 @@
             <div class="candidate-item-detail__notes--title">Заметки</div>
             <div class="candidate-item-detail__notes--info">
                 <v-textarea
-                    v-model="candidateNote"
+                    v-model="getDescription"
                     dense
                     auto-grow
                     id="notes"
@@ -81,7 +81,7 @@
                 ></v-textarea>
             </div>
             <div class="candidate-item-detail__notes--btn-add">
-                <Button small class="btn-add-note" :disabled="candidateNote.length === 0 ||  /^\s*$/.test(candidateNote)">
+                <Button small class="btn-add-note" :disabled=" (item && getDescription.length === 0) ||  /^\s*$/.test(getDescription)" @submit="$emit('updateNote', {note: getDescription, id: item.id})">
                     Добавить заметку
                 </Button>
             </div>
@@ -110,7 +110,18 @@ export default class CandidateItemDetail extends Vue {
     @Prop() readonly indexCandidate!: number;
     @Prop() readonly selects!: ISelect[];
     archiveSelects: ISelect[] = [];
-    candidateNote: string = '';
+
+    get getDescription(): string {
+        if(this.item && this.item.description) {
+            return this.item.description
+        }else {
+            return ''
+        }
+    }
+
+    set getDescription(value: string) {
+        this.item.description = value
+    }
 
     get newSelect(): ISelect[] {
     for (let i = 0; i < this.selects.length; i++) {
@@ -129,9 +140,10 @@ export default class CandidateItemDetail extends Vue {
     }
 
     closeDialogForm(): void {
-        this.candidateNote = '';
         this.$emit('closeCandidateItemDetail');
     }
+
+    
 }
 </script>
 

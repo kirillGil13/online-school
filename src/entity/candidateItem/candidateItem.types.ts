@@ -7,6 +7,7 @@ export interface ICandidateItem {
     email: string | null;
     callTime: number | null;
     infoPack: ICandidateItemInfoPack | null;
+    description: string;
 }
 export interface ICandidateItemStatus {
     id: number;
@@ -26,6 +27,7 @@ export type CandidateItemResponseType = {
     phoneNumber: string | null;
     email: string | null;
     info_pack: CandidateItemInfoPackResponseType | null;
+    description: string
 };
 export type CandidateItemInfoPackResponseType = {
     id: number;
