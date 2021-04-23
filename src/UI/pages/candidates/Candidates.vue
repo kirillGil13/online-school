@@ -69,7 +69,7 @@
                                @save="saveCallTime"/>
       </template>
     </Modal>
-    <Modal :activator="$adaptive.isMobile && openItemDetails">
+    <Modal :activator="$adaptive.isMobile && openItemDetails"  @activatorChange="activatorItemDetail">
       <template v-slot:content>
         <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </template>
@@ -261,6 +261,10 @@ export default class Candidates extends Vue {
   activatorChangeCallTime(act: boolean): void {
     this.destroy = true;
     this.activatorCallTime = act;
+  }
+
+  activatorItemDetail(act: boolean) :void {
+    this.openItemDetails = act;
   }
 
   close(): void {
