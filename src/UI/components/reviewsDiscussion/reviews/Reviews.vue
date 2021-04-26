@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="d-flex flex-row cont align-center">
-            <v-badge avatar overlap bottom color="none" offset-x="22" offset-y="22" class="mr-3">
+            <v-badge avatar overlap bottom color="none" offset-x="22" offset-y="22" class="mr-2">
                 <template v-slot:badge>
-                    <v-avatar size="23" v-if="review.isLike" :style="{ backgroundColor: '#E5F5EC' }">
+                    <v-avatar size="23" v-if="review.isLike" :style="{ backgroundColor: '#E5F5EC'}">
                         <svg-icon name="Finger" class="finger-up" color="#27AE60" />
                     </v-avatar>
                     <v-avatar :style="{ backgroundColor: '#FCE9E9' }" v-else>
@@ -129,4 +129,5 @@ $badge-min-width: 23px;
         }
     }
 }
+
 </style>
