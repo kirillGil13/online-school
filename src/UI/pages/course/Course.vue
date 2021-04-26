@@ -199,6 +199,8 @@
               <SubscribeFormalization/>
             </template>
           </Modal>
+          <Alert :show="showSuccess" :type="alertTypes.Success" @show="showSuccessAlert" text="Курс успешно добавлен в избранное"/>
+          <Alert :show="showError" :type="alertTypes.Error" @show="showErrorAlert" text="Курс успешно удален из избранного"/>
         </v-row>
     </v-col>
 </template>
@@ -229,8 +231,11 @@ import {AuthStore} from '../../../store/modules/Auth';
 import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
 import Subscription from '../../components/subscription/Subscription.vue';
 import Modal from '../../components/common/Modal.vue';
+import Alert from '../../components/common/Alert.vue';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
 @Component({
     components: {
+      Alert,
       Modal,
       Subscription,
       SubscribeFormalization,
@@ -251,6 +256,9 @@ export default class Course extends Vue {
         name: this.$routeRules.TrainingMain,
         label: 'Вернуться к списку курсов',
     };
+    showSuccess = false;
+    showError = false;
+    alertTypes = AlertTypeEnum;
     activator = false;
     interval!: NodeJS.Timeout;
     files: ILessonItemFiles[] = [];
@@ -259,6 +267,7 @@ export default class Course extends Vue {
     showAll = false;
     componentKey = 0;
     toggleOpenLikeDislikeForm = false;
+
 
     @Watch('$route.params.lessonId', { immediate: true })
     async onChangeRoute(val: string, oldVal: string): Promise<void> {
@@ -294,6 +303,15 @@ export default class Course extends Vue {
     beforeUpdate(): void {
         this.componentKey += 0;
     }
+
+  showSuccessAlert(show: boolean): void {
+    this.showSuccess = show;
+  }
+
+  showErrorAlert(show: boolean): void {
+    this.showError = show;
+  }
+
 
   activatorChange(act: boolean): void {
     this.activator = act;
@@ -510,9 +528,13 @@ export default class Course extends Vue {
         if (!this.course!.isFavourite) {
             await RelationStore.postFavourite(this.$route.params.id); //eslint-disable-line
             await this.fetchData();
+            this.showError = false;
+            this.showSuccess = true;
         } else {
             await RelationStore.deleteFavourite(this.$route.params.id);
             await this.fetchData();
+            this.showSuccess = false;
+            this.showError = true;
         }
     }
 

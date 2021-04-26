@@ -6,6 +6,7 @@ import {
     FiltersNameEnum,
     IFilters
 } from '@/entity/filters/filters.types';
+import {CommentsOrderByeNameEnum, CommentsSortNameEnum} from '@/entity/comments/comments.types';
 
 @Module({
     namespaced: true,

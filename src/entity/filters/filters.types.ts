@@ -10,6 +10,7 @@ export enum FiltersNameEnum{
     Level = 'Мой уровень',
     Cost = 'Стоимость',
     Period = 'Период'
+
 }
 export enum FiltersCourseNameEnum{
     Course = 'Все курсы',
