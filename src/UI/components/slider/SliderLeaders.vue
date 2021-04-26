@@ -57,6 +57,29 @@ export default class SliderLeaders extends Vue {
     (this.$refs.swiper as any).$swiper.slidePrev();
   }
 
+   randomColor(i: number) {
+    const COLORS = [
+      '#56CCF2',
+      '#BB6BD9',
+      '#6FCF97',
+      '#F2C94C',
+      '#967CBA',
+      '#FF9960',
+      '#566FF2',
+      '#FF5733',
+      '#FF89C9',
+      '#56F2DF',
+      '#F38460',
+      '#939ED6',
+      '#F271A0',
+      '#2ABF93',
+      '#FF9C9C',
+      '#6EC1F0',
+      '#3B4244'
+    ];
+    return COLORS[i || 0];
+  }
+
 }
 </script>
 <style lang="scss" scoped>

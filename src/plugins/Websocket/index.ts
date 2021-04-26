@@ -1,3 +1,11 @@
 import VueNativeSock from 'vue-native-websocket'
 import Vue from 'vue';
-Vue.use(VueNativeSock, 'ws://localhost:9090', { protocol: 'my-protocol' })
+
+const accessTokenObj = localStorage.getItem('token');
+
+Vue.use(VueNativeSock, `${process.env.VUE_APP_WSS_URL}?token=${accessTokenObj}`, {
+    format: 'json',
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 3000,
+})

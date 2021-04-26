@@ -13,6 +13,7 @@ Vue.filter('currency', currencyFilter);
 prepareRepository(store);
 Vue.config.ignoredElements = ['stream'];
 
+
 // @ts-ignore
 new Vue({
     render: (h): VNode => h(App),
