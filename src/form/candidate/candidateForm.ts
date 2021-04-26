@@ -18,6 +18,7 @@ export class CandidateForm extends Form implements ICandidateForm {
     public callTime = 0;
     public productList: ICandidateFormList[] = [];
     public statusList: ICandidateFormList[] = [];
+    public description: string = '';
 
     public serverErrors: { [key: string]: string[] } = {};
 
@@ -47,6 +48,7 @@ export class CandidateForm extends Form implements ICandidateForm {
             info_pack_id: this.product,
             is_fiction: this.isFiction,
             callTime: this.callTime === 0 ? undefined : this.callTime,
+            description: this.description,
         };
     }
 

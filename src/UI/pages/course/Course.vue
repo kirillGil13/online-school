@@ -65,16 +65,19 @@
                                 :active="course.isFavourite"
                                 :title="$adaptive.isMobile ? '' : 'В избранное'"
                                 @click="handleFavourite"
+                                :class="course.isFavourite && 'rotateIcon'"
                             />
                         </v-row>
-                        <v-row no-gutters class="mt-4">
-                            <template v-if="toggleOpenLikeDislikeForm">
+                        <v-row no-gutters class="mt-4" v-if="toggleOpenLikeDislikeForm">
+                            <template >
                                 <ReviewsFormLikesDislikes
                                     :form="reviewsForm"
                                     :course="course"
                                     @setReview="setReview"
                                     @cancelDislike="cancelDislike"
                                     @setMark="setMark"
+                                    @handleLike="handleLike"
+                                    @handleDisLike="handleDisLike"
                                 />
                             </template>
                         </v-row>
@@ -113,7 +116,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА {{course.rating}}</h5>
+                            <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
                             <div class="desc wrap-text" v-html="course.description" />
                         </v-col>
                         <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-6']" class="reviews">
@@ -136,6 +139,7 @@
                                                 :key="componentKey"
                                                 svg-name="Finger"
                                                 :title="course.countLikes"
+                                                @click="handleLike(true)"
                                                 isRaiting="true"
                                             />
                                         </div>
@@ -147,6 +151,7 @@
                                                 svg-class="svg-down"
                                                 svg-name="Finger"
                                                 :title="course.countDislikes"
+                                                @click="handleDislike(true)"
                                             />
                                         </div>
                                     </div>
@@ -526,6 +531,12 @@ export default class Course extends Vue {
 }
 </script>
 <style lang="scss" >
+
+.rotateIcon { 
+    svg {
+        transform: rotate(0) !important;
+    }
+}
 .container_b {
     padding: 0 36px 96px 0;
 }
