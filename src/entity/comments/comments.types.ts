@@ -45,5 +45,17 @@ export type CommentsAuthorResponseType = {
 export type CommentsRequestType = {
     skip?: number;
     limit?: number;
+    sort?: string;
+    orderBy?: string;
+}
+
+export enum CommentsSortNameEnum {
+    RATING='rating',
+    CREATEDAT='created_at'
+}
+
+export enum CommentsOrderByeNameEnum {
+    ASC='ASC',
+    DESC='DESC'
 }
 

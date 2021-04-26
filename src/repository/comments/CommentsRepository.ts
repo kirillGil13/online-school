@@ -9,7 +9,6 @@ import {CommentsFormRequestType} from '@/form/comments/commentsForm.types';
 import {CommentsAnswersResponseType, ICommentsAnswers} from '@/entity/commentsAnswers/commentsAnswers.types';
 import CommentsAnswers from '@/entity/commentsAnswers/commentsAnswers';
 import {CommentsChangeRequestType} from '@/form/commentsChange/commentsChangeForm.types';
-import {ICandidate} from '@/entity/candidates';
 
 export class CommentsRepository implements ICommentsRepository {
     async fetchAll(route: string, data?: FormData): Promise<IComments[]> {

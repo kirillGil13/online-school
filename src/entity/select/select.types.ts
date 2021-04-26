@@ -11,4 +11,6 @@ export interface ISelectList {
     isFiction?: boolean;
     minCost?: number;
     maxCost?: number;
+    sort?: string;
+    orderBy?: string;
 }

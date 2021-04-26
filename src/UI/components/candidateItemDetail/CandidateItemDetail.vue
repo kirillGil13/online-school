@@ -82,7 +82,7 @@
             </div>
             <div class="candidate-item-detail__notes--btn-add">
                 <Button small class="btn-add-note" :disabled=" (item && getDescription.length === 0) ||  /^\s*$/.test(getDescription)" @submit="$emit('updateNote', {note: getDescription, id: item.id})">
-                    Добавить заметку
+                    Сохранить
                 </Button>
             </div>
         </div>

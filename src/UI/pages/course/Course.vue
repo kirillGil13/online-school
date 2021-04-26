@@ -65,6 +65,7 @@
                                 :active="course.isFavourite"
                                 :title="$adaptive.isMobile ? '' : 'В избранное'"
                                 @click="handleFavourite"
+                                :class="course.isFavourite && 'rotateIcon'"
                             />
                         </v-row>
                         <v-row v-if="toggleOpenLikeDislikeForm" no-gutters class="mt-4">
@@ -75,6 +76,8 @@
                                     @setReview="setReview"
                                     @cancelDislike="cancelDislike"
                                     @setMark="setMark"
+                                    @handleLike="handleLike"
+                                    @handleDisLike="handleDisLike"
                                 />
                             </template>
                         </v-row>
@@ -113,7 +116,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА {{course.rating}}</h5>
+                            <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
                             <div class="desc wrap-text" v-html="course.description" />
                         </v-col>
                         <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-6']" class="reviews">
@@ -136,6 +139,7 @@
                                                 :key="componentKey"
                                                 svg-name="Finger"
                                                 :title="course.countLikes"
+                                                @click="handleLike(true)"
                                                 isRaiting="true"
                                             />
                                         </div>
@@ -147,6 +151,7 @@
                                                 svg-class="svg-down"
                                                 svg-name="Finger"
                                                 :title="course.countDislikes"
+                                                @click="handleDislike(true)"
                                             />
                                         </div>
                                     </div>
@@ -194,6 +199,8 @@
               <SubscribeFormalization/>
             </template>
           </Modal>
+          <Alert :show="showSuccess" :type="alertTypes.Success" @show="showSuccessAlert" text="Курс успешно добавлен в избранное"/>
+          <Alert :show="showError" :type="alertTypes.Error" @show="showErrorAlert" text="Курс успешно удален из избранного"/>
         </v-row>
     </v-col>
 </template>
@@ -224,8 +231,11 @@ import {AuthStore} from '../../../store/modules/Auth';
 import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
 import Subscription from '../../components/subscription/Subscription.vue';
 import Modal from '../../components/common/Modal.vue';
+import Alert from '../../components/common/Alert.vue';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
 @Component({
     components: {
+      Alert,
       Modal,
       Subscription,
       SubscribeFormalization,
@@ -246,6 +256,9 @@ export default class Course extends Vue {
         name: this.$routeRules.TrainingMain,
         label: 'Вернуться к списку курсов',
     };
+    showSuccess = false;
+    showError = false;
+    alertTypes = AlertTypeEnum;
     activator = false;
     interval!: NodeJS.Timeout;
     files: ILessonItemFiles[] = [];
@@ -254,6 +267,7 @@ export default class Course extends Vue {
     showAll = false;
     componentKey = 0;
     toggleOpenLikeDislikeForm = false;
+
 
     @Watch('$route.params.lessonId', { immediate: true })
     async onChangeRoute(val: string, oldVal: string): Promise<void> {
@@ -289,6 +303,15 @@ export default class Course extends Vue {
     beforeUpdate(): void {
         this.componentKey += 0;
     }
+
+  showSuccessAlert(show: boolean): void {
+    this.showSuccess = show;
+  }
+
+  showErrorAlert(show: boolean): void {
+    this.showError = show;
+  }
+
 
   activatorChange(act: boolean): void {
     this.activator = act;
@@ -528,9 +551,13 @@ export default class Course extends Vue {
         if (!this.course!.isFavourite) {
             await RelationStore.postFavourite(this.$route.params.id); //eslint-disable-line
             await this.fetchData();
+            this.showError = false;
+            this.showSuccess = true;
         } else {
             await RelationStore.deleteFavourite(this.$route.params.id);
             await this.fetchData();
+            this.showSuccess = false;
+            this.showError = true;
         }
     }
 
@@ -549,6 +576,12 @@ export default class Course extends Vue {
 }
 </script>
 <style lang="scss" >
+
+.rotateIcon { 
+    svg {
+        transform: rotate(0) !important;
+    }
+}
 .container_b {
     padding: 0 36px 96px 0;
 }

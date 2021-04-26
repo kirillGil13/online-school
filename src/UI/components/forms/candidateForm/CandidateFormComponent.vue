@@ -70,6 +70,18 @@
       >
       </v-select>
     </FormGroup>
+     <FormGroup
+        class="mt-4" v-slot="attrs" :form="form" field="note" show-custom-error label="Заметки"
+    >
+      <input
+          class="input input__normal"
+          type="note" name="note"
+          id="note"
+          v-model="form.description"
+          v-bind="attrs"
+      >
+    </FormGroup>
+
     <FormGroup v-if="activatorDate"
         class="mt-4 date-time-wrapper" :form="form" field="callTimeFake" label="Укажите время звонка" v-slot="attrs"
     >
