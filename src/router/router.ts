@@ -17,16 +17,25 @@ const routes = [
             {
                 path: 'login',
                 name: RouterNameEnum.AuthLogin,
+                meta: {
+                    title: 'Логин - ONELINKS'
+                },
                 component: () => import('@/UI/pages/auth/Login.vue'),
             },
             {
                 path: 'signup',
                 name: RouterNameEnum.AuthSignup,
+                meta: {
+                    title: 'Регистрация - ONELINKS'
+                },
                 component: () => import('@/UI/pages/auth/Signup.vue'),
             },
             {
                 path: 'recover',
                 name: RouterNameEnum.AuthRecover,
+                meta: {
+                    title: 'Восстановление пароля - ONELINKS'
+                },
                 component: () => import('@/UI/pages/auth/Recover.vue'),
             },
         ],
