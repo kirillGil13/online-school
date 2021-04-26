@@ -1,17 +1,16 @@
 <template>
   <div class="course" :style="{ width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : '' }">
-    <v-responsive v-if="lessonLoaded && user.isSubscriptionActual" :aspect-ratio="16 / 9"
-                  :style="{borderRadius: '12px'}" class="rounded" content-class="course-container">
+    <v-responsive v-if="lessonLoaded && user.isSubscriptionActual" :aspect-ratio="16 / 9" class="rounded-block" content-class="course-container rounded-block">
       <div
           v-if="lesson.status === lessonTypes.LOCKED"
-          class="course-locked"
+          class="course-locked rounded-block"
           :style="{ backgroundImage: 'url(' + lesson.photoLink + ')' }"
       >
-        <div class="background d-flex flex-column align-center justify-center pa-3">
+        <div class="background rounded-block d-flex flex-column align-center justify-center pa-3">
           <h1 class="text-center" v-if="!$adaptive.isMobile">Вы не можете просмотреть этот урок</h1>
           <h2 class="text-center" v-else>Вы не можете просмотреть этот урок</h2>
           <h3 class="mt-4 text-center">
-            Выполните задания из предыдущего урока, чтобы получить доступ к этому
+            Просмотрите предыдущий урок полностью, чтобы получить доступ к этому
           </h3>
           <Button @submit="$emit('moveToPrevious', lesson.number)">Перейти к предыдущему</Button>
         </div>
@@ -37,7 +36,7 @@
           :aspect-ratio="16 / 9"
           width="100%"
           height="100%"
-          class="course-cover"
+          class="course-cover rounded-block"
           :src="lesson.photoLink"
       >
         <div class="play-button"></div>
@@ -94,13 +93,13 @@
         <div class="desc__container--author d-flex flex-column">
           <div class="author--title d-flex justify-space-between align-center">
             <div>
-              <v-avatar class="mr-3">
-                <template v-slot:default v-if="course.author.photoLink">
-                  <v-img :src="course.author.photoLink" alt=""/>
-                </template>
-                <template v-else v-slot:default>
-                  <svg-icon name="Camera"></svg-icon>
-                </template>
+               <v-avatar class="mr-3" :color="course.author.photoLink ? '#F0F2F6' :randomColor(course.author.id % 10)">
+                  <template v-slot:default v-if="course.author.photoLink">
+                      <v-img :src="course.author.photoLink" alt="" />
+                  </template>
+                  <template v-else v-slot:default>
+                      <span style="color: #fff" class="font-weight-bold">{{(course.author.name[0] + course.author.lastName[0]).toUpperCase()}}</span>
+                  </template>
               </v-avatar>
               {{ course.author.name }}
               {{ course.author.lastName }}
@@ -380,6 +379,29 @@ export default class Lesson extends Vue {
 
   activatorSubChange(act: boolean): void {
     this.activatorSub = act;
+  }
+
+  randomColor(i: number) {
+    const COLORS = [
+    '#56CCF2',
+    '#BB6BD9',
+    '#6FCF97',
+    '#F2C94C',
+    '#967CBA',
+    '#FF9960',
+    '#566FF2',
+    '#FF5733',
+    '#FF89C9',
+    '#56F2DF',
+    '#F38460',
+    '#939ED6',
+    '#F271A0',
+    '#2ABF93',
+    '#FF9C9C',
+    '#6EC1F0',
+    '#3B4244'
+    ];
+    return COLORS[i || 0];
   }
 
   respond(data: any): void {
