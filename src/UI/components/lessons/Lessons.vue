@@ -1,7 +1,12 @@
 <template>
-  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6 : 42/44">
+  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6 : isChat ? 2/5 : 42/44">
     <div class="lessons-block box-container">
-      <div class="lesson-container" :style="{height: $adaptive.isMobile ? '100%' : ''}">
+       <div v-if="isChat" class="chat-header px-3 py-3">
+         <span class="chat-title">Чат</span>
+         <Button class="btn-close-chat" style="background-color: none !important" @submit="toggleOpenChat"><v-icon>mdi-close</v-icon></Button>
+         </div>
+      <div class="lesson-container" v-if="!isChat" :style="{height: $adaptive.isMobile ? '100%' : ''}">
+       
         <ul class="lesson-list">
           <li
               v-for="(lesson, index) in course.lessons"
@@ -20,49 +25,93 @@
           </li>
         </ul>
       </div>
-      <div class="lesson-btn" :style="{justifyContent: last ? 'flex-start' : ''}">
-<!--        <v-col class="px-2 py-2">-->
-<!--          <Button :class="['with_icon', $adaptive.isMobile ? 'py-2' : '']" small full-width>-->
-<!--            <svg-icon name="Chat"></svg-icon>-->
-<!--            Задать вопрос-->
-<!--          </Button>-->
-<!--        </v-col>-->
-        <v-col class="px-2 py-2" :cols="$adaptive.isMobile ? 2 : ''">
-          <Button :class="['with_icon secondary_white', $adaptive.isMobile ? 'py-2' : '']"
+      <div class="chat-container" v-else>
+        <SingleChat style="width: 100% !important"/>
+      </div>
+      <div v-if="!isChat" class="lesson-btn" :style="{justifyContent: last ? 'flex-start' : ''}">
+        <v-col  class="d-flex px-3 py-3" :cols="$adaptive.isMobile ? 2 : ''">
+          <Button  @submit="toggleOpenChat" class="d-flex justify-center align-center mt-0" style="width: 100%"><svg-icon class="mr-2" name="Chat"></svg-icon><span style="font-size: 12px;">Задать вопрос</span></Button>
+          <Button :class="['with_icon secondary_white ml-3 d-flex justify-center', $adaptive.isMobile ? 'py-2' : '']"
+                  style=" width: 20% !important"
                   @submit="$emit('moveToNextLesson', course.lessons.find(item => item.id === parseInt($route.params.lessonId)).number)"
                   v-if="!last && !$adaptive.isMobile && $route.params.lessonId" small full-width>
             <svg-icon name="Next" :style="{marginRight: $adaptive.isMobile ? 0 : ''}"></svg-icon>
-            {{$adaptive.isMobile ? '' : 'Следующий урок'}}
           </Button>
         </v-col>
       </div>
+      <template v-else>
+        <SendMessage @sendMessage="sendMessage"/>
+      </template>
       </div>
   </v-responsive>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import Button from '@/UI/components/common/Button.vue';
 import {LessonsTypesEnum} from '@/entity/common/lessons.types';
 import {ICourseItem} from '@/entity/courseItem/courseItem.type';
+import SingleChat from '../../components/chat/singleChat/SingleChat.vue';
+import SendMessage  from '../../components/chat/singleChat/sendMessage/SendMessage.vue';
 
 @Component({
   components: {
     Button,
+    SendMessage,
+    SingleChat
   },
 })
 export default class Lessons extends Vue {
   @Prop() readonly course!: ICourseItem;
   lessonType = LessonsTypesEnum;
   //v-if="$route.params.lessonId"
+  isChat = false
 
+
+  @Watch('isChat',{ immediate: true })
+  async takeChat(): Promise<void> {
+
+  }
   get last(): boolean {
     return (this.course.lessons[this.course.lessons.length - 1].id.toString() === this.$route.params.lessonId);
+  }
+
+  toggleOpenChat(): void {
+    this.isChat = !this.isChat
+  }
+
+  sendMessage(text: string): void {
+    console.log(this.$socket)
+   this.$socket.send(text)
   }
 }
 </script>
 
 <style lang="scss">
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat-container {
+      position: relative;
+      border-bottom: 1px solid #f2f2f2;
+      width: 100%;
+      overflow: scroll;
+      height: 86%;
+}
+
+.btn-close-chat {
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.chat-title {
+  font-weight: 500;
+  font-size: 24px;
+  color: #000000
+}
 .border {
   border-radius: 12px;
   box-shadow: 0px 14px 12px rgba(0, 0, 0, 0.01);
@@ -166,7 +215,6 @@ export default class Lessons extends Vue {
         justify-content: center;
 
         .svg-icon {
-          margin-right: 12px;
           height: 16px !important;
           width: 16px !important;
         }

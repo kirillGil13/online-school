@@ -1,6 +1,7 @@
-import { getModule, Module, MutationAction, VuexModule } from 'vuex-module-decorators';
+import { getModule, Module, Mutation, MutationAction, VuexModule } from 'vuex-module-decorators';
 import store from '@/store';
 import {IMessages} from '@/entity/messages/messages.types';
+
 
 @Module({
     namespaced: true,
@@ -18,7 +19,9 @@ class MessagesModule extends VuexModule {
         let messagesLoaded = false;
         if (messages) {
             messagesLoaded = true
+            
         }
+        
         return { messages, messagesLoaded };
     }
 }

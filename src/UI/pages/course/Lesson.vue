@@ -67,8 +67,8 @@
                 @click="user.isSubscriptionActual ? discuss : ''"
             />
         </v-row>
-        <v-row no-gutters>
-            <template v-if="toggleOpenLikeDislikeForm" class="mb-4">
+        <v-row no-gutters v-if="toggleOpenLikeDislikeForm">
+            <template  class="mb-4">
                 <ReviewsFormLikesDislikes
                     :form="formReview"
                     :course="course"

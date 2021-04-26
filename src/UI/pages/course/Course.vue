@@ -67,8 +67,8 @@
                                 @click="handleFavourite"
                             />
                         </v-row>
-                        <v-row no-gutters class="mt-4">
-                            <template v-if="toggleOpenLikeDislikeForm">
+                        <v-row v-if="toggleOpenLikeDislikeForm" no-gutters class="mt-4">
+                            <template >
                                 <ReviewsFormLikesDislikes
                                     :form="reviewsForm"
                                     :course="course"
