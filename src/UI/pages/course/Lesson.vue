@@ -1,17 +1,16 @@
 <template>
   <div class="course" :style="{ width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : '' }">
-    <v-responsive v-if="lessonLoaded && user.isSubscriptionActual" :aspect-ratio="16 / 9"
-                  :style="{borderRadius: '12px'}" class="rounded" content-class="course-container">
+    <v-responsive v-if="lessonLoaded && user.isSubscriptionActual" :aspect-ratio="16 / 9" class="rounded-block" content-class="course-container rounded-block">
       <div
           v-if="lesson.status === lessonTypes.LOCKED"
-          class="course-locked"
+          class="course-locked rounded-block"
           :style="{ backgroundImage: 'url(' + lesson.photoLink + ')' }"
       >
-        <div class="background d-flex flex-column align-center justify-center pa-3">
+        <div class="background rounded-block d-flex flex-column align-center justify-center pa-3">
           <h1 class="text-center" v-if="!$adaptive.isMobile">Вы не можете просмотреть этот урок</h1>
           <h2 class="text-center" v-else>Вы не можете просмотреть этот урок</h2>
           <h3 class="mt-4 text-center">
-            Выполните задания из предыдущего урока, чтобы получить доступ к этому
+            Просмотрите предыдущий урок полностью, чтобы получить доступ к этому
           </h3>
           <Button @submit="$emit('moveToPrevious', lesson.number)">Перейти к предыдущему</Button>
         </div>
@@ -37,7 +36,7 @@
           :aspect-ratio="16 / 9"
           width="100%"
           height="100%"
-          class="course-cover"
+          class="course-cover rounded-block"
           :src="lesson.photoLink"
       >
         <div class="play-button"></div>
