@@ -16,6 +16,7 @@
                         @setReview="setReview"
                         @cancelDislike="cancelDislike"
                         @setMark="setMark"
+                        @proceed="proceed"
                         :course="course"
                         :toggleOpenLikeDislikeForm="toggleOpenLikeDislikeForm"
                         :formReview="reviewsForm"
@@ -87,7 +88,7 @@
                                 <div class="desc__container--title">Автор курса</div>
                                 <div class="desc__container--author d-flex flex-column">
                                     <div class="author--title d-flex justify-space-between align-center">
-                                        <div>
+                                        <div @click="proceed(course.author.id)" :style="{cursor: 'pointer'}">
                                             <v-avatar class="mr-3">
                                                 <template v-slot:default v-if="course.author.photoLink">
                                                     <v-img :src="course.author.photoLink" alt="" />
@@ -228,6 +229,7 @@ import Subscription from '../../components/subscription/Subscription.vue';
 import Modal from '../../components/common/Modal.vue';
 import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
+import {RouterNameEnum} from '../../../router/router.types';
 @Component({
     components: {
       Alert,
@@ -298,6 +300,10 @@ export default class Course extends Vue {
     beforeUpdate(): void {
         this.componentKey += 0;
     }
+
+  proceed(id: number): void {
+    this.$router.push({name: RouterNameEnum.LeaderPage, params: { id: id.toString() }});
+  }
 
   showSuccessAlert(show: boolean): void {
     this.showSuccess = show;
