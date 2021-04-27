@@ -82,7 +82,7 @@
                                 />
                             </template>
                         </v-row>
-                      <v-col v-if="!user.isSubscriptionActual" :class="['box-container d-flex flex-column justify-center align-center', $adaptive.isMobile ? 'pa-4' : 'pa-6']">
+                      <v-col v-if="!user.isSubscriptionActual" :class="['box-container d-flex flex-column justify-center align-center mb-6', $adaptive.isMobile ? 'pa-4' : 'pa-6']">
                         <Subscription/>
                         <Button class="with_icon subs_button" @submit="activator = true"><svg-icon name="Subs_Play_Btn" class="mr-2 svg-16"></svg-icon>Смотреть по подписке</Button>
                       </v-col>
