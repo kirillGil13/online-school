@@ -162,7 +162,7 @@ const routes = [
             {
                 path: 'leaders/:id',
                 meta: {
-                    title: 'Лидеры - ONELINKS'
+                    title: 'Лидер - ONELINKS'
                 },
                 component: () => import('../UI/pages/leader/LeaderPage.vue'),
                 name: RouterNameEnum.LeaderPage

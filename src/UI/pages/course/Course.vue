@@ -16,6 +16,7 @@
                         @setReview="setReview"
                         @cancelDislike="cancelDislike"
                         @setMark="setMark"
+                        @proceed="proceed"
                         :course="course"
                         :toggleOpenLikeDislikeForm="toggleOpenLikeDislikeForm"
                         :formReview="reviewsForm"
@@ -233,6 +234,7 @@ import Subscription from '../../components/subscription/Subscription.vue';
 import Modal from '../../components/common/Modal.vue';
 import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
+import {RouterNameEnum} from '../../../router/router.types';
 @Component({
     components: {
       Alert,
