@@ -304,47 +304,23 @@ export default class Course extends Vue {
         this.componentKey += 0;
     }
 
-     
-    randomColor(i: number) {
-        const COLORS = [
-        '#56CCF2',
-        '#BB6BD9',
-        '#6FCF97',
-        '#F2C94C',
-        '#967CBA',
-        '#FF9960',
-        '#566FF2',
-        '#FF5733',
-        '#FF89C9',
-        '#56F2DF',
-        '#F38460',
-        '#939ED6',
-        '#F271A0',
-        '#2ABF93',
-        '#FF9C9C',
-        '#6EC1F0',
-        '#3B4244'
-        ];
-        return COLORS[i || 0];
+    showSuccessAlert(show: boolean): void {
+        this.showSuccess = show;
     }
 
-  showSuccessAlert(show: boolean): void {
-    this.showSuccess = show;
-  }
-
-  showErrorAlert(show: boolean): void {
-    this.showError = show;
-  }
+    showErrorAlert(show: boolean): void {
+        this.showError = show;
+    }
 
 
-  activatorChange(act: boolean): void {
-    this.activator = act;
-  }
+    activatorChange(act: boolean): void {
+        this.activator = act;
+    }
 
 
-  get user(): IUser | null {
-    return AuthStore.user;
-  }
+    get user(): IUser | null {
+        return AuthStore.user;
+    }
 
     get reviews(): IReviews[] {
         return ReviewsStore.reviews;

@@ -65,7 +65,9 @@ export default class Lessons extends Vue {
   @Prop() readonly course!: ICourseItem;
   lessonType = LessonsTypesEnum;
   //v-if="$route.params.lessonId"
-  isChat = false
+  accessTokenObj = localStorage.getItem('token');
+  isChat = false;
+  connection: any = null;
 
 
   @Watch('isChat',{ immediate: true })
@@ -76,13 +78,35 @@ export default class Lessons extends Vue {
     return (this.course.lessons[this.course.lessons.length - 1].id.toString() === this.$route.params.lessonId);
   }
 
+  created() {
+    const el = `${process.env.VUE_APP_WSS_URL}?token=${this.accessTokenObj}`;
+    console.log(el)
+    this.connection = new WebSocket(`${process.env.VUE_APP_WSS_URL}?token=${this.accessTokenObj}`);
+
+    this.connection.onmessage = (event: EventTarget) => console.log(event);
+
+    this.connection.onopen = (event: EventTarget) => console.log(event);
+
+    this.connection.onclose = (event:EventTarget) => console.log(event)
+  }
+
   toggleOpenChat(): void {
     this.isChat = !this.isChat
   }
 
-  sendMessage(text: string): void {
-    console.log(this.$socket)
-   this.$socket.send(text)
+  sendMessage(message: string): void {
+    const el = {
+      type: "send-message-service_type",
+      data: {
+        purposeAccountId: Number(this.$route.params.id),
+        text: message.toString()
+
+      }
+    }
+
+    console.log(JSON.stringify(el))
+   
+    this.connection.send(JSON.stringify(el))
   }
 }
 </script>
