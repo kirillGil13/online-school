@@ -66,16 +66,19 @@
                                 :active="course.isFavourite"
                                 :title="$adaptive.isMobile ? '' : 'В избранное'"
                                 @click="handleFavourite"
+                                :class="course.isFavourite && 'rotateIcon'"
                             />
                         </v-row>
-                        <v-row no-gutters class="mt-4">
-                            <template v-if="toggleOpenLikeDislikeForm">
+                        <v-row no-gutters class="mt-4" v-if="toggleOpenLikeDislikeForm">
+                            <template >
                                 <ReviewsFormLikesDislikes
                                     :form="reviewsForm"
                                     :course="course"
                                     @setReview="setReview"
                                     @cancelDislike="cancelDislike"
                                     @setMark="setMark"
+                                    @handleLike="handleLike"
+                                    @handleDisLike="handleDisLike"
                                 />
                             </template>
                         </v-row>
@@ -88,13 +91,13 @@
                                 <div class="desc__container--title">Автор курса</div>
                                 <div class="desc__container--author d-flex flex-column">
                                     <div class="author--title d-flex justify-space-between align-center">
-                                        <div @click="proceed(course.author.id)" :style="{cursor: 'pointer'}">
-                                            <v-avatar class="mr-3">
+                                        <div>
+                                            <v-avatar class="mr-3" :color="course.author.photoLink ? '#F0F2F6' :randomColor(course.author.id % 10)">
                                                 <template v-slot:default v-if="course.author.photoLink">
                                                     <v-img :src="course.author.photoLink" alt="" />
                                                 </template>
                                                 <template v-else v-slot:default>
-                                                    <svg-icon name="Camera"></svg-icon>
+                                                    <span style="color: #fff" class="font-weight-bold">{{(course.author.name[0] + course.author.lastName[0]).toUpperCase()}}</span>
                                                 </template>
                                             </v-avatar>
                                             {{ course.author.name }}
@@ -114,7 +117,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА {{course.rating}}</h5>
+                            <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
                             <div class="desc wrap-text" v-html="course.description" />
                         </v-col>
                         <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-6']" class="reviews">
@@ -137,6 +140,7 @@
                                                 :key="componentKey"
                                                 svg-name="Finger"
                                                 :title="course.countLikes"
+                                                @click="handleLike(true)"
                                                 isRaiting="true"
                                             />
                                         </div>
@@ -148,6 +152,7 @@
                                                 svg-class="svg-down"
                                                 svg-name="Finger"
                                                 :title="course.countDislikes"
+                                                @click="handleDislike(true)"
                                             />
                                         </div>
                                     </div>
@@ -301,9 +306,29 @@ export default class Course extends Vue {
         this.componentKey += 0;
     }
 
-  proceed(id: number): void {
-    this.$router.push({name: RouterNameEnum.LeaderPage, params: { id: id.toString() }});
-  }
+     
+    randomColor(i: number) {
+        const COLORS = [
+        '#56CCF2',
+        '#BB6BD9',
+        '#6FCF97',
+        '#F2C94C',
+        '#967CBA',
+        '#FF9960',
+        '#566FF2',
+        '#FF5733',
+        '#FF89C9',
+        '#56F2DF',
+        '#F38460',
+        '#939ED6',
+        '#F271A0',
+        '#2ABF93',
+        '#FF9C9C',
+        '#6EC1F0',
+        '#3B4244'
+        ];
+        return COLORS[i || 0];
+    }
 
   showSuccessAlert(show: boolean): void {
     this.showSuccess = show;
@@ -554,6 +579,12 @@ export default class Course extends Vue {
 }
 </script>
 <style lang="scss" >
+
+.rotateIcon { 
+    svg {
+        transform: rotate(0) !important;
+    }
+}
 .container_b {
     padding: 0 36px 96px 0;
 }
