@@ -19,6 +19,10 @@
               <div class="d-flex flex-row">
                 <h4 class="mr-3">{{ comment.fullName }}</h4>
                 <div class="desc">{{ comment.createdAt }}</div>
+                <template v-if="comment.isEdited">
+                  <v-icon dense>mdi-circle-small</v-icon>
+                  <div class="desc" >Изменено</div>
+                </template>
               </div>
               <div class="pr-0" v-if="comment.isMy">
                 <Select class-name="select_content_comment action" :selects="selects" v-on="$listeners" :id="comment.id">

@@ -52,13 +52,13 @@
                                 svg-name="Finger"
                                 :title="$adaptive.isMobile ? '' : 'Нравится'"
                                 :class="course.isLiked && 'like-active'"
-                                @click="user.isSubscriptionActual ? handleLike(false) : ''"
+                                @click="user.isSubscriptionActual ? handleLike(false) : activatorSub = true"
                             />
                             <Relation
                                 svg-class="svg-down"
                                 :class="course.isDisliked && 'dislike-active'"
                                 svg-name="Finger"
-                                @click="user.isSubscriptionActual ? handleDisLike(false) : ''"
+                                @click="user.isSubscriptionActual ? handleDisLike(false) : activatorSub = true"
                                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
                             />
                             <Relation

@@ -28,7 +28,7 @@
       </Badge>
       <Badge :profit="myStatistic.ratingCurrent.isIncrease">
         <template v-slot:title>Средняя оценка</template>
-        <template v-slot:default>{{ myStatistic.ratingCurrent.current }}</template>
+        <template v-slot:default>{{ myStatistic.ratingCurrent.current.toString() }}</template>
         <template v-slot:stats>{{ myStatistic.ratingCurrent.change }}%</template>
       </Badge>
     </v-row>
