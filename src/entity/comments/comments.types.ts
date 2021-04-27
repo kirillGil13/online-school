@@ -14,6 +14,7 @@ export interface IComments {
     getAnswersLength(): string;
     prettierMsg(index: number): string;
     fullName: string;
+    isEdited: boolean;
 }
 
 export interface ICommentsAuthor {
@@ -32,6 +33,7 @@ export type CommentsResponseType = {
     count_dislikes: number;
     is_liked: boolean | null;
     isMy: boolean;
+    isEdited: boolean;
     answers: CommentsAnswersResponseType[];
 }
 

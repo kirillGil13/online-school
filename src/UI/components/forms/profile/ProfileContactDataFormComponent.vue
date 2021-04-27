@@ -1,7 +1,7 @@
 <template>
-  <v-col class="mt-3 pa-0">
-    <ChangeEmailFormComponent :form="changeEmailForm" @submit="$emit('changeEmail')"/>
-    <div class="mb-3">
+  <v-col class="mt-3 pa-0 contact-form">
+    <ChangeEmailFormComponent class="phone-input" :form="changeEmailForm" @submit="$emit('changeEmail')"/>
+    <div class="mb-3 phone-input">
       <FormGroup v-slot="attrs" :form="form" field="resultPhone" show-custom-error label="Телефон">
         <vue-phone-number-input
             v-model="form.phone"
@@ -110,6 +110,14 @@ export default class ProfileContactDataFormComponent extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.contact-form {
+  input {
+    width: 99% !important;
+  }
+  .phone-input {
+    width: 99% !important;
+  }
+}
 .grid-conten {
     min-height: 32px;
 }

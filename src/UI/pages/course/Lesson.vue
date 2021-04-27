@@ -47,14 +47,14 @@
           svg-name="Finger"
           :class="isLiked && 'like-active'"
           :title="$adaptive.isMobile ? '' : 'Нравится'"
-          @click="user.isSubscriptionActual ? $emit('handleLike', false) : ''"
+          @click="user.isSubscriptionActual ? $emit('handleLike', false) : activatorSub = true"
       />
       <Relation
           svg-class="svg-down"
           :class="isDisliked && 'dislike-active'"
           svg-name="Finger"
           :title="$adaptive.isMobile ? '' : 'Не нравится'"
-          @click="user.isSubscriptionActual ? $emit('handleDisLike', false) : ''"
+          @click="user.isSubscriptionActual ? $emit('handleDisLike', false) : activatorSub = true"
       />
       <Relation
           svg-name="Chosen"
@@ -425,17 +425,22 @@ export default class Lesson extends Vue {
   fetchComments = (): void => {
     const bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+    const sort = this.sortComments;
     if (bottomOfWindow && this.comments.length % 100 === 0) {
-      this.skip = this.comments.length;
+      const skip = this.comments.length;
       setTimeout(e => {
         CommentsStore.fetchAll({
           route: this.$route.params.lessonId.toString(),
-          pagination: {skip: this.skip, limit: 100, sort: this.sort, orderBy: this.orderBy},
+          pagination: {skip: skip, limit: 100, sort: sort, orderBy: this.orderBy},
           scroll: true
         });
       }, 300);
     }
   };
+
+  get sortComments(): string {
+    return this.sort;
+  }
 
   get selectsComments(): ISelect[] {
     return SelectsStore.selectsComments;
@@ -622,20 +627,20 @@ export default class Lesson extends Vue {
         });
         this.commentsForm = new CommentsForm();
         this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
-        if (this.lessonLoaded) {
-          VideoOptionsStore.handleVideo({
-            src: this.lesson!.m3u8FileLink,
-            poster: this.lesson!.photoLink,
-            currentTime: this.lesson!.timeCode,
-          });
-          if (this.lesson!.homeworkIsDone) {
-            await RightAnswersStore.fetchAll(this.lesson!.homeworkId);
-          } else if (this.lesson!.homeworkId) {
-            await QuestionsStore.fetchAll(this.lesson!.homeworkId);
-            this.testingForm = new TestingForm(this.questions!.tests);
-            this.testingForm.activeStep[0].active = true;
-          }
-        }
+        // if (this.lessonLoaded) {
+        //   VideoOptionsStore.handleVideo({
+        //     src: this.lesson!.m3u8FileLink,
+        //     poster: this.lesson!.photoLink,
+        //     currentTime: this.lesson!.timeCode,
+        //   });
+        //   if (this.lesson!.homeworkIsDone) {
+        //     await RightAnswersStore.fetchAll(this.lesson!.homeworkId);
+        //   } else if (this.lesson!.homeworkId) {
+        //     await QuestionsStore.fetchAll(this.lesson!.homeworkId);
+        //     this.testingForm = new TestingForm(this.questions!.tests);
+        //     this.testingForm.activeStep[0].active = true;
+        //   }
+        // }
       }
     }
   }
