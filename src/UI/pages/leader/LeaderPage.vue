@@ -8,10 +8,11 @@
               <v-row class="ma-0">
                 <v-col :cols="$adaptive.isMobile ? 4 : 2" class="pa-0">
                   <v-avatar
-                      color="white"
+                      :color="leader.photoLink ? '#F0F2F6' :randomColor(leader.id % 10)"
                       :size="$adaptive.isMobile ? 46 : 66"
                   >
-                    <v-img :src="leader.photoLink" alt=""/>
+                    <v-img :src="leader.photoLink" alt=""  v-if="leader.photoLink"/>
+                    <span style="color: #fff" class="font-weight-bold" v-else>{{leader.name[0] + leader.lastName[0].toUpperCase()}}</span>
                   </v-avatar>
                 </v-col>
                 <v-col :class="['leader-info pa-0', $adaptive.isMobile ? 'mobile-info' : '']">
@@ -136,6 +137,29 @@ export default class LeaderPage extends Vue {
     LeadersCoursesStore.fetchAll({
       accountId: parseInt(this.$route.params.id),
     });
+  }
+
+  randomColor(i: number): string {
+    const COLORS = [
+      '#56CCF2',
+      '#BB6BD9',
+      '#6FCF97',
+      '#F2C94C',
+      '#967CBA',
+      '#FF9960',
+      '#566FF2',
+      '#FF5733',
+      '#FF89C9',
+      '#56F2DF',
+      '#F38460',
+      '#939ED6',
+      '#F271A0',
+      '#2ABF93',
+      '#FF9C9C',
+      '#6EC1F0',
+      '#3B4244'
+    ];
+    return COLORS[i || 0];
   }
 
   beforeDestroy(): void {

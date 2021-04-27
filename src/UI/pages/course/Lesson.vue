@@ -92,7 +92,7 @@
         <div class="desc__container--title">Автор курса</div>
         <div class="desc__container--author d-flex flex-column">
           <div class="author--title d-flex justify-space-between align-center">
-            <div>
+            <div @click="$emit('proceed', course.author.id)" :style="{cursor: 'pointer'}">
                <v-avatar class="mr-3" :color="course.author.photoLink ? '#F0F2F6' :randomColor(course.author.id % 10)">
                   <template v-slot:default v-if="course.author.photoLink">
                       <v-img :src="course.author.photoLink" alt="" />
