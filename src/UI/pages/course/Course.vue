@@ -85,7 +85,7 @@
                                 />
                             </template>
                         </v-row>
-                      <v-col v-if="!user.isSubscriptionActual" :class="['box-container d-flex flex-column justify-center align-center mb-6', $adaptive.isMobile ? 'pa-4' : 'pa-6']">
+                      <v-col v-if="!user.isSubscriptionActual" class="sub-card box-container d-flex flex-column justify-center align-center mb-6" :class="[ $adaptive.isMobile ? 'pa-4' : 'pa-6']">
                         <Subscription/>
                         <Button class="with_icon subs_button" @submit="activator = true"><svg-icon name="Subs_Play_Btn" class="mr-2 svg-16"></svg-icon>Смотреть по подписке</Button>
                       </v-col>
@@ -123,7 +123,7 @@
                             <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
                             <div class="desc wrap-text" v-html="course.description" />
                         </v-col>
-                        <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-6']" class="reviews">
+                        <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-6']" class="reviews sub-card">
                             <div class="desc__review">
                                 <div class="desc__review--container" :style="{flexDirection: $adaptive.isMobile && 'column'}">
                                     <div class="d-flex align-center" style="height: 100%">
@@ -586,6 +586,10 @@ export default class Course extends Vue {
 }
 </script>
 <style lang="scss" >
+
+.sub-card {
+    min-height: max-content;
+}
 
 .rotateIcon {
     svg {
