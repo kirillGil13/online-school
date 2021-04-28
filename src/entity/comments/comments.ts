@@ -11,6 +11,7 @@ export default class Comments implements IComments{
     isLiked: boolean | null;
     answers: ICommentsAnswers[] = [];
     isMy: boolean;
+    isEdited: boolean;
 
     constructor(data: CommentsResponseType) {
         this.id = data.id;
@@ -21,6 +22,7 @@ export default class Comments implements IComments{
         this.countDislikes = data.count_dislikes === 0 ? '' : data.count_dislikes.toString();
         this.isLiked = data.is_liked;
         this.isMy = data.isMy;
+        this.isEdited = data.isEdited;
         for (let i = 0; i < data.answers.length; i++) {
             this.answers.push({
                 id: data.answers[i].id,

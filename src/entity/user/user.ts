@@ -32,7 +32,7 @@ export class User implements IUser {
         this.isLeader = data.isLeader;
         this.isEmailConfirmed = data.is_email_confirmed;
         this.siteLink = data.site_link;
-        this.isSubscriptionActual = true;
+        this.isSubscriptionActual = false;
     }
 
     get initials(): string {

@@ -46,19 +46,19 @@
                         </v-responsive>
                         <v-row
                             no-gutters
-                            :class="['course-video-row mt-4 ml-4', $adaptive.isMobile ? 'justify-center' : '']"
+                            :class="['course-video-row ml-6 my-4', $adaptive.isMobile ? 'justify-center' : '']"
                         >
                             <Relation
                                 svg-name="Finger"
                                 :title="$adaptive.isMobile ? '' : 'Нравится'"
                                 :class="course.isLiked && 'like-active'"
-                                @click="user.isSubscriptionActual ? handleLike(false) : ''"
+                                @click="user.isSubscriptionActual ? handleLike(false) : activator = true"
                             />
                             <Relation
                                 svg-class="svg-down"
                                 :class="course.isDisliked && 'dislike-active'"
                                 svg-name="Finger"
-                                @click="user.isSubscriptionActual ? handleDisLike(false) : ''"
+                                @click="user.isSubscriptionActual ? handleDisLike(false) : activator = true"
                                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
                             />
                             <Relation
@@ -82,11 +82,11 @@
                                 />
                             </template>
                         </v-row>
-                      <v-col v-if="!user.isSubscriptionActual" :class="['box-container d-flex flex-column justify-center align-center', $adaptive.isMobile ? 'pa-4' : 'pa-6']">
+                      <v-col v-if="!user.isSubscriptionActual" :class="['box-container d-flex flex-column justify-center align-center mb-6', $adaptive.isMobile ? 'pa-4' : 'pa-6']">
                         <Subscription/>
                         <Button class="with_icon subs_button" @submit="activator = true"><svg-icon name="Subs_Play_Btn" class="mr-2 svg-16"></svg-icon>Смотреть по подписке</Button>
                       </v-col>
-                        <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
+                        <v-col :class="['box-container', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
                             <div class="desc__container">
                                 <div class="desc__container--title">Автор курса</div>
                                 <div class="desc__container--author d-flex flex-column">
@@ -812,7 +812,7 @@ export default class Course extends Vue {
 
 .author-description {
     overflow: hidden;
-    max-height: 72px;
+    max-height: 65px;
 }
 
 .show-all {

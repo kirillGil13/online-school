@@ -10,7 +10,7 @@
                                 ref="contentTextArea"
                                 no-resize
                                 id="message"
-                                placeholder="Напишите текст отзыва, чтобы сохранить оценку (обязательно)"
+                                placeholder="Напишите текст отзыва, чтобы сохранить оценку"
                                 rows="5"
                                 hide-details
                                 v-model="form.reviewText"
