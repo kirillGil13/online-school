@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import {RouterNameEnum} from '@/router/router.types';
-import {leaderGuard, mainGuard} from '@/guard';
+import {landingGuard, leaderGuard, mainGuard} from '@/guard';
 
 Vue.use(Router);
 Vue.prototype.$routeRules = RouterNameEnum;
@@ -17,16 +17,25 @@ const routes = [
             {
                 path: 'login',
                 name: RouterNameEnum.AuthLogin,
+                meta: {
+                    title: 'Логин - ONELINKS'
+                },
                 component: () => import('@/UI/pages/auth/Login.vue'),
             },
             {
                 path: 'signup',
                 name: RouterNameEnum.AuthSignup,
+                meta: {
+                    title: 'Регистрация - ONELINKS'
+                },
                 component: () => import('@/UI/pages/auth/Signup.vue'),
             },
             {
                 path: 'recover',
                 name: RouterNameEnum.AuthRecover,
+                meta: {
+                    title: 'Восстановление пароля - ONELINKS'
+                },
                 component: () => import('@/UI/pages/auth/Recover.vue'),
             },
         ],
@@ -153,7 +162,7 @@ const routes = [
             {
                 path: 'leaders/:id',
                 meta: {
-                    title: 'Лидеры - ONELINKS'
+                    title: 'Лидер - ONELINKS'
                 },
                 component: () => import('../UI/pages/leader/LeaderPage.vue'),
                 name: RouterNameEnum.LeaderPage
@@ -186,6 +195,7 @@ const routes = [
     },
     {
         path: '/landing',
+        beforeEnter: landingGuard,
         component: () => import('../UI/layouts/LandingLayout.vue'),
         children: [
             {
@@ -194,6 +204,10 @@ const routes = [
                 component: () => import('@/UI/landing/Landing.vue'),
             },
         ],
+    },
+    {
+        path: '/404',
+        component: () => import('../UI/pages/404/NotFound.vue'),
     }
 ];
 

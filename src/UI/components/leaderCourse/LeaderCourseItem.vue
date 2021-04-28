@@ -16,7 +16,7 @@
         </div>
       </v-img>
     </div>
-    <div class="leader">
+    <div class="leader" @click="proceed(course.account.id)">
       <v-avatar size="24" class="course-avatar" :color="course.account.photoLink ? '#F0F2F6' :randomColor(course.account.id % 10)">
         <v-img :src="course.account.photoLink" v-if="course.account.photoLink">
         </v-img>
@@ -25,7 +25,7 @@
       </v-avatar>
       <span class="desc">{{ course.fullName}}</span>
     </div>
-    <div class="course-title">{{ course.name }}</div>
+    <div class="course-title" @click="$emit('proceed', course.id)">{{ course.name }}</div>
   </div>
 </template>
 
@@ -35,6 +35,7 @@ import Rating from '@/UI/components/common/Rating.vue';
 import {ILeaderCourses} from '@/entity/leaderCourses/leaderCourses.types';
 import ProgressCircle from '../progress/ProgressCircle.vue';
 import CourseSkeleton from '../common/skeletons/courseSkeleton/CourseSkeleton.vue';
+import {RouterNameEnum} from '../../../router/router.types';
 
 @Component({
   components: {
@@ -46,7 +47,11 @@ import CourseSkeleton from '../common/skeletons/courseSkeleton/CourseSkeleton.vu
 export default class LeaderCourseItem extends Vue {
   @Prop({required: true}) readonly course!: ILeaderCourses;
 
-  randomColor(i: number) {
+  proceed(id: number): void {
+    this.$router.push({name: RouterNameEnum.LeaderPage, params: { id: id.toString() }});
+  }
+
+  randomColor(i: number): string {
     const COLORS = [
       '#56CCF2',
       '#BB6BD9',

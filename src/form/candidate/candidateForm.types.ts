@@ -9,6 +9,7 @@ export type CandidateFormRequestType = RequestType & {
     status_id: number;
     account_id: number;
     info_pack_id: number | null;
+    description: string
 };
 export interface ICandidateForm {
     name: string;
@@ -18,6 +19,7 @@ export interface ICandidateForm {
     statusId: number;
     statusList: ICandidateFormList[];
     productList: ICandidateFormList[];
+    description: string;
 }
 export interface ICandidateFormList {
     text: string;

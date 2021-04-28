@@ -1,9 +1,10 @@
-import {Action, getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
+import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import {CommentsRequestType, IComments} from '@/entity/comments/comments.types';
 import {CommentsFormRequestType} from '@/form/comments/commentsForm.types';
 import {ICommentsAnswers} from '@/entity/commentsAnswers/commentsAnswers.types';
 import {CommentsChangeRequestType} from '@/form/commentsChange/commentsChangeForm.types';
+import {ICandidate} from '@/entity/candidates';
 
 @Module({
     namespaced: true,
@@ -22,26 +23,38 @@ class CommentsModule extends VuexModule {
     }
 
     @Mutation
-    setComments(data: {comments: IComments[]; commentsLoaded: boolean}): void {
-        this.comments = this.comments.concat(data.comments);
+    setComments(data: {comments: IComments[]; commentsLoaded: boolean; scroll: boolean}): void {
+        if (!data.scroll) {
+            this.comments = data.comments;
+        } else {
+            this.comments = this.comments.concat(data.comments);
+        }
         this.commentsLoaded = data.commentsLoaded;
     }
 
     @Action({commit: 'setComments'})
-    async fetchAll(data: {route: string; pagination?: CommentsRequestType}): Promise<{ comments: IComments[]; commentsLoaded: boolean }> {
+    async fetchAll(data: {route: string; pagination?: CommentsRequestType; scroll?: boolean}): Promise<{ comments: IComments[]; commentsLoaded: boolean; scroll: boolean }> {
         const formData = new FormData();
         let commentsLoaded = false;
+        let scroll = false;
         if (data.pagination) {
+            if (data.scroll) {
+                scroll = data.scroll;
+            }
             if (data.pagination.skip)
                 formData.append('skip', data.pagination.skip.toString());
             if (data.pagination.limit)
                 formData.append('limit', data.pagination.limit.toString());
+            if (data.pagination.sort)
+                formData.append('sort', data.pagination.sort);
+            if (data.pagination.orderBy)
+                formData.append('order_by', data.pagination.orderBy)
         }
         const comments = await store.$repository.comments.fetchAll(data.route, formData);
         if (comments) {
             commentsLoaded = true;
         }
-        return {comments, commentsLoaded};
+        return {comments, commentsLoaded, scroll};
     }
 
     @Action({rawError: true})

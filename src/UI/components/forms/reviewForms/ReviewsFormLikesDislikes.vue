@@ -19,10 +19,10 @@
                         </div>
                         <div class="review-text__like-dislike">
                             <div :class="course.isLiked === true ? 'like--active' : 'like'">
-                                <Relation svg-name="Finger"  @click="setReviewLike" />
+                                <Relation svg-name="Finger"  @click="$emit('handleLike', false)" />
                             </div>
                             <div :class="course.isDisliked === true ? 'dislike--active' : 'dislike'">
-                                <Relation svg-class="svg-down" svg-name="Finger" @click="setReviewDisLike" />
+                                <Relation svg-class="svg-down" svg-name="Finger" @click="$emit('handleDisLike', false)" />
                             </div>
                         </div>
                     </div>

@@ -36,7 +36,22 @@ class SelectsModule extends VuexModule {
             name: 'Удалить',
             extraAction: true
         },
-    ]
+    ];
+
+    selectsDiscussion: ISelect[] =[
+        {
+            id: 0,
+            name: 'Сначала интересные',
+        },
+        {
+            id: 1,
+            name: 'Новые',
+        },
+        {
+            id: 2,
+            name: 'Старые',
+        },
+    ];
 }
 
 export const SelectsStore = getModule(SelectsModule);

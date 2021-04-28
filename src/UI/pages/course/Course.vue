@@ -16,6 +16,7 @@
                         @setReview="setReview"
                         @cancelDislike="cancelDislike"
                         @setMark="setMark"
+                        @proceed="proceed"
                         :course="course"
                         :toggleOpenLikeDislikeForm="toggleOpenLikeDislikeForm"
                         :formReview="reviewsForm"
@@ -45,55 +46,61 @@
                         </v-responsive>
                         <v-row
                             no-gutters
-                            :class="['course-video-row mt-4 ml-4', $adaptive.isMobile ? 'justify-center' : '']"
+                            :class="['mt-4 ml-6', $adaptive.isMobile ? 'justify-center' : '']"
                         >
                             <Relation
                                 svg-name="Finger"
+                                class="mb-4"
                                 :title="$adaptive.isMobile ? '' : 'Нравится'"
                                 :class="course.isLiked && 'like-active'"
-                                @click="user.isSubscriptionActual ? handleLike(false) : ''"
+                                @click="user.isSubscriptionActual ? handleLike(false) : activator = true"
                             />
                             <Relation
                                 svg-class="svg-down"
+                                class="mb-4"
                                 :class="course.isDisliked && 'dislike-active'"
                                 svg-name="Finger"
-                                @click="user.isSubscriptionActual ? handleDisLike(false) : ''"
+                                @click="user.isSubscriptionActual ? handleDisLike(false) : activator = true"
                                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
                             />
                             <Relation
                                 svg-name="Chosen"
+                                class="mb-4"
                                 :active="course.isFavourite"
                                 :title="$adaptive.isMobile ? '' : 'В избранное'"
                                 @click="handleFavourite"
+                                :class="course.isFavourite && 'rotateIcon'"
                             />
                         </v-row>
-                        <v-row no-gutters class="mt-4">
-                            <template v-if="toggleOpenLikeDislikeForm">
+                        <v-row no-gutters class="mt-4" v-if="toggleOpenLikeDislikeForm">
+                            <template >
                                 <ReviewsFormLikesDislikes
                                     :form="reviewsForm"
                                     :course="course"
                                     @setReview="setReview"
                                     @cancelDislike="cancelDislike"
                                     @setMark="setMark"
+                                    @handleLike="handleLike"
+                                    @handleDisLike="handleDisLike"
                                 />
                             </template>
                         </v-row>
-                      <v-col v-if="!user.isSubscriptionActual" :class="['box-container d-flex flex-column justify-center align-center', $adaptive.isMobile ? 'pa-4' : 'pa-6']">
+                      <v-col v-if="!user.isSubscriptionActual" class="sub-card box-container d-flex flex-column justify-center align-center mb-6" :class="[ $adaptive.isMobile ? 'pa-4' : 'pa-6']">
                         <Subscription/>
                         <Button class="with_icon subs_button" @submit="activator = true"><svg-icon name="Subs_Play_Btn" class="mr-2 svg-16"></svg-icon>Смотреть по подписке</Button>
                       </v-col>
-                        <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
+                        <v-col :class="['box-container', $adaptive.isMobile ? 'pa-3' : 'pa-5']">
                             <div class="desc__container">
                                 <div class="desc__container--title">Автор курса</div>
                                 <div class="desc__container--author d-flex flex-column">
                                     <div class="author--title d-flex justify-space-between align-center">
-                                        <div>
-                                            <v-avatar class="mr-3">
+                                        <div @click="proceed(course.author.id)" :style="{cursor: 'pointer'}">
+                                            <v-avatar class="mr-3" :color="course.author.photoLink ? '#F0F2F6' :randomColor(course.author.id % 10)">
                                                 <template v-slot:default v-if="course.author.photoLink">
                                                     <v-img :src="course.author.photoLink" alt="" />
                                                 </template>
                                                 <template v-else v-slot:default>
-                                                    <svg-icon name="Camera"></svg-icon>
+                                                    <span style="color: #fff" class="font-weight-bold">{{(course.author.name[0] + course.author.lastName[0]).toUpperCase()}}</span>
                                                 </template>
                                             </v-avatar>
                                             {{ course.author.name }}
@@ -113,10 +120,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА {{course.rating}}</h5>
+                            <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
                             <div class="desc wrap-text" v-html="course.description" />
                         </v-col>
-                        <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-6']" class="reviews">
+                        <v-col :class="['box-container mt-6', $adaptive.isMobile ? 'pa-3' : 'pa-6']" class="reviews sub-card">
                             <div class="desc__review">
                                 <div class="desc__review--container" :style="{flexDirection: $adaptive.isMobile && 'column'}">
                                     <div class="d-flex align-center" style="height: 100%">
@@ -136,6 +143,7 @@
                                                 :key="componentKey"
                                                 svg-name="Finger"
                                                 :title="course.countLikes"
+                                                @click="handleLike(true)"
                                                 isRaiting="true"
                                             />
                                         </div>
@@ -147,6 +155,7 @@
                                                 svg-class="svg-down"
                                                 svg-name="Finger"
                                                 :title="course.countDislikes"
+                                                @click="handleDisLike(true)"
                                             />
                                         </div>
                                     </div>
@@ -194,6 +203,8 @@
               <SubscribeFormalization/>
             </template>
           </Modal>
+          <Alert :show="showSuccess" :type="alertTypes.Success" @show="showSuccessAlert" text="Курс успешно добавлен в избранное"/>
+          <Alert :show="showError" :type="alertTypes.Error" @show="showErrorAlert" text="Курс успешно удален из избранного"/>
         </v-row>
     </v-col>
 </template>
@@ -224,8 +235,13 @@ import {AuthStore} from '../../../store/modules/Auth';
 import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
 import Subscription from '../../components/subscription/Subscription.vue';
 import Modal from '../../components/common/Modal.vue';
+import Alert from '../../components/common/Alert.vue';
+import {AlertTypeEnum} from '../../../entity/common/alert.types';
+import {RouterNameEnum} from '../../../router/router.types';
+import Router from 'vue-router';
 @Component({
     components: {
+      Alert,
       Modal,
       Subscription,
       SubscribeFormalization,
@@ -246,6 +262,9 @@ export default class Course extends Vue {
         name: this.$routeRules.TrainingMain,
         label: 'Вернуться к списку курсов',
     };
+    showSuccess = false;
+    showError = false;
+    alertTypes = AlertTypeEnum;
     activator = false;
     interval!: NodeJS.Timeout;
     files: ILessonItemFiles[] = [];
@@ -254,6 +273,7 @@ export default class Course extends Vue {
     showAll = false;
     componentKey = 0;
     toggleOpenLikeDislikeForm = false;
+
 
     @Watch('$route.params.lessonId', { immediate: true })
     async onChangeRoute(val: string, oldVal: string): Promise<void> {
@@ -290,6 +310,42 @@ export default class Course extends Vue {
         this.componentKey += 0;
     }
 
+  proceed(id: number): void {
+    this.$router.push({name: RouterNameEnum.LeaderPage, params: {id: id.toString()}});
+  }
+
+    randomColor(i: number): string {
+        const COLORS = [
+        '#56CCF2',
+        '#BB6BD9',
+        '#6FCF97',
+        '#F2C94C',
+        '#967CBA',
+        '#FF9960',
+        '#566FF2',
+        '#FF5733',
+        '#FF89C9',
+        '#56F2DF',
+        '#F38460',
+        '#939ED6',
+        '#F271A0',
+        '#2ABF93',
+        '#FF9C9C',
+        '#6EC1F0',
+        '#3B4244'
+        ];
+        return COLORS[i || 0];
+    }
+
+  showSuccessAlert(show: boolean): void {
+    this.showSuccess = show;
+  }
+
+  showErrorAlert(show: boolean): void {
+    this.showError = show;
+  }
+
+
   activatorChange(act: boolean): void {
     this.activator = act;
   }
@@ -313,10 +369,6 @@ export default class Course extends Vue {
 
     get course(): ICourseItem | null {
         return CourseItemStore.courseItem;
-    }
-
-    get defaultCourse(): IDefaultCourseItem {
-        return CourseItemStore.courseItemDefault;
     }
 
     get courseLoaded(): boolean {
@@ -404,8 +456,6 @@ export default class Course extends Vue {
     }
 
     async created(): Promise<void> {
-        await this.fetchData();
-        await ReviewsStore.fetchAll(this.$route.params.id);
         if (this.courseLoaded) {
             document.title = this.course!.name + ' - ' + 'ONELINKS';
         }
@@ -505,9 +555,13 @@ export default class Course extends Vue {
         if (!this.course!.isFavourite) {
             await RelationStore.postFavourite(this.$route.params.id); //eslint-disable-line
             await this.fetchData();
+            this.showError = false;
+            this.showSuccess = true;
         } else {
             await RelationStore.deleteFavourite(this.$route.params.id);
             await this.fetchData();
+            this.showSuccess = false;
+            this.showError = true;
         }
     }
 
@@ -526,6 +580,16 @@ export default class Course extends Vue {
 }
 </script>
 <style lang="scss" >
+
+.sub-card {
+    min-height: max-content;
+}
+
+.rotateIcon {
+    svg {
+        transform: rotate(0) !important;
+    }
+}
 .container_b {
     padding: 0 36px 96px 0;
 }
@@ -748,7 +812,7 @@ export default class Course extends Vue {
 
 .author-description {
     overflow: hidden;
-    max-height: 72px;
+    max-height: 65px;
 }
 
 .show-all {

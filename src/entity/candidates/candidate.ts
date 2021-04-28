@@ -10,7 +10,8 @@ export class Candidate implements ICandidate {
     isFiction: boolean;
     infoPackName: string | null;
     callTime: string | null;
-    description: string
+    description: string;
+    isLocked: boolean;
 
     constructor(data: CandidateResponseType) {
         this.id = data.id;
@@ -22,7 +23,8 @@ export class Candidate implements ICandidate {
         this.isFiction = data.isFiction;
         this.infoPackName = data.infoPackName;
         this.callTime = this.getTime(data.callTime);
-        this.description = data.description ? data.description : ''
+        this.description = data.description ? data.description : '';
+        this.isLocked = data.is_locked;
     }
 
     getTime(seconds: number | null): string {

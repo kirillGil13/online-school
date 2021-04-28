@@ -6,11 +6,11 @@
         <div :class="['badge__default subs', subs ? 'active' : 'in-active']">
             <slot name="sub" />
         </div>
-      <div :class="['badge__default', profit || !profit ? 'mt-3' : '']">
+      <div :class="['badge__default', profit === null ? 'mt-3' : '']">
             <div><slot name="default" /></div>
             <router-link class="link mt-5" :to="{name: linkName}" v-if="linkName"><slot name="link"/><svg-icon name="Arrow_Right"></svg-icon></router-link>
-            <div :class="['badge__stats', profit ? 'profit' : 'loss']" v-if="profit">
-              <template v-if="profit">{{profit ? '+' : '-'}}</template>
+            <div :class="['badge__stats', profit ? 'profit' : 'loss']" v-if="profit !== null">
+              <template v-if="profit !== null">{{profit ? '+' : '-'}}</template>
               <slot name="stats"/>
               <svg-icon class="ml-1" name="Badge_Arrow"></svg-icon>
             </div>
