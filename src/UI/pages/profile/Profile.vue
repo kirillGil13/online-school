@@ -1,5 +1,5 @@
 <template>
-  <v-row class="profile">
+  <v-row class="profile" :class="[$adaptive.isMobile && 'px-3']">
     <v-col :cols="12">
       <Header class="mb-3" :title="`${user.name} ${user.lastName}`"></Header>
     </v-col>

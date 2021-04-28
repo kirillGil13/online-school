@@ -26,7 +26,7 @@
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"  @candidateChangeCallTimeDetails="candidateChangeCallTimeDetails" @choseCandidate="choseCandidate"/>
       </v-col>
-      <div style="width: 29%; margin-top: 3%;" class="ml-4" v-show="!$adaptive.isMobile && openItemDetails ">
+      <div style="width: 29%; margin-top: 5.5%;" class="ml-4" v-show="!$adaptive.isMobile && openItemDetails ">
         <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime" @candidateChangeCallTimeDetails="candidateChangeCallTimeDetails"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </div>
     </v-row>
@@ -455,8 +455,10 @@ export default class Candidates extends Vue {
     this.activator = false;
   }
 
-  async updateNote(data: {note: string, id: number}): Promise<void> {
-    await CandidateItemStore.update({data: {description: data.note}, route: data.id.toString()});
+  async updateNote(data: {note: string; id: number}): Promise<void> {
+    const phoneNumber = Object.values(this.candidates).flat().find(item => item.id === data.id)!.phoneNumber;
+    const email = Object.values(this.candidates).flat().find(item => item.id === data.id)!.email;
+    await CandidateItemStore.update({data: {description: data.note, phoneNumber: phoneNumber ? phoneNumber : '', email: email ? email : ''}, route: data.id.toString()});
     this.show = true;
   }
 

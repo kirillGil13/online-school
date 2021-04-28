@@ -134,9 +134,9 @@ export default class CandidateItemDetail extends Vue {
     mounted(): void {
       const detail = document.getElementById('detail');
       window.addEventListener('scroll', () => {
-        if (document.documentElement.scrollTop >= 230 && !detail!.classList.contains('scrolled') && !this.$adaptive.isMobile) {
+        if (document.documentElement.scrollTop >= 235 && !detail!.classList.contains('scrolled') && !this.$adaptive.isMobile) {
           detail!.classList.add('scrolled');
-        } else if (document.documentElement.scrollTop < 230) {
+        } else if (document.documentElement.scrollTop < 235) {
           detail!.classList.remove('scrolled');
         }
       })
