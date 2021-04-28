@@ -20,7 +20,7 @@
           </li>
         </ul>
       </v-col>
-      <div class="lesson-btn pa-2" :style="{justifyContent: last ? 'flex-start' : ''}">
+      <div class="lesson-btn pa-2" :style="{justifyContent: last ? 'flex-start' : ''}" v-if="!$adaptive.isMobile && $route.name === $routeRules.Lesson">
 <!--        <v-col class="px-2 py-2">-->
 <!--          <Button :class="['with_icon', $adaptive.isMobile ? 'py-2' : '']" small full-width>-->
 <!--            <svg-icon name="Chat"></svg-icon>-->
