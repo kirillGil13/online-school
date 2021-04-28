@@ -1,7 +1,7 @@
 <template>
   <div class="messages d-flex flex-column" id="messages">
     <div class="message-container d-flex flex-column justify-end">
-      <Message date="17:10" :body="message.text" v-for="message in messages" :key="message.id" :friend="message.is_my === true || message.is_my === undefined ? false : true"/>
+      <Message :date="getTime(message.createdAt)" :body="message.text" v-for="message in messages" :key="message.id" :friend="message.isMy ? false : true"/>
     </div>
   </div>
 </template>
@@ -15,6 +15,7 @@ import {MessagesStore} from '../../../../store/modules/Messages';
 import { IMessages } from '@/entity/messages/messages.types';
 import {WebSocketStore} from '../../../../store/modules/WebSocket';
 import { ICourseItem } from '@/entity/courseItem/courseItem.type';
+import Messages from '@/entity/messages/messages';
 @Component({
   components: {MessageSend, Message, Notification}
 })
@@ -36,7 +37,7 @@ export default class SingleChat extends Vue {
 
         const {data} = JSON.parse(event.data)
         
-        this.messages.push(data)
+        this.messages.push(new Messages(data))
         const container =  await document.getElementById('chatContainer');
 
         container!.scrollTop = await container!.scrollHeight
@@ -48,8 +49,16 @@ export default class SingleChat extends Vue {
   }
 
   get messages(): IMessages[] {
+    console.log( MessagesStore.messages)
       return MessagesStore.messages
   }
+
+   getTime(createdAt: number): string {
+     console.log(createdAt)
+        const date = new Date(createdAt * 1000);
+        console.log(date)
+        return date.toLocaleString().slice(0,5) + date.toLocaleString().slice(10,17)
+    }
 }
 </script>
 

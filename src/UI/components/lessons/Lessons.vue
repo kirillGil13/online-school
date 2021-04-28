@@ -1,5 +1,5 @@
 <template>
-  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6 : isChat ? 2/5 : 42/44">
+  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 4.36/6 : isChat ? 2/5 : 42/44">
     <div class="lessons-block box-container">
        <div v-if="isChat" class="chat-header px-3 py-3">
          <span class="chat-title">Чат</span>
@@ -39,9 +39,9 @@
           </Button>
         </v-col>
       </div>
-      <template v-else>
+      <div class="send-message" v-else>
         <SendMessage @sendMessage="sendMessage"/>
-      </template>
+      </div>
       </div>
   </v-responsive>
 </template>
@@ -108,6 +108,11 @@ export default class Lessons extends Vue {
 </script>
 
 <style lang="scss">
+
+.send-message {
+  
+}
+
 .chat-header {
   display: flex;
   justify-content: space-between;
@@ -118,7 +123,7 @@ export default class Lessons extends Vue {
       border-bottom: 1px solid #f2f2f2;
       width: 100%;
       overflow: scroll;
-      max-height: 720px;
+      max-height: 820px;
 }
 
 .btn-close-chat {
