@@ -3,42 +3,54 @@
     <Search/>
     <v-row class="header-actions d-flex justify-space-between align-center" no-gutters>
       <div class="user d-flex flex-row align-center">
-        <v-avatar size="32" class="mr-3 ml-4">
-          <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFnG0huY6whcqQtmgJDP7XgSb8VCpmLUnKXw&usqp=CAU"
-              alt="">
+        <v-avatar v-if="chosenPartner" size="32" class="mr-3 ml-4" :color="chosenPartner && chosenPartner.photoLink ? '#F0F2F6' :randomColor(chosenPartner && chosenPartner.id % 10)">
+          <template v-slot:default v-if="chosenPartner.photoLink">
+              <v-img :src="chosenPartner && chosenPartner.photoLink" alt="" />
+          </template>
+          <template v-else v-slot:default>
+              <span style="color: #fff" class="font-weight-bold">{{(chosenPartner && chosenPartner.name[0] + chosenPartner &&  chosenPartner.name[0]).toUpperCase()}}</span>
+          </template>
         </v-avatar>
-        <div class="user__name">Руслан Габидуллин</div>
+        <div class="user__name">{{chosenPartner && chosenPartner.name + ' ' + chosenPartner.lastName}}</div>
       </div>
       <div class="actions d-flex flex-row justify-space-between">
-
-        <router-link :to="{name: $routeRules.ChatMain}" >
-          <div class="actions__item">
-            Чат
-          </div>
-        </router-link>
-        <router-link :to="{name: $routeRules.ChatNotes}" >
-          <div class="actions__item">
-            Уведомления
-          </div>
-        </router-link>
-        <router-link :to="{name: $routeRules.ChatTasks}" class="mr-4">
-          <div class="actions__item">
-            Задания
-          </div>
-        </router-link>
       </div>
     </v-row>
   </v-row>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-property-decorator';
 import Search from '@/UI/components/common/Search.vue';
+import { IDialogsAuthor } from '@/entity/dialogs/dialogs.types';
 @Component({
   components: {Search}
 })
 export default class ChatHeader extends Vue {
+  @Prop() readonly chosenPartner!: IDialogsAuthor;
+
+  randomColor(i: number) {
+    const COLORS = [
+    '#56CCF2',
+    '#BB6BD9',
+    '#6FCF97',
+    '#F2C94C',
+    '#967CBA',
+    '#FF9960',
+    '#566FF2',
+    '#FF5733',
+    '#FF89C9',
+    '#56F2DF',
+    '#F38460',
+    '#939ED6',
+    '#F271A0',
+    '#2ABF93',
+    '#FF9C9C',
+    '#6EC1F0',
+    '#3B4244'
+    ];
+    return COLORS[i || 0];
+  }
 }
 </script>
 

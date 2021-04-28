@@ -7,6 +7,6 @@ export class MessagesRepository implements IMessagesRepository {
     async fetchAll(route: string): Promise<IMessages[]> {
         const response = await Api.get(`/messages/accounts/${route}`);
         const data = response.data as MessagesResponseType[];
-        return data.map((message: MessagesResponseType) => new Messages(message));
+        return data.map((message: MessagesResponseType) => new Messages(message)).reverse();
     }
 }

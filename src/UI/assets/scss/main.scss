@@ -602,7 +602,8 @@ iframe {
   .message-container {
     padding: 60px 11px 16px 11px;
     height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 }
 

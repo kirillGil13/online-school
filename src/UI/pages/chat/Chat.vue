@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-col class="chat pa-0">
-      <ChatHeader/>
+      <ChatHeader :chosenPartner="($route.params.id && dialogsLoaded) && chosenPartner"/>
       <v-row class="chat-main d-flex flex-row" no-gutters>
-        <Conversations/>
-        <router-view></router-view>
+        <Conversations :dialogs="dialogs" @chousePartnerId="chousePartnerId"/>
+        <router-view v-if="$route.params.id"></router-view>
       </v-row>
     </v-col>
   </div>
@@ -15,15 +15,48 @@ import {Vue, Component} from 'vue-property-decorator';
 import Conversations from '@/UI/components/chat/Conversations.vue';
 import ChatHeader from '@/UI/components/chat/ChatHeader.vue';
 import InDev from '../../components/common/banners/InDev.vue';
+import { IDialogs, IDialogsAuthor } from '@/entity/dialogs/dialogs.types';
+import { DialogsStore } from '@/store/modules/Dialogs';
+import { RouterNameEnum } from '@/router/router.types';
 
 @Component({
   components: {InDev, ChatHeader, Conversations}
 })
 export default class Chat extends Vue {
+  chosenPartnerId: number | null = null;
 
-  async created(): Promise<void> {
-    console.log(1);
+  async created() {
+    await DialogsStore.fetchAll()
+
   }
+  get dialogs(): IDialogs[] {
+    return DialogsStore.dialogs;
+  }
+
+  get dialogsLoaded(): boolean {
+    return DialogsStore.dialogsLoaded;
+  }
+
+  get chosenPartner(): IDialogsAuthor | null  {
+
+    if(this.$route.params.id){
+      return this.dialogs.find(dialog => Number(dialog.account.id) === Number(this.$route.params.id) )!.account;
+    }else {
+      return null
+    }
+    
+  }
+
+  async findAccount(): Promise<IDialogsAuthor> {
+    return this.dialogs.find(dialog => Number(dialog.account.id) === Number(this.$route.params.id) )!.account;
+  }
+
+  chousePartnerId(id: number): void {
+    this.chosenPartnerId = id;
+    this.$router.push({name: RouterNameEnum.ChatMain, params: {id: id.toString()}})
+  }
+
+
 }
 </script>
 <style lang="scss">

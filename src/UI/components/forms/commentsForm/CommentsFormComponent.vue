@@ -79,7 +79,7 @@ export default class CommentsFormComponent extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .message-container {
   flex-wrap: nowrap;
 

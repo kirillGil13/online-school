@@ -1,34 +1,82 @@
 <template>
   <div class="pa-0 conversation d-flex flex-column ">
-    <div class="conversation__item d-flex flex-row" v-for="index in 16" :key="index"
-         :class="[index < 2 ? 'active' : '']">
-      <v-avatar size="56" class="mr-3">
-        <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFnG0huY6whcqQtmgJDP7XgSb8VCpmLUnKXw&usqp=CAU"
-            alt="">
+    <div class="conversation__item d-flex flex-row" @click="chosePartner(elem.account.id)" v-for="elem in dialogs" :key="elem.account.id"
+         :class="[elem.account.id === chousenChatId ? 'active' : '']">
+      <v-avatar size="56" class="mr-3" :color="elem && elem.account.photoLink ? '#F0F2F6' :randomColor(elem.account.id % 10)">
+         <template v-slot:default v-if="elem && elem.account.photoLink">
+              <v-img :src="elem && elem.account.photoLink" alt="" />
+          </template>
+          <template v-else v-slot:default>
+              <span style="color: #fff" class="font-weight-bold">{{elem.account.name[0] + elem.account.lastName[0].toUpperCase()}}</span>
+          </template>
       </v-avatar>
       <div class="conversation__content">
         <div class="conversation__header mb-1 d-flex justify-space-between align-center flex-row">
-          <div class="name">Руслан Габидуллин</div>
+          <div class="name">{{elem.account.name + ' ' + elem.account.lastName}}</div>
           <div class="status">
             <svg-icon name="Delivered"></svg-icon>
-            11:01
+            {{elem.lastMessage.createdAt}}
           </div>
         </div>
-        Да, отлично, хорошая идея, когда вы
+        {{elem.lastMessage.text}}
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { IDialogs } from '@/entity/dialogs/dialogs.types';
+import { DialogsStore } from '@/store/modules/Dialogs';
 import {Component, Vue} from 'vue-property-decorator';
 
 @Component
-export default class Conversations extends Vue {}
+export default class Conversations extends Vue {
+
+  chousenChatId: number | null = null;
+
+  async created() {
+    await DialogsStore.fetchAll()
+
+  }
+  get dialogs(): IDialogs[] {
+    return DialogsStore.dialogs;
+  }
+
+  chosePartner(id: number) {
+    this.chousenChatId = id;
+
+    this.$emit('chousePartnerId', id);
+  }
+
+  randomColor(i: number) {
+    const COLORS = [
+    '#56CCF2',
+    '#BB6BD9',
+    '#6FCF97',
+    '#F2C94C',
+    '#967CBA',
+    '#FF9960',
+    '#566FF2',
+    '#FF5733',
+    '#FF89C9',
+    '#56F2DF',
+    '#F38460',
+    '#939ED6',
+    '#F271A0',
+    '#2ABF93',
+    '#FF9C9C',
+    '#6EC1F0',
+    '#3B4244'
+    ];
+    return COLORS[i || 0];
+  }
+}
 </script>
 
 <style lang="scss">
+.active {
+  transform: rotate(0) !important;
+}
 .conversation {
   width: 327px !important;
   height: 100%;

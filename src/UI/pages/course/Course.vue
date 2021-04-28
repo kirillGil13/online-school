@@ -592,6 +592,10 @@ export default class Course extends Vue {
     min-height: max-content !important;
 }
 
+.sub-card {
+    min-height: max-content;
+}
+
 .rotateIcon {
     svg {
         transform: rotate(0) !important;

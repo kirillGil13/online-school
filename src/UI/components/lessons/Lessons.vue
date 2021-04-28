@@ -1,10 +1,10 @@
 <template>
   <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6  : isChat ? 2/5 : 42/44">
-      <div class="lessons-block box-container">
-        <div v-if="isChat" class="chat-header px-3 py-3">
-         <span class="chat-title">Чат</span>
-         <Button class="btn-close-chat" style="background-color: none !important" @submit="toggleOpenChat"><v-icon>mdi-close</v-icon></Button>
-         </div>
+      <div class="lessons-block d-flex flex-column align-end box-container">
+         <v-col v-if="isChat" align-self="start" class=" d-flex  flex-row align-center justify-space-between chat-header px-3 py-3">
+          <span class="chat-title">Чат</span>
+          <Button class="btn-close-chat" style="background-color: none !important" @submit="toggleOpenChat"><v-icon>mdi-close</v-icon></Button>
+         </v-col>
          <v-col class="lesson-container  pa-0"  v-if="!isChat"  align-self="start" :style="{height: $adaptive.isMobile ? '100%' : ''}">
 
        
@@ -40,7 +40,7 @@
             </Button>
           </v-col>
         </div>
-        <div class="send-message" v-else>
+        <div class="send-message" style="width:100%" v-else>
           <SendMessage @sendMessage="sendMessage"/>
         </div>
       </div>
@@ -109,14 +109,8 @@ export default class Lessons extends Vue {
 </script>
 
 <style lang="scss">
-
-.send-message {
-  
-}
-
 .chat-header {
-  display: flex;
-  justify-content: space-between;
+  width: 100%;
 }
 
 .chat-container {

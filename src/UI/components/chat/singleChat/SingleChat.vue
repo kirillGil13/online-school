@@ -22,10 +22,6 @@ import Messages from '@/entity/messages/messages';
 export default class SingleChat extends Vue {
   @Prop() readonly course!: ICourseItem;
 
-  mounted() {
-    
-  }
-
   get socket(): WebSocket | null {
     return WebSocketStore.socket;
   }
@@ -49,23 +45,19 @@ export default class SingleChat extends Vue {
   }
 
   get messages(): IMessages[] {
-    console.log( MessagesStore.messages)
-      return MessagesStore.messages
+    return MessagesStore.messages
   }
 
-   getTime(createdAt: number): string {
-     console.log(createdAt)
-        const date = new Date(createdAt * 1000);
-        console.log(date)
-        return date.toLocaleString().slice(0,5) + date.toLocaleString().slice(10,17)
-    }
+  getTime(createdAt: number): string {
+      const date = new Date(createdAt * 1000);
+      return date.toLocaleString().slice(0,5) + date.toLocaleString().slice(10,17)
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 
 .messages {
-    height: 100%;
     overflow: scroll;
 
     .message {

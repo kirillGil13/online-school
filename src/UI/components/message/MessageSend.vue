@@ -1,15 +1,15 @@
 <template>
   <div class="message-send d-flex flex-row align-end">
     <div class="send mr-5">
-      <v-textarea class="input" placeholder="Сообщение" color="#000000" outlined row-height="30" rows="1"
+      <v-textarea class="input" v-model="messageText" placeholder="Сообщение" color="#000000" outlined row-height="30" rows="1"
                   background-color="#FBFCFE" auto-grow single-line
       >
-        <template v-slot:prepend>
+        <!-- <template v-slot:prepend>
           <svg-icon name="Attach"></svg-icon>
-        </template>
+        </template> -->
       </v-textarea>
     </div>
-    <svg-icon class="send-icon" name="Send"></svg-icon>
+    <svg-icon class="send-icon" name="Send" @click="sendMessage"></svg-icon>
   </div>
 </template>
 
@@ -18,6 +18,12 @@ import {Component, Vue} from 'vue-property-decorator';
 
 @Component
 export default class MessageSend extends Vue {
+   messageText = '';
+
+  sendMessage(): void {
+      this.$emit('sendMessage', this.messageText);
+      this.messageText = '';
+  }
 }
 </script>
 

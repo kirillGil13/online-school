@@ -121,25 +121,16 @@ const routes = [
             },
             {
                 path: 'chat',
+                name: RouterNameEnum.Chat,
                 meta: {
                     title: 'Чат - ONELINKS'
                 },
                 component: () => import('../UI/pages/chat/Chat.vue'),
                 children: [
                     {
-                        path: '',
+                        path: ':id',
                         component: () => import('../UI/components/chat/sections/ChatMain.vue'),
                         name: RouterNameEnum.ChatMain
-                    },
-                    {
-                        path: 'notes',
-                        component: () => import('../UI/components/chat/sections/ChatNotes.vue'),
-                        name: RouterNameEnum.ChatNotes
-                    },
-                    {
-                        path: 'tasks',
-                        component: () => import('../UI/components/chat/sections/ChatTasks.vue'),
-                        name: RouterNameEnum.ChatTasks
                     },
                 ]
             },

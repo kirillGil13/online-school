@@ -23,6 +23,8 @@ export default class Message extends Vue {
 <style lang="scss">
 .message {
   width: 100%;
+  border: none !important;
+  background-color: none !important;
   .message-cont {
     max-width: 349px;
     padding: 12px 16px 13px 16px;
