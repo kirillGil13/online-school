@@ -1,15 +1,15 @@
 <template>
   <div>
     <div class="d-flex flex-column">
-      <div class="d-flex flex-column candidate-list" v-for="(candidate, index) in candidates" :key="index">
+      <div class="d-flex flex-column candidate-list mt-6"  v-for="(candidate, index) in candidates" :key="index">
         <div class="candidate-list-title mb-2" @click="showList(index)">
-          <v-icon :class="{active: !listId.includes(+index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon>
+          <v-icon :class="{active: !listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon>
           {{ index === today ? 'Сегодня' : index === yesterday ? 'Вчера' : index }}
         </div>
 
         <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}"
-             v-show="!listId.includes(+index)"
-             :class="[listId.includes(+index) && 'activeList', (!user.isSubscriptionActual) && 'closed']"
+             v-show="!listId.includes(index)"
+             :class="[listId.includes(index) && 'activeList', (!user.isSubscriptionActual) && 'closed']"
              v-on:mouseover="onHover" v-on:mouseout="onOutHover" @click="user.isSubscriptionActual && setChosenCandidate(el.id)"
              v-for="(el, idx) in candidate" :key="idx">
           <div class="status_select">
@@ -92,7 +92,7 @@ export default class TableCandidates extends Vue {
   archiveSelects: ISelect[] = [];
   isHover = false;
   isShowList = false;
-  listId: null | number[] = [];
+  listId: string[] = [];
   today = `${new Date().getDate()} ${MONTHS.find(el => (new Date().getMonth() + 1).toString().includes(el.id.toString()))?.value}`;
   yesterday = `${new Date().getDate() - 1} ${MONTHS.find(el => (new Date().getMonth() + 1).toString().includes(el.id.toString()))?.value}`;
 
@@ -122,17 +122,17 @@ export default class TableCandidates extends Vue {
   }
 
   showList(id: string): void {
-    const idx = this.listId?.findIndex((el) => el === +id)
+    const idx = this.listId.findIndex((el) => el === id)
     this.isShowList = !this.isShowList;
 
-    if (this.listId?.includes(+id)) {
+    if (this.listId.includes(id)) {
       this.listId.splice(idx!, 1);
       return
 
     }
 
-    if (!this.listId?.includes(+id)) {
-      this.listId!.push(+id);
+    if (!this.listId.includes(id)) {
+      this.listId!.push(id);
       return;
     }
   }

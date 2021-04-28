@@ -7,7 +7,7 @@
         description="Здесь отображаются контактные данные всех людей, которые зарегистрировались по вашим инфопакетам"
     >
     </Header>
-    <v-row class="mb-12">
+    <v-row class="mb-6">
       <v-col class="mt-6">
         <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
                          :filters="filters" @filter="onFilter" :countInArchive="countInArchive">
@@ -20,7 +20,7 @@
         </FilterComponent>
       </v-col>
     </v-row>
-    <CandidateSubscription class="mb-6" v-if="!user.isSubscriptionActual"/>
+    <CandidateSubscription v-if="!user.isSubscriptionActual"/>
     <v-row no-gutters  v-if="candidates !== {} || candidatesLoaded" class="d-flex">
       <v-col>
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
