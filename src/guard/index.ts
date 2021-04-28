@@ -22,4 +22,12 @@ export const mainGuard = (to: any, from: any, next: any): any => {
     } else return next();
 };
 
+export const landingGuard = (to: any, from: any, next: any): any => {
+    const isSubActive = AuthStore.user!.isSubscriptionActual;
+    if (isSubActive) {
+        return next();
+    } else return next('/404');
+};
+
+
 

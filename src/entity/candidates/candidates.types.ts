@@ -10,6 +10,7 @@ export interface ICandidate {
     isFiction: boolean;
     infoPackName: string | null;
     description: string;
+    isLocked: boolean;
 }
 export interface ICandidateStatus {
     id: number;
@@ -27,6 +28,7 @@ export type CandidateResponseType = {
     isFiction: boolean;
     infoPackName: string | null;
     description: string;
+    is_locked: boolean;
 };
 export type CandidateStatusResponseType = {
     id: number;

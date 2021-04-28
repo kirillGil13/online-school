@@ -5,8 +5,8 @@
       <div class="mt-1">Смотрите курсы, пользуйтесь инфопакетами <br>
         и ведите своих клиентов в CRM системе по подписке без ограничений</div>
     </div>
-    <div class="ml-4 d-flex align-center justify-center">
-      <Button @submit="$emit('openSub')" class="py-4 px-9 mt-0 font-14">Оформить подписку</Button>
+    <div class="d-flex align-center justify-center" :class="[$adaptive.isMobile ? 'full-width mt-4' : 'ml-4']">
+      <Button :full-width="$adaptive.isMobile" :small="$adaptive.isMobile" @submit="$emit('openSub')" :class="['mt-0 font-14', $adaptive.isMobile ? '' : 'py-4 px-9']">Оформить подписку</Button>
     </div>
   </v-row>
 </template>

@@ -9,11 +9,11 @@
 
         <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}"
              v-show="!listId.includes(index)"
-             :class="[listId.includes(index) && 'activeList', (!user.isSubscriptionActual) && 'closed']"
-             v-on:mouseover="onHover" v-on:mouseout="onOutHover" @click="user.isSubscriptionActual && setChosenCandidate(el.id)"
+             :class="[listId.includes(index) && 'activeList', el.isLocked && 'closed']"
+             v-on:mouseover="onHover" v-on:mouseout="onOutHover" @click="!el.isLocked && setChosenCandidate(el.id)"
              v-for="(el, idx) in candidate" :key="idx">
           <div class="status_select">
-            <Select v-if="user.isSubscriptionActual" class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
+            <Select v-if="!el.isLocked" class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
               <template v-slot:act>
                 <div class="d-flex flex-row align-center">
                   <v-img :src="el.status.photoLink" max-width="22" max-height="22"></v-img>
@@ -35,7 +35,7 @@
           </div>
           <div class="name d-flex align-start justify-center flex-column pl-1" style="flex:2">
             <div class="name_text" style="color:#101010; font-size:14px; font-weight: 500">{{ el.name }}</div>
-            <template v-if="user.isSubscriptionActual">
+            <template v-if="!el.isLocked">
               <div class="captions" style="color:#5F739C; font-size:12px; line-hight: 1.5" v-if="el.callTime"
                    @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{ el.callTime }}
               </div>
@@ -45,12 +45,12 @@
               <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{ el.status.name }}</div>
             </template>
           </div>
-          <a class="link" v-if="!$adaptive.isMobile && user.isSubscriptionActual" :href="'tel:' + el.phoneNumber"
+          <a class="link" v-if="!$adaptive.isMobile && !el.isLocked" :href="'tel:' + el.phoneNumber"
              style="flex:2; font-size: 14px; color: #426DF6 !important;">{{ el.phoneNumber }}</a>
-          <div style="flex:2" v-if="!$adaptive.isMobile && user.isSubscriptionActual">
+          <div style="flex:2" v-if="!$adaptive.isMobile && !el.isLocked">
             <div class="product">{{ el.infoPackName }}</div>
           </div>
-          <div class="pr-0 selects-dots" v-if="user.isSubscriptionActual">
+          <div class="pr-0 selects-dots" v-if="!el.isLocked">
             <Select class-name="select_content action" :selects="el.status.id === 4 ? newSelect : selects"
                     v-on="$listeners" :id="el.id">
               <template v-slot:act>
