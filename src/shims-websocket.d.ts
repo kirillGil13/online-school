@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/interface-name-prefix */
 import Vue, { VueConstructor } from 'vue';
 
+
 declare module 'vue/types/vue' {
     interface VueConstructor {
         $socket: WebSocket;

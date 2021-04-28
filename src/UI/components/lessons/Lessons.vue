@@ -25,8 +25,8 @@
           </li>
         </ul>
       </div>
-      <div class="chat-container" v-else>
-        <SingleChat style="width: 100% !important"/>
+      <div class="chat-container" ref="chatContainer" id="chatContainer" v-else>
+        <SingleChat :course="course" style="width: 100% !important"/>
       </div>
       <div v-if="!isChat" class="lesson-btn" :style="{justifyContent: last ? 'flex-start' : ''}">
         <v-col  class="d-flex px-3 py-3" :cols="$adaptive.isMobile ? 2 : ''">
@@ -53,6 +53,7 @@ import {LessonsTypesEnum} from '@/entity/common/lessons.types';
 import {ICourseItem} from '@/entity/courseItem/courseItem.type';
 import SingleChat from '../../components/chat/singleChat/SingleChat.vue';
 import SendMessage  from '../../components/chat/singleChat/sendMessage/SendMessage.vue';
+import {WebSocketStore} from '../../../store/modules/WebSocket';
 
 @Component({
   components: {
@@ -65,10 +66,7 @@ export default class Lessons extends Vue {
   @Prop() readonly course!: ICourseItem;
   lessonType = LessonsTypesEnum;
   //v-if="$route.params.lessonId"
-  accessTokenObj = localStorage.getItem('token');
   isChat = false;
-  connection: any = null;
-
 
   @Watch('isChat',{ immediate: true })
   async takeChat(): Promise<void> {
@@ -78,35 +76,33 @@ export default class Lessons extends Vue {
     return (this.course.lessons[this.course.lessons.length - 1].id.toString() === this.$route.params.lessonId);
   }
 
-  created() {
-    const el = `${process.env.VUE_APP_WSS_URL}?token=${this.accessTokenObj}`;
-    console.log(el)
-    this.connection = new WebSocket(`${process.env.VUE_APP_WSS_URL}?token=${this.accessTokenObj}`);
-
-    this.connection.onmessage = (event: EventTarget) => console.log(event);
-
-    this.connection.onopen = (event: EventTarget) => console.log(event);
-
-    this.connection.onclose = (event:EventTarget) => console.log(event)
+  get socket(): WebSocket | null {
+    return WebSocketStore.socket;
   }
+
 
   toggleOpenChat(): void {
     this.isChat = !this.isChat
   }
 
   sendMessage(message: string): void {
+    if(message.length === 0) {
+      return
+    }
     const el = {
       type: "send-message-service_type",
       data: {
-        purposeAccountId: Number(this.$route.params.id),
+        purposeAccountId: this.course.author.id ,
         text: message.toString()
 
       }
     }
-
-    console.log(JSON.stringify(el))
    
-    this.connection.send(JSON.stringify(el))
+    this.socket!.send(JSON.stringify(el));
+
+    const container =  document.getElementById('chatContainer');
+
+    container!.scrollTop = container!.scrollHeight
   }
 }
 </script>
@@ -122,7 +118,7 @@ export default class Lessons extends Vue {
       border-bottom: 1px solid #f2f2f2;
       width: 100%;
       overflow: scroll;
-      height: 86%;
+      max-height: 720px;
 }
 
 .btn-close-chat {

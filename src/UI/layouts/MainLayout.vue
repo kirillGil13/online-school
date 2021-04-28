@@ -48,6 +48,7 @@ import Error from '../components/common/banners/Error.vue';
 import {startIntercomMessenger} from '../../plugins/Intercom';
 import Modal from '../components/common/Modal.vue';
 import SubscribeFormalization from '../components/subscribeFormalization/SubscribeFormalization.vue';
+import { WebSocketStore } from '@/store/modules/WebSocket';
 
 
 @Component({
@@ -82,6 +83,7 @@ export default class MainLayout extends Vue {
 
   created(): void {
       startIntercomMessenger(AuthStore.user!);
+      WebSocketStore.setConnection();
   }
 
   activatorChange(act: boolean): void {
