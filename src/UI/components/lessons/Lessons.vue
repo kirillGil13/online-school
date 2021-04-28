@@ -1,47 +1,48 @@
 <template>
-  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 4.36/6 : isChat ? 2/5 : 42/44">
-    <div class="lessons-block box-container">
-       <div v-if="isChat" class="chat-header px-3 py-3">
+  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6  : isChat ? 2/5 : 42/44">
+      <div class="lessons-block box-container">
+        <div v-if="isChat" class="chat-header px-3 py-3">
          <span class="chat-title">Чат</span>
          <Button class="btn-close-chat" style="background-color: none !important" @submit="toggleOpenChat"><v-icon>mdi-close</v-icon></Button>
          </div>
-      <div class="lesson-container" v-if="!isChat" :style="{height: $adaptive.isMobile ? '100%' : ''}">
+         <v-col class="lesson-container  pa-0"  v-if="!isChat"  align-self="start" :style="{height: $adaptive.isMobile ? '100%' : ''}">
+
        
-        <ul class="lesson-list">
-          <li
-              v-for="(lesson, index) in course.lessons"
-              :key="index"
-          >
-            <router-link :to="{name: $routeRules.Lesson, params: {lessonId: lesson.id.toString()}}"
-                         active-class="lesson-current" :id="`lesson${index}`"
-                         :class="[ course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED ? 'lesson-locked' : '']">
-              <svg-icon class="svg-wh" :name="course.resolveType(index, $route.params.lessonId)"></svg-icon>
-              <div class="lesson_name">
-                <span class="desc d-flex justify-space-between">Урок {{ lesson.number }} </span>
-                {{ lesson.name }}
-              </div>
-              <span class="lesson_duration">{{lesson.duration}}</span>
-            </router-link>
-          </li>
-        </ul>
-      </div>
-      <div class="chat-container" ref="chatContainer" id="chatContainer" v-else>
-        <SingleChat :course="course" style="width: 100% !important"/>
-      </div>
-      <div v-if="!isChat" class="lesson-btn" :style="{justifyContent: last ? 'flex-start' : ''}">
-        <v-col  class="d-flex px-3 py-3" :cols="$adaptive.isMobile ? 2 : ''">
-          <Button  @submit="toggleOpenChat" class="d-flex justify-center align-center mt-0" style="width: 100%"><svg-icon class="mr-2" name="Chat"></svg-icon><span style="font-size: 12px;">Задать вопрос</span></Button>
-          <Button :class="['with_icon secondary_white ml-3 d-flex justify-center', $adaptive.isMobile ? 'py-2' : '']"
-                  style=" width: 20% !important"
-                  @submit="$emit('moveToNextLesson', course.lessons.find(item => item.id === parseInt($route.params.lessonId)).number)"
-                  v-if="!last && !$adaptive.isMobile && $route.params.lessonId" small full-width>
-            <svg-icon name="Next" :style="{marginRight: $adaptive.isMobile ? 0 : ''}"></svg-icon>
-          </Button>
+          <ul class="lesson-list">
+            <li
+                v-for="(lesson, index) in course.lessons"
+                :key="index"
+            >
+              <router-link :to="{name: $routeRules.Lesson, params: {lessonId: lesson.id.toString()}}"
+                          active-class="lesson-current" :id="`lesson${index}`"
+                          :class="[ course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED ? 'lesson-locked' : '']">
+                <svg-icon class="svg-wh" :name="course.resolveType(index, $route.params.lessonId)"></svg-icon>
+                <div class="lesson_name">
+                  <span class="desc d-flex justify-space-between">Урок {{ lesson.number }} </span>
+                  {{ lesson.name }}
+                </div>
+                <span class="lesson_duration">{{lesson.duration}}</span>
+              </router-link>
+            </li>
+          </ul>
         </v-col>
-      </div>
-      <div class="send-message" v-else>
-        <SendMessage @sendMessage="sendMessage"/>
-      </div>
+        <div class="chat-container" ref="chatContainer" id="chatContainer" v-else>
+          <SingleChat :course="course" style="width: 100% !important"/>
+        </div>
+        <div v-if="!isChat" class="lesson-btn pa-2" :style="{justifyContent: last ? 'flex-start' : ''}">
+          <v-col  class="d-flex pa-0" :cols="$adaptive.isMobile ? 2 : ''">
+            <Button  @submit="toggleOpenChat" class="d-flex justify-center align-center mt-0" style="width: 100%"><svg-icon class="mr-2" name="Chat"></svg-icon><span style="font-size: 12px;">Задать вопрос</span></Button>
+            <Button :class="['with_icon secondary_white ml-3 d-flex justify-center', $adaptive.isMobile ? 'py-4' : '']"
+                    style=" width: 20% !important"
+                    @submit="$emit('moveToNextLesson', course.lessons.find(item => item.id === parseInt($route.params.lessonId)).number)"
+                    v-if="!last && $route.params.lessonId" small full-width>
+              <svg-icon name="Next" :style="{marginRight: $adaptive.isMobile ? 0 : ''}"></svg-icon>
+            </Button>
+          </v-col>
+        </div>
+        <div class="send-message" v-else>
+          <SendMessage @sendMessage="sendMessage"/>
+        </div>
       </div>
   </v-responsive>
 </template>
@@ -155,11 +156,8 @@ export default class Lessons extends Vue {
 
     .lesson-container {
       position: relative;
-      border-bottom: 1px solid #f2f2f2;
       width: 100%;
       overflow: scroll;
-      height: 80%;
-
       ul {
         padding: 0;
         list-style: none;
@@ -228,12 +226,10 @@ export default class Lessons extends Vue {
     }
 
     .lesson-btn {
+      border-top: 1px solid #F2F2F2;
       display: flex;
       flex-direction: row;
-      flex-wrap: nowrap;
-      max-height: 70px;
-      height: 100%;
-
+      width: 100%;
       .with_icon {
         margin-top: 0;
         padding: 16px 0;

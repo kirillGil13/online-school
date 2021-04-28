@@ -45,12 +45,14 @@
     <v-row :class="['course-video-row', $adaptive.isMobile ? 'justify-center' : '']" v-if="lessonLoaded">
       <Relation
           svg-name="Finger"
+          class="mb-4"
           :class="isLiked && 'like-active'"
           :title="$adaptive.isMobile ? '' : 'Нравится'"
           @click="user.isSubscriptionActual ? $emit('handleLike', false) : activatorSub = true"
       />
       <Relation
           svg-class="svg-down"
+          class="mb-4"
           :class="isDisliked && 'dislike-active'"
           svg-name="Finger"
           :title="$adaptive.isMobile ? '' : 'Не нравится'"
@@ -58,12 +60,14 @@
       />
       <Relation
           svg-name="Chosen"
+          class="mb-4"
           :active="isFavourite"
           :title="$adaptive.isMobile ? '' : 'В избранное'"
           @click="handleFavourite"
       />
       <Relation
           svg-name="Message"
+          class="mb-4"
           :title="$adaptive.isMobile ? '' : 'Обсудить'"
           @click="user.isSubscriptionActual ? discuss : ''"
       />
@@ -740,7 +744,7 @@ export default class Lesson extends Vue {
 
 <style lang="scss">
 .course-video-row {
-  margin: 16px 0 16px 24px;
+  margin: 16px 0 0 24px;
 }
 
 .materials {
