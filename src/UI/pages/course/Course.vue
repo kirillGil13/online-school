@@ -46,16 +46,18 @@
                         </v-responsive>
                         <v-row
                             no-gutters
-                            :class="['course-video-row ml-6 my-4', $adaptive.isMobile ? 'justify-center' : '']"
+                            :class="['mt-4 ml-6', $adaptive.isMobile ? 'justify-center' : '']"
                         >
                             <Relation
                                 svg-name="Finger"
+                                class="mb-4"
                                 :title="$adaptive.isMobile ? '' : 'Нравится'"
                                 :class="course.isLiked && 'like-active'"
                                 @click="user.isSubscriptionActual ? handleLike(false) : activator = true"
                             />
                             <Relation
                                 svg-class="svg-down"
+                                class="mb-4"
                                 :class="course.isDisliked && 'dislike-active'"
                                 svg-name="Finger"
                                 @click="user.isSubscriptionActual ? handleDisLike(false) : activator = true"
@@ -63,6 +65,7 @@
                             />
                             <Relation
                                 svg-name="Chosen"
+                                class="mb-4"
                                 :active="course.isFavourite"
                                 :title="$adaptive.isMobile ? '' : 'В избранное'"
                                 @click="handleFavourite"
