@@ -371,10 +371,6 @@ export default class Course extends Vue {
         return CourseItemStore.courseItem;
     }
 
-    get defaultCourse(): IDefaultCourseItem {
-        return CourseItemStore.courseItemDefault;
-    }
-
     get courseLoaded(): boolean {
         return CourseItemStore.courseLoaded;
     }
@@ -460,8 +456,6 @@ export default class Course extends Vue {
     }
 
     async created(): Promise<void> {
-        await this.fetchData();
-        await ReviewsStore.fetchAll(this.$route.params.id);
         if (this.courseLoaded) {
             document.title = this.course!.name + ' - ' + 'ONELINKS';
         }
