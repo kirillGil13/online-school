@@ -1,7 +1,7 @@
 <template>
   <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6 : 42/44">
-    <div class="lessons-block box-container">
-      <div class="lesson-container" :style="{height: $adaptive.isMobile ? '100%' : ''}">
+    <div class="lessons-block d-flex flex-column align-end box-container">
+      <v-col class="lesson-container pa-0" align-self="start" :style="{height: $adaptive.isMobile ? '100%' : ''}">
         <ul class="lesson-list">
           <li
               v-for="(lesson, index) in course.lessons"
@@ -19,18 +19,18 @@
             </router-link>
           </li>
         </ul>
-      </div>
-      <div class="lesson-btn" :style="{justifyContent: last ? 'flex-start' : ''}">
+      </v-col>
+      <div class="lesson-btn pa-2" :style="{justifyContent: last ? 'flex-start' : ''}">
 <!--        <v-col class="px-2 py-2">-->
 <!--          <Button :class="['with_icon', $adaptive.isMobile ? 'py-2' : '']" small full-width>-->
 <!--            <svg-icon name="Chat"></svg-icon>-->
 <!--            Задать вопрос-->
 <!--          </Button>-->
 <!--        </v-col>-->
-        <v-col class="px-2 py-2" :cols="$adaptive.isMobile ? 2 : ''">
-          <Button :class="['with_icon secondary_white', $adaptive.isMobile ? 'py-2' : '']"
+        <v-col class="pa-0" :cols="$adaptive.isMobile ? 2 : ''">
+          <Button :class="['with_icon secondary_white', $adaptive.isMobile ? 'py-4' : '']"
                   @submit="$emit('moveToNextLesson', course.lessons.find(item => item.id === parseInt($route.params.lessonId)).number)"
-                  v-if="!last && !$adaptive.isMobile && $route.params.lessonId" small full-width>
+                  v-if="!last && $route.params.lessonId" small full-width>
             <svg-icon name="Next" :style="{marginRight: $adaptive.isMobile ? 0 : ''}"></svg-icon>
             {{$adaptive.isMobile ? '' : 'Следующий урок'}}
           </Button>
@@ -81,11 +81,8 @@ export default class Lessons extends Vue {
 
     .lesson-container {
       position: relative;
-      border-bottom: 1px solid #f2f2f2;
       width: 100%;
       overflow: scroll;
-      height: 80%;
-
       ul {
         padding: 0;
         list-style: none;
@@ -154,12 +151,10 @@ export default class Lessons extends Vue {
     }
 
     .lesson-btn {
+      border-top: 1px solid #F2F2F2;
       display: flex;
       flex-direction: row;
-      flex-wrap: nowrap;
-      max-height: 70px;
-      height: 100%;
-
+      width: 100%;
       .with_icon {
         margin-top: 0;
         padding: 16px 0;
