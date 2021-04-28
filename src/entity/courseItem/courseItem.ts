@@ -23,20 +23,20 @@ export default class CourseItem implements ICourseItem {
     constructor(data: CourseItemResponseType) {
         this.id = data.id;
         this.name = data.name;
-        this.description = this.resolveDescription(data.description);
+        this.description = data.description ? this.resolveDescription(data.description) : '';
         this.cost = data.cost;
         this.author = data.author;
-        this.author.description = this.resolveDescription(data.author.description)
+        this.author.description = data.author.description ? this.resolveDescription(data.author.description) : '';
         this.accountId = data.account_id;//eslint-disable-line
         this.level = data.level;
         this.isLiked = data.is_liked;
         this.isDisliked = data.is_disliked;
         this.isFavourite = data.is_favourite;
         this.photoLink = data.photo_link;
-        this.countLikes = data.count_likes,
-        this.countDislikes = data.count_dislikes,
-        this.countViews = data.count_views.toLocaleString(),
-        this.rating = data.rating,
+        this.countLikes = data.count_likes;
+        this.countDislikes = data.count_dislikes;
+        this.countViews = data.count_views.toLocaleString();
+        this.rating = data.rating;
         this.totalDuration = this.fullDuration(data.total_duration)
         for (let i = 0; i < data.lessons.length; i++) {
             this.lessons.push({

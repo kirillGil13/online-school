@@ -7,7 +7,7 @@
         description="Здесь отображаются контактные данные всех людей, которые зарегистрировались по вашим инфопакетам"
     >
     </Header>
-    <v-row>
+    <v-row class="mb-12">
       <v-col class="mt-6">
         <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
                          :filters="filters" @filter="onFilter" :countInArchive="countInArchive">
@@ -20,13 +20,14 @@
         </FilterComponent>
       </v-col>
     </v-row>
+    <CandidateSubscription class="mb-6" v-if="!user.isSubscriptionActual"/>
     <v-row no-gutters  v-if="candidates !== {} || candidatesLoaded" class="d-flex">
-      <v-col class="mt-6">
+      <v-col>
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"  @candidateChangeCallTimeDetails="candidateChangeCallTimeDetails" @choseCandidate="choseCandidate"/>
       </v-col>
-      <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="!$adaptive.isMobile && openItemDetails ">
-        <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
+      <div style="width: 29%; margin-top: 3%;" class="ml-4" v-show="!$adaptive.isMobile && openItemDetails ">
+        <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime" @candidateChangeCallTimeDetails="candidateChangeCallTimeDetails"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </div>
     </v-row>
     <v-row v-else-if="candidates === {}">
@@ -115,9 +116,11 @@ import CallTimeFormComponent from '../../components/forms/callTimeForm/CallTimeF
 import CandidateItemDetail from '../../components/candidateItemDetail/CandidateItemDetail.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import Alert from '../../components/common/Alert.vue';
+import CandidateSubscription from '../../components/subscription/CandidateSubscription.vue';
 
 @Component({
   components: {
+    CandidateSubscription,
     CallTimeFormComponent,
     UpdateCandidateFormComponent,
     StatusFormComponent,

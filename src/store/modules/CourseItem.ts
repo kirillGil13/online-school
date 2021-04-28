@@ -12,15 +12,6 @@ import {IDefaultCourseItem} from '@/entity/courseItem/courseItemDefault';
 class CourseItemModule extends VuexModule {
     courseItem: ICourseItem | null  = null;
     courseLoaded = false;
-    courseItemDefault: IDefaultCourseItem = {
-        id: 'MA',
-        author: 'Maksimov Aidar',
-        socials: [
-            {id: 'instagram', name: 'Instagram'},
-            {id: 'vk', name: 'VK'}
-        ],
-        authorDescription: 'dasdasdiwdoqwbouwduodhwquod',
-    }
 
     @MutationAction
     async fetchData(courseId: string): Promise<{ courseItem: ICourseItem; courseLoaded: boolean }> {
