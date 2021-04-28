@@ -20,7 +20,7 @@
         </FilterComponent>
       </v-col>
     </v-row>
-    <CandidateSubscription v-if="!user.isSubscriptionActual"/>
+    <CandidateSubscription @openSub="activatorSub = true" v-if="!user.isSubscriptionActual"/>
     <v-row no-gutters  v-if="candidates !== {} || candidatesLoaded" class="d-flex">
       <v-col>
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
@@ -75,6 +75,11 @@
         <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </template>
     </Modal>
+    <Modal :activator="activatorSub" :max-width="1000" @activatorChange="activatorSubChange" color="#F2F2F2">
+      <template v-slot:content>
+        <SubscribeFormalization/>
+      </template>
+    </Modal>
     <Alert :show="show" :type="alertType.Success" text="Заметка добавлена" @show="showAlert"/>
   </v-col>
 </template>
@@ -117,9 +122,11 @@ import CandidateItemDetail from '../../components/candidateItemDetail/CandidateI
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import Alert from '../../components/common/Alert.vue';
 import CandidateSubscription from '../../components/subscription/CandidateSubscription.vue';
+import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
 
 @Component({
   components: {
+    SubscribeFormalization,
     CandidateSubscription,
     CallTimeFormComponent,
     UpdateCandidateFormComponent,
@@ -139,6 +146,7 @@ import CandidateSubscription from '../../components/subscription/CandidateSubscr
 export default class Candidates extends Vue {
   filters: Filters;
   activator = false;
+  activatorSub = false;
   activatorStatus = false;
   activatorCandidate = false;
   activatorCallTime = false;
@@ -253,6 +261,11 @@ export default class Candidates extends Vue {
     this.destroy = true;
     this.activator = act;
   }
+
+  activatorSubChange(act: boolean): void {
+    this.activatorSub = act;
+  }
+
 
   activatorChangeStatus(act: boolean): void {
     this.destroy = true;

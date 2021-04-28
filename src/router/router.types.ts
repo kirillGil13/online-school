@@ -35,5 +35,6 @@ export enum RouterNameEnum {
     Chosen = 'Chosen',
     Landing = 'Landing',
     Cabinet = 'Cabinet',
-    Confirm = 'Confirm'
+    Confirm = 'Confirm',
+    NotFound = 'NotFound',
 }
