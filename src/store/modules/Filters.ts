@@ -40,7 +40,7 @@ class FiltersModule extends VuexModule {
                     maxCost: 0
                 },
                 {
-                    text: '50 - 5000 ₽',
+                    text: 'до 5000 ₽',
                     value: 2,
                     minCost: 50,
                     maxCost: 5000,

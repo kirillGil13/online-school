@@ -7,14 +7,14 @@ import { requiredIf } from 'vuelidate/lib/validators';
 @Component
 export class ReviewsForm extends Form {
     @Validate(requiredIf(function (vm): boolean {
-        return !vm.isLike
+        return vm.isLike === null || vm.reviewText === ''
     }), 'Оставьте отзыв')
     public reviewText = '';
     public reviewId: number | null = null;
     @Validate(requiredIf(function (vm): boolean {
         return vm.isLike === null
     }), 'Оставьте отзыв')
-    public isLike: boolean | null = null;;
+    public isLike: boolean | null = null;
     public serverErrors: { [key: string]: string[] } = {};
 
     getFormData(): ReviewsFormRequestType {

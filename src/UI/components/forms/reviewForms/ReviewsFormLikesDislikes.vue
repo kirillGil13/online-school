@@ -1,28 +1,28 @@
 <template>
-    <v-row no-gutters class="message-containers d-flex flex-row align-start mt-2" :style="{backgroundColor: background ? background : ''}">
+    <v-row no-gutters class="message-containers bg_white d-flex flex-row align-start" :style="{backgroundColor: background ? background : ''}">
         <v-col class="pa-0 d-flex flex-row align-end">
             <form-group class="width" field="review" :form="form" show-custom-error >
                 <div class="review-text">
                     <div class="review-text__title">оставить отзыв</div>
                     <div class="review-text__actions">
                         <div class="review-text__set-review">
-                            <v-textarea 
+                            <v-textarea
                                 class="like-dislike-text"
                                 ref="contentTextArea"
-                                no-resize                            
+                                no-resize
                                 @click.stop="focusOnTexarea"
                                 id="message"
-                                :placeholder="!course.isLiked ? 'Напишите текст отзыва, чтобы сохранить оценку (обязательно)' : 'Напишите текст отзыва' "
+                                :placeholder="!form.isLike ? 'Напишите текст отзыва, чтобы сохранить оценку (обязательно)' : 'Напишите текст отзыва' "
                                 rows="5"
                                 v-model="form.reviewText"
                             />
                         </div>
                         <div class="review-text__like-dislike">
                             <div :class="course.isLiked === true ? 'like--active' : 'like'">
-                                <Relation svg-name="Finger"  @click="$emit('handleLike', false)" />
+                                <Relation svg-name="Finger"  @click="$emit('handleLike', {form: formName, formButton: true})" />
                             </div>
                             <div :class="course.isDisliked === true ? 'dislike--active' : 'dislike'">
-                                <Relation svg-class="svg-down" svg-name="Finger" @click="$emit('handleDisLike', false)" />
+                                <Relation svg-class="svg-down" svg-name="Finger" @click="$emit('handleDisLike', {form: formName, formButton: true})" />
                             </div>
                         </div>
                     </div>
@@ -58,7 +58,8 @@ export default class ReviewsFormLikesDislikes extends Vue {
     @Prop() readonly form!: ReviewsForm;
     @Prop({default:''}) readonly background?: string;
     @Prop() readonly course!: ICourseItem;
-    
+    @Prop() readonly formName!: string;
+
     mounted(): void {
         setTimeout(() => {
             (this.$refs.contentTextArea as HTMLElement).focus();
@@ -85,7 +86,7 @@ export default class ReviewsFormLikesDislikes extends Vue {
         },1)
     }
 
-    setReviewLike() {
+    setReviewLike(): void {
         if(this.course!.isLiked){
             this.course!.isLiked = false;
             this.course!.isDisliked = false;
@@ -97,7 +98,7 @@ export default class ReviewsFormLikesDislikes extends Vue {
         }
     }
 
-    setReviewDisLike() {
+    setReviewDisLike(): void {
         if(this.course!.isDisliked){
             this.course!.isLiked = false;
             this.course!.isDisliked = false;
@@ -109,7 +110,7 @@ export default class ReviewsFormLikesDislikes extends Vue {
         }
     }
 
-    buttonFunc() {
+    buttonFunc(): void {
         if(this.course.isLiked) {
             this.$emit('setMark')
         }else{
@@ -140,6 +141,10 @@ body input, body textarea {
         -webkit-user-select: text;
         user-select: text;
     }
+
+  &.bg_white {
+    background-color: #FFFFFF !important;
+  }
 
     .review-text {
         &__title {

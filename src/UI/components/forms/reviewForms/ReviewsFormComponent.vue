@@ -6,7 +6,7 @@
                     <div class="review-text__title">оставить отзыв</div>
                     <div class="review-text__actions">
                         <div class="review-text__set-review">
-                            <v-textarea 
+                            <v-textarea
                                 ref="contentTextArea"
                                 no-resize
                                 id="message"
