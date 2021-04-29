@@ -14,7 +14,7 @@ export class ReviewsForm extends Form {
     @Validate(requiredIf(function (vm): boolean {
         return vm.isLike === null
     }), 'Оставьте отзыв')
-    public isLike: boolean | null = null;;
+    public isLike: boolean | null = null;
     public serverErrors: { [key: string]: string[] } = {};
 
     getFormData(): ReviewsFormRequestType {

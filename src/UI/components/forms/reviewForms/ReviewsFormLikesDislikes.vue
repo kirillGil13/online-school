@@ -12,17 +12,17 @@
                                 no-resize
                                 @click.stop="focusOnTexarea"
                                 id="message"
-                                :placeholder="!course.isLiked ? 'Напишите текст отзыва, чтобы сохранить оценку (обязательно)' : 'Напишите текст отзыва' "
+                                :placeholder="!form.isLike ? 'Напишите текст отзыва, чтобы сохранить оценку (обязательно)' : 'Напишите текст отзыва' "
                                 rows="5"
                                 v-model="form.reviewText"
                             />
                         </div>
                         <div class="review-text__like-dislike">
                             <div :class="course.isLiked === true ? 'like--active' : 'like'">
-                                <Relation svg-name="Finger"  @click="$emit('handleLike', false)" />
+                                <Relation svg-name="Finger"  @click="$emit('handleLike', {form: formName, formButton: true})" />
                             </div>
                             <div :class="course.isDisliked === true ? 'dislike--active' : 'dislike'">
-                                <Relation svg-class="svg-down" svg-name="Finger" @click="$emit('handleDisLike', false)" />
+                                <Relation svg-class="svg-down" svg-name="Finger" @click="$emit('handleDisLike', {form: formName, formButton: true})" />
                             </div>
                         </div>
                     </div>
@@ -58,6 +58,7 @@ export default class ReviewsFormLikesDislikes extends Vue {
     @Prop() readonly form!: ReviewsForm;
     @Prop({default:''}) readonly background?: string;
     @Prop() readonly course!: ICourseItem;
+    @Prop() readonly formName!: string;
 
     mounted(): void {
         setTimeout(() => {
