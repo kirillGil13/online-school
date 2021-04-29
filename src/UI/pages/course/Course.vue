@@ -53,14 +53,14 @@
                                 class="mb-4"
                                 :title="$adaptive.isMobile ? '' : 'Нравится'"
                                 :class="course.isLiked && 'like-active'"
-                                @click="user.isSubscriptionActual ? handleLike(false) : activator = true"
+                                @click="user.isSubscriptionActual ? handleLike({form: formName.likeDislike, formButton: false}) : activator = true"
                             />
                             <Relation
                                 svg-class="svg-down"
                                 class="mb-4"
                                 :class="course.isDisliked && 'dislike-active'"
                                 svg-name="Finger"
-                                @click="user.isSubscriptionActual ? handleDisLike(false) : activator = true"
+                                @click="user.isSubscriptionActual ? handleDisLike({form: formName.likeDislike, formButton: false}) : activator = true"
                                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
                             />
                             <Relation
@@ -75,6 +75,7 @@
                         <v-row no-gutters class="mb-6" v-if="toggleOpenLikeDislikeForm">
                             <template >
                                 <ReviewsFormLikesDislikes
+                                    :form-name="formName.likeDislike"
                                     :form="reviewsForm"
                                     :course="course"
                                     @setReview="setReview"
@@ -142,7 +143,7 @@
                                                 :key="componentKey"
                                                 svg-name="Finger"
                                                 :title="course.countLikes"
-                                                @click="handleLike(true)"
+                                                @click="handleLike({form: formName.review, formButton: false})"
                                                 isRaiting="true"
                                             />
                                         </div>
@@ -154,7 +155,7 @@
                                                 svg-class="svg-down"
                                                 svg-name="Finger"
                                                 :title="course.countDislikes"
-                                                @click="handleDisLike(true)"
+                                                @click="handleDisLike({form: formName.review, formButton: false})"
                                             />
                                         </div>
                                     </div>
@@ -166,13 +167,23 @@
                                     </div>
                                 </div>
                                 <template v-if="isSetReview">
-                                    <reviews-form-component
-                                        :form="reviewsForm"
-                                        :course="course"
-                                        @setReview="setReview"
-                                        @handleLike="handleLike"
-                                        @handleDisLike="handleDisLike"
-                                    />
+<!--                                    <reviews-form-component-->
+<!--                                        :form="reviewsForm"-->
+<!--                                        :course="course"-->
+<!--                                        @setReview="setReview"-->
+<!--                                        @handleLike="handleLike"-->
+<!--                                        @handleDisLike="handleDisLike"-->
+<!--                                    />-->
+                                  <ReviewsFormLikesDislikes
+                                      :form="reviewsForm"
+                                      :form-name="formName.review"
+                                      :course="course"
+                                      @setReview="setReview"
+                                      @cancelDislike="cancelDislike"
+                                      @setMark="setMark"
+                                      @handleLike="handleLike"
+                                      @handleDisLike="handleDisLike"
+                                  />
                                 </template>
                             </div>
                             <div>
@@ -272,6 +283,10 @@ export default class Course extends Vue {
     showAll = false;
     componentKey = 0;
     toggleOpenLikeDislikeForm = false;
+    formName = {
+      likeDislike: 'likeDislike',
+      review: 'review'
+    }
 
 
     @Watch('$route.params.lessonId', { immediate: true })
@@ -449,6 +464,7 @@ export default class Course extends Vue {
         this.course!.isDisliked = false;
         this.course!.isLiked = false;
         this.toggleOpenLikeDislikeForm = false;
+        this.isSetReview = false;
         this.reviewsForm.clearData()
         this.reviewsForm.isLike = null;
         Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
@@ -468,14 +484,14 @@ export default class Course extends Vue {
         await ReviewsStore.fetchAll(this.$route.params.id);
         await this.reviewsForm.clearData();
         this.toggleOpenLikeDislikeForm = false;
+        this.isSetReview = false;
     }
 
     async fetchData(): Promise<void> {
         await CourseItemStore.fetchData(this.$route.params.id);
     }
 
-    async handleLike(empty: boolean): Promise<void> {
-
+  async handleLike(data: {form: string; formButton: boolean}): Promise<void> {
         if(this.course?.isDisliked) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
             await ReviewsStore.fetchAll(this.$route.params.id);
@@ -483,35 +499,34 @@ export default class Course extends Vue {
         }
 
         if (this.course?.isLiked) {
+          if (!data.formButton) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
             await ReviewsStore.fetchAll(this.$route.params.id);
             Vue.set(this.course!, 'countLikes', this.course!.countLikes - 1);
             this.course!.isLiked = false;
             this.course!.isDisliked = false;
-
-            if(empty) {
-                this.isSetReview = false;
-            }else {
-                this.toggleOpenLikeDislikeForm = false;
-            }
-
-            this.reviewsForm.clearData()
+            this.isSetReview = false;
+            this.toggleOpenLikeDislikeForm = false;
+            this.reviewsForm.clearData();
+          }
         } else {
+          if (!data.formButton) {
+            if (data.form === this.formName.likeDislike) {
+              this.isSetReview = false;
+              this.toggleOpenLikeDislikeForm = true;
+            } else {
+              this.isSetReview = true;
+              this.toggleOpenLikeDislikeForm = false;
+            }
+          }
             this.course!.isDisliked = false;
             this.course!.isLiked = true;
             Vue.set(this.course!, 'countLikes', this.course!.countLikes + 1);
-
-            if(empty) {
-                this.isSetReview = true;
-            }else {
-                this.toggleOpenLikeDislikeForm = true;
-            }
-
             this.reviewsForm.isLike = true;
         }
     }
 
-    async handleDisLike(empty: boolean): Promise<void> {
+    async handleDisLike(data: {form: string; formButton: boolean}): Promise<void> {
         if(this.course?.isLiked) {
                 await RelationStore.deleteLikeDislike(this.$route.params.id);
                 await ReviewsStore.fetchAll(this.$route.params.id);
@@ -519,31 +534,30 @@ export default class Course extends Vue {
         }
 
         if (this.course!.isDisliked) {
+          if (!data.formButton) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
             await ReviewsStore.fetchAll(this.$route.params.id);
             this.course!.isDisliked = false;
             this.course!.isLiked = false;
             Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
-
-            if(empty) {
-                this.isSetReview = false;
-            }else {
-                this.toggleOpenLikeDislikeForm = false;
-            }
-
             this.reviewsForm.isLike = null;
+            this.isSetReview = false;
+            this.toggleOpenLikeDislikeForm = false;
             this.reviewsForm.clearData()
+          }
         } else {
+          if (!data.formButton) {
+            if (data.form === this.formName.likeDislike) {
+              this.isSetReview = false;
+              this.toggleOpenLikeDislikeForm = true;
+            } else {
+              this.isSetReview = true;
+              this.toggleOpenLikeDislikeForm = false;
+            }
+          }
             this.course!.isLiked = false;
             this.course!.isDisliked = true;
-
             Vue.set(this.course!, 'countDislikes', this.course!.countDislikes + 1);
-
-            if(empty) {
-                this.isSetReview = true;
-            }else {
-                this.toggleOpenLikeDislikeForm = true;
-            }
             this.reviewsForm.isLike = false;
         }
     }
