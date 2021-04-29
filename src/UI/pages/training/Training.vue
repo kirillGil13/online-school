@@ -20,22 +20,8 @@
         </FilterComponent>
       </v-col>
     </v-row>
-    <!--todo-->
-    <!--    <v-col>-->
-    <!--      <v-row class="mt-10">-->
-    <!--        <div class="hash-tag__wrapper mr-3">-->
-    <!--          <span class="hash-tag__content">#finiko</span>-->
-    <!--        </div>-->
-    <!--        <div class="hash-tag__wrapper mr-3">-->
-    <!--          <span class="hash-tag__content">#vexel</span>-->
-    <!--        </div>-->
-    <!--        <div class="hash-tag__wrapper">-->
-    <!--          <span class="hash-tag__content">#fnk</span>-->
-    <!--        </div>-->
-    <!--      </v-row>-->
-    <!--    </v-col>-->
-    <router-view v-if="leadersCourses.length !== 0 || leadersCoursesLoaded" :leaderCourses="leadersCourses"/>
-    <v-row v-else-if="leadersCourses === []">
+    <router-view v-if="leadersCourses.length !== 0 && leadersCoursesLoaded" :leaderCourses="leadersCourses"/>
+    <v-row v-else-if="leadersCourses.length === 0">
       <v-col class="mt-10 d-flex justify-center align-center">
         К сожалению данные не найдены
       </v-col>

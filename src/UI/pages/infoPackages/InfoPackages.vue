@@ -48,6 +48,8 @@ export default class InfoPackages extends Vue {
         query: {account_id: this.user!.id.toString()}//eslint-disable-line
       });
       window.open(routeData.href, '_blank');
+    } else {
+      this.activatorSub = true;
     }
   }
 
