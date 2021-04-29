@@ -332,10 +332,6 @@ export default class Lesson extends Vue {
     return CommentsStore.commentsLoaded;
   }
 
-  get defaultCourse(): IDefaultCourseItem {
-    return CourseItemStore.courseItemDefault;
-  }
-
   startTimer(): void {
     // this.interval = setTimeout(() => {
     //   console.log(this.skip);
@@ -561,6 +557,7 @@ export default class Lesson extends Vue {
   async changeComment(id: number): Promise<void> {
     if (await this.commentsChangeForm.submit(CommentsStore.patchComment, id.toString())) {
       this.comments.find((item) => item.id === id)!.message = this.commentsChangeForm.message;
+      this.comments.find((item) => item.id === id)!.isEdited = true;
       this.commentsChangeForm.showChangeComment = false;
     }
   }

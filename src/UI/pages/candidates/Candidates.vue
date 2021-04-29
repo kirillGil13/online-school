@@ -7,7 +7,7 @@
         description="Здесь отображаются контактные данные всех людей, которые зарегистрировались по вашим инфопакетам"
     >
     </Header>
-    <v-row>
+    <v-row class="mb-6">
       <v-col class="mt-6">
         <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
                          :filters="filters" @filter="onFilter" :countInArchive="countInArchive">
@@ -20,13 +20,14 @@
         </FilterComponent>
       </v-col>
     </v-row>
+    <CandidateSubscription @openSub="activatorSub = true" v-if="!user.isSubscriptionActual"/>
     <v-row no-gutters  v-if="candidates !== {} || candidatesLoaded" class="d-flex">
-      <v-col class="mt-6">
+      <v-col>
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"
                          @extraAction="openUpdate" @addStatus="activatorStatus = true"  @candidateChangeCallTimeDetails="candidateChangeCallTimeDetails" @choseCandidate="choseCandidate"/>
       </v-col>
-      <div style="width: 29%; margin-top: 7.5%;" class="ml-4" v-show="!$adaptive.isMobile && openItemDetails ">
-        <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
+      <div style="width: 29%; margin-top: 5.5%;" class="ml-4" v-show="!$adaptive.isMobile && openItemDetails ">
+        <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime" @candidateChangeCallTimeDetails="candidateChangeCallTimeDetails"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </div>
     </v-row>
     <v-row v-else-if="candidates === {}">
@@ -74,6 +75,11 @@
         <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </template>
     </Modal>
+    <Modal :activator="activatorSub" :max-width="1000" @activatorChange="activatorSubChange" color="#F2F2F2">
+      <template v-slot:content>
+        <SubscribeFormalization/>
+      </template>
+    </Modal>
     <Alert :show="show" :type="alertType.Success" text="Заметка добавлена" @show="showAlert"/>
   </v-col>
 </template>
@@ -115,9 +121,13 @@ import CallTimeFormComponent from '../../components/forms/callTimeForm/CallTimeF
 import CandidateItemDetail from '../../components/candidateItemDetail/CandidateItemDetail.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import Alert from '../../components/common/Alert.vue';
+import CandidateSubscription from '../../components/subscription/CandidateSubscription.vue';
+import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
 
 @Component({
   components: {
+    SubscribeFormalization,
+    CandidateSubscription,
     CallTimeFormComponent,
     UpdateCandidateFormComponent,
     StatusFormComponent,
@@ -136,6 +146,7 @@ import Alert from '../../components/common/Alert.vue';
 export default class Candidates extends Vue {
   filters: Filters;
   activator = false;
+  activatorSub = false;
   activatorStatus = false;
   activatorCandidate = false;
   activatorCallTime = false;
@@ -250,6 +261,11 @@ export default class Candidates extends Vue {
     this.destroy = true;
     this.activator = act;
   }
+
+  activatorSubChange(act: boolean): void {
+    this.activatorSub = act;
+  }
+
 
   activatorChangeStatus(act: boolean): void {
     this.destroy = true;
@@ -439,8 +455,10 @@ export default class Candidates extends Vue {
     this.activator = false;
   }
 
-  async updateNote(data: {note: string, id: number}): Promise<void> {
-    await CandidateItemStore.update({data: {description: data.note}, route: data.id.toString()});
+  async updateNote(data: {note: string; id: number}): Promise<void> {
+    const phoneNumber = Object.values(this.candidates).flat().find(item => item.id === data.id)!.phoneNumber;
+    const email = Object.values(this.candidates).flat().find(item => item.id === data.id)!.email;
+    await CandidateItemStore.update({data: {description: data.note, phoneNumber: phoneNumber && phoneNumber, email: email && email}, route: data.id.toString()});
     this.show = true;
   }
 

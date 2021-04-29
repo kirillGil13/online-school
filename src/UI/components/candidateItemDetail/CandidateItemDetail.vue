@@ -35,9 +35,9 @@
                 </Select>
 
                 <div class="d-flex align-start justify-center flex-column ml-3">
-                    <div class="caption" v-if="item && item.callTime" @click="$emit('candidateChangeCallTimeDetails', item.id)">Позвонить {{item.callTime}}</div>
-                    <div class="caption"  v-else-if="item && item.status.id === 3" @click="$emit('candidateChangeCallTimeDetails', item.id)">{{item && item.status.name}}</div>
-                    <div class="caption__origin" style="font-size: 16px; color: #101010;" v-else>{{ item && item.status.name}}</div>
+                    <div v-if="item && item.callTime" style="font-size: 16px; color: #101010; cursor: pointer" @click="$emit('candidateChangeCallTimeDetails', item.id)">Позвонить {{item.callTime}}</div>
+                    <div style="font-size: 16px; color: #101010; cursor: pointer" v-else-if="item && item.status.id === 3" @click="$emit('candidateChangeCallTimeDetails', item.id)">{{item && item.status.name}}</div>
+                    <div style="font-size: 16px; color: #101010;" v-else>{{ item && item.status.name}}</div>
                 </div>
             </div>
         </div>
@@ -134,9 +134,9 @@ export default class CandidateItemDetail extends Vue {
     mounted(): void {
       const detail = document.getElementById('detail');
       window.addEventListener('scroll', () => {
-        if (document.documentElement.scrollTop >= 220 && !detail!.classList.contains('scrolled') && !this.$adaptive.isMobile) {
+        if (document.documentElement.scrollTop >= 235 && !detail!.classList.contains('scrolled') && !this.$adaptive.isMobile) {
           detail!.classList.add('scrolled');
-        } else if (document.documentElement.scrollTop < 220) {
+        } else if (document.documentElement.scrollTop < 235) {
           detail!.classList.remove('scrolled');
         }
       })
@@ -187,7 +187,7 @@ export default class CandidateItemDetail extends Vue {
     flex-direction: column;
   &.scrolled {
     position: fixed !important;
-    top: 30px !important;
+    top: 30px;
     max-width: 318px !important;
   }
 
@@ -258,7 +258,7 @@ export default class CandidateItemDetail extends Vue {
             margin-top: 4px;
             font-size: 16px;
             color: #101010;
-            background-color: none !important;
+            background-color: transparent !important;
         }
     }
 

@@ -9,7 +9,7 @@ export type UpdateCandidateFormRequestType = RequestType & {
     status_id?: number;
     account_id?: number;
     info_pack_id?: number | null;
-    description?: string | null
+    description?: string | null;
 };
 export interface IUpdateCandidateForm {
     candidateId: number;

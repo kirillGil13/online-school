@@ -1,49 +1,67 @@
 <template>
   <div>
-    <div class="d-flex flex-column" >
-      <div class="d-flex flex-column candidate-list mt-6" v-for="(candidate, index) in candidates" :key="index">
-        <div class="candidate-list-title mb-2" @click="showList(index)"> <v-icon :class="{active: !listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon> {{index === today ? 'Сегодня' : index === yesterday ? 'Вчера' : index}}</div>
+    <div class="d-flex flex-column">
+      <div class="d-flex flex-column candidate-list mt-6"  v-for="(candidate, index) in candidates" :key="index">
+        <div class="candidate-list-title mb-2" @click="showList(index)">
+          <v-icon :class="{active: !listId.includes(index)}" class="chevron-down" color="#000">mdi-chevron-down</v-icon>
+          {{ index === today ? 'Сегодня' : index === yesterday ? 'Вчера' : index }}
+        </div>
 
-            <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}" v-show="!listId.includes(index)" :class="{activeList: listId.includes(index)}" v-on:mouseover="onHover" v-on:mouseout="onOutHover"  @click="setChosenCandidate(el.id)" v-for="(el, idx) in candidate" :key="idx">
-              <div class="status_select">
-                <Select class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
-                  <template v-slot:act>
-                    <div class="d-flex flex-row align-center">
-                      <v-img :src="el.status.photoLink" max-width="22" max-height="22"></v-img>
-                      <svg-icon class="ml-1" name="Arrow_Down"></svg-icon>
-                    </div>
-                  </template>
-                  <template v-slot:action>
-                    <v-list-item class="selection" @click="$emit('addStatus')">
-                      <v-list-item-icon>
-                        <svg-icon name="Add_Status"></svg-icon>
-                      </v-list-item-icon>
-                      <v-list-item-title class="status_action">Добавить статус</v-list-item-title>
-                    </v-list-item>
-                  </template>
-                </Select>
-              </div>
-              <div class="name d-flex align-start justify-center flex-column pl-1" style="flex:2">
-                <div class="name_text" style="color:#101010; font-size:14px; font-weight: 500" >{{ el.name }}</div>
-                <div class="captions" style="color:#5F739C; font-size:12px; line-hight: 1.5" v-if="el.callTime" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{el.callTime}}</div>
-                <div class="captions" style="color:#5F739C; font-size:12px; line-hight: 1.5"  v-else-if="el.status.id === 3" @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{el.status.name}}</div>
-                <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{el.status.name}}</div>
-              </div>
-              <a class="link" v-if="!$adaptive.isMobile" :href="'tel:' + el.phoneNumber" style="flex:2; font-size: 14px; color: #426DF6 !important;">{{ el.phoneNumber }}</a>
-              <div style="flex:2" v-if="!$adaptive.isMobile">
-                <div class="product">{{el.infoPackName}}</div>
-              </div>
-              <div class="pr-0 selects-dots">
-                <Select class-name="select_content action" :selects="el.status.id === 4 ? newSelect : selects" v-on="$listeners" :id="el.id">
-                  <template v-slot:act>
-                    <div class="d-flex justify-end pr-0">
-                      <v-icon class='icon-dots' color="#5F739C">mdi-dots-horizontal
-                      </v-icon>
-                    </div>
-                  </template>
-                </Select>
-              </div>
+        <div class="candidates-list-item" :style="{display: !$adaptive.isMobile ? 'grid' : 'flex'}"
+             v-show="!listId.includes(index)"
+             :class="[listId.includes(index) && 'activeList', el.isLocked && 'closed']"
+             v-on:mouseover="onHover" v-on:mouseout="onOutHover" @click="!el.isLocked && setChosenCandidate(el.id)"
+             v-for="(el, idx) in candidate" :key="idx">
+          <div class="status_select">
+            <Select v-if="!el.isLocked" class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
+              <template v-slot:act>
+                <div class="d-flex flex-row align-center">
+                  <v-img :src="el.status.photoLink" max-width="22" max-height="22"></v-img>
+                  <svg-icon class="ml-1" name="Arrow_Down"></svg-icon>
+                </div>
+              </template>
+              <template v-slot:action>
+                <v-list-item class="selection" @click="$emit('addStatus')">
+                  <v-list-item-icon>
+                    <svg-icon name="Add_Status"></svg-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title class="status_action">Добавить статус</v-list-item-title>
+                </v-list-item>
+              </template>
+            </Select>
+            <div v-else>
+              <svg-icon class="svg-24" name="unavailable"></svg-icon>
             </div>
+          </div>
+          <div class="name d-flex align-start justify-center flex-column pl-1" style="flex:2">
+            <div class="name_text" style="color:#101010; font-size:14px; font-weight: 500">{{ el.name }}</div>
+            <template v-if="!el.isLocked">
+              <div class="captions" style="color:#5F739C; font-size:12px; line-hight: 1.5" v-if="el.callTime"
+                   @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">Позвонить {{ el.callTime }}
+              </div>
+              <div class="captions" style="color:#5F739C; font-size:12px; line-hight: 1.5" v-else-if="el.status.id === 3"
+                   @click="$emit('changeCallTime', {index: index, callTime: el.callTime})">{{ el.status.name }}
+              </div>
+              <div class="caption__origin" style="color:#5F739C; font-size:12px" v-else>{{ el.status.name }}</div>
+            </template>
+          </div>
+          <a class="link" v-if="!$adaptive.isMobile && !el.isLocked" :href="'tel:' + el.phoneNumber"
+             style="flex:2; font-size: 14px; color: #426DF6 !important;">{{ el.phoneNumber }}</a>
+          <div style="flex:2" v-if="!$adaptive.isMobile && !el.isLocked">
+            <div class="product">{{ el.infoPackName }}</div>
+          </div>
+          <div class="pr-0 selects-dots" v-if="!el.isLocked">
+            <Select class-name="select_content action" :selects="el.status.id === 4 ? newSelect : selects"
+                    v-on="$listeners" :id="el.id">
+              <template v-slot:act>
+                <div class="d-flex justify-end pr-0">
+                  <v-icon class='icon-dots' color="#5F739C">mdi-dots-horizontal
+                  </v-icon>
+                </div>
+              </template>
+            </Select>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -53,11 +71,13 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 
 import Button from '@/UI/components/common/Button.vue';
-import {Candidate} from '@/entity/candidates';
+import {Candidate, ICandidate} from '@/entity/candidates';
 import {ISelect} from '@/entity/select/select.types';
 import Select from '@/UI/components/common/Select.vue';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 import {MONTHS} from '../../../constants/month/index'
+import {IUser} from '../../../entity/user';
+import {AuthStore} from '../../../store/modules/Auth';
 
 @Component({
   components: {
@@ -66,13 +86,13 @@ import {MONTHS} from '../../../constants/month/index'
   },
 })
 export default class TableCandidates extends Vue {
-  @Prop() readonly candidates!: Candidate[];
+  @Prop() readonly candidates!: {[params: string]: ICandidate[]};
   @Prop() readonly statuses!: IStatuses[];
   @Prop() readonly selects!: ISelect[];
   archiveSelects: ISelect[] = [];
   isHover = false;
   isShowList = false;
-  listId: null | number[] = [];
+  listId: string[] = [];
   today = `${new Date().getDate()} ${MONTHS.find(el => (new Date().getMonth() + 1).toString().includes(el.id.toString()))?.value}`;
   yesterday = `${new Date().getDate() - 1} ${MONTHS.find(el => (new Date().getMonth() + 1).toString().includes(el.id.toString()))?.value}`;
 
@@ -89,7 +109,7 @@ export default class TableCandidates extends Vue {
     this.$emit('choseCandidate', idx)
   }
 
-  onHover(e: EventTarget):  void {
+  onHover(e: EventTarget): void {
     this.isHover = true;
   }
 
@@ -97,17 +117,21 @@ export default class TableCandidates extends Vue {
     this.isHover = false;
   }
 
-  showList(id: number): void {
-    const idx = this.listId?.findIndex((el) => el === id)
+  get user(): IUser | null {
+    return AuthStore.user;
+  }
+
+  showList(id: string): void {
+    const idx = this.listId.findIndex((el) => el === id)
     this.isShowList = !this.isShowList;
 
-    if(this.listId?.includes(id)){
+    if (this.listId.includes(id)) {
       this.listId.splice(idx!, 1);
       return
 
     }
 
-    if(!this.listId?.includes(id)) {
+    if (!this.listId.includes(id)) {
       this.listId!.push(id);
       return;
     }
@@ -122,6 +146,7 @@ export default class TableCandidates extends Vue {
   border-radius: 12px !important;
   min-width: 190px !important;
   max-height: 296px !important;
+
   &.action {
     #select0 {
       .v-list-item__title {
@@ -136,9 +161,11 @@ export default class TableCandidates extends Vue {
     }
   }
 }
+
 .status_action {
   color: #426DF6 !important;
 }
+
 .candidate-list-title {
   font-style: normal;
   font-weight: bold;
@@ -174,7 +201,7 @@ export default class TableCandidates extends Vue {
   padding: 8px 16px;
   border: 1px solid #F2F2F2;
   align-items: center;
-  transition: background-color ease-in-out  0.3s;
+  transition: background-color ease-in-out 0.3s;
   cursor: pointer;
 
   &:hover {
@@ -186,16 +213,19 @@ export default class TableCandidates extends Vue {
     }
   }
 
+  &.closed {
+    background: #F2F2F2;
+    cursor: not-allowed !important;
+    padding: 14px 16px;
+  }
+
   &:nth-child(2) {
     border-radius: 4px 4px 0 0;
   }
 
-  &:last-child{
+  &:last-child {
     border-radius: 0px 0px 4px 4px;
   }
-}
-.captions {
-
 }
 
 </style>
