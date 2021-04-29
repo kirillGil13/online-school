@@ -72,7 +72,7 @@
                                 :class="course.isFavourite && 'rotateIcon'"
                             />
                         </v-row>
-                        <v-row no-gutters class="mt-4" v-if="toggleOpenLikeDislikeForm">
+                        <v-row no-gutters class="mb-6" v-if="toggleOpenLikeDislikeForm">
                             <template >
                                 <ReviewsFormLikesDislikes
                                     :form="reviewsForm"
@@ -133,9 +133,8 @@
                                                 :style="{ color: course.rating > 6.5 ? '#27AE60' : '#5F739C' }"
                                             >
                                                 {{ course.rating ? course.rating : 0 }}
-
                                             </div>
-                                        <div class="desc__reiting--subtitle">общий рейтинг</div>
+                                        <div class="desc__reiting--subtitle">{{!course.rating ? 'слишком мало оценок' : 'общий рейтинг'}}</div>
                                     </div>
                                     <div class="desc__icons" style="height: 100%" :style="{borderRight: $adaptive.isMobile && 'none', marginRight: $adaptive.isMobile && '0'}">
                                         <div class="desc__icons--like">

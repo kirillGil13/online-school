@@ -139,7 +139,7 @@ export default class TableCandidates extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .select_content {
   margin-top: 30px !important;
