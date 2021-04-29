@@ -477,9 +477,10 @@ export default class Course extends Vue {
     }
 
     async setMark(): Promise<void> {
+      await RelationStore.deleteLikeDislike(this.$route.params.id);
         await RelationStore.postLikeDislike({
             param: this.$route.params.id,
-            relation: { is_like: this.reviewsForm.isLike},
+            relation: { is_like: true},
         });
         await ReviewsStore.fetchAll(this.$route.params.id);
         await this.reviewsForm.clearData();
