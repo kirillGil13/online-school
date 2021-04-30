@@ -1,6 +1,6 @@
 <template>
-  <div class="pa-0 conversation d-flex flex-column ">
-    <div class="conversation__item d-flex flex-row" @click="chosePartner(elem.account.id)" v-for="elem in dialogs" :key="elem.account.id"
+  <div class="pa-0 conversation d-flex flex-column " :style="{width: !$adaptive.isMobile ? '31%' : '100%',}">
+    <div class="conversation__item d-flex flex-row"  @click="chosePartner(elem.account.id)" v-for="elem in dialogs" :key="elem.account.id"
          :class="[elem.account.id === chousenChatId ? 'active' : '']">
       <v-avatar size="56" class="mr-3" :color="elem && elem.account.photoLink ? '#F0F2F6' :randomColor(elem.account.id % 10)">
          <template v-slot:default v-if="elem && elem.account.photoLink">
@@ -18,7 +18,7 @@
             {{elem.lastMessage.createdAt}}
           </div>
         </div>
-        {{elem.lastMessage.text}} {{ elem.countUnread > 0 ? elem.countUnread : undefined}}
+        <span class="d-flex justify-space-between align-center flex-row">{{elem.lastMessage.text}} <span class="unReadDialog">{{elem.countUnread > 0 ? elem.countUnread : undefined}}</span></span>
       </div>
     </div>
   </div>
@@ -36,12 +36,20 @@ export default class Conversations extends Vue {
 
   @Watch('$route.name')
   zeroChousenCahtId(): void {
-   if( this.$adaptive.isMobile &&  this.$route.name === this.$routeRules.Chat ) {
+    console.log(this.$route.name === this.$routeRules.ChatMain)
+
+    
+    if( this.$adaptive.isMobile  &&  this.$route.name === this.$routeRules.Chat && !this.$route.params.id) {
        this.chousenChatId = null;
-      }
+    }
   }
 
   async created() {
+
+    if(this.$route.name === this.$routeRules.ChatMain){
+      this.chousenChatId = Number(this.$route.params.id)
+    }
+
     await DialogsStore.fetchAll()
 
   }
@@ -81,6 +89,14 @@ export default class Conversations extends Vue {
 </script>
 
 <style lang="scss">
+
+.unReadDialog {
+  background: #434DFF;
+  padding: 0px 6px;
+  color: #fff;
+  border-radius: 12px;
+}
+
 .active {
   transform: rotate(0) !important;
 }
@@ -91,8 +107,6 @@ export default class Conversations extends Vue {
   overflow: scroll;
   box-shadow: 2px 0px 2px rgba(0, 0, 0, 0.04);
   border-radius: 0px 0px 0px 12px;
-  flex: 1;
-
   &__item {
     padding: 8px 12px 8px 16px;
     cursor: pointer;

@@ -1,5 +1,5 @@
 <template>
-  <div class="messages d-flex flex-column" :style="{width: $adaptive.isMobile ? '100% !importnat' : 'calc(100% - 327px)'}">
+  <div class="messages d-flex flex-column" :style="{width: $adaptive.isMobile ? '100% !importnat' : '69%'}">
     <div class="message-container d-flex flex-column justify-end" :style="{padding: !$adaptive.isMobile ? '16px 11px 16px 11px' : '0'}">
       <div class="scrool-container" id="chatDialogContainer" ref="chatDialogContainer">
           <template  v-for="(message, idx) in messages" >
@@ -111,7 +111,6 @@ export default class ChatMain extends Vue {
 
 .messages {
   max-height: 810px;
-  flex: 1;
 }
 
 .scrool-container {
