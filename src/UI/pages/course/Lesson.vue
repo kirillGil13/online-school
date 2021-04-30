@@ -48,7 +48,7 @@
           class="mb-4"
           :class="isLiked && 'like-active'"
           :title="$adaptive.isMobile ? '' : 'Нравится'"
-          @click="user.isSubscriptionActual ? $emit('handleLike', false) : activatorSub = true"
+          @click="user.isSubscriptionActual ? $emit('handleLike', {form: formName.likeDislike, formButton: false}) : activatorSub = true"
       />
       <Relation
           svg-class="svg-down"
@@ -56,7 +56,7 @@
           :class="isDisliked && 'dislike-active'"
           svg-name="Finger"
           :title="$adaptive.isMobile ? '' : 'Не нравится'"
-          @click="user.isSubscriptionActual ? $emit('handleDisLike', false) : activatorSub = true"
+          @click="user.isSubscriptionActual ? $emit('handleDisLike', {form: formName.likeDislike, formButton: false}) : activatorSub = true"
       />
       <Relation
           svg-name="Chosen"
@@ -72,11 +72,12 @@
           @click="user.isSubscriptionActual ? discuss : ''"
       />
     </v-row>
-    <v-row no-gutters>
-      <template v-if="toggleOpenLikeDislikeForm" class="mb-4">
+    <v-row no-gutters v-if="toggleOpenLikeDislikeForm" class="mb-6">
+      <template>
         <ReviewsFormLikesDislikes
             :form="formReview"
             :course="course"
+            :form-name="formName.likeDislike"
             @setReview="$emit('setReview')"
             @cancelDislike="$emit('cancelDislike')"
             @setMark="$emit('setMark')"
@@ -269,6 +270,10 @@ export default class Lesson extends Vue {
   play = false;
   commentsChangeForm = new CommentsChangeForm();
   freeTestForm = new FreeTestForm();
+  formName = {
+    likeDislike: 'likeDislike',
+    review: 'review'
+  }
 
   @Watch('$route.params.lessonId')
   async onChangeRoute(): Promise<void> {

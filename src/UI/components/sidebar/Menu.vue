@@ -1,7 +1,7 @@
 <template>
     <v-list :active-text-color="variables.menuActiveText" :collapse-transition="false" class="main-menu" nav rounded>
         <template v-for="(item, index) in items">
-            <v-list-item v-if="!item.subMenu" :id="`step-${index + 1}`" v-show="handleMenuItem(item)" :key="item.title" exact :to="{ name: item.route }">
+            <v-list-item v-if="!item.subMenu" :id="`step-${index + 1}`" color="" v-show="handleMenuItem(item)" :key="item.title" :ripple="!$adaptive.isMobile" exact exact-active-class="active-menu" :to="{name: proceed(item.route)}">
                 <v-list-item-icon>
                     <svg-icon :name="item.iconName" class="menu__icon" height="24" width="24" />
                 </v-list-item-icon>
@@ -31,6 +31,7 @@ import variables, { IScssVariables } from '@/UI/assets/scss/variables/_variables
 import { MenuStore } from '@/store/modules/Menu';
 import {IUser} from '../../../entity/user';
 import {AuthStore} from '../../../store/modules/Auth';
+import {RouterNameEnum} from '../../../router/router.types';
 
 @Component
 export default class MenuComponent extends Vue {
@@ -56,6 +57,11 @@ export default class MenuComponent extends Vue {
       } else return false;
     } else return true;
   }
+
+  proceed(route: string): string {
+    return route;
+  }
+
 }
 </script>
 <style lang="scss" scoped>
@@ -76,6 +82,9 @@ export default class MenuComponent extends Vue {
     .v-list-item__title {
       font-size: 16px !important;
     }
+  }
+  .active-menu {
+
   }
 }
 
