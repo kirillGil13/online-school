@@ -2,7 +2,7 @@
   <div class="review-container" v-if="reviews.length !== 0">
     <h2 class="review-title">Отзывы</h2>
 
-    <v-col class="mt-4 pa-0">
+    <v-col class="pa-0">
     <Reviews v-for="(item, index) in reviews" :review="item" :key="index"/>
     </v-col>
   </div>
@@ -41,7 +41,7 @@ export default class ReviewsDiscussion extends Vue {
 
 .review-container {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     padding: 24px 0 0 0 ;
 }
 </style>
