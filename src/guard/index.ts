@@ -28,7 +28,7 @@ export const landingGuard = (to: any, from: any, next: any): any => {
         if (isSubActive) {
             return next();
         } else return next('/404');
-    }
+    } else return next();
 };
 
 

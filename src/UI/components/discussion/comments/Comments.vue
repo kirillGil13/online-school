@@ -12,7 +12,7 @@
       <div class="d-flex flex-column comment-container">
         <div class="comment py-3 px-4">
           <v-col class="pa-0" v-if="form.showChangeComment && comment.id === form.commentId">
-            <CommentsChangeFormComponent :form="form" @closeChange="closeChangeComment" @changeComment="$emit('changeComment', comment.id)"/>
+            <CommentsChangeFormComponent  :form="form" @closeChange="closeChangeComment" @changeComment="$emit('changeComment', comment.id)"/>
           </v-col>
           <v-col class="pa-0" v-else>
             <v-row no-gutters class="mb-1 d-flex justify-space-between">
@@ -52,6 +52,7 @@
                           @click="$emit('handleLike', {id: comment.id, like: false, type: commentType.Comment, kind: 'dislike'})"/>
               </div>
             </v-row>
+            <CommentsFormComponent class="mt-6" :form="answersForm" v-on='$listeners' v-if="answersForm.showCommentsForm && comment.id === answersForm.commentId"/>
           </v-col>
         </div>
         <div v-if="comment.answers">
@@ -62,61 +63,62 @@
             <span v-if="comment.answers.length > 1" class="comment-action mt-2" @click="show = false">
               <svg-icon class="mr-2 svg-up" name="Comment_Arrow"></svg-icon>Скрыть
             </span>
-            <div class="mt-4 ml-4 d-flex flex-row cont"
-                 v-for="(item, index) in comment.answers"
-                 :key="index">
-              <v-avatar size="24" class="mr-3" :color="item.author.photoLink ? '#F0F2F6' :randomColor(item.author.id % 10)">
-                <template v-slot:default v-if="item.author.photoLink">
-                  <v-img :src="item.author.photoLink" alt=""/>
-                </template>
-                <template v-else v-slot:default>
-                  <span class="font-weight-bold" style="color: #fff">{{(item.author.name[0] + item.author.lastName[0]).toUpperCase()}}</span>
-                </template>
-              </v-avatar>
-              <div class="d-flex flex-column comment-container">
-                <div class="comment child py-3 px-4">
-                  <v-col class="pa-0" v-if="form.showChangeAnswer && item.id === form.answerId">
-                    <CommentsChangeFormComponent :form="form" @closeChange="closeChangeAnswer" @changeComment="$emit('changeAnswer', {answer: item.id, comment: comment.id})"/>
-                  </v-col>
-                  <v-col class="pa-0" v-else>
-                    <v-row no-gutters class="mb-1 d-flex justify-space-between">
-                      <div class="d-flex flex-row">
-                        <h4 class="mr-3">{{ item.fullName }}</h4>
-                        <div class="desc">{{ item.createdAt }}</div>
-                      </div>
-                      <div class="pr-0" v-if="item.isMy">
-                        <Select class-name="select_content_comment action" :selects="selects" @extraAction="extraActionAnswer" :id="item.id">
-                          <template v-slot:act>
-                            <div class="d-flex justify-end pr-0">
-                              <svg-icon
-                                  name="Dots"
-                                  class="dots"
-                              >
-                              </svg-icon>
-                            </div>
-                          </template>
-                        </Select>
-                      </div>
-                    </v-row>
-                    <v-row no-gutters :id="'answer' + comment.id"
-                           v-html="comment.prettierMsg(index) ? comment.prettierMsg(index) : item.message">
-                    </v-row>
-                    <v-row no-gutters class="d-flex flex-row justify-space-between align-end mt-2">
+            <template v-for="(item, index) in comment.answers" class="d-flex flex-column">
+              <div :key="index" class="mt-4 ml-4 d-flex flex-row cont">
+                <v-avatar size="24" class="mr-3" :color="item.author.photoLink ? '#F0F2F6' :randomColor(item.author.id % 10)">
+                  <template v-slot:default v-if="item.author.photoLink">
+                    <v-img :src="item.author.photoLink" alt=""/>
+                  </template>
+                  <template v-else v-slot:default>
+                    <span class="font-weight-bold" style="color: #fff">{{(item.author.name[0] + item.author.lastName[0]).toUpperCase()}}</span>
+                  </template>
+                </v-avatar>
+                <div class="d-flex flex-column comment-container">
+                  <div class="comment child py-3 px-4">
+                    <v-col class="pa-0" v-if="form.showChangeAnswer && item.id === form.answerId">
+                      <CommentsChangeFormComponent :form="form" @closeChange="closeChangeAnswer" @changeComment="$emit('changeAnswer', {answer: item.id, comment: comment.id})"/>
+                    </v-col>
+                    <v-col class="pa-0" v-else>
+                      <v-row no-gutters class="mb-1 d-flex justify-space-between">
+                        <div class="d-flex flex-row">
+                          <h4 class="mr-3">{{ item.fullName }}</h4>
+                          <div class="desc">{{ item.createdAt }}</div>
+                        </div>
+                        <div class="pr-0" v-if="item.isMy">
+                          <Select class-name="select_content_comment action" :selects="selects" @extraAction="extraActionAnswer" :id="item.id">
+                            <template v-slot:act>
+                              <div class="d-flex justify-end pr-0">
+                                <svg-icon
+                                    name="Dots"
+                                    class="dots"
+                                >
+                                </svg-icon>
+                              </div>
+                            </template>
+                          </Select>
+                        </div>
+                      </v-row>
+                      <v-row no-gutters :id="'answer' + item.id"
+                             v-html="comment.prettierMsg(index) ? comment.prettierMsg(index) : item.message">
+                      </v-row>
+                      <v-row no-gutters class="d-flex flex-row justify-space-between align-end mt-2">
                     <span class="comment-action"
                           @click="$emit('respond', {id: comment.id, index: index})">Ответить</span>
-                      <div class="d-flex flex-row justify-space-between">
-                        <Relation class="mr-3" svg-name="Finger" :title="item.countLikes"
-                                  :svg-class="item.isLiked !== null && item.isLiked ? 'active-like' : ''"
-                                  @click="$emit('handleLike', {id: comment.id, like: true, type: commentType.Answer, answerId: item.id, kind: 'like'})"/>
-                        <Relation svg-name="Finger" :title="item.countDislikes"
-                                  :svg-class="['svg-down', item.isLiked !== null && !item.isLiked ? 'active-dislike' : '']"
-                                  @click="$emit('handleLike', {id: comment.id, like: false, type: commentType.Answer, answerId: item.id, kind: 'dislike'})"/>
-                      </div>
-                    </v-row>
-                  </v-col>
+                        <div class="d-flex flex-row justify-space-between">
+                          <Relation class="mr-3" svg-name="Finger" :title="item.countLikes"
+                                    :svg-class="item.isLiked !== null && item.isLiked ? 'active-like' : ''"
+                                    @click="$emit('handleLike', {id: comment.id, like: true, type: commentType.Answer, answerId: item.id, kind: 'like'})"/>
+                          <Relation svg-name="Finger" :title="item.countDislikes"
+                                    :svg-class="['svg-down', item.isLiked !== null && !item.isLiked ? 'active-dislike' : '']"
+                                    @click="$emit('handleLike', {id: comment.id, like: false, type: commentType.Answer, answerId: item.id, kind: 'dislike'})"/>
+                        </div>
+                      </v-row>
+                    </v-col>
+                    <CommentsFormComponent class="mt-6" :form="answersForm" v-on='$listeners' :key="item.id" v-if="answersForm.showAnswersForm && index === answersForm.answersIndex"/>
+                  </div>
                 </div>
               </div>
-            </div>
+            </template>
           </div>
         </div>
       </div>
@@ -133,13 +135,16 @@ import {ISelect} from '../../../../entity/select/select.types';
 import Select from '../../common/Select.vue';
 import {CommentsChangeForm} from '../../../../form/commentsChange/commentsChangeForm';
 import CommentsChangeFormComponent from '../../forms/commentsChangeForm/CommentsChangeFormComponent.vue';
+import {CommentsForm} from '../../../../form/comments/commentsForm';
+import CommentsFormComponent from '../../forms/commentsForm/CommentsFormComponent.vue';
 
 @Component({
-  components: {CommentsChangeFormComponent, Select, Relation}
+  components: {CommentsFormComponent, CommentsChangeFormComponent, Select, Relation}
 })
 export default class Comments extends Vue {
   @Prop({required: true, default: []}) readonly comment!: IComments;
   @Prop() readonly form!: CommentsChangeForm;
+  @Prop() readonly answersForm!: CommentsForm;
   @Prop() readonly selects!: ISelect[];
   commentType = CommentTypesEnum;
   show = false;
@@ -163,7 +168,7 @@ export default class Comments extends Vue {
     this.$emit('extraActionAnswer', answerId, this.comment.id, index);
   }
 
-  randomColor(i: number) {
+  randomColor(i: number): string {
     const COLORS = [
       '#56CCF2',
       '#BB6BD9',
@@ -203,6 +208,11 @@ export default class Comments extends Vue {
   border: 1px solid #F2F2F2;
   width: 100%;
   box-shadow: 0px 14px 12px rgba(0, 0, 0, 0.01);
+  transition: all 1s ease;
+
+  &.active-comment {
+    background: rgba(95,115,156, 0.3);
+  }
 
   .desc {
     font-size: 12px;

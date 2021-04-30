@@ -28,7 +28,7 @@
         ></v-textarea>
       </div>
       <div class="d-flex justify-center align-center mb-1">
-        <svg-icon class="send-icon" name="Send" @click="$emit('postComment')"></svg-icon>
+        <svg-icon class="send-icon" name="Send" @click="!form.disabled && $emit('postComment')"></svg-icon>
       </div>
     </v-col>
   </v-row>
@@ -52,6 +52,9 @@ export default class CommentsFormComponent extends Vue {
     this.form.author = '';
     this.form.commentId = null;
     this.form.message = '';
+    this.form.showAnswersForm = false;
+    this.form.showCommentsForm = false;
+    this.form.answersIndex = null;
   }
 
   randomColor(i: number): string {
