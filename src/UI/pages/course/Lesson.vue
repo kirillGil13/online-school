@@ -69,7 +69,7 @@
           svg-name="Message"
           class="mb-4"
           :title="$adaptive.isMobile ? '' : 'Обсудить'"
-          @click="user.isSubscriptionActual ? discuss : ''"
+          @click="discuss"
       />
     </v-row>
     <v-row no-gutters v-if="toggleOpenLikeDislikeForm" class="mb-6">
@@ -431,6 +431,7 @@ export default class Lesson extends Vue {
   beforeDestroy(): void {
     this.stopTimer();
     CommentsStore.setCommentsToEmpty();
+    window.removeEventListener('scroll', this.fetchComments);
   }
 
   fetchComments = (): void => {
@@ -462,9 +463,13 @@ export default class Lesson extends Vue {
   }
 
   discuss(): void {
-    const item = document.getElementById('message')!;
-    item.scrollIntoView();
-    item.focus();
+    if (this.user!.isSubscriptionActual) {
+      const item = document.getElementById('message')!;
+      item.scrollIntoView({block: 'center'});
+      item.focus();
+    } else {
+      this.activatorSub = true;
+    }
   }
 
   showForm(): void {

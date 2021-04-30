@@ -11,7 +11,7 @@
           <v-main>
             <v-col class="py-0" v-if="!user.isEmailConfirmed && !$route.query.accountId">
               <Confirm
-                  :text="`Мы отправили на почту ${user.email} письмо с ссылкой на подтверждение. Пожалуйста, откройте вашу почту и перейдите по ссылке в письме.`"
+                  :text="`Мы отправили на почту ${user.email} письмо с ссылкой на подтверждение. Пожалуйста, откройте Вашу почту и перейдите по ссылке в письме.`"
                   @show="showNote"
                   :show="show"
                   @submit="sendCode"
@@ -68,15 +68,14 @@ export default class MainLayout extends Vue {
   success = false;
   alertType = AlertTypeEnum;
 
-  @Watch("$route.name")
+  @Watch('$route.name')
     scrollTop(val: string, oldVal: string): void {
       if(val !== oldVal && this.$adaptive.isMobile){
-        console.log('adap')
           window.scroll(0, 0)
 
       }
     }
-  
+
 
   showAlert(show: boolean): void {
     this.success = show;
