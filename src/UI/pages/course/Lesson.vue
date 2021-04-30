@@ -634,7 +634,7 @@ export default class Lesson extends Vue {
         for (let i = 0; i < comments.length; i++) {
           if (comments[i].contains(comment)) {
             comments[i].classList.add('active-comment');
-            setInterval(() => {
+            setTimeout(() => {
               comments[i].classList.remove('active-comment');
             }, 1000)
           }
@@ -655,7 +655,7 @@ export default class Lesson extends Vue {
         for (let i = 0; i < comments.length; i++) {
           if (comments[i].contains(comment)) {
             comments[i].classList.add('active-comment');
-            setInterval(() => {
+            setTimeout(() => {
               comments[i].classList.remove('active-comment');
             }, 1000)
           }
