@@ -3,7 +3,7 @@
     <v-row class="ma-0">
       <ProgressCircleTesting :result="result"/>
       <v-col>
-        <h3>К сожалению, вы не прошли тестирование.</h3>
+        <h3>К сожалению, Вы не прошли тестирование.</h3>
         <div class="success_info">Ничего страшного - вы можете пройти повторно тест через</div>
         <Timer v-if="result.handleTime(60) !== 0 && !showButton" :currentTime="result.handleTime(60)" @stop="stop"/>
         <Button v-else class="again pa-3" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>

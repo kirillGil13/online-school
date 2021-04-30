@@ -1,7 +1,7 @@
 <template>
   <v-col class="py-0">
     <v-row class="tab-controls d-flex flex-row flex-wrap">
-      <div :class="['filter-tabs d-flex flex-row justify-center  mt-2', $adaptive.isMobile ? 'flex-column full-width' : 'flex-row']" :style="{order: isOnRight ? '2' : '1'}">
+      <div :class="['filter-tabs d-flex flex-row justify-center', $adaptive.isMobile ? 'flex-column full-width' : 'flex-row']" :style="{order: isOnRight ? '2' : '1', marginTop: !$adaptive.isMobile ? '12px' : '0'}">
         <v-col :class="['filter-tabs__archive', $adaptive.isMobile && 'mt-2']" v-show="isCandidates">
           <Button  class="mt-0 secondary_white" :full-width="$adaptive.isMobile" :style="{background: isArchive ? '#426DF6' : '#F0F2F6', color: isArchive ? '#ffff !important' : '#5A606F !important'}" @submit="$emit('toggleArchive');">
             Архивные

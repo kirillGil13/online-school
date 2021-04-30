@@ -1,5 +1,5 @@
 <template>
-  <v-row :class="['top_bar', isBordered ? 'box-container pa-2' : 'py-24']" ref="topBar">
+  <v-row :class="['top_bar', isBordered ? 'box-container pa-2' : 'py-24']" ref="topBar" :style="{flexDirection: $adaptive.isMobile ? 'column' : 'row'}">
     <v-col :class="['bar_title', $adaptive.isMobile ? 'pa-3' : '']">
       <router-link v-if="route" :to="{ name: route.name }" class="link">
         <svg-icon name="Arrow_Left" class="svg-fill-none"></svg-icon>

@@ -3,8 +3,8 @@
     <v-row class="ma-0">
       <ProgressCircleTesting :result="result"/>
       <v-col>
-        <h3>Поздравляем - вы выполнили задание!</h3>
-        <div v-if="!lastLesson" class="success_info">Теперь вы можете перейти к следующему уроку.</div>
+        <h3>Поздравляем -Вы выполнили задание!</h3>
+        <div v-if="!lastLesson" class="success_info">Теперь Вы можете перейти к следующему уроку.</div>
         <Button class="again pa-3" @submit="$emit('passTestAgain')">Пройти тест повторно</Button>
       </v-col>
     </v-row>
