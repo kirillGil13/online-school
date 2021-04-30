@@ -15,9 +15,9 @@
             <CommentsChangeFormComponent  :form="form" @closeChange="closeChangeComment" @changeComment="$emit('changeComment', comment.id)"/>
           </v-col>
           <v-col class="pa-0" v-else>
-            <v-row no-gutters class="mb-1 d-flex justify-space-between">
+            <v-row no-gutters class="mb-1 d-flex flex-row flex-nowrap justify-space-between">
               <div class="d-flex flex-row">
-                <h4 class="mr-3">{{ comment.fullName }}</h4>
+                <h4 class="mr-3 comment-author">{{ comment.fullName }}</h4>
                 <div class="desc">{{ comment.createdAt }}</div>
                 <template v-if="comment.isEdited">
                   <v-icon dense>mdi-circle-small</v-icon>
@@ -273,5 +273,12 @@ export default class Comments extends Vue {
 
 .dots {
   transform: rotate(90deg) !important;
+}
+
+.comment-author {
+  max-width: max-content;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>

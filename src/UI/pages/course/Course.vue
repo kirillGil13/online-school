@@ -181,7 +181,7 @@
                                 </template>
                             </div>
                             <div>
-                                <ReviewsDiscussion :reviews="reviews" isReview />
+                                <ReviewsDiscussion :reviews="reviews" isReview/>
                             </div>
                         </v-col>
                     </div>
@@ -189,7 +189,7 @@
                         :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"
                         :style="{ width: $adaptive.isMobile ? '100%' : '' }"
                     >
-                        <Lessons ref="lessons" :course="course" @moveToNextLesson="moveToNextLesson" />
+                        <Lessons ref="lessons" :course="course" @moveToNextLesson="moveToNextLesson"/>
                         <v-col class="box-container pa-6 pb-8 materials" v-if="!$adaptive.isMobile && files === []">
                             <h5>МАТЕРИАЛЫ К УРОКУ</h5>
                             <Doc v-for="(item, index) in files" :key="index" :material="item" />
@@ -309,7 +309,7 @@ export default class Course extends Vue {
         }
 
         if (this.showAll === false) {
-           
+
             (this.$refs.authorDescription as HTMLElement).style.overflow = 'hidden';
             (this.$refs.authorDescription as HTMLElement).style.maxHeight = '65px';
         }

@@ -1,9 +1,10 @@
 export interface IReviews {
-    id: number,
-    createdAt: string,
-    isLike: boolean | null,
-    reviewText: string,
-    author: IReviewsAuthor
+    id: number;
+    createdAt: string;
+    isLike: boolean | null;
+    reviewText: string;
+    author: IReviewsAuthor;
+    fullName: string;
 }
 
 
@@ -11,7 +12,7 @@ export interface IReviewsAuthor {
     id: number;
     name: string;
     lastName: string;
-    photoLink: string
+    photoLink: string;
 }
 
 export type ReviewsResponseType = {

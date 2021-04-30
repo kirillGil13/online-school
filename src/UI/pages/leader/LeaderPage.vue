@@ -31,7 +31,7 @@
                    :instagram-link="leader.instagramLink" :telegram="leader.telegram" :site-link="leader.siteLink"/>
         </v-col>
         <v-col class="box-container mt-6 pa-4">
-          <Header class="top_bar_small" title="Курсы" action>
+          <Header class="top_bar_small" title="Курсы" :class="[$adaptive.isMobile && 'flex-column']" action>
             <FilterComponent :search="false" :is-on-right="true" :filters="filters" @filter="onFilter" />
           </Header>
           <div

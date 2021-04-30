@@ -26,7 +26,7 @@
       />
     </FormGroup>
     <FormGroup
-        class="mt-4" v-slot="attrs" :form="form" field="mlmLevel" show-custom-error label="Укажите ваш МЛМ уровень"
+        class="mt-4" v-slot="attrs" :form="form" field="mlmLevel" show-custom-error label="Укажите Ваш МЛМ уровень"
     >
       <input
           class="input input__normal"
