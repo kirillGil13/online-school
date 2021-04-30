@@ -12,13 +12,13 @@
       </v-avatar>
       <div class="conversation__content">
         <div class="conversation__header mb-1 d-flex justify-space-between align-center flex-row">
-          <div class="name">{{elem.account.name + ' ' + elem.account.lastName}}</div>
-          <div class="status">
+          <div class="name">{{elem.fullName}}</div>
+          <div class="status" v-if="elem.countUnread === 0">
             <svg-icon name="Delivered"></svg-icon>
             {{elem.lastMessage.createdAt}}
           </div>
         </div>
-        {{elem.lastMessage.text}}
+        {{elem.lastMessage.text}} {{ elem.countUnread > 0 ? elem.countUnread : undefined}}
       </div>
     </div>
   </div>
@@ -27,12 +27,19 @@
 <script lang="ts">
 import { IDialogs } from '@/entity/dialogs/dialogs.types';
 import { DialogsStore } from '@/store/modules/Dialogs';
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 
 @Component
 export default class Conversations extends Vue {
 
   chousenChatId: number | null = null;
+
+  @Watch('$route.name')
+  zeroChousenCahtId(): void {
+   if( this.$adaptive.isMobile &&  this.$route.name === this.$routeRules.Chat ) {
+       this.chousenChatId = null;
+      }
+  }
 
   async created() {
     await DialogsStore.fetchAll()
@@ -78,12 +85,13 @@ export default class Conversations extends Vue {
   transform: rotate(0) !important;
 }
 .conversation {
-  width: 327px !important;
+  
   height: 100%;
   background: #FFFFFF;
   overflow: scroll;
   box-shadow: 2px 0px 2px rgba(0, 0, 0, 0.04);
   border-radius: 0px 0px 0px 12px;
+  flex: 1;
 
   &__item {
     padding: 8px 12px 8px 16px;

@@ -29,8 +29,8 @@
         <div class="chat-container" ref="chatContainer" id="chatContainer" v-else>
           <SingleChat :course="course" style="width: 100% !important"/>
         </div>
-        <div v-if="!isChat" class="lesson-btn pa-2" :style="{justifyContent: last ? 'flex-start' : ''}">
-          <v-col  class="d-flex pa-0" :cols="$adaptive.isMobile ? 2 : ''">
+        <div v-if="!isChat" class="lesson-btn pa-2" :style="{justifyContent: last ? 'flex-start' : '', width: '100%'}">
+          <v-col  class="d-flex pa-0" style="width: 100%;">
             <Button  @submit="toggleOpenChat" class="d-flex justify-center align-center mt-0" style="width: 100%"><svg-icon class="mr-2" name="Chat"></svg-icon><span style="font-size: 12px;">Задать вопрос</span></Button>
             <Button :class="['with_icon secondary_white ml-3 d-flex justify-center', $adaptive.isMobile ? 'py-4' : '']"
                     style=" width: 20% !important"

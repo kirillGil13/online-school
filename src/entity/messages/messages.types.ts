@@ -1,6 +1,6 @@
 export interface IMessages {
     id: number;
-    createdAt: number;
+    createdAt: string;
     text: string;
     isMy: boolean;
 }

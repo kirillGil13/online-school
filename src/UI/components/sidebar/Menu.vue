@@ -5,10 +5,10 @@
                 <v-list-item-icon>
                     <svg-icon :name="item.iconName" class="menu__icon" height="24" width="24" />
                 </v-list-item-icon>
-
-                <v-list-item-title v-text="item.title" />
+                <v-list-item-title v-text="item.title" /><span class="count-unread-message">{{item.title === 'Чат' &&  $route.name !== $routeRules.Chat &&  $route.name !== $routeRules.ChatMain && countUnreadMessages !== 0 ? countUnreadMessages : ''}}</span>
+                
             </v-list-item>
-
+           
             <v-list-group v-else no-action :key="item.title">
                 <v-list-item slot="activator">
                     <v-list-item-icon>
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { IMainMenu } from '@/entity/menu/menu.types';
 import variables, { IScssVariables } from '@/UI/assets/scss/variables/_variables.scss';
 import { MenuStore } from '@/store/modules/Menu';
@@ -34,25 +34,28 @@ import {AuthStore} from '../../../store/modules/Auth';
 
 @Component
 export default class MenuComponent extends Vue {
-    get variables(): IScssVariables {
-        return variables;
-    }
 
-    get user(): IUser | null {
-      return AuthStore.user;
-    }
+  @Prop() readonly countUnreadMessages!: number;
 
-    get items(): IMainMenu[] {
-        return MenuStore.items;
-    }
+  get variables(): IScssVariables {
+      return variables;
+  }
 
-    handleMenuItem(menuItem: IMainMenu): boolean {
-      if (menuItem.route === this.$routeRules.Cabinet) {
-        if (this.user!.isLeader) {
-          return true;
-        } else return false;
-      } else return true;
-    }
+  get user(): IUser | null {
+    return AuthStore.user;
+  }
+
+  get items(): IMainMenu[] {
+      return MenuStore.items;
+  }
+
+  handleMenuItem(menuItem: IMainMenu): boolean {
+    if (menuItem.route === this.$routeRules.Cabinet) {
+      if (this.user!.isLeader) {
+        return true;
+      } else return false;
+    } else return true;
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -67,11 +70,21 @@ export default class MenuComponent extends Vue {
     }
   }
 }
+
 .main-menu {
   .v-list-item {
     .v-list-item__title {
       font-size: 16px !important;
     }
   }
+}
+
+.count-unread-message {
+  padding: 0px 6px;
+  background: #434DFF;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
 }
 </style>

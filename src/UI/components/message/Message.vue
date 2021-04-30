@@ -1,6 +1,6 @@
 <template>
-  <div :class="['message d-flex mt-3', friend ? 'justify-start' : 'justify-end']">
-    <div :class="['message-cont', friend ? 'friend' : '']">
+  <div :class="['message d-flex mt-2', friend ? 'justify-start' : 'justify-end']">
+    <div :class="['message-cont', friend ? 'friend' : 'my-message']">
       <div class="message-body d-flex flex-row justify-space-between mt-1">
         <div class="text mr-7">{{body}}</div>
         <div class="date mt-2 d-flex align-end">{{date}}</div>
@@ -27,16 +27,18 @@ export default class Message extends Vue {
   background-color: none !important;
   .message-cont {
     max-width: 349px;
-    padding: 12px 16px 13px 16px;
+    padding: 7px 12px;
     background: #FFFFFF;
     border: 1px solid #F2F2F2;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-    border-radius: 5px;
+    border-radius: 18px;
+
+    &.my-message {
+      background: #CEDDFB;
+    }
     &.friend {
       background: #F2F2F2;
       border: 1px solid rgba(87, 81, 183, 0.12);
-      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-      border-radius: 5px;
     }
     .message-body {
       .text {

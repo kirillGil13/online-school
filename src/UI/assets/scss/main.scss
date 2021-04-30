@@ -602,12 +602,11 @@ iframe {
 }
 
 .messages {
-  width: calc(100% - 327px);
+  // width: calc(100% - 327px);
   font-size: 14px;
   background: transparent;
 
   .message-container {
-    padding: 60px 11px 16px 11px;
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;

@@ -1,7 +1,7 @@
 <template>
   <div class="messages d-flex flex-column" id="messages">
-    <div class="message-container d-flex flex-column justify-end">
-      <Message :date="getTime(message.createdAt)" :body="message.text" v-for="message in messages" :key="message.id" :friend="message.isMy ? false : true"/>
+    <div class="message-container d-flex flex-column justify-end" :style="{padding: !$adaptive.isMobile ? '16px 11px 16px 11px' : '10px'}">
+      <Message :date="message.createdAt" :body="message.text" v-for="message in messages" :key="message.id" :friend="message.isMy ? false : true"/>
     </div>
   </div>
 </template>

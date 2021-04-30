@@ -4,7 +4,7 @@
     <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
-          <Sidebar :userInfo="user" :userId="user.id" @proceed="proceed"/>
+          <Sidebar :userInfo="user" :userId="user.id" :countUnreadMessages="unReadMessages" @proceed="proceed"/>
           <Banner v-if="!user.isSubscriptionActual" @show="activator = true"/>
         </div>
         <div class="content-main pt-0 mb-16">
@@ -49,6 +49,8 @@ import {startIntercomMessenger} from '../../plugins/Intercom';
 import Modal from '../components/common/Modal.vue';
 import SubscribeFormalization from '../components/subscribeFormalization/SubscribeFormalization.vue';
 import { WebSocketStore } from '@/store/modules/WebSocket';
+import { IDialogs } from '@/entity/dialogs/dialogs.types';
+import { DialogsStore } from '@/store/modules/Dialogs';
 
 
 @Component({
@@ -68,7 +70,7 @@ export default class MainLayout extends Vue {
   show = true;
   success = false;
   alertType = AlertTypeEnum;
-
+  
   showAlert(show: boolean): void {
     this.success = show;
   }
@@ -82,12 +84,23 @@ export default class MainLayout extends Vue {
   }
 
   created(): void {
+      DialogsStore.fetchAll()
       startIntercomMessenger(AuthStore.user!);
       WebSocketStore.setConnection();
+
+
+      this.socket!.onmessage = (() => {
+        console.log('asda')
+        DialogsStore.setUnReadMessage(1, true);
+      })
   }
 
   activatorChange(act: boolean): void {
     this.activator = act;
+  }
+
+  get socket(): WebSocket | null {
+    return WebSocketStore.socket;
   }
 
   get user(): IUser | null {
@@ -100,6 +113,14 @@ export default class MainLayout extends Vue {
 
   get steps(): ITourSteps[] {
     return TourStore.steps;
+  }
+
+  get dialogs(): IDialogs[] {
+    return DialogsStore.dialogs;
+  }
+
+  get unReadMessages(): number {
+    return DialogsStore.unReadMessages;
   }
 
   async mounted(): Promise<void> {
