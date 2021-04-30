@@ -72,7 +72,7 @@ export default class ReviewsFormComponent extends Vue {
         this.form.isLike = false;
     }
 
-    sendMessage():void {
+    sendMessage(): void {
       this.$emit('setReview')
     }
 
