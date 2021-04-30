@@ -13,7 +13,7 @@
     </div>
     <CommentsFormComponent :form="form" v-on='$listeners' v-if="user.isSubscriptionActual"/>
     <v-col class="mt-4 pa-0">
-      <Comments :selects="selects" v-for="(item, index) in comments" :key="index" :comment="item" v-on="$listeners"
+      <Comments :selects="selects" v-for="(item, index) in comments" :key="index" :comment="item" v-on="$listeners" :answers-form="answersForm"
                 :class="[index !== 0 ? 'mt-8' : '']" :form="changeForm"/>
     </v-col>
   </div>
@@ -38,6 +38,7 @@ import Select from '../common/Select.vue';
 })
 export default class Discussion extends Vue {
   @Prop() readonly form!: CommentsForm;
+  @Prop() readonly answersForm!: CommentsForm;
   @Prop({required: true, default: []}) readonly comments!: IComments[];
   @Prop() readonly changeForm!: CommentsChangeForm;
   @Prop() readonly selects!: ISelect[];
