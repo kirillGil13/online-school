@@ -46,7 +46,7 @@
         </div>
       </v-row>
       <v-col v-else class="d-flex mt-10 justify-center align-center">
-        К сожалению, вы еще не добавили ни одного курса
+        К сожалению, Вы еще не добавили ни одного курса
       </v-col>
     </v-col>
     <Modal v-if="courseLevelsLoaded" :activator="activator" @activatorChange="activatorChange">

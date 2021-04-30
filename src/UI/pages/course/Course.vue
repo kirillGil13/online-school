@@ -119,6 +119,9 @@
                                     <div v-if="showAll === false" class="show-all ml-2" @click="showAll = true">
                                         Показать полностью
                                     </div>
+                                    <div v-if="showAll === true" class="show-all ml-2" @click="showAll = false">
+                                        Скрыть
+                                    </div>
                                 </div>
                             </div>
                             <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
@@ -303,6 +306,12 @@ export default class Course extends Vue {
         if (this.showAll === true) {
             (this.$refs.authorDescription as HTMLElement).style.overflow = 'none';
             (this.$refs.authorDescription as HTMLElement).style.maxHeight = 'unset';
+        }
+
+        if (this.showAll === false) {
+           
+            (this.$refs.authorDescription as HTMLElement).style.overflow = 'hidden';
+            (this.$refs.authorDescription as HTMLElement).style.maxHeight = '65px';
         }
     }
 
