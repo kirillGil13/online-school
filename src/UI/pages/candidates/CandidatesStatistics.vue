@@ -5,7 +5,7 @@
           :isBordered="false"
           title="Аналитика"
           class="top_bar_p_0"
-          description="Здесь отображаются данные по вашей CRM"
+          description="Здесь отображаются данные по Вашей CRM"
       >
       </Header>
       <v-row class="badges d-flex justify-space-between mt-6" no-gutters>

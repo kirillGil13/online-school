@@ -1,36 +1,38 @@
 <template>
-    <div>
-        <div class="d-flex flex-row cont align-center">
-            <v-badge avatar overlap bottom color="none" offset-x="22" offset-y="22" class="mr-2">
-                <template v-slot:badge>
-                    <v-avatar size="23" v-if="review.isLike" :style="{ backgroundColor: '#E5F5EC'}">
-                        <svg-icon name="Finger" class="finger-up" color="#27AE60" />
-                    </v-avatar>
-                    <v-avatar :style="{ backgroundColor: '#FCE9E9' }" v-else>
-                        <svg-icon name="Finger" color="#E64646" class="finger-up svg-down down" />
-                    </v-avatar>
-                </template>
-
-                <v-avatar size="60" :color="review.author.photoLink ? '#F0F2F6' :randomColor(review.author.id % 10)">
-                    <v-img :src="review.author.photoLink" v-if="review.author.photoLink"></v-img>
-                    <span style="color: #fff" class="font-weight-bold" v-else>{{(review.author.name[0] + review.author.lastName[0].toUpperCase())}}</span>
+        <v-row no-gutters class="d-flex flex-row flex-nowrap align-center justify-center mt-4">
+          <v-col align-self="start" class="pa-0 mx-4">
+            <v-badge avatar bottom color="none" overlap  offset-x="22" offset-y="22">
+              <template v-slot:badge>
+                <v-avatar size="23" v-if="review.isLike" :style="{ backgroundColor: '#E5F5EC'}">
+                  <svg-icon name="Finger" class="finger-up" color="#27AE60" />
                 </v-avatar>
+                <v-avatar :style="{ backgroundColor: '#FCE9E9' }" v-else>
+                  <svg-icon name="Finger" color="#E64646" class="finger-up svg-down down" />
+                </v-avatar>
+              </template>
+
+              <v-avatar size="60" :color="review.author.photoLink ? '#F0F2F6' :randomColor(review.author.id % 10)">
+                <v-img :src="review.author.photoLink" v-if="review.author.photoLink"></v-img>
+                <span style="color: #fff" class="font-weight-bold" v-else>{{(review.author.name[0] + review.author.lastName[0].toUpperCase())}}</span>
+              </v-avatar>
             </v-badge>
-            <div class="d-flex flex-column review-container">
-                <div class="review py-3 px-4">
+          </v-col>
+            <div class="d-flex flex-column review-container mr-4">
+                <div class="review">
                     <v-col class="pa-0">
-                        <v-row no-gutters class="d-flex align-center justify-space-between mb-1">
-                            <h4 class="mr-3">{{ review.fullName }}</h4>
+                        <v-row no-gutters class="d-flex flex-row flex-nowrap align-center mb-1">
+                          <div class="full-width review-author mr-3">
+                            <h4 class="review-author">{{ review.fullName }}</h4>
+                          </div>
                             <div class="desc">{{ review.createdAt }}</div>
                         </v-row>
-                        <v-row no-gutters :id="'review' + review.id">
+                        <v-row no-gutters :id="'review' + review.id" class="review-text">
                             {{ review.reviewText }}
                         </v-row>
                     </v-col>
                 </div>
             </div>
-        </div>
-    </div>
+        </v-row>
 </template>
 
 <script lang="ts">
@@ -46,7 +48,7 @@ export default class Reviews extends Vue {
     @Prop({ required: true, default: [] }) readonly review!: IReviews;
     reviewType = ReviewTypesEnum;
 
-    randomColor(i: number) {
+    randomColor(i: number): string {
     const COLORS = [
       '#56CCF2',
       '#BB6BD9',
@@ -75,6 +77,7 @@ export default class Reviews extends Vue {
 $badge-min-width: 23px;
 .cont {
     flex-wrap: nowrap !important;
+  box-sizing: border-box;
 }
 
 .review-container {
@@ -85,11 +88,17 @@ $badge-min-width: 23px;
     border-radius: 2px 16px 16px 16px;
     width: 100%;
 
+  .review-author {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
     .desc {
-        font-size: 12px;
         font-size: 12px;
         line-height: 150%;
         display: flex;
+      white-space: nowrap;
         align-items: center;
         color: #5f739c;
     }
@@ -105,6 +114,10 @@ $badge-min-width: 23px;
             margin-right: 4px;
         }
     }
+  .review-text {
+    word-break: break-word;
+    word-wrap: break-word;
+  }
 }
 
 .review-action {

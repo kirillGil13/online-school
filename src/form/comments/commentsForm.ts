@@ -1,14 +1,20 @@
 import { Component } from 'vue-property-decorator';
 import { Form } from '@/form/form';
 import {CommentsFormRequestType} from '@/form/comments/commentsForm.types';
+import {Validate} from '@/plugins/Vuelidate/Decorators';
+import {maxLength} from 'vuelidate/lib/validators';
 
 @Component
 export class CommentsForm extends Form {
-
+    @Validate(maxLength(2000), 'Сообщение не должно быть больше 2000 символов')
     public message = '';
+
     public lessonId: number | null = null;
     public commentId: number | null = null;
     public author = '';
+    public showAnswersForm = false;
+    public showCommentsForm = false;
+    public answersIndex: number | null = null;
 
     public serverErrors: { [key: string]: string[] } = {};
 
