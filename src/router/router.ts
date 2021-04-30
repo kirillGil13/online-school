@@ -197,6 +197,7 @@ const routes = [
         path: '/landing',
         beforeEnter: landingGuard,
         component: () => import('../UI/layouts/LandingLayout.vue'),
+        meta: {auth: false},
         children: [
             {
                 path: ':id',
@@ -207,6 +208,7 @@ const routes = [
     },
     {
         path: '/404',
+        meta: {auth: false},
         component: () => import('../UI/pages/404/NotFound.vue'),
     }
 ];
