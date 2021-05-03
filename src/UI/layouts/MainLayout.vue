@@ -1,7 +1,7 @@
 <template>
   <v-app class="main-view">
     <MobileBar v-if="$adaptive.isMobile" :userId="user.id" :user-info="user"/>
-    <v-main class="main-view__container pt-4">
+    <v-main class="main-view__container pt-4 pb-0">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
           <Sidebar :userInfo="user" :userId="user.id" @proceed="proceed"/>
@@ -29,6 +29,7 @@
         </template>
       </Modal>
     </v-main>
+    <Footer/>
   </v-app>
 </template>
 <script lang="ts">
@@ -48,10 +49,12 @@ import Error from '../components/common/banners/Error.vue';
 import {startIntercomMessenger} from '../../plugins/Intercom';
 import Modal from '../components/common/Modal.vue';
 import SubscribeFormalization from '../components/subscribeFormalization/SubscribeFormalization.vue';
+import Footer from '../components/common/footer/Footer.vue';
 
 
 @Component({
   components: {
+    Footer,
     SubscribeFormalization,
     Modal,
     Error,

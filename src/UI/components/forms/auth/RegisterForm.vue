@@ -102,7 +102,9 @@
     <div class="d-flex justify-center rules">
       <div>
         Регистрируясь, Вы принимаете условия <br>
-        <a href="#">Пользовательского соглашения</a> и <a href="#">Политики конфиденциальности</a>
+        <router-link target="_blank" :to="{name: $routeRules.TermsOfUse}">Пользовательского соглашения</router-link>, <router-link target="_blank" :to="{name: $routeRules.PrivacyPolicy}">Политики конфиденциальности</router-link>
+        <br>
+        и <router-link target="_blank" :to="{name: $routeRules.PersonalData}">Согласия на обработку пресональных данных</router-link>
       </div>
     </div>
   </v-form>
