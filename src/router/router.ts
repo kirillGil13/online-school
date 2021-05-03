@@ -205,19 +205,57 @@ const routes = [
         ],
     },
     {
+        path: '/privacy-policy',
+        meta: {
+            auth: undefined,
+            title: 'Политика конфиденциальности - ONELINKS'
+        },
+        name: RouterNameEnum.PrivacyPolicy,
+        component: () => import('../UI/pages/privacy/PrivacyPolicy.vue'),
+    },
+    {
+        path: '/terms-of-use',
+        meta: {
+            auth: undefined,
+            title: 'Пользовательское соглашение - ONELINKS'
+        },
+        name: RouterNameEnum.TermsOfUse,
+        component: () => import('../UI/pages/privacy/TermsOfUse.vue'),
+    },
+    {
+        path: '/personal-data',
+        meta: {
+            auth: undefined,
+            title: 'Согласие на обработку персональных данных - ONELINKS'
+        },
+        name: RouterNameEnum.PersonalData,
+        component: () => import('../UI/pages/privacy/PersonalData.vue'),
+    },
+    {
+        path: '/terms-of-subscription',
+        meta: {
+            auth: undefined,
+            title: 'Соглашение с условиями подписки - ONELINKS'
+        },
+        name: RouterNameEnum.TermsOfSubscription,
+        component: () => import('../UI/pages/privacy/Offer.vue'),
+    },
+    {
         path: '/404',
         meta: {
-            auth: undefined
+            auth: undefined,
+            title: '404 - ONELINKS'
         },
         component: () => import('../UI/pages/404/NotFound.vue'),
     },
     {
         meta: {
-            auth: undefined
+            auth: undefined,
+            title: '403 - ONELINKS'
         },
         path: '/403',
         component: () => import('../UI/pages/403/Forbidden.vue'),
-    }
+    },
 ];
 
 Vue.router = new Router({
