@@ -10,7 +10,7 @@
             v-bind="attrs"
             @input="attrs.change"
         >
-          <Button small class="mt-0 ml-3" v-on="$listeners">Сменить адрес</Button>
+          <Button small class="mt-0" :class="[!$adaptive.isMobile ? 'ml-3' : 'mt-3']" v-on="$listeners">Сменить адрес</Button>
       </div>
     </FormGroup>
     <div class="info-desc mt-1 ml-4">На указанный Вами адрес электронной почты будет выслана ссылка-подтверждение.</div>
