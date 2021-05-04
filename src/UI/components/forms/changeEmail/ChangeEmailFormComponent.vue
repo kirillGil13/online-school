@@ -1,7 +1,7 @@
 <template>
-  <div class="mb-3">
+  <div class="mb-3" >
     <FormGroup v-slot="attrs" :form="form" field="email" show-custom-error label="Email">
-      <div class="d-flex flex-row">
+      <div class="d-flex flex-row" :class="[$adaptive.isMobile && 'd-flex flex-column']">
         <input
             class="input input__normal"
             type="email" name="email"

@@ -15,7 +15,7 @@
           class="pa-4"
           cols="12"
       >
-        <div class="org">@ 2020 — <strong>Onelinks.com</strong></div>
+        <div class="org">@ 2020 — Onelinks.com</div>
         <v-divider class="mt-3"></v-divider>
         <v-row no-gutters>
           <router-link v-for="(item, index) in footerItems" :key="index" class="font-14 mt-3 mr-3 footer-menu"
