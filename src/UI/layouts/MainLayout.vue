@@ -4,7 +4,7 @@
     <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
-          <Sidebar :userInfo="user" :userId="user.id" :countUnreadMessages="unReadMessages" @proceed="proceed"/>
+          <Sidebar :userInfo="user" :userId="user.id" :unReadMessages="unReadMessages" @proceed="proceed"/>
           <Banner v-if="!user.isSubscriptionActual" @show="activator = true"/>
         </div>
         <div class="content-main pt-0 mb-16">
@@ -78,7 +78,6 @@ export default class MainLayout extends Vue {
     scrollTop(val: string, oldVal: string): void {
       if(val !== oldVal && this.$adaptive.isMobile){
           window.scroll(0, 0)
-
       }
     }
 
@@ -99,6 +98,14 @@ export default class MainLayout extends Vue {
       DialogsStore.fetchAll()
       startIntercomMessenger(AuthStore.user!);
       WebSocketStore.setConnection();
+
+      this.socket!.onopen = (el) => {
+        console.log('open')
+      }
+
+      this.socket!.onclose = (el) => {
+        console.log(el)
+      }
 
 
       this.socket!.onmessage = (() => {

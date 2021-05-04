@@ -22,6 +22,8 @@ class DialogsModule extends VuexModule {
             dialogsLoaded = true
         }
         const unReadMessages = dialogs.reduce((a, b) => a + b.countUnread, 0);
+        console.log(unReadMessages)
+        
         return { dialogs, dialogsLoaded, unReadMessages };
     }
 

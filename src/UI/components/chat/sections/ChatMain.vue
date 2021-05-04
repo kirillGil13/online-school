@@ -40,13 +40,14 @@ export default class ChatMain extends Vue {
   @Watch('$route.params.id')
   onChangeRoute(): void {
     this.fetchData();
+    
 
-    const el = {
-      type: "connect-to-dialog-type",
-      data: {
-        "purpose_account_id": this.$route.params.id
-      }
+  const el = {
+    type: "connect-to-dialog-type",
+    data: {
+      "purpose_account_id": this.$route.params.id
     }
+  }
 
     this.socket!.send(JSON.stringify(el))
     
@@ -68,13 +69,6 @@ export default class ChatMain extends Vue {
       const container =  await document.getElementById('chatDialogContainer');
 
       container!.scrollTop = await container!.scrollHeight
-    }
-
-
-    this.socket!.onclose = () => {
-        setTimeout(() => {
-          WebSocketStore.setConnection()
-        }, 500)
     }
   }
 

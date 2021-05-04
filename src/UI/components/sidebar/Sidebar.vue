@@ -2,7 +2,7 @@
   <div class="sidebar">
     <Logo width="34px" height="34px" font-size="14px" id="step-0"/>
     <account-badge :userInfo="userInfo" :userId="userId" v-on="$listeners"/>
-    <Menu :countUnreadMessages="countUnreadMessages"/>
+    <Menu :unReadMessages="unReadMessages"/>
   </div>
 </template>
 
@@ -24,7 +24,7 @@ import Logo from '@/UI/components/common/Logo.vue';
 export default class extends Vue {
   @Prop({required: true}) userInfo!: IFakeUserInfo;
   @Prop({required: true}) userId!: number;
-  @Prop() countUnreadMessages!: number;
+  @Prop() unReadMessages!: number;
 }
 </script>
 
