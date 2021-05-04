@@ -1,9 +1,6 @@
 <template>
   <v-row class="profile" :class="[$adaptive.isMobile && 'px-3']">
     <v-col :cols="12">
-      <Header class="mb-3" :title="`${user.name} ${user.lastName}`"></Header>
-    </v-col>
-    <v-col :cols="12">
       <div class="profile__main-content">
         <v-row>
           <v-col class="pt-0" :cols="$adaptive.isMobile ? 12 : 2">
@@ -13,8 +10,9 @@
                             'profile__info-low-size': $adaptive.isMobile,
                         }"
             >
-              <div :class="[$adaptive.isMobile ? 'avatar_mobile_container' : '']">
+              <div :class="[$adaptive.isMobile ? 'avatar_mobile_container d-flex flex-row' : '']">
                 <avatar
+                    :class="[$adaptive.isMobile && 'mr-3']"
                     :size="$adaptive.isMobile ? 73 : 143"
                     :imageSource="user.photoLink"
                     :id="user.id"
@@ -26,6 +24,10 @@
                     <input class="input-file" type="file" accept="image/*" id="upload" @change="handleImage($event)">
                   </template>
                 </avatar>
+                <div v-if="$adaptive.isMobile" class="d-flex align-center font-weight-bold font-16">
+                  {{user.name}}<br>
+                  {{user.lastName}}
+                </div>
               </div>
 <!--              <Button v-if="user.isSubscriptionActual" @submit="unSub" full-width small class="py-3 mt-2">Отменить подписку</Button>-->
               <Button @submit="logOut" full-width small class="secondary_blue py-3 mt-2">Выйти</Button>
@@ -299,7 +301,8 @@ export default class Profile extends Vue {
     border-radius: $main_border_radius;
     background-color: $white;
     padding: 24px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+    box-shadow: 0px 14px 12px rgb(0 0 0 / 1%);
+    border: 1px solid #F2F2F2;
   }
 
   &__col {
