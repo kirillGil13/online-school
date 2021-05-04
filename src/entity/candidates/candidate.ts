@@ -5,23 +5,23 @@ export class Candidate implements ICandidate {
     createdAt: string;
     status: ICandidateStatus;
     name: string;
-    phoneNumber: string | null;
-    email: string | null;
+    phoneNumber: string;
+    email: string;
     isFiction: boolean;
-    infoPackName: string | null;
-    callTime: string | null;
+    infoPackName: string;
+    callTime: string;
     description: string;
     isLocked: boolean;
 
     constructor(data: CandidateResponseType) {
         this.id = data.id;
         this.name = data.name;
-        this.phoneNumber = data.phoneNumber;
-        this.email = data.email;
+        this.phoneNumber = data.phoneNumber ? data.phoneNumber : '';
+        this.email = data.email ? data.email : '';
         this.createdAt = this.getTime(data.created_at);
         this.status = data.status;
         this.isFiction = data.isFiction;
-        this.infoPackName = data.infoPackName;
+        this.infoPackName = data.infoPackName ? data.infoPackName : '';
         this.callTime = this.getTime(data.callTime);
         this.description = data.description ? data.description : '';
         this.isLocked = data.is_locked;
