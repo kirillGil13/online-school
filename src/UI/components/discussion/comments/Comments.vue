@@ -81,7 +81,7 @@
                     <v-col class="pa-0" v-else>
                       <v-row no-gutters class="mb-1 d-flex" :class="!$adaptive.isMobile && 'justify-space-between'">
                         <div class="d-flex flex-row justify-space-between" :class="$adaptive.isMobile && 'justify-space-between' " :style="{width: $adaptive.isMobile && '100%'}">
-                          <h4 class="mr-3" style="white-space: nowrap;" >{{ item.fullName }}</h4>
+                          <h4 class="mr-3" style="white-space: nowrap; color: #101010; font-size: 14px;" >{{ item.fullName }}</h4>
                           <div class="desc" style="white-space: nowrap;">{{ item.createdAt }}</div>
                         </div>
                         <div class="pr-0" v-if="item.isMy">
@@ -280,5 +280,7 @@ export default class Comments extends Vue {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  color: #101010;
+  font-size: 14px;
 }
 </style>
