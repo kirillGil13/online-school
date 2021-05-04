@@ -42,6 +42,25 @@ class MenuModule extends VuexModule {
             route: RouterNameEnum.Cabinet,
         },
     ];
+
+    footerMenu: IMainMenu[] = [
+        {
+            title: 'Политика конфиденциальности',
+            route: RouterNameEnum.PrivacyPolicy,
+        },
+        {
+            title: 'Согласие на обработку персональных данных',
+            route: RouterNameEnum.PersonalData,
+        },
+        {
+            title: 'Пользовательское соглашение',
+            route: RouterNameEnum.TermsOfUse,
+        },
+        {
+            title: 'Соглашение с условиями подписки',
+            route: RouterNameEnum.TermsOfSubscription,
+        },
+    ]
 }
 
 export const MenuStore = getModule(MenuModule);

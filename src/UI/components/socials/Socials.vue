@@ -38,7 +38,6 @@
     <a :href="`https://vk.com/${vk}`" target="_blank" v-if="vk">
       <v-btn
           class="white--text mr-2 mt-0"
-          color="primary"
           icon
           small
       >

@@ -101,8 +101,10 @@
     <v-divider class="mt-6 mb-6"></v-divider>
     <div class="d-flex justify-center rules">
       <div>
-        Регистрируясь, вы принимаете условия <br>
-        <a href="#">Пользовательского соглашения</a> и <a href="#">Политики конфиденциальности</a>
+        Регистрируясь, Вы принимаете условия <br>
+        <router-link target="_blank" :to="{name: $routeRules.TermsOfUse}">Пользовательского соглашения</router-link>, <router-link target="_blank" :to="{name: $routeRules.PrivacyPolicy}">Политики конфиденциальности</router-link>
+        <br>
+        и <router-link target="_blank" :to="{name: $routeRules.PersonalData}">Согласия на обработку пресональных данных</router-link>
       </div>
     </div>
   </v-form>

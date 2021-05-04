@@ -119,6 +119,9 @@
                                     <div v-if="showAll === false" class="show-all ml-2" @click="showAll = true">
                                         Показать полностью
                                     </div>
+                                    <div v-if="showAll === true" class="show-all ml-2" @click="showAll = false">
+                                        Скрыть
+                                    </div>
                                 </div>
                             </div>
                             <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
@@ -160,20 +163,11 @@
                                         </div>
                                     </div>
                                     </div>
-
-                                        <!--  -->
                                     <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}" v-if="user.isSubscriptionActual">
                                         <Button @submit="toggleShowSetReview" :style="{width: $adaptive.isMobile && '100%'}">Написать отзыв</Button>
                                     </div>
                                 </div>
                                 <template v-if="isSetReview">
-<!--                                    <reviews-form-component-->
-<!--                                        :form="reviewsForm"-->
-<!--                                        :course="course"-->
-<!--                                        @setReview="setReview"-->
-<!--                                        @handleLike="handleLike"-->
-<!--                                        @handleDisLike="handleDisLike"-->
-<!--                                    />-->
                                   <ReviewsFormLikesDislikes
                                       :form="reviewsForm"
                                       :form-name="formName.review"
@@ -187,7 +181,7 @@
                                 </template>
                             </div>
                             <div>
-                                <ReviewsDiscussion :reviews="reviews" isReview />
+                                <ReviewsDiscussion :reviews="reviews" isReview/>
                             </div>
                         </v-col>
                     </div>
@@ -195,7 +189,7 @@
                         :class="['lessons', $adaptive.isMobile ? 'mb-3' : 'ml-4']"
                         :style="{ width: $adaptive.isMobile ? '100%' : '' }"
                     >
-                        <Lessons ref="lessons" :course="course" @moveToNextLesson="moveToNextLesson" />
+                        <Lessons ref="lessons" :course="course" @moveToNextLesson="moveToNextLesson"/>
                         <v-col class="box-container pa-6 pb-8 materials" v-if="!$adaptive.isMobile && files === []">
                             <h5>МАТЕРИАЛЫ К УРОКУ</h5>
                             <Doc v-for="(item, index) in files" :key="index" :material="item" />
@@ -312,6 +306,12 @@ export default class Course extends Vue {
         if (this.showAll === true) {
             (this.$refs.authorDescription as HTMLElement).style.overflow = 'none';
             (this.$refs.authorDescription as HTMLElement).style.maxHeight = 'unset';
+        }
+
+        if (this.showAll === false) {
+
+            (this.$refs.authorDescription as HTMLElement).style.overflow = 'hidden';
+            (this.$refs.authorDescription as HTMLElement).style.maxHeight = '65px';
         }
     }
 

@@ -1,6 +1,6 @@
 <template>
   <v-app class="main-view">
-    <v-main class="main-view__container">
+    <v-main class="main-view__container pb-0">
       <router-view/>
     </v-main>
   </v-app>
@@ -9,6 +9,7 @@
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator';
 import {AuthStore} from '@/store/modules/Auth';
+import {RouterNameEnum} from '@/router/router.types';
 
 @Component
 export default class App extends Vue {
@@ -26,9 +27,15 @@ export default class App extends Vue {
   resolveAdaptiveMobile(): boolean {
     let isMobile = false;
     switch (this.$vuetify.breakpoint.name) {
-      case 'xs': isMobile = true; break;
-      case 'sm': isMobile = true; break;
-      case 'md': isMobile = false; break;
+      case 'xs':
+        isMobile = true;
+        break;
+      case 'sm':
+        isMobile = true;
+        break;
+      case 'md':
+        isMobile = false;
+        break;
     }
     return isMobile;
   }

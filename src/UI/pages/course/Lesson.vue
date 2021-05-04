@@ -69,7 +69,7 @@
           svg-name="Message"
           class="mb-4"
           :title="$adaptive.isMobile ? '' : 'Обсудить'"
-          @click="user.isSubscriptionActual ? discuss : ''"
+          @click="discuss"
       />
     </v-row>
     <v-row no-gutters v-if="toggleOpenLikeDislikeForm" class="mb-6">
@@ -148,6 +148,7 @@
         :comments="comments"
         :selected-id="selectedId"
         :form="commentsForm"
+        :answersForm="answersForm"
         @postComment="postComment"
         @respond="respond"
         @handleLike="handleLike"
@@ -266,6 +267,7 @@ export default class Lesson extends Vue {
   lessonTypes = LessonsTypesEnum;
   testingForm = new TestingForm();
   commentsForm = new CommentsForm();
+  answersForm = new CommentsForm();
   isPlaying = false;
   play = false;
   commentsChangeForm = new CommentsChangeForm();
@@ -387,21 +389,26 @@ export default class Lesson extends Vue {
   }
 
   respond(data: any): void {
-    this.commentsForm.commentId = data.id;
-    if (!data.index) {
-      this.commentsForm.message = this.comments.find((item) => item.id === data.id)!.fullName + ', ';
-      this.commentsForm.author = this.comments.find((item) => item.id === data.id)!.fullName;
+    this.answersForm.commentId = data.id;
+    if (data.index === undefined) {
+      this.answersForm.showAnswersForm = false;
+      this.answersForm.message = this.comments.find((item) => item.id === data.id)!.fullName + ', ';
+      this.answersForm.author = this.comments.find((item) => item.id === data.id)!.fullName;
+      this.answersForm.showCommentsForm = true;
     } else {
-      this.commentsForm.message =
+      this.answersForm.showCommentsForm = false;
+      this.answersForm.message =
           this.comments.find((item) => item.id === data.id)!.answers[data.index].fullName + ', ';
-      this.commentsForm.author = this.comments.find((item) => item.id === data.id)!.answers[data.index].fullName;
+      this.answersForm.author = this.comments.find((item) => item.id === data.id)!.answers[data.index].fullName;
+      this.answersForm.answersIndex = data.index;
+      this.answersForm.showAnswersForm = true;
     }
-    document.getElementById('message')!.focus();
   }
 
   beforeDestroy(): void {
     this.stopTimer();
     CommentsStore.setCommentsToEmpty();
+    window.removeEventListener('scroll', this.fetchComments);
   }
 
   fetchComments = (): void => {
@@ -456,9 +463,13 @@ export default class Lesson extends Vue {
   }
 
   discuss(): void {
-    const item = document.getElementById('message')!;
-    item.scrollIntoView();
-    item.focus();
+    if (this.user!.isSubscriptionActual) {
+      const item = document.getElementById('message')!;
+      item.scrollIntoView({block: 'center'});
+      item.focus();
+    } else {
+      this.activatorSub = true;
+    }
   }
 
   showForm(): void {
@@ -615,39 +626,50 @@ export default class Lesson extends Vue {
   }
 
   async postComment(): Promise<void> {
-    if (this.commentsForm.commentId) {
-      if (await this.commentsForm.submit(CommentsAnswersStore.postAnswer)) {
+    this.commentsForm.sendingRequest = true;
+    this.answersForm.sendingRequest = true;
+    if (this.answersForm.commentId) {
+        const resp = await CommentsAnswersStore.postAnswer(this.answersForm.getFormData());
         await CommentsStore.fetchAll({
           route: this.$route.params.lessonId,
           pagination: {limit: 100, sort: this.sort, orderBy: this.orderBy}
         });
-        document.getElementById(`comment${this.commentsForm.commentId}`)!.scrollIntoView();
-        this.commentsForm = new CommentsForm();
-        this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
-      }
+        const comments = document.getElementsByClassName('comment');
+        const comment = document.getElementById(`answer${resp.id}`);
+        for (let i = 0; i < comments.length; i++) {
+          if (comments[i].contains(comment)) {
+            comments[i].classList.add('active-comment');
+            setTimeout(() => {
+              comments[i].classList.remove('active-comment');
+            }, 1000)
+          }
+        }
+        comment!.scrollIntoView({block: 'center'});
+        this.answersForm = new CommentsForm();
+        this.answersForm.lessonId = parseInt(this.$route.params.lessonId);
+      this.commentsForm.sendingRequest = false;
+      this.answersForm.sendingRequest = false;
     } else {
-      if (await this.commentsForm.submit(CommentsStore.postComment)) {
+      const resp = await CommentsStore.postComment(this.commentsForm.getFormData());
         await CommentsStore.fetchAll({
           route: this.$route.params.lessonId,
           pagination: {limit: 100, sort: this.sort, orderBy: this.orderBy}
         });
+        const comments = document.getElementsByClassName('comment');
+        const comment = document.getElementById(`comment${resp.id}`);
+        for (let i = 0; i < comments.length; i++) {
+          if (comments[i].contains(comment)) {
+            comments[i].classList.add('active-comment');
+            setTimeout(() => {
+              comments[i].classList.remove('active-comment');
+            }, 1000)
+          }
+        }
+        comment!.scrollIntoView({block: 'center'});
         this.commentsForm = new CommentsForm();
         this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
-        // if (this.lessonLoaded) {
-        //   VideoOptionsStore.handleVideo({
-        //     src: this.lesson!.m3u8FileLink,
-        //     poster: this.lesson!.photoLink,
-        //     currentTime: this.lesson!.timeCode,
-        //   });
-        //   if (this.lesson!.homeworkIsDone) {
-        //     await RightAnswersStore.fetchAll(this.lesson!.homeworkId);
-        //   } else if (this.lesson!.homeworkId) {
-        //     await QuestionsStore.fetchAll(this.lesson!.homeworkId);
-        //     this.testingForm = new TestingForm(this.questions!.tests);
-        //     this.testingForm.activeStep[0].active = true;
-        //   }
-        // }
-      }
+      this.commentsForm.sendingRequest = false;
+      this.answersForm.sendingRequest = false;
     }
   }
 

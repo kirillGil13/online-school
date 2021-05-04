@@ -1,7 +1,7 @@
 <template>
   <v-app class="main-view">
     <MobileBar v-if="$adaptive.isMobile" :userId="user.id" :user-info="user"/>
-    <v-main class="main-view__container pt-4">
+    <v-main class="main-view__container pt-4 pb-0">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
           <Sidebar :userInfo="user" :userId="user.id" :countUnreadMessages="unReadMessages" @proceed="proceed"/>
@@ -11,7 +11,7 @@
           <v-main>
             <v-col class="py-0" v-if="!user.isEmailConfirmed && !$route.query.accountId">
               <Confirm
-                  :text="`Мы отправили на почту ${user.email} письмо с ссылкой на подтверждение. Пожалуйста, откройте вашу почту и перейдите по ссылке в письме.`"
+                  :text="`Мы отправили на почту ${user.email} письмо с ссылкой на подтверждение. Пожалуйста, откройте Вашу почту и перейдите по ссылке в письме.`"
                   @show="showNote"
                   :show="show"
                   @submit="sendCode"
@@ -29,10 +29,11 @@
         </template>
       </Modal>
     </v-main>
+    <Footer/>
   </v-app>
 </template>
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import {AuthStore} from '@/store/modules/Auth';
 import {IUser} from '@/entity/user';
 import MobileBar from '@/UI/components/common/MobileBar.vue';
@@ -51,10 +52,12 @@ import SubscribeFormalization from '../components/subscribeFormalization/Subscri
 import { WebSocketStore } from '@/store/modules/WebSocket';
 import { IDialogs } from '@/entity/dialogs/dialogs.types';
 import { DialogsStore } from '@/store/modules/Dialogs';
+import Footer from '../components/common/footer/Footer.vue';
 
 
 @Component({
   components: {
+    Footer,
     SubscribeFormalization,
     Modal,
     Error,
@@ -70,7 +73,16 @@ export default class MainLayout extends Vue {
   show = true;
   success = false;
   alertType = AlertTypeEnum;
-  
+
+  @Watch('$route.name')
+    scrollTop(val: string, oldVal: string): void {
+      if(val !== oldVal && this.$adaptive.isMobile){
+          window.scroll(0, 0)
+
+      }
+    }
+
+
   showAlert(show: boolean): void {
     this.success = show;
   }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="form-title text-center">Восстановаление пароля</h2>
+    <h2 class="form-title text-center">Восстановление пароля</h2>
     <SendCodeFormComponent v-if="!$route.query.accountId" :form="sendCodeForm" @sendCode="sendCode"/>
     <template v-else>
       <RecoverDoFormComponent v-if="recoverCodeStep" :form="doCodeForm" @doRecover="doRecover"/>
