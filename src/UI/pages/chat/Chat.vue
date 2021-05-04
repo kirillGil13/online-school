@@ -45,7 +45,7 @@ import MessageSend from '@/UI/components/message/MessageSend.vue';
 import { WebSocketStore } from '@/store/modules/WebSocket';
 
 @Component({
-  components: {InDev, ChatHeader, Conversations,Modal,MessageSend }
+  components: {InDev, ChatHeader, Conversations, Modal, MessageSend }
 })
 export default class Chat extends Vue {
   chosenPartnerId: number | null = null;
@@ -58,7 +58,6 @@ export default class Chat extends Vue {
   }
 
   async created() {
-    console.log(this.$route.name)
     await DialogsStore.fetchAll()
 
   }

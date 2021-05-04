@@ -102,7 +102,6 @@ export default class MainLayout extends Vue {
 
 
       this.socket!.onmessage = (() => {
-        console.log('asda')
         DialogsStore.setUnReadMessage(1, true);
       })
   }
