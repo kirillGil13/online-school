@@ -79,7 +79,7 @@ export default class Avatar extends Vue {
       return AuthStore.user
     }
 
-    randomColor(i: number) {
+    randomColor(i: number): string {
     const COLORS = [
       '#56CCF2',
       '#BB6BD9',
@@ -130,7 +130,7 @@ export default class Avatar extends Vue {
 }
 
 .avatar {
-    border-radius: $main_border_radius;
+    border-radius: 50%;
 
 }
 
@@ -149,7 +149,7 @@ export default class Avatar extends Vue {
     display: inline-block;
     position: relative;
     .v-avatar {
-      border-radius: 12px !important;
+      border-radius: 50% !important;
       border: 1px solid rgba(0, 0, 0, 0.04);
     }
   .input-file {
