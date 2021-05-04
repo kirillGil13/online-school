@@ -19,14 +19,12 @@
                 v-model="filters.default[index]"
                 @change="$emit('filter')"
                 :class="['filter pa-0', $adaptive.isMobile ? 'filter-mobile' : '']"
-                :menu-props="{ left: true, minWidth: 190}"
+                :menu-props="{ left: true, minWidth: 190, contentClass: $adaptive.isMobile ? 'no-ripple' : ''}"
                 flat
                 dense
-                solo
             >
-
               <template v-slot:append >
-                <svg-icon name="Filter"></svg-icon>
+                  <svg-icon name="Filter" :style="{marginTop: '6px'}"></svg-icon>
               </template>
             </v-select>
           </v-col>
@@ -44,7 +42,7 @@
   </v-col>
 </template>
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import Filters from '../../../entity/filters/filters';
 import Button from '../common/Button.vue';
 
@@ -152,7 +150,6 @@ export default class FilterComponent extends Vue {
       }
     }
   }
-
   .filter-search {
     width: 100%;
 
@@ -181,6 +178,13 @@ export default class FilterComponent extends Vue {
       font-size: 12px;
       padding: 10px 16px !important;
       width: 100%;
+    }
+  }
+}
+.no-ripple {
+  .v-list-item {
+    .v-ripple__container {
+      display: none !important;
     }
   }
 }

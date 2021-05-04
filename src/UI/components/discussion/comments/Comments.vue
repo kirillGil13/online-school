@@ -16,12 +16,12 @@
           </v-col>
           <v-col class="pa-0" v-else>
             <v-row no-gutters class="mb-1 d-flex flex-row flex-nowrap justify-space-between">
-              <div class="d-flex flex-row">
-                <h4 class="mr-3 comment-author">{{ comment.fullName }}</h4>
-                <div class="desc">{{ comment.createdAt }}</div>
+              <div class="d-flex " :class="!$adaptive.isMobile && 'flex-row'" :style="{width: $adaptive.isMobile && '100%', flexDirection: $adaptive.isMobile && 'column'}">
+                
+                <div class="desc d-flex"><h4 class=" d-flex mr-3 comment-author justify-space-between" style="white-space:nowrap">{{ comment.fullName }}</h4> {{ comment.createdAt }}</div>
                 <template v-if="comment.isEdited">
-                  <v-icon dense>mdi-circle-small</v-icon>
-                  <div class="desc" >Изменено</div>
+                  <v-icon v-show="!$adaptive.isMobile" dense>mdi-circle-small</v-icon>
+                  <div class="desc">Изменено</div>
                 </template>
               </div>
               <div class="pr-0" v-if="comment.isMy">
@@ -79,10 +79,10 @@
                       <CommentsChangeFormComponent :form="form" @closeChange="closeChangeAnswer" @changeComment="$emit('changeAnswer', {answer: item.id, comment: comment.id})"/>
                     </v-col>
                     <v-col class="pa-0" v-else>
-                      <v-row no-gutters class="mb-1 d-flex justify-space-between">
-                        <div class="d-flex flex-row">
-                          <h4 class="mr-3">{{ item.fullName }}</h4>
-                          <div class="desc">{{ item.createdAt }}</div>
+                      <v-row no-gutters class="mb-1 d-flex" :class="!$adaptive.isMobile && 'justify-space-between'">
+                        <div class="d-flex flex-row justify-space-between" :class="$adaptive.isMobile && 'justify-space-between' " :style="{width: $adaptive.isMobile && '100%'}">
+                          <h4 class="mr-3" style="white-space: nowrap;" >{{ item.fullName }}</h4>
+                          <div class="desc" style="white-space: nowrap;">{{ item.createdAt }}</div>
                         </div>
                         <div class="pr-0" v-if="item.isMy">
                           <Select class-name="select_content_comment action" :selects="selects" @extraAction="extraActionAnswer" :id="item.id">

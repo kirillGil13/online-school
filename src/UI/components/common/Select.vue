@@ -3,6 +3,8 @@
       origin="center center"
       transition="scale-transition"
       :content-class="className"
+      auto
+      :top="$adaptive.isMobile"
       class="selection"
   >
     <template v-slot:activator="{ attrs, on }">
@@ -18,6 +20,7 @@
           :id="`select${index}`"
           dense
           link
+          :ripple="!$adaptive.isMobile"
           class="selection pr-0"
           @click="item.extraAction ? $emit('extraAction', id, index) : $emit('select', {statusId: item.id, id: id})"
       >
