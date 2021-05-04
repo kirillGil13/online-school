@@ -1,6 +1,6 @@
 <template>
           <v-row no-gutters class="mt-4 reviews" :style="{gridTemplateColumns: $adaptive.isMobile ? '25% 75%' : '13% 87%'}">
-          <v-col align-self="start" class="pa-0">
+          <v-col class="pa-0">
             <v-badge avatar bottom color="none" overlap  offset-x="22" offset-y="22">
               <template v-slot:badge>
                 <v-avatar size="23" v-if="review.isLike" :style="{ backgroundColor: '#E5F5EC'}">
