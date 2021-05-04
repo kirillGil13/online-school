@@ -1,6 +1,6 @@
 <template>
-        <v-row no-gutters class="d-flex flex-row flex-nowrap align-center justify-center mt-4">
-          <v-col align-self="start" class="pa-0 mx-4">
+          <v-row no-gutters class="mt-4 reviews" :style="{gridTemplateColumns: $adaptive.isMobile ? '25% 75%' : '13% 87%'}">
+          <v-col class="pa-0">
             <v-badge avatar bottom color="none" overlap  offset-x="22" offset-y="22">
               <template v-slot:badge>
                 <v-avatar size="23" v-if="review.isLike" :style="{ backgroundColor: '#E5F5EC'}">
@@ -75,6 +75,10 @@ export default class Reviews extends Vue {
 
 <style lang="scss" scoped>
 $badge-min-width: 23px;
+
+.reviews {
+  display: grid;
+}
 .cont {
     flex-wrap: nowrap !important;
   box-sizing: border-box;
