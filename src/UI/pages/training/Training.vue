@@ -23,7 +23,7 @@
     <router-view v-if="leadersCourses.length !== 0 && leadersCoursesLoaded" :leaderCourses="leadersCourses"/>
     <v-row v-else-if="leadersCourses.length === 0">
       <v-col class="mt-10 d-flex justify-center align-center">
-        К сожалению данные не найдены
+        К сожалению, данные не найдены
       </v-col>
     </v-row>
     <Modal v-if="courseLevelsLoaded" :activator="activator" @activatorChange="activatorChange">

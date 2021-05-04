@@ -1,7 +1,7 @@
 <template>
   <v-app class="main-view">
     <MobileBar v-if="$adaptive.isMobile" :userId="user.id" :user-info="user"/>
-    <v-main class="main-view__container pt-4 pb-0">
+    <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
           <Sidebar :userInfo="user" :userId="user.id" :countUnreadMessages="unReadMessages" @proceed="proceed"/>
