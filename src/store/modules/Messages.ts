@@ -1,4 +1,4 @@
-import { getModule, Module, Mutation, MutationAction, VuexModule } from 'vuex-module-decorators';
+import { Action, getModule, Module, Mutation, MutationAction, VuexModule } from 'vuex-module-decorators';
 import store from '@/store';
 import {IMessages} from '@/entity/messages/messages.types';
 

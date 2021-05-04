@@ -18,7 +18,7 @@
             {{elem.lastMessage.createdAt}}
           </div>
         </div>
-        <span class="d-flex justify-space-between align-center flex-row">{{elem.lastMessage.text}} <span class="unReadDialog">{{elem.countUnread > 0 ? elem.countUnread : undefined}}</span></span>
+        <span class="d-flex justify-space-between align-center flex-row">{{elem.lastMessage.text}} <span class="unReadDialog">{{elem.countUnread > 0 && ($route.name === $routeRules.Chat && !$route.params.id) && ($route.params.id === chousenChatId.toString()) ? elem.countUnread : undefined}}</span></span>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@ export default class Conversations extends Vue {
   chousenChatId: number | null = null;
 
   @Watch('$route.name')
-  zeroChousenCahtId(): void {
+  zeroChousenChatId(): void {
     console.log(this.$route.name === this.$routeRules.ChatMain)
 
     

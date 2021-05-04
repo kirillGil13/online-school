@@ -39,7 +39,17 @@ export default class ChatMain extends Vue {
 
   @Watch('$route.params.id')
   onChangeRoute(): void {
-    this.fetchData()
+    this.fetchData();
+
+    const el = {
+      type: "connect-to-dialog-type",
+      data: {
+        "purpose_account_id": this.$route.params.id
+      }
+    }
+
+    this.socket!.send(JSON.stringify(el))
+    
   }
 
   get socket(): WebSocket | null {
@@ -47,7 +57,8 @@ export default class ChatMain extends Vue {
   }
 
   async created(): Promise<void> {
-    this.fetchData()
+    this.fetchData();
+
 
     this.socket!.onmessage = async (event: any) => {
 
