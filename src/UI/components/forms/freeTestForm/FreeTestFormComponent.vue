@@ -24,8 +24,14 @@
         <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div>
       </div>
     </template>
-    <div class="task-done d-flex justify-space-between" v-else>
-      Вы выполнили домашнее задание <span @click="$emit('showForm')">Посмотреть <svg-icon name="Arrow_Right"></svg-icon></span></div>
+    <div class="task-done d-flex" :class="[$adaptive.isMobile ? 'flex-column' : 'justify-space-between']" v-else>
+      <div>
+        Вы выполнили домашнее задание
+      </div>
+      <div>
+        <span @click="$emit('showForm')">Посмотреть <svg-icon name="Arrow_Right"></svg-icon></span>
+      </div>
+    </div>
   </v-form>
 </template>
 

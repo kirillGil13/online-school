@@ -56,11 +56,13 @@ export default class FilterComponent extends Vue {
   @Prop() readonly isArchive!: boolean;
   @Prop() readonly isCandidates!: boolean;
   @Prop() readonly countInArchive!: number;
-  @Prop({required: true}) readonly countElement!: number[];
+  @Prop() readonly countElement!: number[];
 
   mounted(): void {
-    for (let i = 0; i < this.countElement.length; i++) {
-      document.getElementsByClassName('select_item')[this.countElement[i]].classList.add('no-margin');
+    if (this.countElement.length !== 0) {
+      for (let i = 0; i < this.countElement.length; i++) {
+        document.getElementsByClassName('select_item')[this.countElement[i]].classList.add('no-margin');
+      }
     }
   }
 }
@@ -85,9 +87,6 @@ export default class FilterComponent extends Vue {
     }
     .select_item {
       margin-right: 12px;
-      &:nth-last-child(1) {
-        margin-right: 0;
-      }
     }
   }
   label {
