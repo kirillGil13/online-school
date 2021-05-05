@@ -94,8 +94,8 @@
                             <div class="desc__container">
                                 <div class="desc__container--title">Автор курса</div>
                                 <div class="desc__container--author d-flex flex-column">
-                                    <div class="author--title d-flex justify-space-between align-center">
-                                        <div @click="proceed(course.author.id)" :style="{cursor: 'pointer'}">
+                                    <div class="author--title d-flex" :class="[$adaptive.isMobile ? 'flex-column' : 'justify-space-between align-center']">
+                                        <div class="d-flex flex-row" @click="proceed(course.author.id)" :style="{cursor: 'pointer'}">
                                             <v-avatar class="mr-3" :color="course.author.photoLink ? '#F0F2F6' :randomColor(course.author.id % 10)">
                                                 <template v-slot:default v-if="course.author.photoLink">
                                                     <v-img :src="course.author.photoLink" alt="" />
@@ -104,10 +104,16 @@
                                                     <span style="color: #fff" class="font-weight-bold">{{(course.author.name[0] + course.author.lastName[0]).toUpperCase()}}</span>
                                                 </template>
                                             </v-avatar>
-                                            {{ course.author.name }}
-                                            {{ course.author.lastName }}
+                                          <div class="d-flex justify-center flex-column">
+                                            <div>
+                                              {{ course.author.name }}
+                                            </div>
+                                            <div>
+                                              {{ course.author.lastName }}
+                                            </div>
+                                          </div>
                                         </div>
-                                      <Socials :vk="course.author.vk_link" :facebook-link="course.author.facebook_link"
+                                      <Socials :class="[$adaptive.isMobile && 'mt-3 ml-3']" :vk="course.author.vk_link" :facebook-link="course.author.facebook_link"
                                                :instagram-link="course.author.instagram_link" :telegram="course.author.telegram" :site-link="course.author.site_link"/>
                                     </div>
                                     <div
@@ -131,7 +137,7 @@
                             <div class="desc__review">
                                 <div class="desc__review--container" :style="{flexDirection: $adaptive.isMobile && 'column'}">
                                     <div class="d-flex align-center" style="height: 100%">
-                                        <div class="desc__reiting" :style="{borderRight: $adaptive.isMobile && 'none'}">
+                                        <div class="desc__reiting" :style="{borderRight: $adaptive.isMobile && 'none', marginRight: $adaptive.isMobile && '0px'}">
                                             <div
                                                 class="desc__reiting--count"
                                                 :style="{ color: course.rating > 6.5 ? '#27AE60' : '#5F739C' }"
@@ -679,6 +685,9 @@ export default class Course extends Vue {
 
         .author--title {
             font-weight: 600;
+          .author-name {
+
+          }
         }
 
         .author--socials {
@@ -729,6 +738,7 @@ export default class Course extends Vue {
         display: flex;
         align-items: center;
         color: #5f739c;
+      width: max-content;
     }
 }
 

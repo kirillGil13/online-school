@@ -26,7 +26,6 @@
     <a :href="`https://instagram.com/${instagramLink}`" target="_blank" v-if="instagramLink">
       <v-btn
           class="white--text mr-2 mt-0"
-          color="red lighten-3"
           icon
           small
       >

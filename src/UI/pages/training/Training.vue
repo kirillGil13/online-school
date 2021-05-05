@@ -1,8 +1,8 @@
 <template>
   <v-col class="training">
     <Header :isBordered="false" action title="Обучение" class="top_bar_p_0">
-      <div class="d-flex justify-end">
-        <Button class="mt-0" @submit="activator = true">Добавить свой курс</Button>
+      <div class="d-flex" :class="[$adaptive.isMobile ? 'justify-start' : 'justify-end']">
+        <Button class="mt-0" :full-width="$adaptive.isMobile" @submit="activator = true">Добавить свой курс</Button>
       </div>
     </Header>
     <template v-if="leaders.length !== 0">
@@ -13,7 +13,7 @@
     </template>
     <v-row>
       <v-col class="py-0">
-        <FilterComponent :search="true" :is-on-right="true" :filters="filters" @filter="onFilter">
+        <FilterComponent :search="true" :is-on-right="true" :filters="filters" @filter="onFilter" :count-element="[1]">
           <template v-slot:search>
             <Search @search="search"/>
           </template>

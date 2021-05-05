@@ -12,7 +12,9 @@
       <div class="message-container-full">
         <div class="respond d-flex flex-row justify-space-between" v-if="form.author">
           <div class="respond__text">Ваш ответ <span>{{ form.author }}</span></div>
-          <div class="respond__action" @click="cancel">Отменить</div>
+          <div class="respond__action" v-if="!form.fullScreen" @click="cancel">
+            <v-icon color="error" small>mdi-close</v-icon>
+          </div>
         </div>
         <v-textarea
             @keydown.enter.prevent="$emit('postComment')"
@@ -28,7 +30,7 @@
         ></v-textarea>
       </div>
       <div class="d-flex justify-center align-center mb-1">
-        <svg-icon class="send-icon" name="Send" @click="!form.disabled && $emit('postComment')"></svg-icon>
+        <svg-icon class="send-icon" :class="[form.disabled ? 'disabled-post' : '']" name="Send" @click="postComment"></svg-icon>
       </div>
     </v-col>
   </v-row>
@@ -55,6 +57,12 @@ export default class CommentsFormComponent extends Vue {
     this.form.showAnswersForm = false;
     this.form.showCommentsForm = false;
     this.form.answersIndex = null;
+  }
+
+  postComment(): void {
+    if (!this.form.disabled) {
+      this.$emit('postComment');
+    }
   }
 
   randomColor(i: number): string {
@@ -98,6 +106,9 @@ export default class CommentsFormComponent extends Vue {
     overflow: scroll;
     .v-input__slot {
       background: transparent !important;
+      &::after {
+        display: none;
+      }
     }
   }
   .message-container-full {
@@ -124,6 +135,12 @@ export default class CommentsFormComponent extends Vue {
     height: 28px !important;
     margin-left: 13px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    &.disabled-post {
+      path {
+        fill: #dbdbdb !important;
+      }
+    }
   }
   .respond {
     background: rgba(66, 109, 246, 0.12);
@@ -132,6 +149,10 @@ export default class CommentsFormComponent extends Vue {
     font-size: 12px;
     color: #060516;
     &__text {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 150px;
       span {
         color: #426DF6;
       }

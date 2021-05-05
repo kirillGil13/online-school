@@ -6,7 +6,7 @@
         color="#FFFFFF"
     >
       <v-toolbar-title @click="proceed">
-        <v-img width="30" height="30" :src="require('@/UI/assets/logo.png')"></v-img>
+        <Logo width="25" height="25" class="mb-0 ml-0" font-size="16px"/>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <svg-icon class="burger" name="Burger" @click="drawer = true"></svg-icon>
@@ -35,8 +35,9 @@ import Menu from '@/UI/components/sidebar/Menu.vue';
 import {IFakeUserInfo} from '@/entity/environment';
 import AccountBadge from '@/UI/components/sidebar/AccountBadge.vue';
 import {RouterNameEnum} from '../../../router/router.types';
+import Logo from './Logo.vue';
 @Component({
-  components: {AccountBadge, Menu}
+  components: {Logo, AccountBadge, Menu}
 })
 export default class MobileBar extends Vue {
   @Prop({required: true}) userInfo!: IFakeUserInfo;

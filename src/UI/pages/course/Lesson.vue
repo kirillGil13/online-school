@@ -96,8 +96,8 @@
       <div class="desc__container">
         <div class="desc__container--title">Автор курса</div>
         <div class="desc__container--author d-flex flex-column">
-          <div class="author--title d-flex justify-space-between align-center">
-            <div @click="$emit('proceed', course.author.id)" :style="{cursor: 'pointer'}">
+          <div class="author--title d-flex" :class="[$adaptive.isMobile ? 'flex-column' : 'justify-space-between align-center']">
+            <div class="d-flex flex-row author-name" @click="$emit('proceed', course.author.id)" :style="{cursor: 'pointer'}">
                <v-avatar class="mr-3" :color="course.author.photoLink ? '#F0F2F6' :randomColor(course.author.id % 10)">
                   <template v-slot:default v-if="course.author.photoLink">
                       <v-img :src="course.author.photoLink" alt="" />
@@ -106,11 +106,17 @@
                       <span style="color: #fff" class="font-weight-bold">{{(course.author.name[0] + course.author.lastName[0]).toUpperCase()}}</span>
                   </template>
               </v-avatar>
-              {{ course.author.name }}
-              {{ course.author.lastName }}
+              <div class="d-flex justify-center flex-column">
+                <div>
+                  {{ course.author.name }}
+                </div>
+                <div>
+                  {{ course.author.lastName }}
+                </div>
+              </div>
             </div>
 
-            <Socials :vk="course.author.vk_link" :facebook-link="course.author.facebook_link"
+            <Socials :class="[$adaptive.isMobile && 'mt-3 ml-3']" :vk="course.author.vk_link" :facebook-link="course.author.facebook_link"
                      :instagram-link="course.author.instagram_link" :telegram="course.author.telegram"
                      :site-link="course.author.site_link"/>
           </div>
@@ -180,6 +186,13 @@
         <SubscribeFormalization/>
       </template>
     </Modal>
+    <Modal :activator="activatorRespond" full-screen @activatorChange="activatorRespondChange" color="#F2F2F2">
+      <template v-slot:full-screen-content>
+        <div class="pa-3">
+          <CommentsFormComponent class="mt-6" :form="answersForm" @postComment="postComment"/>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -208,8 +221,6 @@ import {CommentsStore} from '../../../store/modules/Comments';
 import {CommentsOrderByeNameEnum, CommentsSortNameEnum, IComments} from '../../../entity/comments/comments.types';
 import {CommentsForm} from '../../../form/comments/commentsForm';
 import {CommentTypesEnum} from '../../../entity/common/comment.types';
-import {IDefaultCourseItem} from '@/entity/courseItem/courseItemDefault';
-import {CourseItemStore} from '@/store/modules/CourseItem';
 import ReviewsFormComponent from '../../components/forms/reviewForms/ReviewsFormComponent.vue';
 import {ReviewsForm} from '@/form/reviews/reviewsForm';
 import {ICourseItem} from '@/entity/courseItem/courseItem.type';
@@ -226,9 +237,11 @@ import {IUser} from '../../../entity/user';
 import {AuthStore} from '../../../store/modules/Auth';
 import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
 import Subscription from '../../components/subscription/Subscription.vue';
+import CommentsFormComponent from '../../components/forms/commentsForm/CommentsFormComponent.vue';
 
 @Component({
   components: {
+    CommentsFormComponent,
     Subscription,
     SubscribeFormalization,
     Socials,
@@ -263,6 +276,7 @@ export default class Lesson extends Vue {
   interval!: NodeJS.Timeout;
   activator = false;
   activatorSub = false;
+  activatorRespond = false;
   alertType = AlertTypeEnum;
   lessonTypes = LessonsTypesEnum;
   testingForm = new TestingForm();
@@ -388,6 +402,10 @@ export default class Lesson extends Vue {
     this.activatorSub = act;
   }
 
+  activatorRespondChange(act: boolean): void {
+    this.activatorRespond = act;
+  }
+
   randomColor(i: number): string {
     const COLORS = [
     '#56CCF2',
@@ -413,18 +431,32 @@ export default class Lesson extends Vue {
 
   respond(data: any): void {
     this.answersForm.commentId = data.id;
-    if (data.index === undefined) {
-      this.answersForm.showAnswersForm = false;
-      this.answersForm.message = this.comments.find((item) => item.id === data.id)!.fullName + ', ';
-      this.answersForm.author = this.comments.find((item) => item.id === data.id)!.fullName;
-      this.answersForm.showCommentsForm = true;
+    if (this.$adaptive.isMobile) {
+      this.answersForm.fullScreen = true;
+      this.activatorRespond = true;
+      if (data.index === undefined) {
+        this.answersForm.message = this.comments.find((item) => item.id === data.id)!.fullName + ', ';
+        this.answersForm.author = this.comments.find((item) => item.id === data.id)!.fullName;
+      } else {
+        this.answersForm.message =
+            this.comments.find((item) => item.id === data.id)!.answers[data.index].fullName + ', ';
+        this.answersForm.author = this.comments.find((item) => item.id === data.id)!.answers[data.index].fullName;
+        this.answersForm.answersIndex = data.index;
+      }
     } else {
-      this.answersForm.showCommentsForm = false;
-      this.answersForm.message =
-          this.comments.find((item) => item.id === data.id)!.answers[data.index].fullName + ', ';
-      this.answersForm.author = this.comments.find((item) => item.id === data.id)!.answers[data.index].fullName;
-      this.answersForm.answersIndex = data.index;
-      this.answersForm.showAnswersForm = true;
+      if (data.index === undefined) {
+        this.answersForm.showAnswersForm = false;
+        this.answersForm.message = this.comments.find((item) => item.id === data.id)!.fullName + ', ';
+        this.answersForm.author = this.comments.find((item) => item.id === data.id)!.fullName;
+        this.answersForm.showCommentsForm = true;
+      } else {
+        this.answersForm.showCommentsForm = false;
+        this.answersForm.message =
+            this.comments.find((item) => item.id === data.id)!.answers[data.index].fullName + ', ';
+        this.answersForm.author = this.comments.find((item) => item.id === data.id)!.answers[data.index].fullName;
+        this.answersForm.answersIndex = data.index;
+        this.answersForm.showAnswersForm = true;
+      }
     }
   }
 
@@ -480,11 +512,11 @@ export default class Lesson extends Vue {
     window.addEventListener('scroll', this.fetchComments);
   }
 
-  async select(data: any): Promise<void> {
-    this.selectedId = data.statusId;
-    if (data.statusId === 1 || data.statusId === 2) {
+  async select(data: number): Promise<void> {
+    this.selectedId = data;
+    if (data === 1 || data=== 2) {
       this.sort = CommentsSortNameEnum.CREATEDAT;
-      if (data.statusId === 1) {
+      if (data === 1) {
         this.orderBy = CommentsOrderByeNameEnum.DESC;
       } else this.orderBy = CommentsOrderByeNameEnum.ASC;
     } else this.sort = CommentsSortNameEnum.RATING;
@@ -634,6 +666,7 @@ export default class Lesson extends Vue {
           route: this.$route.params.lessonId,
           pagination: {limit: 100, sort: this.sort, orderBy: this.orderBy}
         });
+      this.activatorRespond = false;
         const comments = document.getElementsByClassName('comment');
         const comment = document.getElementById(`answer${resp.id}`);
         for (let i = 0; i < comments.length; i++) {
@@ -655,6 +688,7 @@ export default class Lesson extends Vue {
           route: this.$route.params.lessonId,
           pagination: {limit: 100, sort: this.sort, orderBy: this.orderBy}
         });
+      this.activatorRespond = false;
         const comments = document.getElementsByClassName('comment');
         const comment = document.getElementById(`comment${resp.id}`);
         for (let i = 0; i < comments.length; i++) {
@@ -665,7 +699,7 @@ export default class Lesson extends Vue {
             }, 1000)
           }
         }
-        comment!.scrollIntoView({block: 'center'});
+      comment!.scrollIntoView({block: 'center'});
         this.commentsForm = new CommentsForm();
         this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
       this.commentsForm.sendingRequest = false;
