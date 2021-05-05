@@ -1,13 +1,13 @@
 <template>
   <v-col class="events">
     <Header :isBordered="false" title="Кабинет лидера" action class="top_bar_p_0">
-      <div class="d-flex justify-end">
-        <Button class="mt-0" small @submit="activator = true">Добавить свой курс</Button>
+      <div class="d-flex" :class="[$adaptive.isMobile ? 'justify-start' : 'justify-end']">
+        <Button class="mt-0" :full-width="$adaptive.isMobile" small @submit="activator = true">Добавить свой курс</Button>
       </div>
     </Header>
     <v-row class="mb-4">
       <v-col>
-        <FilterComponent :search="false" :is-on-right="false" :filters="filters" @filter="onFilter"/>
+        <FilterComponent :search="false" :is-on-right="false" :filters="filters" @filter="onFilter" :count-element="[0]"/>
       </v-col>
     </v-row>
     <v-row class="badges pa-0" v-if="myStatisticLoaded">

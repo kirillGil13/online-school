@@ -10,9 +10,8 @@
               </span>
           </Button>
         </v-col>
-        <v-row no-gutters
-               :class="['pa-0', $adaptive.isMobile ? 'mt-2' : '']">
-          <v-col class="pa-0" v-for="(item, index) in filters.filterBody" id="select" :key="index">
+        <v-row no-gutters class="pa-0">
+          <v-col :class="['pa-0 select_item', $adaptive.isMobile ? 'mt-2' : '']" v-for="(item, index) in filters.filterBody" :key="index">
             <label :for="index">{{ item.filterType }}</label>
             <v-select
                 :items="item.filterValue.filter(el => el.text !== 'Архив')"
@@ -57,6 +56,13 @@ export default class FilterComponent extends Vue {
   @Prop() readonly isArchive!: boolean;
   @Prop() readonly isCandidates!: boolean;
   @Prop() readonly countInArchive!: number;
+  @Prop({required: true}) readonly countElement!: number[];
+
+  mounted(): void {
+    for (let i = 0; i < this.countElement.length; i++) {
+      document.getElementsByClassName('select_item')[this.countElement[i]].classList.add('no-margin');
+    }
+  }
 }
 </script>
 <style lang="scss">
@@ -77,8 +83,11 @@ export default class FilterComponent extends Vue {
         padding: 9px 20px;
       }
     }
-    #select {
+    .select_item {
       margin-right: 12px;
+      &:nth-last-child(1) {
+        margin-right: 0;
+      }
     }
   }
   label {

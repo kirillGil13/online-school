@@ -9,7 +9,7 @@
     </Header>
     <v-row class="mb-6">
       <v-col class="mt-6">
-        <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
+        <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true" :count-element="[1,2]"
                          :filters="filters" @filter="onFilter" :countInArchive="countInArchive">
           <template v-slot:search>
             <Search @search="search"/>
