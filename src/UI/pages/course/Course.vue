@@ -729,6 +729,7 @@ export default class Course extends Vue {
         display: flex;
         align-items: center;
         color: #5f739c;
+      width: max-content;
     }
 }
 
