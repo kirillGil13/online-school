@@ -17,6 +17,7 @@ export class ReviewsForm extends Form {
     public isLike: boolean | null = null;
     public serverErrors: { [key: string]: string[] } = {};
 
+
     getFormData(): ReviewsFormRequestType {
         return {
             reviewText: this.reviewText,
@@ -27,13 +28,12 @@ export class ReviewsForm extends Form {
         };
     }
 
-    setFormData(isLike: boolean): void {
+    setFormData(isLike: boolean | null): void {
         this.isLike = isLike
     }
 
     clearData(): void {
         this.reviewText =  '';
         this.reviewId = null;
-        this.isLike = null;
     }
 }
