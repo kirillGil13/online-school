@@ -17,7 +17,7 @@
       </div>
       <div v-else>
         <h1 v-if="!isPlaying && !$adaptive.isMobile" class="abs">{{ lesson.name }}</h1>
-        <video-player
+        <video-player v-if="options.sources[0].src"
             ref="videoPlayer"
             class="video-player vjs-custom-skin"
             :playsinline="true"
