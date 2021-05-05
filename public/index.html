@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script v-if="process.env.NODE_ENV === 'production'">(function (w, d, s, l, i) {
+    <script>(function (w, d, s, l, i) {
          w[l] = w[l] || [];
          w[l].push({
               'gtm.start':
@@ -13,7 +13,7 @@
          j.src =
               'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
          f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-K6GW9TQ');</script>
+    })(window, document, 'script', 'dataLayer', '<%= process.env.VUE_APP_TAG_MANAGER_KEY %>');</script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -21,8 +21,8 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-<noscript v-if="process.env.NODE_ENV === 'production'">
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K6GW9TQ"
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=<%= process.env.VUE_APP_TAG_MANAGER_KEY %>"
             height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
 <noscript>
