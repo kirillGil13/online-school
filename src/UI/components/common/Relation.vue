@@ -27,6 +27,9 @@ export default class Relation extends Vue {
 .relation {
   cursor: pointer;
   margin-right: 36px;
+  &:nth-last-child(1) {
+    margin-right: 0;
+  }
   .icon-container {
     display: flex;
     align-items: center;
