@@ -2,7 +2,7 @@
   <div>
     <v-app-bar
         dense
-        elevation="3"
+        class="top_menu_bar"
         color="#FFFFFF"
     >
       <v-toolbar-title @click="proceed">
