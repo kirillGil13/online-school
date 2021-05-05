@@ -1,7 +1,7 @@
 <template>
     <div class="logo" :style="{fontSize: fontSize}" @click="proceed">
       <v-img src="@/UI/assets/logo.png" alt="onelinks" :max-height="height" :max-width="width" class="img"></v-img>
-      <h3>ONELINKS</h3>
+      <h3 class="mb-0">ONELINKS</h3>
     </div>
 </template>
 
@@ -33,6 +33,9 @@ export default class Logo extends Vue {
     text-shadow:  0.5px 0px 0px #000000;
     .img {
       margin-right: 15px;
+    }
+    h3 {
+      line-height: 70%;
     }
   }
 </style>
