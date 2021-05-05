@@ -46,7 +46,7 @@
                         </v-responsive>
                         <v-row
                             no-gutters
-                            :class="['mt-4 ml-6', $adaptive.isMobile ? 'justify-center' : '']"
+                            :class="['mt-4 justify-center']"
                         >
                             <Relation
                                 svg-name="Finger"
@@ -473,7 +473,7 @@ export default class Course extends Vue {
         this.reviewsForm.isLike = null;
         Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
     }
-    
+
 
     async created(): Promise<void> {
         if (this.courseLoaded) {
