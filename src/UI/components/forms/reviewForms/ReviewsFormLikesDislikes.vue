@@ -17,7 +17,7 @@
                                 v-model="form.reviewText"
                             />
                         </div>
-                        <div class="review-text__like-dislike">
+                        <div class="review-text__like-dislike" v-if="formName === reviewFormNames.likeDislike">
                             <div :class="course.isLiked === true ? 'like--active' : 'like'">
                                 <Relation svg-name="Finger"  @click="$emit('handleLike', {form: formName, formButton: true})" />
                             </div>
@@ -46,6 +46,7 @@ import Relation from '../../common/Relation.vue';
 import { ICourseItem } from '@/entity/courseItem/courseItem.type';
 import Button from '@/UI/components/common/Button.vue';
 import FastClick from 'fastclick';
+import {ReviewsFormName} from '../../../../form/reviews/reviewsForm.types';
 @Component({
     components: {
         FormGroup,
@@ -59,6 +60,8 @@ export default class ReviewsFormLikesDislikes extends Vue {
     @Prop({default:''}) readonly background?: string;
     @Prop() readonly course!: ICourseItem;
     @Prop() readonly formName!: string;
+
+    reviewFormNames = ReviewsFormName;
 
     mounted(): void {
         setTimeout(() => {
