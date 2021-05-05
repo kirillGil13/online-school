@@ -496,7 +496,7 @@ export default class Lesson extends Vue {
   }
 
   async discuss(): Promise<void> {
-    
+
     if (this.user!.isSubscriptionActual) {
       const item = document.getElementById('message-comment')!;
       item.scrollIntoView({block: 'center'});
@@ -805,7 +805,7 @@ export default class Lesson extends Vue {
 
 <style lang="scss">
 .course-video-row {
-  margin: 16px 0 0 24px;
+  margin: 16px 0 0 0;
 }
 
 .materials {
@@ -848,11 +848,11 @@ export default class Lesson extends Vue {
   height: 36px;
   background: rgba(66, 109, 246, 0.12);
   margin-right: 8px;
-  
+
   svg{
     width: 20px !important;
     height: 20px !important;
   }
-  
+
 }
 </style>
