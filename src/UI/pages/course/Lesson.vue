@@ -42,7 +42,7 @@
         <div class="play-button"></div>
       </v-img>
     </v-responsive>
-    <v-row :class="['course-video-row', $adaptive.isMobile ? 'justify-center' : '']" v-if="lessonLoaded">
+    <v-row :class="['course-video-row','justify-center']" v-if="lessonLoaded">
       <Relation
           svg-name="Finger"
           class="mb-4"
@@ -66,8 +66,9 @@
           @click="handleFavourite"
       />
       <Relation
+          svgClass="discussionIcon"
           svg-name="Message"
-          class="mb-4"
+          class="mb-4 mr-0"
           :title="$adaptive.isMobile ? '' : 'Обсудить'"
           @click="discuss"
       />
@@ -494,7 +495,8 @@ export default class Lesson extends Vue {
     return SelectsStore.selectsDiscussion;
   }
 
-  discuss(): void {
+  async discuss(): Promise<void> {
+    
     if (this.user!.isSubscriptionActual) {
       const item = document.getElementById('message')!;
       item.scrollIntoView({block: 'center'});
@@ -512,11 +514,12 @@ export default class Lesson extends Vue {
     window.addEventListener('scroll', this.fetchComments);
   }
 
-  async select(data: number): Promise<void> {
-    this.selectedId = data;
-    if (data === 1 || data=== 2) {
+  async select(data: any): Promise<void> {
+    console.log(data)
+    this.selectedId = data.statusId;
+    if (data.statusId === 1 || data.statusId === 2) {
       this.sort = CommentsSortNameEnum.CREATEDAT;
-      if (data === 1) {
+      if (data.statusId === 1) {
         this.orderBy = CommentsOrderByeNameEnum.DESC;
       } else this.orderBy = CommentsOrderByeNameEnum.ASC;
     } else this.sort = CommentsSortNameEnum.RATING;
@@ -833,5 +836,23 @@ export default class Lesson extends Vue {
   width: 100%;
   resize: none;
   border: 1px solid #f2f2f2 !important;
+}
+
+.discussionIcon {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  background: rgba(66, 109, 246, 0.12);
+  margin-right: 8px;
+  
+  svg{
+    width: 20px !important;
+    height: 20px !important;
+  }
+  
 }
 </style>

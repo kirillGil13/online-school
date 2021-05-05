@@ -1,6 +1,6 @@
 <template>
     <span class="relation d-flex flex-row align-center" @click="$emit('click')">
-      <div :class="['icon-container', active ? 'active' : '']"><svg-icon :name="svgName" :class="[svgClass]"></svg-icon></div>
+      <div :class="['icon-container', active ? 'active' : '', svgClass ? svgClass : '']"><svg-icon :name="svgName" ></svg-icon></div>
         <template v-if="!isRaiting">
           {{ title }}
         </template>
@@ -37,8 +37,8 @@ export default class Relation extends Vue {
     background: rgba(66, 109, 246, 0.12);
     margin-right: 8px;
     svg {
-      width: 16px !important;
-      height: 16px !important;
+      width: 16px ;
+      height: 16px ;
       path {
         fill: #5F739C;
       }
@@ -61,5 +61,7 @@ export default class Relation extends Vue {
     align-items: center;
     color: #060516;
   }
+
+
 }
 </style>

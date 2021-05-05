@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import { minLength, required} from 'vuelidate/lib/validators';
+import { minLength, required, minValue} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {IMailFormList, MailFormRequestType} from '@/form/mail/mailForm.types';
@@ -24,9 +24,7 @@ export class MailForm extends Form {
     public topic = '';
 
     @Validate(required, 'Введите описание курса')
-    @Validate(minLength(3), 'Описание должно содержать не меньше 3 символов')
     public description = '';
-
     public mlmLevel = '';
 
     public serverErrors: { [key: string]: string[] } = {};

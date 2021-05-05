@@ -475,6 +475,7 @@ export default class Course extends Vue {
         this.reviewsForm.isLike = null;
         Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
     }
+    
 
     async created(): Promise<void> {
         if (this.courseLoaded) {
