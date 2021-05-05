@@ -61,6 +61,8 @@ import Modal from '../../components/common/Modal.vue';
 import MailFormComponent from '../../components/forms/mailForm/MailFormComponent.vue';
 import {MailForm} from '../../../form/mail/mailForm';
 import {MailStore} from '../../../store/modules/Mail';
+import { Validate } from '@/plugins/Vuelidate/Decorators';
+import { required} from 'vuelidate/lib/validators';
 
 @Component({
   components: {

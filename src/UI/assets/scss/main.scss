@@ -732,6 +732,10 @@ iframe {
   }
 }
 
+.video-js .vjs-control-bar .vjs-progress-control .vjs-slider .vjs-play-progress {
+  background-color: #2483d5 !important;
+}
+
 .video-js {
   font-size: 10px !important;
   border-radius: 12px;
@@ -799,6 +803,11 @@ iframe {
     }
 
     .vjs-progress-control {
+      
+
+      &.vjs-control {
+        margin-left: 5px !important;
+      }
       .vjs-slider {
         background: rgba(255, 255, 255, 0.3);
 

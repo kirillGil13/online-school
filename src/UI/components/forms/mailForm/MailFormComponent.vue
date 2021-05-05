@@ -62,6 +62,7 @@
           @input="attrs.change"
       >
       </v-textarea>
+      <span class="min-three-words-error-text" v-if="form.description !== '' && form.description.split(' ').length < 4">Описание должно содержать не меньше 3 слов</span>
     </FormGroup>
     <FormGroup class="mt-4" v-slot="attrs" :form="form" field="levelId" label="Уровень  ">
       <v-select
@@ -82,7 +83,7 @@
     </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
       <Button class="secondary_blue mr-3" small @submit="$emit('close')">Отмена</Button>
-      <Button full-width small :disabled="form.disabled" @submit="$emit('add')">Отправить</Button>
+      <Button full-width small :disabled="form.disabled || form.description.split(' ').length < 4" @submit="$emit('add')">Отправить</Button>
     </div>
     <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div>
   </v-col>
@@ -98,12 +99,16 @@ import {ICourseLevels} from '../../../../entity/courseLevels/courseLevels.types'
 import {MailForm} from '../../../../form/mail/mailForm';
 import {translations} from '../../../../plugins';
 
+
 @Component({
   components: {FormGroup, Button, PhoneMaskInput}
 })
 export default class MailFormComponent extends Vue {
   @Prop() readonly form!: MailForm;
   @Prop() readonly levels!: ICourseLevels[];
+
+ 
+  
   translations = translations;
 
   constructor() {
@@ -162,6 +167,11 @@ export default class MailFormComponent extends Vue {
         }
       }
     }
+  }
+
+  .min-three-words-error-text {
+    color: #F44336;
+    margin-left: 16px;
   }
 }
 
