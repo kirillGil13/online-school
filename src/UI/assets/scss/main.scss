@@ -732,6 +732,10 @@ iframe {
   }
 }
 
+.video-js .vjs-control-bar .vjs-progress-control .vjs-slider .vjs-play-progress {
+  background-color: #2483d5 !important;
+}
+
 .video-js {
   font-size: 10px !important;
   border-radius: 12px;
@@ -799,6 +803,11 @@ iframe {
     }
 
     .vjs-progress-control {
+      
+
+      &.vjs-control {
+        margin-left: 5px !important;
+      }
       .vjs-slider {
         background: rgba(255, 255, 255, 0.3);
 
@@ -1045,4 +1054,16 @@ iframe {
 .subs_button {
   font-size: 14px !important;
   padding: 16px 36px !important;
+}
+
+.v-snack {
+  &.mobile-alert {
+    .v-snack__wrapper {
+      min-width: 100% !important;
+    }
+  }
+  .v-snack__wrapper {
+    margin: 0 !important;
+    min-width: 100% !important;
+  }
 }

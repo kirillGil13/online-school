@@ -213,8 +213,8 @@
               <SubscribeFormalization/>
             </template>
           </Modal>
-          <Alert :show="showSuccess" :type="alertTypes.Success" @show="showSuccessAlert" text="Курс успешно добавлен в избранное"/>
-          <Alert :show="showError" :type="alertTypes.Error" @show="showErrorAlert" text="Курс успешно удален из избранного"/>
+          <Alert :show="showSuccess" :type="alertTypes.Info" @show="showSuccessAlert" text="Курс успешно добавлен в избранное"/>
+          <Alert :show="showError" :type="alertTypes.Info" @show="showErrorAlert" text="Курс успешно удален из избранного"/>
         </v-row>
     </v-col>
 </template>
@@ -473,6 +473,7 @@ export default class Course extends Vue {
         this.reviewsForm.isLike = null;
         Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
     }
+    
 
     async created(): Promise<void> {
         if (this.courseLoaded) {

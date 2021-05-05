@@ -1,17 +1,16 @@
 <template>
-  <div class="alert">
-    <v-snackbar
-        v-model="showAlert"
-        :timeout="2500"
-        :color="resolveType().color"
-    >
-      <v-row class="d-flex align-center" no-gutters>
-        <v-icon class="mr-3">{{resolveType().type}}</v-icon>
-        {{text}}
-      </v-row>
-    </v-snackbar>
-  </div>
-
+  <v-snackbar class="mobile" top :absolute="!$adaptive.isMobile"
+              app
+              tile
+              :timeout="2000"
+              max-width="1440"
+              v-model="showAlert"
+              :color="resolveType().color"
+  >
+    <v-row class="d-flex align-center full-width" no-gutters>
+      {{ text }}
+    </v-row>
+  </v-snackbar>
 </template>
 
 <script lang="ts">
@@ -32,13 +31,22 @@ export default class Alert extends Vue {
     return this.show;
   }
 
-  resolveType(): {color: string; type: string} {
+  resolveType(): { color: string; type: string } {
     let type = '';
     let color = '';
     switch (this.type) {
-      case AlertTypeEnum.Info: type = 'mdi-information-outline'; color = 'primary'; break;
-      case AlertTypeEnum.Success: type = 'mdi-checkbox-marked-circle-outline'; color = 'success'; break;
-      case AlertTypeEnum.Error: type = 'mdi-close-circle-outline'; color = 'error'; break;
+      case AlertTypeEnum.Info:
+        type = 'mdi-information-outline';
+        color = 'primary';
+        break;
+      case AlertTypeEnum.Success:
+        type = 'mdi-checkbox-marked-circle-outline';
+        color = 'success';
+        break;
+      case AlertTypeEnum.Error:
+        type = 'mdi-close-circle-outline';
+        color = 'error';
+        break;
     }
     return {color, type};
   }
@@ -48,12 +56,14 @@ export default class Alert extends Vue {
 <style lang="scss" scoped>
 .alert {
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 50%;
+
   .svg-icon {
     width: 24px !important;
     height: 24px !important;
     fill: #FFFFFF !important;
+
     path {
       fill: #FFFFFF !important;
     }

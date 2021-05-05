@@ -110,7 +110,6 @@ export default class ReviewsFormComponent extends Vue {
 
         &__like-dislike {
             display: flex;
-            padding-top: 12px;
 
             .like {
                 .relation {
