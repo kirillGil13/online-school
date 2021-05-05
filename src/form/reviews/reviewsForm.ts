@@ -35,5 +35,6 @@ export class ReviewsForm extends Form {
     clearData(): void {
         this.reviewText =  '';
         this.reviewId = null;
+        this.isLike = null;
     }
 }
