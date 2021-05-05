@@ -1,4 +1,4 @@
-import VueGtm from 'vue-gtm';
+import VueGtm from '@gtm-support/vue2-gtm';
 import {router} from '@/router/router';
 import Vue from 'vue';
 import {RouterNameEnum} from '@/router/router.types';
