@@ -2,11 +2,11 @@
   <div>
     <v-app-bar
         dense
-        elevation="3"
+        class="top_menu_bar"
         color="#FFFFFF"
     >
       <v-toolbar-title @click="proceed">
-        <Logo width="25" height="25" class="mb-0 ml-0" font-size="16px"/>
+        <Logo width="25" height="25" class="mb-0 ml-0 justify-center" font-size="16px"/>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <svg-icon class="burger" name="Burger" @click="drawer = true"></svg-icon>
@@ -61,6 +61,9 @@ header {
     width: 28px !important;
     height: 28px !important;
   }
+}
+.top_menu_bar {
+  box-shadow: 0px 20px 17px rgba(0, 0, 0, 0.04) !important;
 }
 .drawer {
   position: relative;
