@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>(function (w, d, s, l, i) {
+    <script v-if="process.env.NODE_ENV === 'production'">(function (w, d, s, l, i) {
          w[l] = w[l] || [];
          w[l].push({
               'gtm.start':
@@ -21,9 +21,11 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-<noscript>
+<noscript v-if="process.env.NODE_ENV === 'production'">
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K6GW9TQ"
             height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
         Please enable it to continue.</strong>
 </noscript>

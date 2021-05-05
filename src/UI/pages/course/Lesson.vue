@@ -496,7 +496,7 @@ export default class Lesson extends Vue {
 
   discuss(): void {
     if (this.user!.isSubscriptionActual) {
-      const item = document.getElementById('message')!;
+      const item = document.getElementById('message-comment')!;
       item.scrollIntoView({block: 'center'});
       item.focus();
     } else {
