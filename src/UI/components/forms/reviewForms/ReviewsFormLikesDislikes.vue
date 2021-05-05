@@ -3,7 +3,17 @@
         <v-col class="pa-0 d-flex flex-row align-end">
             <form-group class="width" field="review" :form="form" show-custom-error >
                 <div class="review-text">
-                    <div class="review-text__title">оставить отзыв</div>
+                    <div class="review-text__title">
+                      оставить отзыв
+                      <div class="review-text__like-dislike" v-if="formName === reviewFormNames.review">
+                        <div :class="course.isLiked === true ? 'like--active' : 'like'">
+                          <Relation svg-name="Finger"  @click="$emit('handleLike', {form: formName, formButton: true})" />
+                        </div>
+                        <div :class="course.isDisliked === true ? 'dislike--active' : 'dislike'">
+                          <Relation svg-class="svg-down" svg-name="Finger" @click="$emit('handleDisLike', {form: formName, formButton: true})" />
+                        </div>
+                      </div>
+                    </div>
                     <div class="review-text__actions">
                         <div class="review-text__set-review">
                             <v-textarea
@@ -17,18 +27,10 @@
                                 v-model="form.reviewText"
                             />
                         </div>
-                        <div class="review-text__like-dislike" v-if="formName === reviewFormNames.likeDislike">
-                            <div :class="course.isLiked === true ? 'like--active' : 'like'">
-                                <Relation svg-name="Finger"  @click="$emit('handleLike', {form: formName, formButton: true})" />
-                            </div>
-                            <div :class="course.isDisliked === true ? 'dislike--active' : 'dislike'">
-                                <Relation svg-class="svg-down" svg-name="Finger" @click="$emit('handleDisLike', {form: formName, formButton: true})" />
-                            </div>
-                        </div>
                     </div>
                     <div class="review-text__button">
-                        <Button :disabled="form.disabled" class="btn-send-rewiew" @submit="sendMessage">Отправить</Button>
-                        <Button class="secondary_blue ml-3" @submit="buttonFunc">{{course.isLiked ? 'Оценить без отзыва' : 'Отменить оценку'}}</Button>
+                        <Button :full-width="$adaptive.isMobile" :disabled="form.disabled" class="btn-send-rewiew" @submit="sendMessage">Отправить</Button>
+                        <Button :full-width="$adaptive.isMobile" class="secondary_blue" :class="[$adaptive.isMobile ? '' : 'ml-3']" @submit="buttonFunc">{{course.isLiked ? 'Оценить без отзыва' : 'Отменить оценку'}}</Button>
                     </div>
                 </div>
             </form-group>
@@ -156,6 +158,7 @@ body input, body textarea {
             line-height: 15px;
             display: flex;
             align-items: center;
+          justify-content: space-between;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: #5f739c;
@@ -171,7 +174,6 @@ body input, body textarea {
 
         &__like-dislike {
             display: flex;
-            padding-top: 12px;
 
             .like {
                 .relation {

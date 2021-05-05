@@ -1046,3 +1046,15 @@ iframe {
   font-size: 14px !important;
   padding: 16px 36px !important;
 }
+
+.v-snack {
+  &.mobile-alert {
+    .v-snack__wrapper {
+      min-width: 100% !important;
+    }
+  }
+  .v-snack__wrapper {
+    margin: 0 !important;
+    min-width: 100% !important;
+  }
+}
