@@ -21,7 +21,7 @@
             v-model="form.message"
             dense
             auto-grow
-            id="message"
+            id="message-comment"
             filled
             placeholder="Ваше сообщение"
             rows="1"

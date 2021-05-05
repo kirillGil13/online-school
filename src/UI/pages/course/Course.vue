@@ -249,6 +249,7 @@ import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import {RouterNameEnum} from '../../../router/router.types';
 import Router from 'vue-router';
+import {ReviewsFormName} from '../../../form/reviews/reviewsForm.types';
 @Component({
     components: {
       Alert,
@@ -283,10 +284,7 @@ export default class Course extends Vue {
     showAll = false;
     componentKey = 0;
     toggleOpenLikeDislikeForm = false;
-    formName = {
-      likeDislike: 'likeDislike',
-      review: 'review'
-    }
+    formName = ReviewsFormName;
 
 
     @Watch('$route.params.lessonId', { immediate: true })

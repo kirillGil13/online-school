@@ -17,7 +17,7 @@
       </div>
       <div v-else>
         <h1 v-if="!isPlaying && !$adaptive.isMobile" class="abs">{{ lesson.name }}</h1>
-        <video-player
+        <video-player v-if="options.sources[0].src"
             ref="videoPlayer"
             class="video-player vjs-custom-skin"
             :playsinline="true"
@@ -498,7 +498,7 @@ export default class Lesson extends Vue {
   async discuss(): Promise<void> {
     
     if (this.user!.isSubscriptionActual) {
-      const item = document.getElementById('message')!;
+      const item = document.getElementById('message-comment')!;
       item.scrollIntoView({block: 'center'});
       item.focus();
     } else {
