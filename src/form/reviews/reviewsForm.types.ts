@@ -5,3 +5,8 @@ export type ReviewsFormRequestType = RequestType & {
     review_id?: number | null;
     is_like?: null | boolean;
 }
+
+export enum ReviewsFormName {
+    likeDislike= 'likeDislike',
+    review= 'review'
+}
