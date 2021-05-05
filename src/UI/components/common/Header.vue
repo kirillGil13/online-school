@@ -1,6 +1,6 @@
 <template>
   <v-row :class="['top_bar', isBordered ? 'box-container pa-2' : 'py-24']" ref="topBar">
-    <v-col :class="['bar_title', $adaptive.isMobile ? 'pa-3' : '']">
+    <v-col :class="['bar_title', $adaptive.isMobile ? 'px-3 pt-3 pb-0' : '']" :cols="$adaptive.isMobile && 12">
       <router-link v-if="route" :to="{ name: route.name }" class="link">
         <svg-icon name="Arrow_Left" class="svg-fill-none"></svg-icon>
         {{ route.label }}
