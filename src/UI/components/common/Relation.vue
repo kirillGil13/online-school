@@ -1,13 +1,13 @@
 <template>
-    <span class="relation d-flex flex-row align-center" @click="$emit('click')">
+    <div class="relation d-flex flex-row align-center" @click="$emit('click')">
       <div :class="['icon-container', active ? 'active' : '', svgClass ? svgClass : '']"><svg-icon :name="svgName" ></svg-icon></div>
-        <template v-if="!isRaiting">
+        <div v-if="!isRaiting" :style="{lineHeight: '100%'}">
           {{ title }}
-        </template>
+        </div>
         <template v-else>
           <p class="mb-0">{{title}}</p>
         </template>
-    </span>
+    </div>
 </template>
 
 <script lang="ts">
