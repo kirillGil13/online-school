@@ -151,6 +151,7 @@
                                             <Relation
                                                 :key="componentKey"
                                                 svg-name="Finger"
+                                                class="mr-7"
                                                 :title="course.countLikes"
                                                 @click="handleLike({form: formName.review, formButton: false})"
                                                 isRaiting="true"
@@ -161,6 +162,7 @@
                                             <Relation
                                                 :key="componentKey"
                                                 isRaiting="true"
+                                                class="mr-7"
                                                 svg-class="svg-down"
                                                 svg-name="Finger"
                                                 :title="course.countDislikes"

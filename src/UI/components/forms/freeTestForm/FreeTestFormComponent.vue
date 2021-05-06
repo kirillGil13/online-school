@@ -59,6 +59,7 @@ export default class FreeTestFormComponent extends Vue {
 .task {
   width: 100%;
   font-size: 16px;
+  white-space: pre-wrap;
 }
 
 .task-done {
