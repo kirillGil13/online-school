@@ -515,10 +515,10 @@ export default class Lesson extends Vue {
   }
 
   async select(data: any): Promise<void> {
-    this.selectedId = data;
-    if (data === 1 || data === 2) {
+    this.selectedId = data.statusId;
+    if (data.statusId === 1 || data.statusId === 2) {
       this.sort = CommentsSortNameEnum.CREATEDAT;
-      if (data === 1) {
+      if (data.statusId === 1) {
         this.orderBy = CommentsOrderByeNameEnum.DESC;
       } else this.orderBy = CommentsOrderByeNameEnum.ASC;
     } else this.sort = CommentsSortNameEnum.RATING;
