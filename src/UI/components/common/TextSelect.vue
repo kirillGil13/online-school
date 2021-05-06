@@ -9,7 +9,7 @@
     </div>
     <div :class="['list-items', activator && 'active']">
       <template v-for="(item, index) in selects">
-        <div class="text-right" v-show="activator" @click.stop="select(item.id)" :key="index">{{item.name}}</div>
+        <div class="text-right" v-if="activator" @click.stop="select(item.id)" :key="index">{{item.name}}</div>
       </template>
     </div>
   </div>
