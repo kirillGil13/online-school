@@ -12,8 +12,9 @@
               <svg-icon name="Pack_Add_User"></svg-icon>{{infoPackage.countCandidates}}
             </div>
           </div>
-          <div class="share" v-if="user.isSubscriptionActual">
-            <svg-icon v-clipboard="infoPackage.sharedLink" name="Share"></svg-icon>
+          <div class="share" @click.stop="share" v-if="user.isSubscriptionActual">
+<!--            <svg-icon v-clipboard="infoPackage.sharedLink" name="Share"></svg-icon>-->
+            <v-icon size="18" color="#ffffff">mdi-export-variant</v-icon>
           </div>
         </div>
       </v-img>
@@ -39,6 +40,21 @@ export default class InfoPackageComponent extends Vue {
 
   get user(): IUser | null {
     return AuthStore.user;
+  }
+
+  share(): void {
+    //@ts-ignore
+    if (navigator.share) {
+      //@ts-ignore
+      navigator.share({
+        title: this.infoPackage.name,
+        url: this.infoPackage.sharedLink
+      })
+    } else {
+      //@ts-ignore
+      this.$clipboard(this.infoPackage.sharedLink);
+      this.$emit('copied');
+    }
   }
 }
 </script>

@@ -12,3 +12,12 @@ export default class Search extends Vue {
   searchBody = '';
 }
 </script>
+<style lang="scss">
+.search {
+  svg {
+    path {
+      fill: #5A606F !important;
+    }
+  }
+}
+</style>

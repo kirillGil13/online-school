@@ -1,7 +1,7 @@
 <template>
   <v-col class="pa-6 d-flex justify-center flex-column mail_form">
     <h1 class="mx-auto my-0">Создать курс</h1>
-    <div class="text-center mt-3"><font color="#828282">Заполните форму ниже, и наши менеджеры свяжутся с Вами для дальнейшего обсуждения Вашего курса</font></div>
+    <div class="text-center mt-3"><font color="#828282">Заполните форму ниже,<br> и наши менеджеры свяжутся с Вами <br> для дальнейшего обсуждения Вашего курса</font></div>
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="name" show-custom-error label="Имя"
     >
@@ -51,8 +51,8 @@
     >
       <v-textarea
           class="input input__normal text-area"
-          row-height="10"
-          rows="1"
+          row-height="20"
+          rows="5"
           color="#000000"
           auto-grow
           hide-details
@@ -82,8 +82,8 @@
       </v-select>
     </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
-      <Button class="secondary_blue mr-3" small @submit="$emit('close')">Отмена</Button>
-      <Button full-width small :disabled="form.disabled || form.description.split(' ').length < 4" @submit="$emit('add')">Отправить</Button>
+      <Button class="mr-3" full-width small :disabled="form.disabled || form.description.split(' ').length < 4" @submit="$emit('add')">Отправить</Button>
+      <Button class="secondary_blue" small @submit="$emit('close')">Отмена</Button>
     </div>
     <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div>
   </v-col>
@@ -107,8 +107,8 @@ export default class MailFormComponent extends Vue {
   @Prop() readonly form!: MailForm;
   @Prop() readonly levels!: ICourseLevels[];
 
- 
-  
+
+
   translations = translations;
 
   constructor() {

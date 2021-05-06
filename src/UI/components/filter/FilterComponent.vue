@@ -2,16 +2,16 @@
   <v-col class="py-0">
     <v-row class="tab-controls d-flex flex-row flex-wrap">
       <div :class="['filter-tabs d-flex flex-row justify-center', $adaptive.isMobile ? 'flex-column full-width' : 'flex-row']" :style="{order: isOnRight ? '2' : '1', marginTop: !$adaptive.isMobile ? '12px' : '0'}">
-        <v-col :class="['filter-tabs__archive', $adaptive.isMobile && 'mt-2']" v-show="isCandidates">
-          <Button  class="mt-0 secondary_white" :full-width="$adaptive.isMobile" :style="{background: isArchive ? '#426DF6' : '#F0F2F6', color: isArchive ? '#ffff !important' : '#5A606F !important'}" @submit="$emit('toggleArchive');">
+        <v-col :class="['filter-tabs__archive pa-0 filter-button', $adaptive.isMobile && 'mt-3']" v-show="isCandidates">
+          <Button class="mt-0 secondary_white font-12" :full-width="$adaptive.isMobile" :style="{background: isArchive ? '#426DF6' : '#F0F2F6', color: isArchive ? '#ffff !important' : '#5A606F !important'}" @submit="$emit('toggleArchive');">
             Архивные
-            <span class="count-in-arhive ml-3" :style="{color: isArchive ? ' #FFFFFF' : '#060516'}">
+            <span class="count-in-arhive ml-3 font-12" :style="{color: isArchive ? ' #FFFFFF' : '#060516'}">
               {{countInArchive}}
               </span>
           </Button>
         </v-col>
-        <v-row no-gutters class="pa-0">
-          <v-col :class="['pa-0 select_item', $adaptive.isMobile ? 'mt-2' : '']" v-for="(item, index) in filters.filterBody" :key="index">
+        <v-row no-gutters class="pa-0 mb-3px">
+          <v-col :class="['pa-0 select_item', $adaptive.isMobile ? 'mt-2' : '']" v-for="(item, index) in filters.filterBody" :cols="(index === filters.filterBody.length - 1 && $adaptive.isMobile) && 12" :key="index">
             <label :for="index">{{ item.filterType }}</label>
             <v-select
                 :items="item.filterValue.filter(el => el.text !== 'Архив')"
@@ -20,6 +20,7 @@
                 :class="['filter pa-0', $adaptive.isMobile ? 'filter-mobile' : '']"
                 :menu-props="{ left: true, minWidth: 190, contentClass: $adaptive.isMobile ? 'no-ripple' : ''}"
                 flat
+                hide-details
                 dense
             >
               <template v-slot:append >
@@ -86,6 +87,9 @@ export default class FilterComponent extends Vue {
       }
     }
     .select_item {
+      label {
+        margin-left: 3px;
+      }
       margin-right: 12px;
     }
   }
@@ -165,7 +169,6 @@ export default class FilterComponent extends Vue {
       width: 100%;
 
       input[type='search'] {
-        border: none;
         width: 100%;
         background: #F4F6F9;
         padding: 8px;

@@ -31,6 +31,10 @@ body {
   margin-right: 0 !important;
 }
 
+.mb-3px {
+  margin-bottom: 3px !important;
+}
+
 .doc-page {
   max-width: 1140px !important;
   width: 100% !important;
@@ -736,6 +740,11 @@ iframe {
   background-color: #2483d5 !important;
 }
 
+.vjs-icon-play:before, .video-js .vjs-big-play-button .vjs-icon-placeholder:before, .video-js .vjs-play-control .vjs-icon-placeholder:before {
+  top: -1px;
+  left: 1px;
+}
+
 .video-js {
   font-size: 10px !important;
   border-radius: 12px;
@@ -763,7 +772,9 @@ iframe {
   .vjs-big-play-button {
     z-index: 2;
     border-radius: 50% !important;
-    width: 2.1em !important;
+    width: 2em !important;
+    height: 70px !important;
+    line-height: 65px !important;
   }
 
   .vjs-control-bar {
@@ -803,7 +814,7 @@ iframe {
     }
 
     .vjs-progress-control {
-      
+
 
       &.vjs-control {
         margin-left: 5px !important;
