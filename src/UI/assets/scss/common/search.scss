@@ -12,9 +12,19 @@ input[type="search"]{
 .search{
     position: relative;
     display: flex;
-    border-radius: 6px !important;
+    background-color: #F0F2F6;
+    border-radius: 6px;
     border: 1px solid #F2F2F2;
     justify-content: flex-end;
+    input {
+        border: none !important;
+        padding: 7px 0;
+        text-indent: 50px;
+        &::placeholder{
+            font-size: 14px;
+            color: #5A606F;
+        }
+    }
     & svg{
     position: absolute;
     right: 42.3%;
