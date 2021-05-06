@@ -243,19 +243,18 @@ export default class Comments extends Vue {
       height: auto;
       background-color: transparent;
       margin-right: 4px;
-    }
-  }
-
-  .icon-container
-  .active-like {
-    path {
-      fill: #27AE60 !important;
-    }
-  }
-
-  .active-dislike {
-    path {
-      fill: #eb5757 !important;
+      &.active-like {
+        svg {
+          path {
+            fill: #27AE60 !important;
+          }
+        }
+      }
+      &.active-dislike {
+        path {
+          fill: #eb5757 !important;
+        }
+      }
     }
   }
 }

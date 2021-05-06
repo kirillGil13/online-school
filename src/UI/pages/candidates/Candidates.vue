@@ -7,6 +7,7 @@
         description="Здесь отображаются контактные данные всех людей, которые зарегистрировались по Вашим инфопакетам"
     >
     </Header>
+    {{openItemDetails}}
     <v-row class="mb-6">
       <v-col class="mt-6">
         <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true" :count-element="$adaptive.isMobile && [1,2]"

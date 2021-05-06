@@ -44,7 +44,7 @@ class MenuModule extends VuexModule {
             route: RouterNameEnum.PrivacyPolicy,
         },
         {
-            title: 'Согласие на обработку персональных данных',
+            title: 'Обработка персональных данных',
             route: RouterNameEnum.PersonalData,
         },
         {

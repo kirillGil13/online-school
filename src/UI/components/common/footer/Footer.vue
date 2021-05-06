@@ -15,13 +15,16 @@
           class="pa-4"
           cols="12"
       >
-        <div class="org">@ 2020 — Onelinks.com</div>
+        <div class="org">© Onelinks, 2020 г. Все права защищены.</div>
         <v-divider class="mt-3"></v-divider>
-        <v-row no-gutters>
-          <router-link v-for="(item, index) in footerItems" :key="index" class="font-14 mt-3 mr-3 footer-menu"
-                       :to="{name: item.route}">{{ item.title }}
-          </router-link>
-        </v-row>
+        <div class="d-flex flex-row flex-wrap mb-3">
+          <div v-for="(item, index) in footerItems" :key="index" class="d-flex flex-row mt-3">
+            <router-link class="font-14 footer-menu" :style="{whiteSpace: $adaptive.isMobile ? 'normal' : 'nowrap'}"
+                         :to="{name: item.route}">{{ item.title }}
+            </router-link>
+            <v-divider v-if="index !== footerItems.length - 1" class="mx-3" vertical></v-divider>
+          </div>
+        </div>
       </v-col>
     </v-row>
   </v-footer>
@@ -45,8 +48,11 @@ export default class Footer extends Vue {
 <style lang="scss">
 .org {
   color: #5F739C;
+  font-size: 11px;
 }
 .footer-menu {
   color: #5F739C !important;
+  word-break: normal;
+  font-size: 12px;
 }
 </style>

@@ -515,7 +515,6 @@ export default class Lesson extends Vue {
   }
 
   async select(data: any): Promise<void> {
-    console.log(data)
     this.selectedId = data.statusId;
     if (data.statusId === 1 || data.statusId === 2) {
       this.sort = CommentsSortNameEnum.CREATEDAT;

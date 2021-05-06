@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex justify-space-between mt-6" :class="[$adaptive.isMobile ? 'flex-column' : 'flex-row align-end']">
+    <div class="d-flex justify-space-between flex-row align-end mt-6">
       <h2 class="discussion-title mt-0">Обсуждение</h2>
       <div class="discussion-action d-flex flex-row align-center">
         <Select class-name="select_content" :selects="selectsDiscussion" v-on="$listeners" :id=" form.lessonId">
@@ -10,9 +10,6 @@
           </template>
         </Select>
 <!--        <TextSelect :selects="selectsDiscussion" v-on="$listeners">-->
-<!--          <template v-slot:act>-->
-<!--            {{selectsDiscussion.find(item => item.id === selectedId).name}}-->
-<!--          </template>-->
 <!--        </TextSelect>-->
       </div>
     </div>
@@ -62,7 +59,7 @@ export default class Discussion extends Vue {
   font-size: 18px;
 }
 .select_content {
-  margin-top: 30px !important;
+  margin-top: 0px !important;
   border-radius: 12px !important;
   min-width: 190px !important;
   max-height: 296px !important;
