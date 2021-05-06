@@ -21,6 +21,8 @@
             v-model="form.message"
             dense
             auto-grow
+            single-line
+            row-height="10"
             id="message-comment"
             filled
             placeholder="Ваше сообщение"
@@ -102,12 +104,20 @@ export default class CommentsFormComponent extends Vue {
     width: 100%;
     text-indent: 16px;
     border: 1px solid rgba(66, 109, 246, 0.12);
-    max-height: 110px;
-    overflow: scroll;
+    //overflow: scroll;
     .v-input__slot {
       background: transparent !important;
       &::after {
         display: none;
+      }
+      &::before {
+        display: none;
+      }
+    }
+    .v-text-field__slot {
+      textarea {
+        max-height: 196px;
+        overflow: scroll;
       }
     }
   }

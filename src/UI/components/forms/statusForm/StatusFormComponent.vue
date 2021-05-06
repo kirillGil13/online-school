@@ -29,8 +29,8 @@
       >
     </FormGroup>
     <div class="d-flex flex-row justify-space-between mt-2">
-      <Button class="secondary_blue mr-3" small @submit="$emit('close')">Отмена</Button>
-      <Button full-width small :disabled="form.disabled" @submit="$emit('createStatus')">Добавить статус</Button>
+      <Button class="mr-3" full-width small :disabled="form.disabled" @submit="$emit('createStatus')">Добавить статус</Button>
+      <Button class="secondary_blue" small @submit="$emit('close')">Отмена</Button>
     </div>
     <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{form.getErrors('0')[0]}}</div>
   </v-col>

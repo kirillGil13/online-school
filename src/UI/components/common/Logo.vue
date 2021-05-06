@@ -29,13 +29,13 @@ export default class Logo extends Vue {
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     text-shadow:  0.5px 0px 0px #000000;
     .img {
-      margin-right: 15px;
+      margin-right: 4px;
     }
     h3 {
-      line-height: 70%;
+      line-height: 100%;
     }
   }
 </style>

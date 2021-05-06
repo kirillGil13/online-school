@@ -13,7 +13,7 @@
     </template>
     <v-row>
       <v-col class="py-0">
-        <FilterComponent :search="true" :is-on-right="true" :filters="filters" @filter="onFilter" :count-element="[1]">
+        <FilterComponent :search="true" :is-on-right="true" :filters="filters" @filter="onFilter" :count-element="$adaptive.isMobile ? [0,1] : [1]">
           <template v-slot:search>
             <Search @search="search"/>
           </template>

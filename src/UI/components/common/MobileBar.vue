@@ -6,7 +6,7 @@
         color="#FFFFFF"
     >
       <v-toolbar-title @click="proceed">
-        <Logo width="25" height="25" class="mb-0 ml-0 justify-center" font-size="16px"/>
+        <Logo width="27" height="27" class="mb-0 ml-0 justify-center" font-size="13px"/>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <svg-icon class="burger" name="Burger" @click="drawer = true"></svg-icon>
@@ -20,11 +20,6 @@
     >
       <account-badge :userInfo="userInfo" :user-id="userId" @proceed="goTo"/>
       <Menu/>
-      <v-spacer></v-spacer>
-      <div class="close d-flex flex-row justify-start align-center" @click="drawer = false">
-        <svg-icon class="mr-2" name="Close"></svg-icon>
-        Закрыть
-      </div>
     </v-navigation-drawer>
   </div>
 </template>

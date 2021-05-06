@@ -1,19 +1,16 @@
 <template>
   <div>
-    <div class="d-flex justify-space-between mt-6" :class="[$adaptive.isMobile ? 'flex-column' : 'flex-row align-end']">
+    <div class="d-flex justify-space-between flex-row align-end mt-6">
       <h2 class="discussion-title mt-0">Обсуждение</h2>
       <div class="discussion-action d-flex flex-row align-center">
-        <Select class-name="select_content" :selects="selectsDiscussion" v-on="$listeners" :id=" form.lessonId">
-          <template v-slot:act>
-            {{selectsDiscussion.find(item => item.id === selectedId).name}}
-            <v-icon color="#426DF6">mdi-chevron-down</v-icon>
-          </template>
-        </Select>
-<!--        <TextSelect :selects="selectsDiscussion" v-on="$listeners">-->
+<!--        <Select class-name="select_content" :selects="selectsDiscussion" v-on="$listeners" :id=" form.lessonId">-->
 <!--          <template v-slot:act>-->
 <!--            {{selectsDiscussion.find(item => item.id === selectedId).name}}-->
+<!--            <v-icon color="#426DF6">mdi-chevron-down</v-icon>-->
 <!--          </template>-->
-<!--        </TextSelect>-->
+<!--        </Select>-->
+        <TextSelect :selects="selectsDiscussion" v-on="$listeners">
+        </TextSelect>
       </div>
     </div>
     <CommentsFormComponent :form="form" v-on='$listeners' v-if="user.isSubscriptionActual"/>
