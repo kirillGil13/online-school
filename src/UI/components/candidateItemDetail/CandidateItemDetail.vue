@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column candidate-item-detail" id="detail">
+  <div class="d-flex flex-column candidate-item-detail" :class="[$adaptive.isMobile && 'mobile']" id="detail">
       <div class="d-flex candidate-item-detail__header">
           <div class="candidate-item-detail__header--title">{{item && item.name}}</div>
           <div class="candidate-item-detail__header--btn-header">
