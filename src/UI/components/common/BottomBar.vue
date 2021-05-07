@@ -2,6 +2,7 @@
   <v-bottom-navigation
       color="primary"
       app
+      height="60"
       fixed
   >
     <div class="d-flex justify-center align-center full-width">
@@ -16,7 +17,7 @@
     <Modal :activator="activator" @activatorChange="activatorChange" max-width="100%" modal-class="modal-navigation"
            width="100%" color="#ffffff" from-bottom>
       <template v-slot:content>
-        <div class="d-flex flex-column full-width px-4 py-3">
+        <div class="d-flex flex-column full-width px-4 py-4">
           <Button class="mt-0" full-width small @submit="addCandidate">Добавить кандидата</Button>
         </div>
       </template>
