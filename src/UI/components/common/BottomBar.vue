@@ -3,11 +3,11 @@
       color="primary"
       app
       height="60"
+      grow
       fixed
   >
     <div class="d-flex justify-center align-center full-width">
-      <div class="d-flex flex-row flex-nowrap justify-space-between align-center full-width px-3"
-           :style="{maxWidth: '315px'}">
+      <div class="d-flex flex-row flex-nowrap justify-space-between align-center full-width px-6">
         <div :style="{minWidth: 'max-content'}" class="mt-0 d-flex justify-center align-center"
              v-for="(item, index) in menu" :key="index" @click="handle(item)" :id="(item.extraAction && item.title !== undefined) && 'intercom'">
           <svg-icon :class="['bottom-menu-svg wrong-ellipse svg-22', (item.extraAction && item.title === undefined) && 'fill-blue svg-24']" :name="item.iconName"></svg-icon>

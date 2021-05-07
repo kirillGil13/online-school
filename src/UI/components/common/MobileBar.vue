@@ -10,9 +10,13 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
 <!--      <svg-icon class="burger" name="Burger" @click="drawer = true"></svg-icon>-->
-      <v-avatar size="34" @click="goTo">
-        <v-img :src="userInfo.photoLink"></v-img>
-      </v-avatar>
+      <avatar
+          @click="goTo"
+          :imageSource="userInfo.photoLink"
+          :imageClass="'account-badge__avatar'"
+          :size="34"
+          class="badge-avatar"
+      />
     </v-app-bar>
 
 <!--    <v-navigation-drawer-->
@@ -34,8 +38,9 @@ import {IFakeUserInfo} from '@/entity/environment';
 import AccountBadge from '@/UI/components/sidebar/AccountBadge.vue';
 import {RouterNameEnum} from '../../../router/router.types';
 import Logo from './Logo.vue';
+import Avatar from './Avatar.vue';
 @Component({
-  components: {Logo, AccountBadge, Menu}
+  components: {Avatar, Logo, AccountBadge, Menu}
 })
 export default class MobileBar extends Vue {
   @Prop({required: true}) userInfo!: IFakeUserInfo;
@@ -48,6 +53,29 @@ export default class MobileBar extends Vue {
 
   goTo(): void {
     this.$router.push({name: RouterNameEnum.Profile});
+  }
+
+  randomColor(i: number): string {
+    const COLORS = [
+      '#56CCF2',
+      '#BB6BD9',
+      '#6FCF97',
+      '#F2C94C',
+      '#967CBA',
+      '#FF9960',
+      '#566FF2',
+      '#FF5733',
+      '#FF89C9',
+      '#56F2DF',
+      '#F38460',
+      '#939ED6',
+      '#F271A0',
+      '#2ABF93',
+      '#FF9C9C',
+      '#6EC1F0',
+      '#3B4244'
+    ];
+    return COLORS[i || 0];
   }
 }
 </script>
