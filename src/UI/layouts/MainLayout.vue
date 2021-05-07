@@ -1,6 +1,7 @@
 <template>
   <v-app class="main-view">
     <MobileBar v-if="$adaptive.isMobile" :userId="user.id" :user-info="user"/>
+    <BottomBar v-if="$adaptive.isMobile" @addCandidate="addCandidate"/>
     <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
@@ -8,7 +9,7 @@
           <Banner v-if="!user.isSubscriptionActual" @show="activator = true"/>
         </div>
         <div class="content-main pt-0 mb-16">
-          <v-main>
+          <v-main class="pb-7">
             <v-col class="py-0" v-if="!user.isEmailConfirmed && !$route.query.accountId">
               <Confirm
                   :text="`Мы отправили на почту ${user.email} письмо с ссылкой на подтверждение. Пожалуйста, откройте Вашу почту и перейдите по ссылке в письме.`"
@@ -26,6 +27,12 @@
       <Modal :activator="activator" :max-width="1000" @activatorChange="activatorChange" color="#F2F2F2">
         <template v-slot:content>
           <SubscribeFormalization/>
+        </template>
+      </Modal>
+      <Modal :activator="activatorCandidate" :full-screen="$adaptive.isMobile" @activatorChange="activatorCandidateChange">
+        <template v-slot:content>
+          <CandidateFormComponent :form="candidateForm" v-if="destroy" :statuses="statuses" :info-packs="infoPackages"
+                                  :account-id="user.id" @close="close" @add="add"/>
         </template>
       </Modal>
     </v-main>
@@ -50,10 +57,21 @@ import {startIntercomMessenger} from '../../plugins/Intercom';
 import Modal from '../components/common/Modal.vue';
 import SubscribeFormalization from '../components/subscribeFormalization/SubscribeFormalization.vue';
 import Footer from '../components/common/footer/Footer.vue';
+import BottomBar from '../components/common/BottomBar.vue';
+import {CandidateForm} from '../../form/candidate/candidateForm';
+import {IStatuses} from '../../entity/statuses/statuses.types';
+import {StatusesStore} from '../../store/modules/Statuses';
+import {InfoPackagesStore} from '../../store/modules/InfoPackages';
+import {IInfoPackage} from '../../entity/infoPackages/infoPackage.types';
+import {CandidatesStore} from '../../store/modules/Candidates';
+import {RouterNameEnum} from '../../router/router.types';
+import CandidateFormComponent from '../components/forms/candidateForm/CandidateFormComponent.vue';
 
 
 @Component({
   components: {
+    CandidateFormComponent,
+    BottomBar,
     Footer,
     SubscribeFormalization,
     Modal,
@@ -67,9 +85,12 @@ import Footer from '../components/common/footer/Footer.vue';
 })
 export default class MainLayout extends Vue {
   activator = false;
+  activatorCandidate = false;
   show = true;
   success = false;
   alertType = AlertTypeEnum;
+  destroy = true;
+  candidateForm = new CandidateForm();
 
   @Watch('$route.name')
     scrollTop(val: string, oldVal: string): void {
@@ -78,6 +99,13 @@ export default class MainLayout extends Vue {
 
       }
     }
+
+  rerender(): void {
+    this.destroy = false;
+    this.$nextTick(() => {
+      this.destroy = true;
+    });
+  }
 
 
   showAlert(show: boolean): void {
@@ -92,12 +120,34 @@ export default class MainLayout extends Vue {
     this.show = show;
   }
 
+  addCandidate(): void {
+    this.activatorCandidate = true;
+  }
+
   created(): void {
+      StatusesStore.fetchAll();
+      InfoPackagesStore.fetchAll();
       startIntercomMessenger(AuthStore.user!);
   }
 
   activatorChange(act: boolean): void {
     this.activator = act;
+  }
+
+  close(): void {
+    this.activatorCandidate = false;
+  }
+
+  activatorCandidateChange(act: boolean): void {
+    this.activatorCandidate = act;
+  }
+
+  get infoPackages(): IInfoPackage[] {
+    return InfoPackagesStore.infoPackages;
+  }
+
+  get statuses(): IStatuses[] {
+    return StatusesStore.statuses;
   }
 
   get user(): IUser | null {
@@ -110,6 +160,20 @@ export default class MainLayout extends Vue {
 
   get steps(): ITourSteps[] {
     return TourStore.steps;
+  }
+
+  async add(): Promise<void> {
+    const date = new Date(this.candidateForm.callTimeFake);
+    const seconds = date.getTime() / 1000;
+    this.candidateForm.callTime = seconds;
+    if (await this.candidateForm.submit(CandidatesStore.create)) {
+      this.candidateForm = new CandidateForm();
+      this.rerender();
+      this.activatorCandidate = false;
+      if (this.$route.name !== RouterNameEnum.Candidates) {
+        await this.$router.push({name: RouterNameEnum.Candidates});
+      }
+    }
   }
 
   async mounted(): Promise<void> {

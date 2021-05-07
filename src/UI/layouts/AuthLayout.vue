@@ -1,7 +1,7 @@
 <template>
     <div class="content auth">
+      <Logo class="mb-7" font-size="22px" height="38px" width="38px" />
         <div class="pa-6 auth__wrapper">
-            <Logo font-size="24px" height="38px" width="38px" />
             <router-view />
         </div>
     </div>

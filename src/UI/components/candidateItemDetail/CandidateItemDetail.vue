@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column candidate-item-detail" id="detail">
+  <div class="d-flex flex-column candidate-item-detail" :class="[$adaptive.isMobile && 'mobile']" id="detail">
       <div class="d-flex candidate-item-detail__header">
           <div class="candidate-item-detail__header--title">{{item && item.name}}</div>
           <div class="candidate-item-detail__header--btn-header">
@@ -185,6 +185,11 @@ export default class CandidateItemDetail extends Vue {
     width: 100%;
     padding: 16px;
     flex-direction: column;
+  &.mobile {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
   &.scrolled {
     position: fixed !important;
     top: 30px;

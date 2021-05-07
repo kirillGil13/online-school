@@ -38,6 +38,37 @@ class MenuModule extends VuexModule {
         },
     ];
 
+    bottomMenu: IMainMenu[] = [
+        {
+            title: 'Обучение',
+            iconName: 'Education',
+            extraAction: false,
+            route: RouterNameEnum.TrainingMain,
+        },
+        {
+            title: 'Кандидаты',
+            iconName: 'Add_User',
+            extraAction: false,
+            route: RouterNameEnum.Candidates,
+        },
+        {
+            iconName: 'Universal',
+            extraAction: true,
+        },
+        {
+            title: 'Инфопакеты',
+            iconName: 'Users',
+            extraAction: false,
+            route: RouterNameEnum.InfoPackages,
+        },
+        {
+            title: 'Поддержка',
+            extraAction: true,
+            iconName: 'Support'
+        },
+    ];
+
+
     footerMenu: IMainMenu[] = [
         {
             title: 'Политика конфиденциальности',
