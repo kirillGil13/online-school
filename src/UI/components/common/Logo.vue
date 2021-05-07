@@ -1,7 +1,6 @@
 <template>
-    <div class="logo" :style="{fontSize: fontSize}" @click="proceed">
-      <v-img src="@/UI/assets/logo.png" alt="onelinks" :max-height="height" :max-width="width" class="img"></v-img>
-      <h3 class="mb-0">ONELINKS</h3>
+    <div class="logo" @click="proceed">
+      <v-img src="@/UI/assets/ONELINKSCOM.svg" alt="onelinks" :width="width" :max-width="width" class="img"></v-img>
     </div>
 </template>
 
@@ -11,7 +10,6 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 @Component
 export default class Logo extends Vue {
   @Prop({default: ''}) readonly width!: string;
-  @Prop({default: ''}) readonly height!: string;
   @Prop({default: ''}) readonly fontSize!: string;
 
   proceed(): void {

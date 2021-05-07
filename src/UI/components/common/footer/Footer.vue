@@ -12,7 +12,7 @@
         :class="[contentClass]"
     >
       <v-col
-          class="pa-4"
+          class="px-4 pb-4" :class="$adaptive.isMobile && 'pt-10'"
           cols="12"
       >
         <div class="org">© Onelinks, 2020 г. Все права защищены.</div>
