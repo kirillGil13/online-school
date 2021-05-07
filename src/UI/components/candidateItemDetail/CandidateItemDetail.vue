@@ -185,6 +185,11 @@ export default class CandidateItemDetail extends Vue {
     width: 100%;
     padding: 16px;
     flex-direction: column;
+  &.mobile {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
   &.scrolled {
     position: fixed !important;
     top: 30px;
