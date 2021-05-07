@@ -77,4 +77,8 @@ export default class Login extends Vue {
     border-color: #f2f2f2 !important;
   }
 }
+.form-title {
+  font-size: 24px;
+  text-align: center;
+}
 </style>
