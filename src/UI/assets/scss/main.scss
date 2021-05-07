@@ -147,12 +147,35 @@ h5 {
 .mainLayout {
   max-width: 1440px;
 }
+.fill-blue {
+  &.svg-icon {
+    path {
+      fill: #426DF6 !important;
+    }
+  }
+}
 
 /* recommended css code for vue-svgicon */
 .svg-16 {
   width: 16px !important;
   height: 16px !important;
 }
+
+.svg-18 {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.svg-20 {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.svg-22 {
+  width: 22px !important;
+  height: 22px !important;
+}
+
 .svg-24 {
   width: 24px !important;
   height: 24px !important;
@@ -165,6 +188,11 @@ h5 {
   vertical-align: middle;
   fill: none;
   stroke: currentColor;
+  &.wrong-ellipse {
+    ellipse {
+      fill: #5F739C !important;
+    }
+  }
 }
 
 .svg-fill {

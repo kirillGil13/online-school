@@ -9,18 +9,21 @@
         <Logo width="27" height="27" class="mb-0 ml-0 justify-center" font-size="13px"/>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <svg-icon class="burger" name="Burger" @click="drawer = true"></svg-icon>
+<!--      <svg-icon class="burger" name="Burger" @click="drawer = true"></svg-icon>-->
+      <v-avatar size="34" @click="goTo">
+        <v-img :src="userInfo.photoLink"></v-img>
+      </v-avatar>
     </v-app-bar>
 
-    <v-navigation-drawer
-        v-model="drawer"
-        fixed
-        right
-        class="pa-2 drawer"
-    >
-      <account-badge :userInfo="userInfo" :user-id="userId" @proceed="goTo"/>
-      <Menu/>
-    </v-navigation-drawer>
+<!--    <v-navigation-drawer-->
+<!--        v-model="drawer"-->
+<!--        fixed-->
+<!--        right-->
+<!--        class="pa-2 drawer"-->
+<!--    >-->
+<!--      <account-badge :userInfo="userInfo" :user-id="userId" @proceed="goTo"/>-->
+<!--      <Menu/>-->
+<!--    </v-navigation-drawer>-->
   </div>
 </template>
 

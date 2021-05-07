@@ -89,7 +89,7 @@
                 v-model="form[attrs.name]" v-bind="attrs"/>
       <svg-icon @click="clear" class="delete_content" name="Close"></svg-icon>
     </FormGroup>
-    <div class="d-flex flex-row justify-space-between mt-2">
+    <div class="d-flex flex-row justify-space-between mt-2 align-end" :style="{height: $adaptive.isMobile && '100%'}">
       <Button full-width small class="mr-3" :disabled="form.disabled" @submit="$emit('add')">Добавить кандидата</Button>
       <Button class="secondary_blue" small @submit="$emit('close')">Отмена</Button>
     </div>
@@ -148,6 +148,9 @@ export default class CandidateFormComponent extends Vue {
 
 <style lang="scss">
 .candidate_form {
+  &.mobile_form {
+
+  }
   .select {
     border: 1px solid #f2f2f2 !important;
     padding: 4px !important;

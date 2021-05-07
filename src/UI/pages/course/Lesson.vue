@@ -187,7 +187,7 @@
         <SubscribeFormalization/>
       </template>
     </Modal>
-    <Modal :activator="activatorRespond" full-screen @activatorChange="activatorRespondChange" color="#F2F2F2">
+    <Modal :activator="activatorRespond" full-screen :without-tool-bar="false" @activatorChange="activatorRespondChange" color="#F2F2F2">
       <template v-slot:full-screen-content>
         <div class="pa-3">
           <CommentsFormComponent class="mt-6" :form="answersForm" @postComment="postComment"/>

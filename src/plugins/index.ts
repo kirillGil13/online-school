@@ -16,5 +16,5 @@ export * from './Adaptive';
 export * from './Tour';
 export * from './ReCaptcha';
 export * from './CountryRegionSelect';
-export * from './FastClick';
+// export * from './FastClick';
 export * from './Infinite';
