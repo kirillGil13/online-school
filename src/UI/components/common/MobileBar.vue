@@ -6,7 +6,7 @@
         color="#FFFFFF"
     >
       <v-toolbar-title @click="proceed">
-        <Logo width="27" height="27" class="mb-0 ml-0 justify-center" font-size="13px"/>
+        <Logo width="120" class="mb-0 ml-0 justify-center"/>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <svg-icon class="burger" name="Burger" @click="drawer = true"></svg-icon>

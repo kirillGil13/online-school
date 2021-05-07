@@ -25,8 +25,8 @@
                   </template>
                 </avatar>
                 <div v-if="$adaptive.isMobile" class="d-flex align-center font-weight-bold font-16">
-                  {{user.name}}<br>
-                  {{user.lastName}}
+                  {{ user.name }}<br>
+                  {{ user.lastName }}
                 </div>
               </div>
 <!--              <Button v-if="user.isSubscriptionActual" @submit="unSub" full-width small class="py-3 mt-2">Отменить подписку</Button>-->

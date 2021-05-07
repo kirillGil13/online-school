@@ -26,7 +26,7 @@
         <cite>Finiko</cite>
       </blockquote>
     </div>
-    <Modal :activator="activator" v-if="destroy" @activatorChange="activatorChange">
+    <Modal :activator="activator" v-if="destroy" :full-screen="$adaptive.isMobile" @activatorChange="activatorChange">
       <template v-slot:content>
         <VideoAccessFormComponent v-if="!codeStep" :form="accessForm" @close="close" @access="access"
                                   :account-id="+$route.query.account_id" :info-pack-id="+$route.params.id"/>

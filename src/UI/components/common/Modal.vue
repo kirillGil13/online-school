@@ -2,29 +2,36 @@
   <v-dialog
       v-model="activatorChange"
       activator="activatorChange"
+      :origin="origin"
       :value="activator"
       :fullscreen="fullScreen"
       :hide-overlay="fullScreen"
-      :content-class="!fullScreen ? 'modal-window' : ''"
+      :width="width"
+      :content-class="!fullScreen ? `modal-window ${modalClass}` : ''"
       :max-width="!fullScreen ? modalMaxWidth : ''"
-      :transition="fullScreen && 'dialog-bottom-transition'"
+      :transition="(fullScreen || fromBottom) && 'dialog-bottom-transition'"
   >
-    <v-card v-if="!fullScreen" class="modal-content" :color="color ? color : ''">
+    <v-card v-if="!fullScreen && withoutToolBar" class="modal-content" :color="color ? color : ''">
       <slot name="content"/>
     </v-card>
-    <v-toolbar v-else
-               dark
-               color="primary"
-    >
-      <v-toolbar-title>Ответ пользователю</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <div @click="activatorChange = false">
-        <v-icon>mdi-close</v-icon>
-      </div>
-    </v-toolbar>
-    <v-card>
-      <slot name="full-screen-content"/>
+    <v-card v-else-if="fullScreen && withoutToolBar" :style="{overflow: 'scroll'}" :color="color ? color : ''">
+      <slot name="content"/>
     </v-card>
+    <template v-else>
+      <v-toolbar
+                 dark
+                 color="primary"
+      >
+        <v-toolbar-title>Ответ пользователю</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <div @click="activatorChange = false">
+          <v-icon>mdi-close</v-icon>
+        </div>
+      </v-toolbar>
+      <v-card>
+        <slot name="full-screen-content"/>
+      </v-card>
+    </template>
   </v-dialog>
 </template>
 
@@ -35,8 +42,13 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 export default class Modal extends Vue {
   @Prop({required: true}) readonly activator!: boolean;
   @Prop({default: false, type: Boolean}) readonly fullScreen!: boolean;
+  @Prop({default: false, type: Boolean}) readonly fromBottom!: boolean;
+  @Prop({default: true, type: Boolean}) readonly withoutToolBar!: boolean;
+  @Prop() readonly modalClass!: string;
   @Prop() readonly videoModal!: boolean;
+  @Prop() readonly origin!: string;
   @Prop() readonly maxWidth!: number;
+  @Prop() readonly width!: string;
   @Prop() readonly color!: string;
 
   set activatorChange(activator: boolean) {
