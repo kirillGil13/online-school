@@ -41,6 +41,8 @@ import Button from './Button.vue';
 })
 export default class BottomBar extends Vue {
 
+
+
   activator = false;
 
   activatorChange(act: boolean): void {
