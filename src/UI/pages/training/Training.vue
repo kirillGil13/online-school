@@ -26,7 +26,7 @@
         К сожалению, данные не найдены
       </v-col>
     </v-row>
-    <Modal v-if="courseLevelsLoaded" :activator="activator" @activatorChange="activatorChange">
+    <Modal v-if="courseLevelsLoaded" :full-screen="$adaptive.isMobile" :activator="activator" @activatorChange="activatorChange">
       <template v-slot:content>
         <MailFormComponent :form="mailForm" v-if="destroy" :levels="courseLevels" @close="close" @add="add"/>
       </template>
