@@ -9,7 +9,7 @@
            :style="{maxWidth: '315px'}">
         <div :style="{minWidth: 'max-content'}" class="mt-0 d-flex justify-center align-center"
              v-for="(item, index) in menu" :key="index" @click="handle(item)" :id="(item.extraAction && item.title !== undefined) && 'intercom'">
-          <svg-icon :class="['bottom-menu-svg wrong-ellipse svg-20', (item.extraAction && item.title === undefined) && 'fill-blue svg-22']" :name="item.iconName"></svg-icon>
+          <svg-icon :class="['bottom-menu-svg wrong-ellipse svg-22', (item.extraAction && item.title === undefined) && 'fill-blue svg-24']" :name="item.iconName"></svg-icon>
         </div>
       </div>
     </div>
