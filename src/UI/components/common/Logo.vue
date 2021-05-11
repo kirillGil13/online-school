@@ -1,6 +1,6 @@
 <template>
     <div class="logo" @click="proceed">
-      <v-img src="@/UI/assets/ONELINKSCOM.svg" alt="onelinks" :width="width" :max-width="width" class="img"></v-img>
+      <v-img src="@/UI/assets/ONELINKSCOM.svg" alt="onelinks" contain :width="width" :max-width="width" class="img"></v-img>
     </div>
 </template>
 

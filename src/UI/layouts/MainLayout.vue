@@ -1,7 +1,6 @@
 <template>
   <v-app class="main-view">
     <MobileBar v-if="$adaptive.isMobile" :userId="user.id" :user-info="user"/>
-    <BottomBar v-if="$adaptive.isMobile" @addCandidate="addCandidate"/>
     <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
@@ -60,7 +59,6 @@ import { WebSocketStore } from '@/store/modules/WebSocket';
 import { IDialogs } from '@/entity/dialogs/dialogs.types';
 import { DialogsStore } from '@/store/modules/Dialogs';
 import Footer from '../components/common/footer/Footer.vue';
-import BottomBar from '../components/common/BottomBar.vue';
 import {CandidateForm} from '../../form/candidate/candidateForm';
 import {IStatuses} from '../../entity/statuses/statuses.types';
 import {StatusesStore} from '../../store/modules/Statuses';
@@ -74,7 +72,6 @@ import CandidateFormComponent from '../components/forms/candidateForm/CandidateF
 @Component({
   components: {
     CandidateFormComponent,
-    BottomBar,
     Footer,
     SubscribeFormalization,
     Modal,
@@ -120,10 +117,6 @@ export default class MainLayout extends Vue {
 
   showNote(show: boolean): void {
     this.show = show;
-  }
-
-  addCandidate(): void {
-    this.activatorCandidate = true;
   }
 
   created(): void {

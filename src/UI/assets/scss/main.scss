@@ -1106,3 +1106,7 @@ iframe {
     min-width: 100% !important;
   }
 }
+
+.v-dialog__content {
+  z-index: 99999999999999999 !important;
+}
