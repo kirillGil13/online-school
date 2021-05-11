@@ -99,26 +99,6 @@ export default class MainLayout extends Vue {
       }
     }
 
-  rerender(): void {
-    this.destroy = false;
-    this.$nextTick(() => {
-      this.destroy = true;
-    });
-  }
-
-
-  showAlert(show: boolean): void {
-    this.success = show;
-  }
-
-  proceed(): void {
-    this.$router.push({name: this.$routeRules.Profile});
-  }
-
-  showNote(show: boolean): void {
-    this.show = show;
-  }
-
   created(): void {
       DialogsStore.fetchAll()
       StatusesStore.fetchAll();
@@ -134,26 +114,15 @@ export default class MainLayout extends Vue {
         console.log(el)
       }
 
-
       this.socket!.onmessage = (() => {
-        DialogsStore.setUnReadMessage(1, true);
+        console.log('hello ')
+        DialogsStore.setUnReadMessage(1, false);
       })
-  }
-
-  activatorChange(act: boolean): void {
-    this.activator = act;
+     
   }
 
   get socket(): WebSocket | null {
     return WebSocketStore.socket;
-  }
-
-  close(): void {
-    this.activatorCandidate = false;
-  }
-
-  activatorCandidateChange(act: boolean): void {
-    this.activatorCandidate = act;
   }
 
   get infoPackages(): IInfoPackage[] {
@@ -184,6 +153,40 @@ export default class MainLayout extends Vue {
     return DialogsStore.unReadMessages;
   }
 
+
+  rerender(): void {
+    this.destroy = false;
+    this.$nextTick(() => {
+      this.destroy = true;
+    });
+  }
+
+
+  showAlert(show: boolean): void {
+    this.success = show;
+  }
+
+  proceed(): void {
+    this.$router.push({name: this.$routeRules.Profile});
+  }
+
+  showNote(show: boolean): void {
+    this.show = show;
+  }
+
+  
+  close(): void {
+    this.activatorCandidate = false;
+  }
+  
+  activatorCandidateChange(act: boolean): void {
+    this.activatorCandidate = act;
+  }
+
+  activatorChange(act: boolean): void {
+    this.activator = act;
+  }
+
   async add(): Promise<void> {
     const date = new Date(this.candidateForm.callTimeFake);
     const seconds = date.getTime() / 1000;
@@ -211,6 +214,8 @@ export default class MainLayout extends Vue {
       return true
     } else return false;
   }
+
+  
 
 }
 </script>

@@ -22,13 +22,13 @@ class DialogsModule extends VuexModule {
             dialogsLoaded = true
         }
         const unReadMessages = dialogs.reduce((a, b) => a + b.countUnread, 0);
-        console.log(unReadMessages)
         
         return { dialogs, dialogsLoaded, unReadMessages };
     }
 
     @Mutation
     setUnReadMessage(count: number = 1, operation: boolean): void {
+        console.log('setUnreadMessage')
 
         if(!operation) {
             this.unReadMessages += count;

@@ -34,7 +34,7 @@ export default class Conversations extends Vue {
 
   chousenChatId: number | null = null;
 
-  @Watch('$route.name')
+  @Watch('$route.params.id')
   zeroChousenChatId(): void {
     if( this.$adaptive.isMobile  &&  this.$route.name === this.$routeRules.Chat && !this.$route.params.id) {
        this.chousenChatId = null;
