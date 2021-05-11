@@ -10,13 +10,14 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
 <!--      <svg-icon class="burger" name="Burger" @click="drawer = true"></svg-icon>-->
-      <avatar
-          @click="goTo"
-          :imageSource="userInfo.photoLink"
-          :imageClass="'account-badge__avatar'"
-          :size="34"
-          class="badge-avatar"
-      />
+      <div @click="goTo">
+        <avatar
+            :imageSource="userInfo.photoLink"
+            :imageClass="'account-badge__avatar'"
+            :size="34"
+            class="badge-avatar"
+        />
+      </div>
     </v-app-bar>
 
 <!--    <v-navigation-drawer-->
