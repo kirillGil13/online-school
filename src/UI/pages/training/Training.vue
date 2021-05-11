@@ -1,8 +1,8 @@
 <template>
   <v-col class="training">
     <Header :isBordered="false" action title="Обучение" class="top_bar_p_0">
-      <div class="d-flex justify-end">
-        <Button class="mt-0" @submit="activator = true">Добавить свой курс</Button>
+      <div class="d-flex" :class="[$adaptive.isMobile ? 'justify-start' : 'justify-end']">
+        <Button class="mt-0" :full-width="$adaptive.isMobile" @submit="activator = true">Добавить свой курс</Button>
       </div>
     </Header>
     <template v-if="leaders.length !== 0">
@@ -13,7 +13,7 @@
     </template>
     <v-row>
       <v-col class="py-0">
-        <FilterComponent :search="true" :is-on-right="true" :filters="filters" @filter="onFilter">
+        <FilterComponent :search="true" :is-on-right="true" :filters="filters" @filter="onFilter" :count-element="$adaptive.isMobile ? [0,1] : [1]">
           <template v-slot:search>
             <Search @search="search"/>
           </template>
@@ -26,7 +26,7 @@
         К сожалению, данные не найдены
       </v-col>
     </v-row>
-    <Modal v-if="courseLevelsLoaded" :activator="activator" @activatorChange="activatorChange">
+    <Modal v-if="courseLevelsLoaded" :full-screen="$adaptive.isMobile" :activator="activator" @activatorChange="activatorChange">
       <template v-slot:content>
         <MailFormComponent :form="mailForm" v-if="destroy" :levels="courseLevels" @close="close" @add="add"/>
       </template>
@@ -61,6 +61,8 @@ import Modal from '../../components/common/Modal.vue';
 import MailFormComponent from '../../components/forms/mailForm/MailFormComponent.vue';
 import {MailForm} from '../../../form/mail/mailForm';
 import {MailStore} from '../../../store/modules/Mail';
+import { Validate } from '@/plugins/Vuelidate/Decorators';
+import { required} from 'vuelidate/lib/validators';
 
 @Component({
   components: {

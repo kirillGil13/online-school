@@ -1,8 +1,7 @@
 <template>
   <v-menu
-      origin="center center"
-      transition="scale-transition"
       :content-class="className"
+      right
       auto
       :top="$adaptive.isMobile"
       class="selection"

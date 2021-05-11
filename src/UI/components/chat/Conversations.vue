@@ -18,7 +18,7 @@
             {{elem.lastMessage.createdAt}}
           </div>
         </div>
-        <span class="d-flex justify-space-between align-center flex-row">{{elem.lastMessage.text}} <span class="unReadDialog">{{elem.countUnread > 0 ? elem.countUnread : undefined}}</span></span>
+        <span class="d-flex justify-space-between align-center flex-row">{{elem.lastMessage.text}} <span class="unReadDialog">{{getUnReadMessage(elem.account.id)}}</span></span>
       </div>
     </div>
   </div>
@@ -42,7 +42,6 @@ export default class Conversations extends Vue {
   }
 
   async created() {
-
     if(this.$route.name === this.$routeRules.ChatMain){
       this.chousenChatId = Number(this.$route.params.id)
     }
@@ -81,6 +80,16 @@ export default class Conversations extends Vue {
     '#3B4244'
     ];
     return COLORS[i || 0];
+  }
+
+  getUnReadMessage(id: number): number | undefined {
+    const elem = this.dialogs.find(el => el.account.id === id);
+    
+    if (elem!.countUnread !== 0) {
+      if(this.$route.params.id !== elem?.account.id.toString()) {
+        return elem!.countUnread;
+      }
+    }
   }
 }
 </script>

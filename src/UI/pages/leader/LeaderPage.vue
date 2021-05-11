@@ -32,7 +32,7 @@
         </v-col>
         <v-col class="box-container mt-6 pa-4">
           <Header class="top_bar_small" title="Курсы" :class="[$adaptive.isMobile && 'flex-column']" action>
-            <FilterComponent :search="false" :is-on-right="true" :filters="filters" @filter="onFilter" />
+            <FilterComponent :search="false" :is-on-right="true" :filters="filters" @filter="onFilter" :count-element="$adaptive.isMobile ? [0,1] : [1]"/>
           </Header>
           <div
               :class="['course-list-container course-list-small mt-8 pa-0',$adaptive.isMobile ? 'course-list-mobile' : '']"
@@ -230,10 +230,6 @@ export default class LeaderPage extends Vue {
 
   .tab-controls {
     justify-content: flex-end !important;
-
-    #select:nth-last-child(1) {
-      margin-right: 0;
-    }
   }
 }
 

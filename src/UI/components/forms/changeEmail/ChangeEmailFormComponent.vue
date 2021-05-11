@@ -1,7 +1,7 @@
 <template>
-  <div class="mb-3">
+  <div class="mb-3" >
     <FormGroup v-slot="attrs" :form="form" field="email" show-custom-error label="Email">
-      <div class="d-flex flex-row">
+      <div class="d-flex flex-row" :class="[$adaptive.isMobile && 'd-flex flex-column']">
         <input
             class="input input__normal"
             type="email" name="email"
@@ -10,7 +10,7 @@
             v-bind="attrs"
             @input="attrs.change"
         >
-          <Button small class="mt-0 ml-3" v-on="$listeners">Сменить адрес</Button>
+          <Button small class="mt-0" :class="[!$adaptive.isMobile ? 'ml-3' : 'mt-3']" v-on="$listeners">Сменить адрес</Button>
       </div>
     </FormGroup>
     <div class="info-desc mt-1 ml-4">На указанный Вами адрес электронной почты будет выслана ссылка-подтверждение.</div>

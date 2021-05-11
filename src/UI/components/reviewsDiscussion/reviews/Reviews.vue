@@ -99,7 +99,7 @@ $badge-min-width: 23px;
   }
 
     .desc {
-        font-size: 12px;
+        font-size: 10px;
         line-height: 150%;
         display: flex;
       white-space: nowrap;

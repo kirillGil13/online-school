@@ -45,12 +45,12 @@ export default class Comments implements IComments{
     prettierMsg(index: number): string {
         let substr = '';
         if (this.answers[index].message.includes(this.fullName)) {
-            substr = this.answers[index].message.replace(this.fullName, '<strong style="color: #426DF6">' + this.fullName + '</strong>');
+            substr = this.answers[index].message.replace(this.fullName, '<span class="font-weight-bold">' + this.fullName + '</span>');
         }
-        else if (!this.answers[index].message.includes(this.fullName)){
+        else if (!this.answers[index].message.includes(this.fullName + ',')){
             for (let i = 0; i < this.answers.length; i++) {
                 if (this.answers[index].message.includes(this.answers[i].fullName)) {
-                    substr = this.answers[index].message.replace(this.answers[i].fullName, '<strong style="color: #426DF6">' + this.answers[i].fullName + '</strong>');
+                    substr = this.answers[index].message.replace(this.answers[i].fullName, '<span class="font-weight-bold">' + this.answers[i].fullName + '</span>');
                 }
             }
         }

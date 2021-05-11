@@ -37,20 +37,20 @@ import { MONTHS } from '@/constants/month';
 })
 export default class ChatMain extends Vue {
 
-  @Watch('$route.params.id')
+  @Watch('$route.params.id', {immediate: true})
   onChangeRoute(): void {
     this.fetchData();
-    
 
-  const el = {
+    const el = {
     type: "connect-to-dialog-type",
-    data: {
-      "purpose_account_id": this.$route.params.id
+      data: {
+        "purpose_account_id": this.$route.params.id
+      }
     }
-  }
 
     this.socket!.send(JSON.stringify(el))
-    
+
+
   }
 
   get socket(): WebSocket | null {
@@ -59,6 +59,15 @@ export default class ChatMain extends Vue {
 
   async created(): Promise<void> {
     this.fetchData();
+
+    const el = {
+    type: "connect-to-dialog-type",
+      data: {
+        "purpose_account_id": this.$route.params.id
+      }
+    }
+
+    this.socket!.send(JSON.stringify(el))
 
 
     this.socket!.onmessage = async (event: any) => {

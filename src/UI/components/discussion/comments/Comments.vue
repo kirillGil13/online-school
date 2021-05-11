@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex flex-row cont">
-      <v-avatar size="36" class="mr-3" :color="comment.author.photoLink ? '#F0F2F6' :randomColor(comment.author.id % 10)">
+      <v-avatar :size="$adaptive.isMobile ? 32 : 36" class="mr-3" :color="comment.author.photoLink ? '#F0F2F6' :randomColor(comment.author.id % 10)">
         <template v-slot:default v-if="comment.author.photoLink">
           <v-img :src="comment.author.photoLink" alt=""/>
         </template>
@@ -16,13 +16,20 @@
           </v-col>
           <v-col class="pa-0" v-else>
             <v-row no-gutters class="mb-1 d-flex flex-row flex-nowrap justify-space-between">
-              <div class="d-flex " :class="!$adaptive.isMobile && 'flex-row'" :style="{width: $adaptive.isMobile && '100%', flexDirection: $adaptive.isMobile && 'column'}">
-                
-                <div class="desc d-flex"><h4 class=" d-flex mr-3 comment-author justify-space-between" style="white-space:nowrap">{{ comment.fullName }}</h4> {{ comment.createdAt }}</div>
-                <template v-if="comment.isEdited">
-                  <v-icon v-show="!$adaptive.isMobile" dense>mdi-circle-small</v-icon>
-                  <div class="desc">Изменено</div>
-                </template>
+              <div class="d-flex flex-nowrap" :class="!$adaptive.isMobile && 'flex-row'" :style="{width: $adaptive.isMobile && '100%'}">
+
+                <div class="desc d-flex flex-column">
+                    <h4 class="comment-author mr-3" :style="{maxWidth : $adaptive.isMobile ? '150px' : 'max-content'}">
+                      {{ comment.fullName }}
+                    </h4>
+                  <div class="d-flex flex-row">
+                    {{ comment.createdAt }}
+                    <template v-if="comment.isEdited">
+                      <v-icon dense>mdi-circle-small</v-icon>
+                      <div class="desc">Изменено</div>
+                    </template>
+                  </div>
+                </div>
               </div>
               <div class="pr-0" v-if="comment.isMy">
                 <Select class-name="select_content_comment action" :selects="selects" v-on="$listeners" :id="comment.id">
@@ -38,9 +45,9 @@
                 </Select>
               </div>
             </v-row>
-            <v-row no-gutters :id="'comment' + comment.id">
+            <div class="comment-message" no-gutters :id="'comment' + comment.id">
               {{ comment.message }}
-            </v-row>
+            </div>
             <v-row no-gutters class="d-flex flex-row justify-space-between align-end mt-2">
               <span class="comment-action" @click="$emit('respond', {id: comment.id})">Ответить</span>
               <div class="d-flex flex-row justify-space-between">
@@ -64,7 +71,7 @@
               <svg-icon class="mr-2 svg-up" name="Comment_Arrow"></svg-icon>Скрыть
             </span>
             <template v-for="(item, index) in comment.answers" class="d-flex flex-column">
-              <div :key="index" class="mt-4 ml-4 d-flex flex-row cont">
+              <div :key="index" class="mt-4 d-flex flex-row cont" :class="[$adaptive.isMobile ? '' : 'ml-4']">
                 <v-avatar size="24" class="mr-3" :color="item.author.photoLink ? '#F0F2F6' :randomColor(item.author.id % 10)">
                   <template v-slot:default v-if="item.author.photoLink">
                     <v-img :src="item.author.photoLink" alt=""/>
@@ -79,11 +86,15 @@
                       <CommentsChangeFormComponent :form="form" @closeChange="closeChangeAnswer" @changeComment="$emit('changeAnswer', {answer: item.id, comment: comment.id})"/>
                     </v-col>
                     <v-col class="pa-0" v-else>
-                      <v-row no-gutters class="mb-1 d-flex" :class="!$adaptive.isMobile && 'justify-space-between'">
-                        <div class="d-flex flex-row justify-space-between" :class="$adaptive.isMobile && 'justify-space-between' " :style="{width: $adaptive.isMobile && '100%'}">
-                          <h4 class="mr-3" style="white-space: nowrap; color: #101010; font-size: 14px;" >{{ item.fullName }}</h4>
-                          <div class="desc" style="white-space: nowrap;">{{ item.createdAt }}</div>
-                        </div>
+                      <v-row no-gutters class="mb-1 d-flex flex-row flex-nowrap justify-space-between">
+                          <div class="d-flex flex-column">
+                            <h4 class="mr-3 comment-author" >
+                              {{ item.fullName }}
+                            </h4>
+                            <div class="desc" style="white-space: nowrap;">
+                              {{ item.createdAt }}
+                            </div>
+                          </div>
                         <div class="pr-0" v-if="item.isMy">
                           <Select class-name="select_content_comment action" :selects="selects" @extraAction="extraActionAnswer" :id="item.id">
                             <template v-slot:act>
@@ -98,9 +109,9 @@
                           </Select>
                         </div>
                       </v-row>
-                      <v-row no-gutters :id="'answer' + item.id"
+                      <div class="comment-message" no-gutters :id="'answer' + item.id"
                              v-html="comment.prettierMsg(index) ? comment.prettierMsg(index) : item.message">
-                      </v-row>
+                      </div>
                       <v-row no-gutters class="d-flex flex-row justify-space-between align-end mt-2">
                     <span class="comment-action"
                           @click="$emit('respond', {id: comment.id, index: index})">Ответить</span>
@@ -213,9 +224,12 @@ export default class Comments extends Vue {
   &.active-comment {
     background: rgba(95,115,156, 0.3);
   }
+  .comment-message {
+    word-break: break-word;
+  }
 
   .desc {
-    font-size: 12px;
+    font-size: 10px;
     line-height: 180%;
     color: #5F739C;
   }
@@ -229,19 +243,18 @@ export default class Comments extends Vue {
       height: auto;
       background-color: transparent;
       margin-right: 4px;
-    }
-  }
-
-  .icon-container
-  .active-like {
-    path {
-      fill: #27AE60 !important;
-    }
-  }
-
-  .active-dislike {
-    path {
-      fill: #eb5757 !important;
+      &.active-like {
+        svg {
+          path {
+            fill: #27AE60 !important;
+          }
+        }
+      }
+      &.active-dislike {
+        path {
+          fill: #eb5757 !important;
+        }
+      }
     }
   }
 }
@@ -276,10 +289,9 @@ export default class Comments extends Vue {
 }
 
 .comment-author {
-  max-width: max-content;
-  white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  white-space: nowrap;
   color: #101010;
   font-size: 14px;
 }

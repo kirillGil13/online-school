@@ -1,5 +1,6 @@
 <template>
   <v-form class="form" @submit.prevent="submit">
+    <h2 class="form-title">Вход</h2>
     <div class="mt-9 mb-3">
       <FormGroup v-slot="attrs" :form="form" field="username" show-custom-error label="Email">
         <input
@@ -75,5 +76,9 @@ export default class Login extends Vue {
   fieldset {
     border-color: #f2f2f2 !important;
   }
+}
+.form-title {
+  font-size: 24px;
+  text-align: center;
 }
 </style>

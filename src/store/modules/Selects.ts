@@ -41,7 +41,7 @@ class SelectsModule extends VuexModule {
     selectsDiscussion: ISelect[] =[
         {
             id: 0,
-            name: 'Сначала интересные',
+            name: 'Обсуждаемые',
         },
         {
             id: 1,

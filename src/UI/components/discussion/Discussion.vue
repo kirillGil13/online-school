@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex justify-space-between align-end mt-6">
+    <div class="d-flex justify-space-between flex-row align-end mt-6">
       <h2 class="discussion-title mt-0">Обсуждение</h2>
       <div class="discussion-action d-flex flex-row align-center">
         <Select class-name="select_content" :selects="selectsDiscussion" v-on="$listeners" :id=" form.lessonId">
@@ -9,6 +9,8 @@
             <v-icon color="#426DF6">mdi-chevron-down</v-icon>
           </template>
         </Select>
+<!--        <TextSelect :selects="selectsDiscussion" v-on="$listeners">-->
+<!--        </TextSelect>-->
       </div>
     </div>
     <CommentsFormComponent :form="form" v-on='$listeners' v-if="user.isSubscriptionActual"/>
@@ -32,9 +34,10 @@ import {CommentsChangeForm} from '../../../form/commentsChange/commentsChangeFor
 import {IUser} from '../../../entity/user';
 import {AuthStore} from '../../../store/modules/Auth';
 import Select from '../common/Select.vue';
+import TextSelect from '../common/TextSelect.vue';
 
 @Component({
-  components: {Select, Comments, CommentsFormComponent, Relation, Button}
+  components: {TextSelect, Select, Comments, CommentsFormComponent, Relation, Button}
 })
 export default class Discussion extends Vue {
   @Prop() readonly form!: CommentsForm;
@@ -56,7 +59,7 @@ export default class Discussion extends Vue {
   font-size: 18px;
 }
 .select_content {
-  margin-top: 30px !important;
+  margin-top: 0px !important;
   border-radius: 12px !important;
   min-width: 190px !important;
   max-height: 296px !important;

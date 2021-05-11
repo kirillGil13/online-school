@@ -9,7 +9,7 @@
     </Header>
     <v-row class="mb-6">
       <v-col class="mt-6">
-        <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true"
+        <FilterComponent :isCandidates="true" @toggleArchive="toggleIsArchive" :isArchive="isArchive" :isOnRight="false" :button="true" :search="true" :count-element="$adaptive.isMobile && [1,2]"
                          :filters="filters" @filter="onFilter" :countInArchive="countInArchive">
           <template v-slot:search>
             <Search @search="search"/>
@@ -44,25 +44,25 @@
         ></v-progress-linear>
       </v-col>
     </v-row>
-    <Modal v-if="statusesLoaded && infoPackagesLoaded" :activator="activator" @activatorChange="activatorChange">
+    <Modal v-if="statusesLoaded && infoPackagesLoaded" :full-screen="$adaptive.isMobile" :activator="activator" @activatorChange="activatorChange">
       <template v-slot:content>
         <CandidateFormComponent :form="candidateForm" v-if="destroy" :statuses="statuses" :info-packs="infoPackages"
                                 :account-id="user.id" @close="close" @add="add"/>
       </template>
     </Modal>
-    <Modal :activator="activatorStatus" @activatorChange="activatorChangeStatus">
+    <Modal :activator="activatorStatus" :full-screen="$adaptive.isMobile" @activatorChange="activatorChangeStatus">
       <template v-slot:content>
         <StatusFormComponent :form="statusForm" v-if="destroy" :status-icons="statusIcons" @close="close"
                              @createStatus="createStatus"/>
       </template>
     </Modal>
-    <Modal :activator="activatorCandidate" @activatorChange="activatorChangeCandidate">
+    <Modal :activator="activatorCandidate" :full-screen="$adaptive.isMobile" @activatorChange="activatorChangeCandidate">
       <template v-slot:content>
         <UpdateCandidateFormComponent :form="updateCandidateForm" v-if="destroyUpdateForm" :account-id="user.id" @close="close"
                                       @update="update"/>
       </template>
     </Modal>
-    <Modal :activator="activatorCallTime" @activatorChange="activatorChangeCallTime">
+    <Modal :activator="activatorCallTime" :full-screen="$adaptive.isMobile" @activatorChange="activatorChangeCallTime">
       <template v-slot:content>
         <CallTimeFormComponent :form="callTimeForm" v-if="destroy" @close="close"
                                :candidate="Object.values(candidates).flat().find(item => item.id === candidateId)"
@@ -70,12 +70,12 @@
                                @save="saveCallTime"/>
       </template>
     </Modal>
-    <Modal :activator="$adaptive.isMobile && openItemDetails"  @activatorChange="activatorItemDetail">
+    <Modal :activator="$adaptive.isMobile && openItemDetails" :full-screen="$adaptive.isMobile" @activatorChange="activatorItemDetail">
       <template v-slot:content>
         <candidate-item-detail @extraAction="openUpdate" @updateNote="updateNote" @addStatus="activatorStatus = true"  @select="selectStatus" @changeCallTime="changeCallTime"  @closeCandidateItemDetail="closeCandidateItemDetail" :selects="selectsActions" :indexCandidate="indexCandidate" :statuses="statuses" :item="getcandidateItemDetail"/>
       </template>
     </Modal>
-    <Modal :activator="activatorSub" :max-width="1000" @activatorChange="activatorSubChange" color="#F2F2F2">
+    <Modal :activator="activatorSub" :full-screen="$adaptive.isMobile" :max-width="1000" @activatorChange="activatorSubChange" color="#F2F2F2">
       <template v-slot:content>
         <SubscribeFormalization/>
       </template>
@@ -342,7 +342,6 @@ export default class Candidates extends Vue {
     InfoPackagesStore.fetchAll();
     StatusIconsStore.fetchAll();
     CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
-
   }
 
   showAlert(show: boolean): void {

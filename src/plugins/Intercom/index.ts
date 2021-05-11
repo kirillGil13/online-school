@@ -1,5 +1,6 @@
 import { Intercom } from '@mathieustan/vue-intercom';
 import {IUser} from '@/entity/user';
+import Vue from 'vue';
 
 const appId = 'sbqnz5ar';
 
@@ -7,7 +8,6 @@ const intercom = new Intercom({ appId });
 
 function rebootIntercom(user?: IUser): void {
     intercom.shutdown();
-
     if (intercom.isBooted) return;
     if (user) {
         intercom.boot({
@@ -15,6 +15,10 @@ function rebootIntercom(user?: IUser): void {
             user_id: user.id,
             name: user.name,
             email: user.email,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            custom_launcher_selector: '#intercom',
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            hide_default_launcher: Vue.prototype.$adaptive.isMobile
         });
     } else intercom.boot();
 
