@@ -12,6 +12,7 @@ Vue.config.productionTip = false;
 Vue.filter('currency', currencyFilter);
 prepareRepository(store);
 Vue.config.ignoredElements = ['stream'];
+export const eventBus = new Vue()
 
 // @ts-ignore
 new Vue({

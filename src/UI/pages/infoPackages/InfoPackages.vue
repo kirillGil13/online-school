@@ -10,7 +10,6 @@
     <v-col :class="['course-list-container mt-6 pa-0',$adaptive.isMobile ? 'course-list-mobile' : '']">
       <InfoPackageComponent v-for="(item, index) in infoPackages" :key="index" :info-package="item" @proceed="proceed" @copied="copied"/>
     </v-col>
-    <Alert :show="show" :type="alertType.Success" text="Скопировано в буфер обмена" @show="showAlert"/>
     <Modal :activator="activatorSub" :max-width="1000" @activatorChange="activatorSubChange" color="#F2F2F2">
       <template v-slot:content>
         <SubscribeFormalization/>
@@ -31,12 +30,12 @@ import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
 import Modal from '../../components/common/Modal.vue';
+import {eventBus} from '../../../main';
 
 @Component({
   components: {Modal, SubscribeFormalization, Alert, Header, InfoPackageComponent}
 })
 export default class InfoPackages extends Vue {
-  show = false;
   alertType = AlertTypeEnum;
   activatorSub = false;
 
@@ -57,13 +56,13 @@ export default class InfoPackages extends Vue {
     this.activatorSub = act;
   }
 
-  showAlert(show: boolean): void {
-    this.show = show;
-  }
-
   copied(): void {
     if (this.user!.isSubscriptionActual) {
-      this.show = true;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertType.Success,
+        text: 'Скопировано в буфер обмена'
+      })
     }
   }
 

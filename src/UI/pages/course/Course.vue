@@ -104,9 +104,8 @@
                                                     <span style="color: #fff" class="font-weight-bold">{{(course.author.name[0] + course.author.lastName[0]).toUpperCase()}}</span>
                                                 </template>
                                             </v-avatar>
-                                          <div class="d-flex justify-center flex-column">
-                                            <div>
-                                              {{ course.author.name }}
+                                          <div class="d-flex justify-center flex-row align-center">
+                                            <div v-html="course.author.name + ' '" :style="{whiteSpace: 'pre-wrap'}">
                                             </div>
                                             <div>
                                               {{ course.author.lastName }}
@@ -116,18 +115,7 @@
                                       <Socials :class="[$adaptive.isMobile && 'mt-3 ml-3']" :vk="course.author.vk_link" :facebook-link="course.author.facebook_link"
                                                :instagram-link="course.author.instagram_link" :telegram="course.author.telegram" :site-link="course.author.site_link"/>
                                     </div>
-                                    <div
-                                        class="author-description my-4 ml-2 wrap-text"
-                                        id="authorDescription"
-                                        ref="authorDescription"
-                                        v-html="course.author.description"
-                                    />
-                                    <div v-if="showAll === false" class="show-all ml-2" @click="showAll = true">
-                                        Показать полностью
-                                    </div>
-                                    <div v-if="showAll === true" class="show-all ml-2" @click="showAll = false">
-                                        Скрыть
-                                    </div>
+                                    <TextHide :text="course.author.description"/>
                                 </div>
                             </div>
                             <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
@@ -252,8 +240,10 @@ import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import {RouterNameEnum} from '../../../router/router.types';
 import Router from 'vue-router';
 import {ReviewsFormName} from '../../../form/reviews/reviewsForm.types';
+import TextHide from '../../components/common/TextHide.vue';
 @Component({
     components: {
+      TextHide,
       Alert,
       Modal,
       Subscription,
@@ -304,20 +294,6 @@ export default class Course extends Vue {
             this.showAll = true;
         }else{
             this.showAll = false;
-        }
-    }
-
-    @Watch('showAll')
-    onChangeShall(): void {
-        if (this.showAll === true) {
-            (this.$refs.authorDescription as HTMLElement).style.overflow = 'none';
-            (this.$refs.authorDescription as HTMLElement).style.maxHeight = 'unset';
-        }
-
-        if (this.showAll === false) {
-
-            (this.$refs.authorDescription as HTMLElement).style.overflow = 'hidden';
-            (this.$refs.authorDescription as HTMLElement).style.maxHeight = '65px';
         }
     }
 
@@ -833,20 +809,6 @@ export default class Course extends Vue {
             fill: #e64646;
         }
     }
-}
-
-.author-description {
-    overflow: hidden;
-    max-height: 65px;
-}
-
-.show-all {
-    font-size: 14px;
-    line-height: 170%;
-    display: flex;
-    align-items: center;
-    color: #426df6;
-    cursor: pointer;
 }
 
 </style>
