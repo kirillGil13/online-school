@@ -52,9 +52,6 @@
         </div>
       </template>
     </Modal>
-    <Alert :show="show" :type="alertType.Success"
-           text="Код успешно отправлен"
-           @show="showAlert"/>
   </v-col>
 </template>
 
@@ -75,6 +72,7 @@ import Alert from '../components/common/Alert.vue';
 import CodeFormVue from '../components/forms/auth/CodeForm.vue';
 import {VideoOptionsStore} from '../../store/modules/VideoOptions';
 import {IVideoOptions} from '../../entity/common/videoOptions.types';
+import {eventBus} from '../../main';
 
 @Component({
   components: {CodeFormVue, Alert, VideoAccessFormComponent, Modal, InfoPackageItemVideoComponent, CourseComponent}
@@ -89,7 +87,6 @@ export default class Landing extends Vue {
   accessForm = new VideoAccessForm();
   codeForm = new CodeForm();
   alertType = AlertTypeEnum;
-  show = false;
   codeStep = false;
 
   @Watch('activatorMainVideo')
@@ -138,15 +135,12 @@ export default class Landing extends Vue {
     this.activator = act;
   }
 
-  showAlert(show: boolean): void {
-    this.show = show;
-  }
-
   activatorVideoChange(act: boolean): void {
     this.activatorVideo = act;
   }
 
   activatorMainVideoChange(act: boolean): void {
+    console.log(1);
     this.activatorMainVideo = act;
   }
 
@@ -165,7 +159,11 @@ export default class Landing extends Vue {
       }
     } else {
       if (res) {
-        this.show = true;
+        eventBus.$emit('showAlert', {
+          show: true,
+          type: this.alertType.Success,
+          text: 'Код успешно отправлен'
+        })
         return true;
       }
       return false;
