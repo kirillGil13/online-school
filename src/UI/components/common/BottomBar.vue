@@ -2,7 +2,7 @@
   <v-bottom-navigation
       color="primary"
       app
-      height="60"
+      height="67"
       grow
       fixed
   >
