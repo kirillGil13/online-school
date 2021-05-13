@@ -16,7 +16,6 @@
     <div class="proceed d-flex justify-end">
       <svg-icon name="Arrow_Down"></svg-icon>
     </div>
-    <Alert :show="show" :type="alertType.Success" text="Скопировано в буфер обмена" @show="showAlert"/>
   </div>
 </template>
 
@@ -26,7 +25,6 @@ import {IFakeUserInfo} from '@/entity/environment';
 import Avatar from '@/UI/components/common/Avatar.vue';
 import {AvatarSizeEnum} from '@/entity/common/avatar.types';
 import Alert from '../common/Alert.vue';
-import {AlertTypeEnum} from '../../../entity/common/alert.types';
 
 @Component({
   components: {
@@ -38,16 +36,6 @@ export default class AccountBadge extends Vue {
   @Prop({required: true}) readonly userInfo!: IFakeUserInfo;
   @Prop({required: true}) userId!: number;
   AvatarSizeEnum = AvatarSizeEnum;
-  show = false;
-  alertType = AlertTypeEnum;
-
-  showAlert(show: boolean): void {
-    this.show = show;
-  }
-
-  copied(): void {
-    this.show = true;
-  }
 }
 </script>
 

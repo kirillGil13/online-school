@@ -2,7 +2,7 @@
   <v-form class="form" @submit.prevent>
     <h5>ЗАДАНИЕ</h5>
     <v-divider class="my-4 test-form-divider"></v-divider>
-    <div class="task" v-html="form.question"></div>
+    <TextHide :text="form.question" :style="{fontSize: '16px'}"/>
     <v-divider class="my-4 test-form-divider"></v-divider>
     <template v-if="!form.passed">
       <div>
@@ -41,9 +41,10 @@ import FormGroup from '../../common/form/FormGroup.vue';
 import Button from '../../common/Button.vue';
 import PhoneMaskInput from 'vue-phone-mask-input';
 import {FreeTestForm} from '../../../../form/freeTest/freeTestForm';
+import TextHide from '../../common/TextHide.vue';
 
 @Component({
-  components: {Button, FormGroup, PhoneMaskInput}
+  components: {TextHide, Button, FormGroup, PhoneMaskInput}
 })
 export default class FreeTestFormComponent extends Vue {
   @Prop({required: true}) readonly form!: FreeTestForm;

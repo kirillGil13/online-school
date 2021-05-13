@@ -1,5 +1,5 @@
 <template>
-  <v-col :class="['slider-container', $adaptive.isMobile ? 'pa-0' : '']">
+  <v-col :class="['slider-container', $adaptive.isMobile ? 'pa-0' : 'px-0']">
     <swiper :class="['swiper component', $adaptive.isMobile ? 'mx-0' : '']" :options="swiperComponentOption" ref="swiper">
       <swiper-slide v-for="(leader, index) in leaders" :key="index" :id="index">
         <div :class=" ['slide', $route.params.id === leader.id.toString() ? 'active_leader' : '' ]" @click="proceed(leader.id)">
@@ -57,7 +57,7 @@ export default class SliderLeaders extends Vue {
     (this.$refs.swiper as any).$swiper.slidePrev();
   }
 
-   randomColor(i: number) {
+   randomColor(i: number): string {
     const COLORS = [
       '#56CCF2',
       '#BB6BD9',
