@@ -9,7 +9,6 @@
         <Logo width="120" class="mb-0 ml-0 justify-center"/>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-<!--      <svg-icon class="burger" name="Burger" @click="drawer = true"></svg-icon>-->
       <div @click="goTo">
         <avatar
             :imageSource="userInfo.photoLink"
@@ -19,16 +18,6 @@
         />
       </div>
     </v-app-bar>
-
-<!--    <v-navigation-drawer-->
-<!--        v-model="drawer"-->
-<!--        fixed-->
-<!--        right-->
-<!--        class="pa-2 drawer"-->
-<!--    >-->
-<!--      <account-badge :userInfo="userInfo" :user-id="userId" @proceed="goTo"/>-->
-<!--      <Menu/>-->
-<!--    </v-navigation-drawer>-->
   </div>
 </template>
 
