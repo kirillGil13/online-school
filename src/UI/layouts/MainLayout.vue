@@ -17,6 +17,7 @@
                   @submit="sendCode"
               />
             </v-col>
+            <Alert :show="showAlertTemp" :type="type" :text="text" @show="showAlertTempAction"/>
             <Alert :show="success" :type="alertType.Success" text="Ссылка успешно отправлена" @show="showAlert"/>
             <router-view></router-view>
           </v-main>
@@ -64,6 +65,7 @@ import {IInfoPackage} from '../../entity/infoPackages/infoPackage.types';
 import {CandidatesStore} from '../../store/modules/Candidates';
 import {RouterNameEnum} from '../../router/router.types';
 import CandidateFormComponent from '../components/forms/candidateForm/CandidateFormComponent.vue';
+import {eventBus} from '../../main';
 
 
 @Component({
@@ -81,6 +83,9 @@ import CandidateFormComponent from '../components/forms/candidateForm/CandidateF
   },
 })
 export default class MainLayout extends Vue {
+  showAlertTemp = false;
+  type = '';
+  text = '';
   activator = false;
   activatorCandidate = false;
   show = true;
@@ -92,8 +97,7 @@ export default class MainLayout extends Vue {
   @Watch('$route.name')
     scrollTop(val: string, oldVal: string): void {
       if(val !== oldVal && this.$adaptive.isMobile){
-          window.scroll(0, 0)
-
+          window.scroll(0, 0);
       }
     }
 
@@ -109,6 +113,10 @@ export default class MainLayout extends Vue {
     this.success = show;
   }
 
+  showAlertTempAction(show: boolean): void {
+    this.showAlertTemp = show;
+  }
+
   proceed(): void {
     this.$router.push({name: this.$routeRules.Profile});
   }
@@ -121,6 +129,11 @@ export default class MainLayout extends Vue {
       StatusesStore.fetchAll();
       InfoPackagesStore.fetchAll();
       startIntercomMessenger(AuthStore.user!);
+    eventBus.$on('showAlert', (data: any) => {
+      this.showAlertTemp = data.show;
+      this.type = data.type;
+      this.text = data.text;
+    })
   }
 
   activatorChange(act: boolean): void {
