@@ -3,7 +3,7 @@
       v-model="activatorChange"
       activator="activatorChange"
       :origin="origin"
-      :value="activator"
+      :persistent="false"
       :fullscreen="fullScreen"
       :hide-overlay="fullScreen"
       :width="width"
@@ -24,7 +24,7 @@
       >
         <v-toolbar-title>Ответ пользователю</v-toolbar-title>
         <v-spacer></v-spacer>
-        <div @click="activatorChange = false">
+        <div @click.stop="activatorChange = false">
           <v-icon>mdi-close</v-icon>
         </div>
       </v-toolbar>
@@ -65,6 +65,10 @@ export default class Modal extends Vue {
     } else if (this.videoModal) {
       return 600;
     } else return 600;
+  }
+
+  closeM(): void {
+    this.activatorChange = false;
   }
 }
 </script>

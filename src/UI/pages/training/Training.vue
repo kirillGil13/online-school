@@ -87,6 +87,7 @@ export default class Training extends Vue {
   destroy = true;
   activator = false;
   show = false;
+  dialog = false;
 
   constructor() {
     super();
