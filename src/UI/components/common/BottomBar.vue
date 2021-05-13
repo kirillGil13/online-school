@@ -6,19 +6,29 @@
       grow
       fixed
   >
-    <div class="d-flex justify-center align-center full-width">
-      <div class="d-flex flex-row flex-nowrap justify-space-between align-center full-width px-6">
-        <div :style="{minWidth: 'max-content'}" class="mt-0 d-flex justify-center align-center"
-             v-for="(item, index) in menu" :key="index" @click="handle(item)" :id="(item.extraAction && item.title !== undefined) && 'intercom'">
-          <svg-icon :class="['bottom-menu-svg wrong-ellipse svg-22', (item.extraAction && item.title === undefined) && 'fill-blue svg-24']" :name="item.iconName"></svg-icon>
-        </div>
+    <div class="d-flex justify-center align-start full-width">
+      <div class="d-flex flex-row flex-nowrap justify-space-between align-center full-width px-6 pt-3">
+        <template v-for="(item, index) in menu">
+          <div v-if="item.route" :style="{minWidth: 'max-content'}" class="mt-0 d-flex justify-center align-center bottom-link" :key="index">
+            <router-link :to="{name: item.route}" exact-active-class="active-item">
+              <svg-icon class="svg-28" :name="item.iconName"></svg-icon>
+            </router-link>
+          </div>
+          <div v-else :style="{minWidth: 'max-content'}" class="mt-0 d-flex justify-center align-center bottom-link"
+               :key="index" @click="handle(item)" :id="(item.extraAction && item.title !== undefined) && 'intercom'">
+            <svg-icon class="svg-28" :name="item.iconName"></svg-icon>
+          </div>
+        </template>
       </div>
     </div>
     <Modal :activator="activator" @activatorChange="activatorChange" max-width="100%" modal-class="modal-navigation"
            width="100%" color="#ffffff" from-bottom>
       <template v-slot:content>
-        <div class="d-flex flex-column full-width px-4 py-4">
-          <Button class="mt-0" full-width small @submit="addCandidate">Добавить кандидата</Button>
+        <div class="d-flex flex-column full-width px-4 py-6 modal-list">
+          <div class="d-flex flex-row" @click="addCandidate">
+            <svg-icon name="Candidates_Mobile" class="svg-28 mr-3"></svg-icon>
+            <div>Добавить кандидата</div>
+          </div>
         </div>
       </template>
     </Modal>
@@ -33,7 +43,6 @@ import Modal from './Modal.vue';
 import {IUser} from '../../../entity/user';
 import {AuthStore} from '../../../store/modules/Auth';
 import AccountBadge from '../sidebar/AccountBadge.vue';
-import {RouterNameEnum} from '../../../router/router.types';
 import Button from './Button.vue';
 
 @Component({
@@ -76,12 +85,7 @@ export default class BottomBar extends Vue {
 </script>
 
 <style lang="scss">
-.bottom-menu-svg {
-  path {
-    fill: #5f739c !important;
-  }
-}
-
+.bottom-link {}
 .modal-navigation {
   margin: 0 !important;
   position: absolute;
@@ -100,5 +104,23 @@ export default class BottomBar extends Vue {
 
 .v-bottom-navigation {
   box-shadow: 0px -5px 12px rgb(0 0 0 / 4%) !important
+}
+.active-item {
+  svg {
+    path {
+      fill: #212121 !important;
+    }
+  }
+}
+.modal-list {
+  div {
+    font-size: 16px;
+    font-weight: 600;
+    svg {
+      path {
+        fill: #426DF6 !important;
+      }
+    }
+  }
 }
 </style>

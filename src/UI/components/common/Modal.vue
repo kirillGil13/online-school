@@ -2,6 +2,7 @@
   <v-dialog
       v-model="activatorChange"
       activator="activatorChange"
+      v-click-outside="closeM"
       :origin="origin"
       :persistent="false"
       :fullscreen="fullScreen"
@@ -67,8 +68,10 @@ export default class Modal extends Vue {
     } else return 600;
   }
 
-  closeM(): void {
-    this.activatorChange = false;
+  closeM(e: any): void {
+    if (e.target.classList[0] === 'v-overlay__scrim') {
+      this.activatorChange = false;
+    }
   }
 }
 </script>

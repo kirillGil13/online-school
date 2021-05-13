@@ -5,6 +5,48 @@
         <Button class="mt-0" :full-width="$adaptive.isMobile" @submit="activator = true">Добавить свой курс</Button>
       </div>
     </Header>
+    <v-btn
+        color="primary"
+        dark
+        @click.stop="dialog = true"
+    >
+      Open Dialo
+    </v-btn>
+
+    <v-dialog
+        v-model="dialog"
+        max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Use Google's location service?
+        </v-card-title>
+
+        <v-card-text>
+          Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+              color="green darken-1"
+              text
+              @click="dialog = false"
+          >
+            Disagree
+          </v-btn>
+
+          <v-btn
+              color="green darken-1"
+              text
+              @click="dialog = false"
+          >
+            Agree
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <template v-if="leaders.length !== 0">
       <div class="slider-title d-flex flex-row justify-space-between align-end mb-4">
         <h5>Топ лидеры</h5>
