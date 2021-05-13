@@ -15,10 +15,10 @@ function rebootIntercom(user?: IUser): void {
             user_id: user.id,
             name: user.name,
             email: user.email,
-            // // eslint-disable-next-line @typescript-eslint/camelcase
-            // custom_launcher_selector: '#intercom',
-            // // eslint-disable-next-line @typescript-eslint/camelcase
-            // hide_default_launcher: Vue.prototype.$adaptive.isMobile
+            // eslint-disable-next-line @typescript-eslint/camelcase
+             custom_launcher_selector: '#intercom',
+             // eslint-disable-next-line @typescript-eslint/camelcase
+             hide_default_launcher: Vue.prototype.$adaptive.isMobile
         });
     } else intercom.boot();
 

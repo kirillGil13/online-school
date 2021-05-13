@@ -1,6 +1,7 @@
 <template>
   <v-app class="main-view">
     <MobileBar v-if="$adaptive.isMobile" :userId="user.id" :user-info="user"/>
+    <BottomBar v-if="$adaptive.isMobile" @addCandidate="addCandidate"/>
     <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
@@ -66,10 +67,12 @@ import {CandidatesStore} from '../../store/modules/Candidates';
 import {RouterNameEnum} from '../../router/router.types';
 import CandidateFormComponent from '../components/forms/candidateForm/CandidateFormComponent.vue';
 import {eventBus} from '../../main';
+import BottomBar from '../components/common/BottomBar.vue';
 
 
 @Component({
   components: {
+    BottomBar,
     CandidateFormComponent,
     Footer,
     SubscribeFormalization,
@@ -142,6 +145,10 @@ export default class MainLayout extends Vue {
 
   close(): void {
     this.activatorCandidate = false;
+  }
+
+  addCandidate(): void {
+    this.activatorCandidate = true;
   }
 
   activatorCandidateChange(act: boolean): void {
