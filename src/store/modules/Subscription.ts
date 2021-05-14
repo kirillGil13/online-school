@@ -1,5 +1,6 @@
 import {Action, getModule, Module, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
+import {SubRequestType} from '@/entity/common/sub.types';
 
 @Module({
     namespaced: true,
@@ -10,8 +11,9 @@ import store from '@/store';
 class SubscriptionModule extends VuexModule {
 
     @Action({rawError: true})
-    async subscribe(): Promise<boolean> {
-        const result = await store.$repository.subscriptions.subscribe();
+    async subscribe(type: SubRequestType): Promise<string> {
+        const result = await store.$repository.subscriptions.subscribe(type);
+        console.log(result);
         return result;
     }
 

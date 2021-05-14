@@ -3,15 +3,15 @@ import {CandidateResponseType, ICandidate, ICandidateStatus} from '@/entity/cand
 export class Candidate implements ICandidate {
     id: number;
     createdAt: string;
-    status: ICandidateStatus;
-    name: string;
-    phoneNumber: string;
-    email: string;
-    isFiction: boolean;
-    infoPackName: string;
-    callTime: string;
-    description: string;
-    isLocked: boolean;
+    status: ICandidateStatus | null;
+    name: string | null;
+    phoneNumber: string | null
+    email: string | null;
+    isFiction: boolean | null;
+    infoPackName: string | null;
+    callTime: string | null;
+    description: string  | null;
+    isLocked: boolean | null;
 
     constructor(data: CandidateResponseType) {
         this.id = data.id;
