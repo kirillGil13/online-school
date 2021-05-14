@@ -47,7 +47,6 @@ import { ReviewsForm } from '@/form/reviews/reviewsForm';
 import Relation from '../../common/Relation.vue';
 import { ICourseItem } from '@/entity/courseItem/courseItem.type';
 import Button from '@/UI/components/common/Button.vue';
-import FastClick from 'fastclick';
 import {ReviewsFormName} from '../../../../form/reviews/reviewsForm.types';
 @Component({
     components: {
