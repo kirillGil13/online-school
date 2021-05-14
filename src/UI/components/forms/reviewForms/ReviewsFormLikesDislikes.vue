@@ -15,8 +15,17 @@
                       </div>
                     </div>
                     <div class="review-text__actions">
-                        <div class="review-text__set-review">
+                         <div class="review-text__set-review">
+                           <FormGroup
+                             :form="form" show-custom-error 
+                             field="reviewText"
+                             v-slot="attrs"
+                           >
+                           
                             <v-textarea
+                                v-model="form[attrs.name]"
+                                
+                                @input="attrs.change"
                                 class="like-dislike-text"
                                 ref="contentTextArea"
                                 no-resize
@@ -24,8 +33,8 @@
                                 id="message"
                                 :placeholder="!form.isLike ? 'Напишите текст отзыва, чтобы сохранить оценку (обязательно)' : 'Напишите текст отзыва' "
                                 rows="5"
-                                v-model="form.reviewText"
                             />
+                            </FormGroup>
                         </div>
                     </div>
                     <div class="review-text__button">
