@@ -54,9 +54,6 @@
         <MailFormComponent :form="mailForm" v-if="destroy" :levels="courseLevels" @close="close" @add="add"/>
       </template>
     </Modal>
-    <Alert :show="show" :type="alertType.Success"
-           text="Данные успешно отправлены"
-           @show="showAlert"/>
   </v-col>
 </template>
 <script lang="ts">
@@ -77,16 +74,15 @@ import {ICourseLevels} from '../../../entity/courseLevels/courseLevels.types';
 import {CourseLevelsStore} from '../../../store/modules/CourseLevels';
 import {MailStore} from '../../../store/modules/Mail';
 import {MailForm} from '../../../form/mail/mailForm';
-import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import Button from '../../components/common/Button.vue';
 import MailFormComponent from '../../components/forms/mailForm/MailFormComponent.vue';
+import {eventBus} from '../../../main';
 
 @Component({
   components: {
     MailFormComponent,
     Button,
-    Alert,
     Modal,
     Header,
     FilterComponent,
@@ -98,7 +94,6 @@ import MailFormComponent from '../../components/forms/mailForm/MailFormComponent
 export default class Cabinet extends Vue {
   filters: Filters;
   activator = false;
-  show = false;
   destroy = true;
   mailForm: MailForm;
   alertType = AlertTypeEnum;
@@ -159,10 +154,6 @@ export default class Cabinet extends Vue {
     this.activator = false;
   }
 
-  showAlert(show: boolean): void {
-    this.show = show;
-  }
-
   activatorChange(act: boolean): void {
     this.destroy = true;
     this.activator = act;
@@ -183,7 +174,11 @@ export default class Cabinet extends Vue {
 
   async add(): Promise<void> {
     if (await this.mailForm.submit(MailStore.create)) {
-      this.show = true;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertType.Success,
+        text: 'Данные успешно отправлены'
+      })
     }
     this.mailForm = new MailForm();
     this.rerender();

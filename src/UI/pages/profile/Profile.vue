@@ -77,12 +77,6 @@
         <PictureCropper :image="image" @close="close" @setImage="setImage"/>
       </template>
     </Modal>
-    <Alert :show="show" :type="alertType.Success"
-           text="Данные успешно изменены"
-           @show="showAlert"/>
-    <Alert :show="showEmail" :type="alertType.Success"
-           text="Ссылка успешно отправлена"
-           @show="showEmailAlert"/>
   </v-row>
 </template>
 
@@ -100,7 +94,6 @@ import {IUser} from '@/entity/user';
 import Header from '@/UI/components/common/Header.vue';
 import {ProfileMainInfoForm} from '@/form/profile/mainInfo/ProfileMainInfoForm';
 import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactDataForm';
-import Alert from '@/UI/components/common/Alert.vue';
 import {ProfilePictureStore} from '../../../store/modules/ProfilePicture';
 import {IProfilePicture} from '../../../entity/common/profilePicture.types';
 import Modal from '../../components/common/Modal.vue';
@@ -114,6 +107,7 @@ import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import {ChangeEmailForm} from '../../../form/changeEmail/changeEmail';
 import {ChangeEmailStore} from '../../../store/modules/ChangeEmail';
 import {SubscriptionStore} from '../../../store/modules/Subscription';
+import {eventBus} from '../../../main';
 
 @Component({
   components: {
@@ -126,7 +120,6 @@ import {SubscriptionStore} from '../../../store/modules/Subscription';
     ProfileContactData,
     ProfileAvatarChange,
     Header,
-    Alert,
     ProfileMain,
     ProfileContact,
   },
@@ -142,8 +135,6 @@ export default class Profile extends Vue {
   image = '';
   activator = false;
   destroy = true;
-  show = false;
-  showEmail = false;
   alertType = AlertTypeEnum;
   reader = new FileReader();
 
@@ -204,14 +195,6 @@ export default class Profile extends Vue {
     this.activator = false;
   }
 
-  showAlert(show: boolean): void {
-    this.show = show;
-  }
-
-  showEmailAlert(show: boolean): void {
-    this.show = show;
-  }
-
   activatorChange(act: boolean): void {
     this.activator = act;
   }
@@ -244,7 +227,11 @@ export default class Profile extends Vue {
 
   async changeEmail(): Promise<void> {
     if (await this.changeEmailForm.submit(ChangeEmailStore.sendCode)) {
-      this.showEmail = true;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertType.Success,
+        text: 'Ссылка успешно отправлена'
+      })
     }
   }
 
@@ -270,7 +257,11 @@ export default class Profile extends Vue {
       lastName: this.mainInfoForm.surname,
       description: this.mainInfoForm.description
     })) {
-      this.show = true;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertType.Success,
+        text: 'Данные успешно изменены'
+      })
       await AuthStore.fetch();
     }
   }
@@ -287,7 +278,11 @@ export default class Profile extends Vue {
       // eslint-disable-next-line @typescript-eslint/camelcase
       site_link: this.contactDataForm.siteLink
     })) {
-      this.show = true;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertType.Success,
+        text: 'Данные успешно изменены'
+      })
       await AuthStore.fetch();
     }
   }

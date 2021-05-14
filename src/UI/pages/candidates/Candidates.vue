@@ -80,7 +80,6 @@
         <SubscribeFormalization/>
       </template>
     </Modal>
-    <Alert :show="show" :type="alertType.Success" text="Заметка добавлена" @show="showAlert"/>
   </v-col>
 </template>
 
@@ -120,9 +119,9 @@ import {CallTimeForm} from '../../../form/callTime/callTimeForm';
 import CallTimeFormComponent from '../../components/forms/callTimeForm/CallTimeFormComponent.vue';
 import CandidateItemDetail from '../../components/candidateItemDetail/CandidateItemDetail.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
-import Alert from '../../components/common/Alert.vue';
 import CandidateSubscription from '../../components/subscription/CandidateSubscription.vue';
 import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
+import {eventBus} from '../../../main';
 
 @Component({
   components: {
@@ -140,7 +139,6 @@ import SubscribeFormalization from '../../components/subscribeFormalization/Subs
     Search,
     TableCandidates,
     CandidateItemDetail,
-    Alert
   },
 })
 export default class Candidates extends Vue {
@@ -163,7 +161,6 @@ export default class Candidates extends Vue {
   openItemId = null;
   indexCandidate: null | number = null;
   openItemDetails = false;
-  show = false;
   alertType = AlertTypeEnum;
 
 
@@ -344,10 +341,6 @@ export default class Candidates extends Vue {
     CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
   }
 
-  showAlert(show: boolean): void {
-    this.show = show;
-  }
-
   async search(searchBody: string): Promise<void> {
     this.searchBody = searchBody;
     await this.filtration();
@@ -458,7 +451,11 @@ export default class Candidates extends Vue {
     const phoneNumber = Object.values(this.candidates).flat().find(item => item.id === data.id)!.phoneNumber;
     const email = Object.values(this.candidates).flat().find(item => item.id === data.id)!.email;
     await CandidateItemStore.update({data: {description: data.note, phoneNumber: phoneNumber && phoneNumber, email: email && email}, route: data.id.toString()});
-    this.show = true;
+    eventBus.$emit('showAlert', {
+      show: true,
+      type: this.alertType.Success,
+      text: 'Заметка успешно добавлена'
+    })
   }
 
   async update(): Promise<void> {
