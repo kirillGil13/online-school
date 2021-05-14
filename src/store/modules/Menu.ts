@@ -18,12 +18,12 @@ class MenuModule extends VuexModule {
         },
         {
             title: 'Кандидаты',
-            iconName: 'Add_User',
+            iconName: 'Users',
             route: RouterNameEnum.Candidates,
         },
         {
             title: 'Инфопакеты',
-            iconName: 'Users',
+            iconName: 'Add_User',
             route: RouterNameEnum.InfoPackages,
         },
         {
@@ -47,7 +47,7 @@ class MenuModule extends VuexModule {
         },
         {
             title: 'Инфопакеты',
-            iconName: 'InfoPack_Mobile',
+            iconName: 'Candidates_Mobile',
             extraAction: false,
             route: RouterNameEnum.InfoPackages,
         },
@@ -57,7 +57,7 @@ class MenuModule extends VuexModule {
         },
         {
             title: 'Кандидаты',
-            iconName: 'Candidates_Mobile',
+            iconName: 'InfoPack_Mobile',
             extraAction: false,
             route: RouterNameEnum.Candidates,
         },
