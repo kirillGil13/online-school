@@ -450,7 +450,7 @@ export default class Candidates extends Vue {
   async updateNote(data: {note: string; id: number}): Promise<void> {
     const phoneNumber = Object.values(this.candidates).flat().find(item => item.id === data.id)!.phoneNumber;
     const email = Object.values(this.candidates).flat().find(item => item.id === data.id)!.email;
-    await CandidateItemStore.update({data: {description: data.note, phoneNumber: phoneNumber && phoneNumber, email: email && email}, route: data.id.toString()});
+    await CandidateItemStore.update({data: {description: data.note, phoneNumber: phoneNumber ? phoneNumber : undefined, email: email ? email : undefined}, route: data.id.toString()});
     eventBus.$emit('showAlert', {
       show: true,
       type: this.alertType.Success,
