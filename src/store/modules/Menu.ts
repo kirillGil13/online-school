@@ -46,30 +46,30 @@ class MenuModule extends VuexModule {
     bottomMenu: IMainMenu[] = [
         {
             title: 'Обучение',
-            iconName: 'Education',
+            iconName: 'Education_Mobile',
             extraAction: false,
             route: RouterNameEnum.TrainingMain,
         },
         {
-            title: 'Кандидаты',
-            iconName: 'Add_User',
+            title: 'Инфопакеты',
+            iconName: 'InfoPack_Mobile',
             extraAction: false,
-            route: RouterNameEnum.Candidates,
+            route: RouterNameEnum.InfoPackages,
         },
         {
             iconName: 'Universal',
             extraAction: true,
         },
         {
-            title: 'Инфопакеты',
-            iconName: 'Users',
+            title: 'Кандидаты',
+            iconName: 'Candidates_Mobile',
             extraAction: false,
-            route: RouterNameEnum.InfoPackages,
+            route: RouterNameEnum.Candidates,
         },
         {
             title: 'Поддержка',
             extraAction: true,
-            iconName: 'Support'
+            iconName: 'Intercom_Mobile'
         },
     ];
 

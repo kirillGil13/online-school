@@ -1,6 +1,7 @@
 <template>
   <v-app class="main-view">
     <MobileBar v-if="$adaptive.isMobile" :userId="user.id" :user-info="user"/>
+    <BottomBar v-if="$adaptive.isMobile" @addCandidate="addCandidate"/>
     <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
@@ -17,6 +18,7 @@
                   @submit="sendCode"
               />
             </v-col>
+            <Alert :show="showAlertTemp" :type="type" :text="text" @show="showAlertTempAction"/>
             <Alert :show="success" :type="alertType.Success" text="Ссылка успешно отправлена" @show="showAlert"/>
             <router-view></router-view>
           </v-main>
@@ -67,10 +69,13 @@ import {IInfoPackage} from '../../entity/infoPackages/infoPackage.types';
 import {CandidatesStore} from '../../store/modules/Candidates';
 import {RouterNameEnum} from '../../router/router.types';
 import CandidateFormComponent from '../components/forms/candidateForm/CandidateFormComponent.vue';
+import {eventBus} from '../../main';
+import BottomBar from '../components/common/BottomBar.vue';
 
 
 @Component({
   components: {
+    BottomBar,
     CandidateFormComponent,
     Footer,
     SubscribeFormalization,
@@ -84,6 +89,9 @@ import CandidateFormComponent from '../components/forms/candidateForm/CandidateF
   },
 })
 export default class MainLayout extends Vue {
+  showAlertTemp = false;
+  type = '';
+  text = '';
   activator = false;
   activatorCandidate = false;
   show = true;
@@ -95,9 +103,14 @@ export default class MainLayout extends Vue {
   @Watch('$route.name')
     scrollTop(val: string, oldVal: string): void {
       if(val !== oldVal && this.$adaptive.isMobile){
-          window.scroll(0, 0)
+          window.scroll(0, 0);
       }
     }
+
+  showAlertTempAction(show: boolean): void {
+    this.showAlertTemp = show;
+  }
+
 
   created(): void {
       DialogsStore.fetchAll()
@@ -105,6 +118,11 @@ export default class MainLayout extends Vue {
       InfoPackagesStore.fetchAll();
       startIntercomMessenger(AuthStore.user!);
       WebSocketStore.setConnection();
+      eventBus.$on('showAlert', (data: any) => {
+      this.showAlertTemp = data.show;
+      this.type = data.type;
+      this.text = data.text;
+    })
 
       this.socket!.onopen = (el) => {
         console.log('open')
@@ -123,6 +141,10 @@ export default class MainLayout extends Vue {
 
   get socket(): WebSocket | null {
     return WebSocketStore.socket;
+  }
+  
+  addCandidate(): void {
+    this.activatorCandidate = true;
   }
 
   get infoPackages(): IInfoPackage[] {

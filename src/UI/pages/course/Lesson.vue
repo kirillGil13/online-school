@@ -107,9 +107,8 @@
                       <span style="color: #fff" class="font-weight-bold">{{(course.author.name[0] + course.author.lastName[0]).toUpperCase()}}</span>
                   </template>
               </v-avatar>
-              <div class="d-flex justify-center flex-column">
-                <div>
-                  {{ course.author.name }}
+              <div class="d-flex justify-center flex-row align-center">
+                <div v-html="course.author.name + ' '" :style="{whiteSpace: 'pre-wrap'}">
                 </div>
                 <div>
                   {{ course.author.lastName }}
