@@ -1,7 +1,7 @@
 <template>
   <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6  : isChat ? 2/5 : 42/44">
       <div class="lessons-block d-flex flex-column align-end box-container">
-         <v-col v-if="isChat" align-self="start" class=" d-flex  flex-row align-center justify-space-between chat-header px-3 py-3">
+         <v-col v-if="isChat" align-self="start" class=" d-flex  flex-row align-center justify-space-between chat-header px-3 py-3" style="max-height: 50px">
           <span class="chat-title">Чат</span>
           <Button class="btn-close-chat" style="background-color: none !important" @submit="toggleOpenChat"><v-icon>mdi-close</v-icon></Button>
          </v-col>
@@ -118,7 +118,7 @@ export default class Lessons extends Vue {
       border-bottom: 1px solid #f2f2f2;
       width: 100%;
       overflow: scroll;
-      max-height: 820px;
+      height: 100%;
 }
 
 .btn-close-chat {

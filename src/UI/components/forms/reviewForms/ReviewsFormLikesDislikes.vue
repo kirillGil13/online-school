@@ -16,7 +16,16 @@
                     </div>
                     <div class="review-text__actions">
                         <div class="review-text__set-review">
+                           <FormGroup
+                             :form="form" show-custom-error 
+                             field="reviewText"
+                             v-slot="attrs"
+                           >
+                           
                             <v-textarea
+                                v-model="form[attrs.name]"
+                                
+                                @input="attrs.change"
                                 class="like-dislike-text"
                                 ref="contentTextArea"
                                 no-resize
@@ -24,12 +33,14 @@
                                 id="message"
                                 :placeholder="!form.isLike ? 'Напишите текст отзыва, чтобы сохранить оценку (обязательно)' : 'Напишите текст отзыва' "
                                 rows="5"
-                                v-model="form.reviewText"
                             />
+                            </FormGroup>
                         </div>
+                         
                     </div>
                     <div class="review-text__button">
                         <Button :full-width="$adaptive.isMobile" :disabled="form.disabled" class="btn-send-rewiew" @submit="sendMessage">Отправить</Button>
+                       
                         <Button :full-width="$adaptive.isMobile" class="secondary_blue" :class="[$adaptive.isMobile ? '' : 'ml-3']" @submit="buttonFunc">{{course.isLiked ? 'Оценить без отзыва' : 'Отменить оценку'}}</Button>
                     </div>
                 </div>
@@ -47,7 +58,6 @@ import { ReviewsForm } from '@/form/reviews/reviewsForm';
 import Relation from '../../common/Relation.vue';
 import { ICourseItem } from '@/entity/courseItem/courseItem.type';
 import Button from '@/UI/components/common/Button.vue';
-import FastClick from 'fastclick';
 import {ReviewsFormName} from '../../../../form/reviews/reviewsForm.types';
 @Component({
     components: {

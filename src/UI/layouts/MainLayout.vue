@@ -101,11 +101,11 @@ export default class MainLayout extends Vue {
   candidateForm = new CandidateForm();
 
   @Watch('$route.name')
-    scrollTop(val: string, oldVal: string): void {
-      if(val !== oldVal && this.$adaptive.isMobile){
-          window.scroll(0, 0);
-      }
+  scrollTop(val: string, oldVal: string): void {
+    if(val !== oldVal && this.$adaptive.isMobile){
+        window.scroll(0, 0);
     }
+  }
 
   showAlertTempAction(show: boolean): void {
     this.showAlertTemp = show;
@@ -133,7 +133,6 @@ export default class MainLayout extends Vue {
       }
 
       this.socket!.onmessage = (() => {
-        console.log('hello ')
         DialogsStore.setUnReadMessage(1, false);
       })
      
