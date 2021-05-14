@@ -203,8 +203,6 @@
               <SubscribeFormalization/>
             </template>
           </Modal>
-          <Alert :show="showSuccess" :type="alertTypes.Info" @show="showSuccessAlert" text="Курс успешно добавлен в избранное"/>
-          <Alert :show="showError" :type="alertTypes.Info" @show="showErrorAlert" text="Курс успешно удален из избранного"/>
         </v-row>
     </v-col>
 </template>
@@ -241,6 +239,7 @@ import {RouterNameEnum} from '../../../router/router.types';
 import Router from 'vue-router';
 import {ReviewsFormName} from '../../../form/reviews/reviewsForm.types';
 import TextHide from '../../components/common/TextHide.vue';
+import {eventBus} from '../../../main';
 @Component({
     components: {
       TextHide,
@@ -265,8 +264,6 @@ export default class Course extends Vue {
         name: this.$routeRules.TrainingMain,
         label: 'Вернуться к списку курсов',
     };
-    showSuccess = false;
-    showError = false;
     alertTypes = AlertTypeEnum;
     activator = false;
     interval!: NodeJS.Timeout;
@@ -332,15 +329,6 @@ export default class Course extends Vue {
         ];
         return COLORS[i || 0];
     }
-
-  showSuccessAlert(show: boolean): void {
-    this.showSuccess = show;
-  }
-
-  showErrorAlert(show: boolean): void {
-    this.showError = show;
-  }
-
 
   activatorChange(act: boolean): void {
     this.activator = act;
@@ -552,13 +540,19 @@ export default class Course extends Vue {
         if (!this.course!.isFavourite) {
             await RelationStore.postFavourite(this.$route.params.id); //eslint-disable-line
             await this.fetchData();
-            this.showError = false;
-            this.showSuccess = true;
+          eventBus.$emit('showAlert', {
+            show: true,
+            type: this.alertTypes.Info,
+            text: 'Курс успешно добавлен в избранное'
+          })
         } else {
             await RelationStore.deleteFavourite(this.$route.params.id);
             await this.fetchData();
-            this.showSuccess = false;
-            this.showError = true;
+          eventBus.$emit('showAlert', {
+            show: true,
+            type: this.alertTypes.Info,
+            text: 'Курс успешно удален из избранного'
+          })
         }
     }
 

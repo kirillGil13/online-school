@@ -19,7 +19,6 @@
               />
             </v-col>
             <Alert :show="showAlertTemp" :type="type" :text="text" @show="showAlertTempAction"/>
-            <Alert :show="success" :type="alertType.Success" text="Ссылка успешно отправлена" @show="showAlert"/>
             <router-view></router-view>
           </v-main>
         </div>
@@ -92,7 +91,6 @@ export default class MainLayout extends Vue {
   activator = false;
   activatorCandidate = false;
   show = true;
-  success = false;
   alertType = AlertTypeEnum;
   destroy = true;
   candidateForm = new CandidateForm();
@@ -109,11 +107,6 @@ export default class MainLayout extends Vue {
     this.$nextTick(() => {
       this.destroy = true;
     });
-  }
-
-
-  showAlert(show: boolean): void {
-    this.success = show;
   }
 
   showAlertTempAction(show: boolean): void {
@@ -198,7 +191,9 @@ export default class MainLayout extends Vue {
   async sendCode(): Promise<boolean> {
     const res = await ConfirmEmailStore.sendCode({email: this.user!.email});
     if (res) {
-      this.success = true;
+      this.type = this.alertType.Success;
+      this.text = 'Ссылка успешно отправлена';
+      this.show = true;
       return true
     } else return false;
   }

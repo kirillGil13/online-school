@@ -6,7 +6,6 @@
       <RecoverDoFormComponent v-if="recoverCodeStep" :form="doCodeForm" @doRecover="doRecover"/>
       <CheckCodeFailed v-else/>
     </template>
-    <Alert :type="alertTypes.Success" text="Ссылка отправлена" :show="showSendCode"/>
   </div>
 </template>
 <script lang="ts">
@@ -16,15 +15,15 @@ import {RecoverSendCodeForm} from '../../../form/recover/recoverSendCode/recover
 import {RecoverStore} from '../../../store/modules/Recover';
 import CheckCodeFormComponent from '../../components/forms/recover/checkCodeForm/CheckCodeFormComponent.vue';
 import {RecoverCheckForm} from '../../../form/recover/recoverCheck/recoverCheckForm';
-import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import RecoverDoFormComponent from '../../components/forms/recover/recoverDoForm/RecoverDoFormComponent.vue';
 import {RecoverDoForm} from '../../../form/recover/recoverDo/recoverDoForm';
 import {RouterNameEnum} from '../../../router/router.types';
 import CheckCodeFailed from '../../components/common/CheckCodeFailed.vue';
+import {eventBus} from '../../../main';
 
 @Component({
-  components: {CheckCodeFailed, RecoverDoFormComponent, Alert, CheckCodeFormComponent, SendCodeFormComponent}
+  components: {CheckCodeFailed, RecoverDoFormComponent, CheckCodeFormComponent, SendCodeFormComponent}
 })
 export default class Recover extends Vue {
   alertTypes = AlertTypeEnum;
@@ -36,7 +35,11 @@ export default class Recover extends Vue {
 
   async sendCode(): Promise<void> {
     if (await this.sendCodeForm.submit(RecoverStore.sendCode)) {
-      this.showSendCode = true;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertTypes.Success,
+        text: 'Ссылка отправлена'
+      })
     }
   }
 
