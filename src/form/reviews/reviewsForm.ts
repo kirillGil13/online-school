@@ -2,13 +2,14 @@ import { Component } from 'vue-property-decorator';
 import { Form } from '@/form/form';
 import { ReviewsFormRequestType } from './reviewsForm.types';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
-import { requiredIf } from 'vuelidate/lib/validators';
+import { minLength, requiredIf } from 'vuelidate/lib/validators';
 
 @Component
 export class ReviewsForm extends Form {
     @Validate(requiredIf(function (vm): boolean {
         return vm.isLike === null || vm.reviewText === ''
     }), 'Оставьте отзыв')
+    @Validate(minLength(10), 'Отзыв должен составлять не менее 10 символов')
     public reviewText = '';
     public reviewId: number | null = null;
     @Validate(requiredIf(function (vm): boolean {

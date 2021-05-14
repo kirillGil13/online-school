@@ -115,7 +115,7 @@
                                       <Socials :class="[$adaptive.isMobile && 'mt-3 ml-3']" :vk="course.author.vk_link" :facebook-link="course.author.facebook_link"
                                                :instagram-link="course.author.instagram_link" :telegram="course.author.telegram" :site-link="course.author.site_link"/>
                                     </div>
-                                    <TextHide :text="course.author.description"/>
+                                    <TextHide :text="course.author.description" v-if="course.author.description"/>
                                 </div>
                             </div>
                             <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
