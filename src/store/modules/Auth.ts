@@ -73,6 +73,7 @@ class AuthModule extends VuexModule {
             const formData = new FormData();
             formData.append('username', data.email);
             formData.append('password', data.password);
+            localStorage.setItem('newUser', 'true');
             return await Vue.auth.login({
                 data: formData,
                 fetchUser: true,
