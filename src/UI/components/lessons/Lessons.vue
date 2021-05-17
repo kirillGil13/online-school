@@ -9,8 +9,8 @@
           >
             <router-link :to="{name: $routeRules.Lesson, params: {lessonId: lesson.id.toString()}}"
                          active-class="lesson-current" :id="`lesson${index}`"
-                         :class="[ course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED ? 'lesson-locked' : '']">
-              <svg-icon class="svg-wh" :name="course.resolveType(index, $route.params.lessonId)"></svg-icon>
+                         :class="[ (course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED || !user.isSubscriptionActual) ? 'lesson-locked' : '']">
+              <svg-icon class="svg-wh" :name="user.isSubscriptionActual ? course.resolveType(index, $route.params.lessonId) : lessonType.LOCKED"></svg-icon>
               <div class="lesson_name">
                 <span class="desc d-flex justify-space-between">Урок {{ lesson.number }} </span>
                 {{ lesson.name }}
@@ -45,6 +45,8 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import Button from '@/UI/components/common/Button.vue';
 import {LessonsTypesEnum} from '@/entity/common/lessons.types';
 import {ICourseItem} from '@/entity/courseItem/courseItem.type';
+import {IUser} from '../../../entity/user';
+import {AuthStore} from '../../../store/modules/Auth';
 
 @Component({
   components: {
@@ -54,10 +56,13 @@ import {ICourseItem} from '@/entity/courseItem/courseItem.type';
 export default class Lessons extends Vue {
   @Prop() readonly course!: ICourseItem;
   lessonType = LessonsTypesEnum;
-  //v-if="$route.params.lessonId"
 
   get last(): boolean {
     return (this.course.lessons[this.course.lessons.length - 1].id.toString() === this.$route.params.lessonId);
+  }
+
+  get user(): IUser | null {
+    return AuthStore.user;
   }
 }
 </script>
