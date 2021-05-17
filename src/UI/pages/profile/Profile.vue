@@ -108,9 +108,11 @@ import {ChangeEmailForm} from '../../../form/changeEmail/changeEmail';
 import {ChangeEmailStore} from '../../../store/modules/ChangeEmail';
 import {SubscriptionStore} from '../../../store/modules/Subscription';
 import {eventBus} from '../../../main';
+import ProfileSubs from '../../components/profile/sections/ProfileSubs.vue';
 
 @Component({
   components: {
+    ProfileSubs,
     PictureCropper,
     Modal,
     Badge,

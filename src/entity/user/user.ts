@@ -1,4 +1,4 @@
-import {IUser, UserResponseType} from './user.types';
+import {IUser, IUserSubscription, UserResponseType} from './user.types';
 
 export class User implements IUser {
     id: number;
@@ -15,7 +15,7 @@ export class User implements IUser {
     photoLink: string;
     isEmailConfirmed: boolean;
     siteLink: string;
-    isSubscriptionActual: boolean
+    subscription: IUserSubscription;
 
     constructor(data: UserResponseType) {
         this.id = data.id;
@@ -32,14 +32,30 @@ export class User implements IUser {
         this.isLeader = data.isLeader;
         this.isEmailConfirmed = data.is_email_confirmed;
         this.siteLink = data.site_link;
-        this.isSubscriptionActual = data.is_subscription_actual;
+        this.subscription = {
+            isActual: data.subscription.is_actual,
+            expiresAt: this.getTime(data.subscription.expires_at),
+            createdAt: this.getTime(data.subscription.created_at),
+            freePeriodExpire: this.getTime(data.subscription.created_at + 604800),
+            sum: 390
+        };
     }
 
     get initials(): string {
         return this.lastName[0].toUpperCase() + this.name[0].toUpperCase();
     }
+
     get fullName(): string {
         return this.lastName + ' ' + this.name;
+    }
+
+    getTime(createdAt: number | null): string {
+        if (createdAt) {
+            const date = new Date(createdAt * 1000);
+            return date.toLocaleString().slice(0, 10);
+        } else {
+            return '';
+        }
     }
 
 }
