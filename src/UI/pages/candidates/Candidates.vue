@@ -398,7 +398,7 @@ export default class Candidates extends Vue {
 
     this.candidateId = data.id;
     const el = Object.values(this.candidates).flat().find(item => item.id === this.candidateId)
-    if (!(Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status.id === data.statusId) ) {
+    if (!(Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status!.id === data.statusId) ) {
       if (data.statusId !== 3) {
         await this.setStatus(data);
         return
@@ -409,7 +409,7 @@ export default class Candidates extends Vue {
       }
     }
 
-    if(data.statusId === 4 && Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status.id === data.statusId ){
+    if(data.statusId === 4 && Object.values(this.candidates).flat().find(item => item.id === this.candidateId)!.status!.id === data.statusId ){
       await CandidatesStore.delete(data.id.toString());
       await CandidatesStore.fetchAll({data: {statusId: data.statusId}});
       await CandidatesStore.takeCountStatusCandidates({status: StatusRequestNameEnum.ARCHIVE});
