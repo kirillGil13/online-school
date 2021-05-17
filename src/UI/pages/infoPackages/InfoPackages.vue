@@ -39,7 +39,7 @@ export default class InfoPackages extends Vue {
   activatorSub = false;
 
   proceed(id: number): void {
-    if (this.user!.isSubscriptionActual) {
+    if (this.user!.subscription.isActual) {
       const routeData = this.$router.resolve({
         name: this.$routeRules.Landing,
         params: {id: id.toString()},
@@ -56,7 +56,7 @@ export default class InfoPackages extends Vue {
   }
 
   copied(): void {
-    if (this.user!.isSubscriptionActual) {
+    if (this.user!.subscription.isActual) {
       eventBus.$emit('showAlert', {
         show: true,
         type: this.alertType.Success,

@@ -15,7 +15,7 @@ export const leaderGuard = (to: any, from: any, next: any): any => {
 
 export const landingGuard = (to: any, from: any, next: any): any => {
     if (AuthStore.user) {
-        const isSubActive = AuthStore.user!.isSubscriptionActual;
+        const isSubActive = AuthStore.user!.subscription.isActual;
         if (isSubActive) {
             return next();
         } else return next('/404');

@@ -15,7 +15,15 @@ export interface IUser {
     initials: string;
     fullName: string;
     siteLink: string;
-    isSubscriptionActual: boolean;
+    subscription: IUserSubscription;
+}
+
+export interface IUserSubscription {
+    isActual: boolean;
+    createdAt: string;
+    expiresAt: string;
+    freePeriodExpire: string;
+    sum: number;
 }
 
 export type UserResponseType = {
@@ -33,8 +41,13 @@ export type UserResponseType = {
     description: string;
     photoLink: string;
     site_link: string;
-    is_subscription_actual: boolean;
+    subscription: UserSubscriptionResponseType;
 };
+ export type UserSubscriptionResponseType = {
+     is_actual: boolean;
+     created_at: number;
+     expires_at: number | null;
+ }
 
 export type UserUpdateRequestType = {
     name?: string;
