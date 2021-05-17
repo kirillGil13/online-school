@@ -56,6 +56,7 @@ export default class Alert extends Vue {
 <style lang="scss" scoped>
 .alert {
   position: absolute;
+  z-index: 9999999999999999;
   top: 0;
   right: 50%;
 

@@ -2,6 +2,7 @@
   <div>
     <div
         class="text-description my-4 ml-2 wrap-text"
+        :style="{maxHeight: maxHeight}"
         id="textDescription"
         ref="textDescription"
         v-html="text"
@@ -21,6 +22,7 @@ import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 @Component
 export default class TextHide extends Vue {
   @Prop() readonly text!: string;
+  @Prop({default: '65px'}) readonly maxHeight!: string;
 
   showAll = false;
 
@@ -34,7 +36,7 @@ export default class TextHide extends Vue {
     if (this.showAll === false) {
 
       (this.$refs.textDescription as HTMLElement).style.overflow = 'hidden';
-      (this.$refs.textDescription as HTMLElement).style.maxHeight = '65px';
+      (this.$refs.textDescription as HTMLElement).style.maxHeight = this.maxHeight;
     }
   }
 }
@@ -43,7 +45,6 @@ export default class TextHide extends Vue {
 <style lang="scss">
 .text-description {
   overflow: hidden;
-  max-height: 65px;
 }
 
 .show-all {

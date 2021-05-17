@@ -2,7 +2,7 @@
   <v-form class="form" @submit.prevent>
     <h5>ЗАДАНИЕ</h5>
     <v-divider class="my-4 test-form-divider"></v-divider>
-    <TextHide :text="form.question" :style="{fontSize: '16px'}"/>
+    <TextHide :text="form.question" :style="{fontSize: '16px'}" max-height="75px"/>
     <v-divider class="my-4 test-form-divider"></v-divider>
     <template v-if="!form.passed">
       <div>

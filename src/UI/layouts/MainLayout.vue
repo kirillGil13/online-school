@@ -95,6 +95,11 @@ export default class MainLayout extends Vue {
   destroy = true;
   candidateForm = new CandidateForm();
 
+  constructor() {
+    super();
+
+  }
+
   @Watch('$route.name')
     scrollTop(val: string, oldVal: string): void {
       if(val !== oldVal && this.$adaptive.isMobile){
@@ -183,19 +188,18 @@ export default class MainLayout extends Vue {
   }
 
   async mounted(): Promise<void> {
-    if (TourStore.newUser) {
-      this.$tours['tour'].start();
+    if (localStorage.getItem('newUser')) {
+      await this.$tours['tour'].start();
+      localStorage.removeItem('newUser');
     }
   }
 
   async sendCode(): Promise<boolean> {
-    const res = await ConfirmEmailStore.sendCode({email: this.user!.email});
-    if (res) {
-      this.type = this.alertType.Success;
-      this.text = 'Ссылка успешно отправлена';
-      this.show = true;
-      return true
-    } else return false;
+    await ConfirmEmailStore.sendCode({email: this.user!.email});
+    this.type = this.alertType.Success;
+    this.text = 'Ссылка успешно отправлена';
+    this.showAlertTemp = true;
+    return true
   }
 
 }

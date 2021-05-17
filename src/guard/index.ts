@@ -1,6 +1,4 @@
 import {AuthStore} from '@/store/modules/Auth';
-import {RouterNameEnum} from '@/router/router.types';
-import {TourStore} from '@/store/modules/Tour';
 
 export const leaderGuard = (to: any, from: any, next: any): any => {
     const isLeader = AuthStore.user!.isLeader;
@@ -13,13 +11,6 @@ export const leaderGuard = (to: any, from: any, next: any): any => {
     } else {
         return next();
     }
-};
-
-export const mainGuard = (to: any, from: any, next: any): any => {
-    if (to.matched.some((route: any) => route.meta?.new) && from.name === RouterNameEnum.AuthSignup) {
-        TourStore.setNewUser();
-        return next();
-    } else return next();
 };
 
 export const landingGuard = (to: any, from: any, next: any): any => {
