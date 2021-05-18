@@ -1,5 +1,5 @@
 import { Component } from 'vue-property-decorator';
-import { minLength, required, minValue} from 'vuelidate/lib/validators';
+import { minLength, required} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {IMailFormList, MailFormRequestType} from '@/form/mail/mailForm.types';
@@ -13,7 +13,7 @@ export class MailForm extends Form {
     public phone = '';
 
 
-    @Validate(required, 'Введите телефон или email')
+    @Validate(required, 'Введите телефон')
     public resultPhone = '';
 
     @Validate(required, 'Введите имя')
