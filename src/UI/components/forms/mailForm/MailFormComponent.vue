@@ -1,7 +1,7 @@
 <template>
   <v-col class="pa-6 d-flex justify-center flex-column mail_form">
     <h1 class="mx-auto my-0">Создать курс</h1>
-    <div class="text-center mt-3"><font color="#828282">Заполните форму ниже,<br> и наши менеджеры свяжутся с Вами <br> для дальнейшего обсуждения Вашего курса</font></div>
+    <div class="text-center mt-3"><font color="#828282">Заполните форму ниже,<br> и наши менеджеры свяжутся с Вами <br> для дальнейшего добавления курса</font></div>
     <FormGroup
         class="mt-4" v-slot="attrs" :form="form" field="name" show-custom-error label="Имя"
     >

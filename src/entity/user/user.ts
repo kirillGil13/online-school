@@ -35,9 +35,9 @@ export class User implements IUser {
         this.subscription = {
             isActual: data.subscription.is_actual,
             expiresAt: this.getTime(data.subscription.expires_at),
-            createdAt: this.getTime(data.subscription.created_at),
-            freePeriodExpire: this.getTime(data.subscription.created_at + 604800),
-            sum: 390
+            isTestPeriod: data.subscription.is_test_period,
+            isTestPeriodAvailable: data.subscription.is_test_period_available,
+            subType: data.subscription.sub_type
         };
     }
 
@@ -49,12 +49,20 @@ export class User implements IUser {
         return this.lastName + ' ' + this.name;
     }
 
-    getTime(createdAt: number | null): string {
+    subType(type: string): boolean | null {
+        if (this.subscription.subType !== null) {
+            return this.subscription.subType === type;
+        } else {
+            return null;
+        }
+    }
+
+    getTime(createdAt: number | null): string | null {
         if (createdAt) {
             const date = new Date(createdAt * 1000);
             return date.toLocaleString().slice(0, 10);
         } else {
-            return '';
+            return null;
         }
     }
 

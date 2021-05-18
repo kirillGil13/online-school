@@ -128,7 +128,7 @@
     <v-col
         v-if="
                 lessonLoaded &&
-                (questions !== null || result !== null || resultFree !== null) &&
+                (questions !== null || result !== null || resultFree !== null || freeTestForm.question !== '') &&
                 lesson.homeworkId &&
                 lesson.status !== lessonTypes.LOCKED
             "

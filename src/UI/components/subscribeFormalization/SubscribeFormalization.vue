@@ -30,8 +30,10 @@
           <div class="white--text text-center">Выгода -10%</div>
         </div>
         <div class="subs-title">12 месяцев</div>
-        <div class="text-center mt-4">7 дней бесплатно,<br>
-          затем месяц за <strong>3 990 ₽</strong> вместо <strike>4 799 ₽</strike></div>
+        <div class="text-center mt-4">
+          7 дней бесплатно,<br>
+          затем месяц за <strong>3 990 ₽</strong> вместо <strike>4 799 ₽</strike>
+        </div>
         <div class="d-flex align-start flex-row mt-4">
           <v-checkbox
               dense

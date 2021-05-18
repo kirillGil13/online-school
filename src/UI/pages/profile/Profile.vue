@@ -37,7 +37,7 @@
                 <div class="d-flex"><svg-icon class="align-self-center mr-2" name="Chosen"></svg-icon>Избранное</div>
                 <v-icon color="#4F79FF">mdi-chevron-right</v-icon>
               </div>
-              <Button @submit="unSub" full-width small class="py-3 mt-2">Отменить подписку</Button>
+<!--              <Button @submit="unSub" full-width small class="py-3 mt-2">Отменить подписку</Button>-->
               <Button @submit="logOut" full-width small class="secondary_blue py-3 mt-2">Выйти</Button>
             </div>
           </v-col>

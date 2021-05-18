@@ -2,17 +2,18 @@
   <div>
     <div
         class="text-description my-4 ml-2 wrap-text"
-        :style="{maxHeight: maxHeight}"
         id="textDescription"
         ref="textDescription"
-        v-html="text"
+        v-html="content"
     />
-    <div v-if="showAll === false" class="show-all ml-2" @click="showAll = true">
-      Показать полностью
-    </div>
-    <div v-if="showAll === true" class="show-all ml-2" @click="showAll = false">
-      Скрыть
-    </div>
+    <template v-if="strings > 3">
+      <div v-if="showAll === false" class="show-all ml-2" @click="showAll = true">
+        Показать полностью
+      </div>
+      <div v-if="showAll === true" class="show-all ml-2" @click="showAll = false">
+        Скрыть
+      </div>
+    </template>
   </div>
 </template>
 
@@ -23,29 +24,24 @@ import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 export default class TextHide extends Vue {
   @Prop() readonly text!: string;
   @Prop({default: '65px'}) readonly maxHeight!: string;
-
   showAll = false;
+  strings = 0;
 
-  @Watch('showAll')
-  onChangeShall(): void {
-    if (this.showAll === true) {
-      (this.$refs.textDescription as HTMLElement).style.overflow = 'none';
-      (this.$refs.textDescription as HTMLElement).style.maxHeight = 'unset';
-    }
-
-    if (this.showAll === false) {
-
-      (this.$refs.textDescription as HTMLElement).style.overflow = 'hidden';
-      (this.$refs.textDescription as HTMLElement).style.maxHeight = this.maxHeight;
+  get content(): string {
+    if (this.text.split('\n').length > 3 && !this.showAll) {
+      this.strings = this.text.split('\n').length;
+      return this.text.split('\n').splice(0,3).join('\n');
+    } else {
+      return this.text;
     }
   }
 }
 </script>
 
 <style lang="scss">
-.text-description {
-  overflow: hidden;
-}
+//.text-description {
+//  overflow: hidden;
+//}
 
 .show-all {
   font-size: 14px;
