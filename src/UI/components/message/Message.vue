@@ -2,21 +2,61 @@
   <div :class="['message d-flex mt-2', friend ? 'justify-start' : 'justify-end']">
     <div :class="['message-cont', friend ? 'friend' : 'my-message']">
       <div class="message-body d-flex flex-row justify-space-between mt-1">
-        <div class="text mr-7">{{body}}</div>
+        <div class="text mr-7" v-if="body.photoLink.length === 0">{{body.text}}</div>
+        <div class="text mr-3" v-else @click="() => showImg(0)">
+          <v-img @click="activator = true" max-width="150" max-height="150px"  :src="body.photoLink[0]" alt=""/>
+        </div>
         <div class="date mt-2 d-flex align-end">{{date}}</div>
       </div>
     </div>
+    <!-- <Modal :activator="activator" @activatorChange="activatorChange" max-width="max-content"  width="max-content" color="#ffffff" >
+      <template v-slot:content>
+        <div class="d-flex flex-column full-width px-4 py-6 modal-list">
+          <div class="d-flex flex-row">
+            <v-img contain max-width="100%" :src="body.photoLink[0]" alt=""/>
+          </div>
+        </div>
+      </template>
+    </Modal> -->
+   <vue-easy-lightbox
+    :visible="visible"
+    :imgs="body.photoLink"
+    :index="index"
+    @hide="handleHide"
+  ></vue-easy-lightbox>
   </div>
 </template>
 
 <script lang="ts">
+import { IMessages } from '@/entity/messages/messages.types';
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import Modal from '../common/Modal.vue';
+import VueEasyLightbox from 'vue-easy-lightbox'
 
-@Component
+@Component({
+  components: {Modal, VueEasyLightbox}
+})
 export default class Message extends Vue {
-  @Prop() readonly body!: string;
+  @Prop() readonly body!: IMessages;
   @Prop() readonly date!: string;
   @Prop() readonly friend!: boolean;
+
+  activator = false;
+  imgs = '';
+  visible = false;
+  index = 0 
+
+  activatorChange(act: boolean): void {
+    this.activator = act;
+  }
+
+  showImg(index: number): void {
+      this.index = index
+      this.visible = true
+  }
+  handleHide(): void {
+    this.visible = false
+  }
 }
 </script>
 

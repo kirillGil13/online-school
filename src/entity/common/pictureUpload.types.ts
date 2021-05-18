@@ -1,13 +1,13 @@
 import {RequestType} from '@/form/form.types';
 
-export interface IProfilePicture {
+export interface IPictureUpload {
     shortLink: string;
     fullLink: string;
 }
-export type ProfilePictureResponseType = {
+export type PictureUploadResponseType = {
     shortLink: string;
     fullLink: string;
 }
-export type ProfilePictureRequestType = RequestType & {
+export type PictureUploadRequestType = RequestType & {
     file: string;
 }

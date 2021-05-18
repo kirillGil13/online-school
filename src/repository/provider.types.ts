@@ -11,7 +11,7 @@ import {IInfoPackagesRepository} from '@/repository/infoPackages/InfoPackages.ty
 import {IStatusIconsRepository} from '@/repository/statusIcons/StatusIconsRepository.types';
 import {ICandidateItemRepository} from '@/repository/candidateItem/CandidateItemRepository.types';
 import {IVideoAccessRepository} from '@/repository/videoAccess/VideoAccessRepository.types';
-import {IProfilePictureRepository} from '@/repository/profilePicture/ProfilePicture.types';
+import {IPictureUploadRepository} from '@/repository/pictureUpload/PictureUpload.types';
 import {ILeadersRepository} from '@/repository/leaders/LeadersRepository.types';
 import {ILeaderCoursesRepository} from '@/repository/leaderCourses/LeaderCoursesRepository.types';
 import {ICourseLevelsRepository} from '@/repository/courseLevels/CourseLevels.types';
@@ -44,7 +44,7 @@ export interface IProvider {
     statusIcons: IStatusIconsRepository;
     candidateItem: ICandidateItemRepository;
     videoAccess: IVideoAccessRepository;
-    profilePicture: IProfilePictureRepository;
+    pictureUpload: IPictureUploadRepository;
     leaders: ILeadersRepository;
     leaderCourses: ILeaderCoursesRepository;
     courseLevels: ICourseLevelsRepository;

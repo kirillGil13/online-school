@@ -71,6 +71,9 @@ import {RouterNameEnum} from '../../router/router.types';
 import CandidateFormComponent from '../components/forms/candidateForm/CandidateFormComponent.vue';
 import {eventBus} from '../../main';
 import BottomBar from '../components/common/BottomBar.vue';
+import { MessagesStore } from '@/store/modules/Messages';
+import { IMessages } from '@/entity/messages/messages.types';
+
 
 
 @Component({
@@ -119,22 +122,60 @@ export default class MainLayout extends Vue {
       startIntercomMessenger(AuthStore.user!);
       WebSocketStore.setConnection();
       eventBus.$on('showAlert', (data: any) => {
-      this.showAlertTemp = data.show;
-      this.type = data.type;
-      this.text = data.text;
-    })
-
-      this.socket!.onopen = (el) => {
-        console.log('open')
-      }
-
-      this.socket!.onclose = (el) => {
-        console.log(el)
-      }
-
-      this.socket!.onmessage = (() => {
-        DialogsStore.setUnReadMessage(1, false);
+        this.showAlertTemp = data.show;
+        this.type = data.type;
+        this.text = data.text;
       })
+
+    this.socket!.onclose = (e: any) => {
+      console.log(e)
+        setTimeout(() => {
+           WebSocketStore.setConnection();
+        }, 2000);
+    };
+
+    this.socket!.onmessage =  async (e) => {
+      const {data} = JSON.parse(e.data)
+      console.log(data)
+      data.is_read = !data.is_my && ( this.$route.name === (this.$routeRules.ChatMain || this.$routeRules.Course)) && this.$route.params.id === data.account_id.toString() ? true : false;
+      MessagesStore.addMessage(data);
+      
+
+      if(data.is_my) {
+        if(this.$route.name === this.$routeRules.Course) {
+          const container =  await document.getElementById('chatContainer');
+          container!.scrollTop = await container!.scrollHeight;    
+        }
+
+        if(this.$route.name === this.$routeRules.ChatMain) {
+           const container =  await document.getElementById('chatDialogContainer');
+           container!.scrollTop = await container!.scrollHeight;
+           
+        }
+      }
+
+      if(!data.is_my) {
+        if(this.$route.params.id !== data.account_id.toString() && this.$route.name !== this.$routeRules.ChatMain){
+          DialogsStore.setUnReadMessage({count: 1, operation: 'plus'});
+        }
+        
+
+         if(this.$route.name === this.$routeRules.Course) {
+          const container =  await document.getElementById('chatContainer');
+          container!.scrollTop = await container!.scrollHeight;    
+        }
+
+        if(this.$route.name === this.$routeRules.ChatMain) {
+          if(this.$route.params.id === data.account_id.toString()) {
+            
+          }
+           const container =  await document.getElementById('chatDialogContainer');
+           container!.scrollTop = await container!.scrollHeight;
+           
+        }
+      }
+      
+    }
      
   }
 
@@ -148,6 +189,10 @@ export default class MainLayout extends Vue {
 
   get infoPackages(): IInfoPackage[] {
     return InfoPackagesStore.infoPackages;
+  }
+
+  get messages(): IMessages[] {
+    return MessagesStore.messages
   }
 
   get statuses(): IStatuses[] {

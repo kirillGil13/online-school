@@ -21,19 +21,21 @@ class DialogsModule extends VuexModule {
         if (dialogs) {
             dialogsLoaded = true
         }
+
         const unReadMessages = dialogs.reduce((a, b) => a + b.countUnread, 0);
         
         return { dialogs, dialogsLoaded, unReadMessages };
     }
 
     @Mutation
-    setUnReadMessage(count: number = 1, operation: boolean): void {
-        console.log('setUnreadMessage')
-
-        if(!operation) {
-            this.unReadMessages += count;
-        }else{
-            this.unReadMessages -= count;
+    setUnReadMessage(data:{count: number, operation: string}): void {
+        console.log(data.operation)
+        
+        if(data.operation === 'plus') {
+            this.unReadMessages += data.count;
+        }
+        if(data.operation === 'minus'){
+            this.unReadMessages -= data.count;
         }
 
         

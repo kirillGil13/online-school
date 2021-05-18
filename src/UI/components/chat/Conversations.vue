@@ -28,6 +28,7 @@
 import { IDialogs } from '@/entity/dialogs/dialogs.types';
 import { DialogsStore } from '@/store/modules/Dialogs';
 import {Component, Vue, Watch} from 'vue-property-decorator';
+import { WebSocketStore } from '@/store/modules/WebSocket';
 
 @Component
 export default class Conversations extends Vue {
@@ -39,6 +40,11 @@ export default class Conversations extends Vue {
     if( this.$adaptive.isMobile  &&  this.$route.name === this.$routeRules.Chat && !this.$route.params.id) {
        this.chousenChatId = null;
     }
+    const unreadCount = this.dialogs.find(el => el.account.id.toString() === this.$route.params.id)?.countUnread;
+    if(this.unReadMessages !== 0) {
+      DialogsStore.setUnReadMessage({count: unreadCount!, operation: 'minus'})
+    }
+    
   }
 
   async created() {
@@ -53,13 +59,23 @@ export default class Conversations extends Vue {
     return DialogsStore.dialogs;
   }
 
+  get unReadMessages(): number {
+    return DialogsStore.unReadMessages;
+  }
+
+  get socket(): WebSocket | null {
+    return WebSocketStore.socket;
+  }
+
   chosePartner(id: number) {
     this.chousenChatId = id;
 
     this.$emit('chousePartnerId', id);
   }
 
-  randomColor(i: number) {
+  
+
+  randomColor(i: number): string {
     const COLORS = [
     '#56CCF2',
     '#BB6BD9',
@@ -80,6 +96,14 @@ export default class Conversations extends Vue {
     '#3B4244'
     ];
     return COLORS[i || 0];
+  }
+
+  beforeDestroy(): void {
+    const el = {
+        type:  "leave-dialog-type"
+      }
+
+    this.socket!.send(JSON.stringify(el))
   }
 
   getUnReadMessage(id: number): number | undefined {

@@ -1,5 +1,5 @@
 <template>
-  <v-responsive class="border" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6  : isChat ? 2/5 : 42/44">
+  <v-responsive class="border" :style="{height: isChat ? '500px': '100%'}" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6  : isChat ? 2/5 : 42/44">
       <div class="lessons-block d-flex flex-column align-end box-container">
          <v-col v-if="isChat" align-self="start" class=" d-flex  flex-row align-center justify-space-between chat-header px-3 py-3" style="max-height: 50px">
           <span class="chat-title">Чат</span>
@@ -66,7 +66,6 @@ import {WebSocketStore} from '../../../store/modules/WebSocket';
 export default class Lessons extends Vue {
   @Prop() readonly course!: ICourseItem;
   lessonType = LessonsTypesEnum;
-  //v-if="$route.params.lessonId"
   isChat = false;
 
   @Watch('isChat',{ immediate: true })
@@ -102,8 +101,7 @@ export default class Lessons extends Vue {
     this.socket!.send(JSON.stringify(el));
 
     const container =  document.getElementById('chatContainer');
-
-    container!.scrollTop = container!.scrollHeight
+    container!.scrollTop = container!.scrollHeight;
   }
 }
 </script>

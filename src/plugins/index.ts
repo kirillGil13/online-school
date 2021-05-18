@@ -18,3 +18,4 @@ export * from './ReCaptcha';
 export * from './CountryRegionSelect';
 // export * from './FastClick';
 export * from './Infinite';
+export  * from './Light-box';

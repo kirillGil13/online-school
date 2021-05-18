@@ -1,7 +1,7 @@
 <template>
   <div class="messages d-flex flex-column" id="messages">
     <div class="message-container d-flex flex-column justify-end" :style="{padding: !$adaptive.isMobile ? '16px 11px 16px 11px' : '10px'}">
-      <Message :date="message.createdAt" :body="message.text" v-for="message in messages" :key="message.id" :friend="message.isMy ? false : true"/>
+      <Message :date="message.createdAt" :body="message" v-for="message in messages" :key="message.id" :friend="message.isMy ? false : true"/>
     </div>
   </div>
 </template>
@@ -15,7 +15,6 @@ import {MessagesStore} from '../../../../store/modules/Messages';
 import { IMessages } from '@/entity/messages/messages.types';
 import {WebSocketStore} from '../../../../store/modules/WebSocket';
 import { ICourseItem } from '@/entity/courseItem/courseItem.type';
-import Messages from '@/entity/messages/messages';
 @Component({
   components: {MessageSend, Message, Notification}
 })
@@ -28,17 +27,6 @@ export default class SingleChat extends Vue {
 
   async created(): Promise<void> {
       await  MessagesStore.fetchAll(this.course.author.id.toString());
-
-      this.socket!.onmessage = async (event: any) => {
-
-        const {data} = JSON.parse(event.data)
-        
-        this.messages.push(new Messages(data))
-        const container =  await document.getElementById('chatContainer');
-
-        container!.scrollTop = await container!.scrollHeight
-      }
-
       const container =  document.getElementById('chatContainer');
 
       container!.scrollTop = container!.scrollHeight
@@ -52,6 +40,8 @@ export default class SingleChat extends Vue {
       const date = new Date(createdAt * 1000);
       return date.toLocaleString().slice(0,5) + date.toLocaleString().slice(10,17)
   }
+
+  
 }
 </script>
 

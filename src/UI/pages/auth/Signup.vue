@@ -32,8 +32,8 @@ import RegisterFormVue from '../../components/forms/auth/RegisterForm.vue';
 import {RegisterForm} from '../../../form/register/RegisterForm';
 import PhoneFormVue from '../../components/forms/auth/PhoneForm.vue';
 import {PhoneForm} from '../../../form/phone/phoneForm';
-import {ProfilePictureStore} from '../../../store/modules/ProfilePicture';
-import {IProfilePicture} from '../../../entity/common/profilePicture.types';
+import {PictureUploadStore} from '../../../store/modules/PictureUpload';
+import {IPictureUpload} from '../../../entity/common/pictureUpload.types';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import Alert from '../../components/common/Alert.vue';
 import Modal from '../../components/common/Modal.vue';
@@ -69,12 +69,12 @@ export default class Signup extends Vue {
   destroy = true;
   alertType = AlertTypeEnum;
 
-  get picture(): IProfilePicture | null {
-    return ProfilePictureStore.profilePicture;
+  get picture(): IPictureUpload | null {
+    return PictureUploadStore.pictureUpload;
   }
 
   get pictureLoaded(): boolean {
-    return ProfilePictureStore.profilePictureLoaded;
+    return PictureUploadStore.pictureUploadLoaded;
   }
 
   close(): void {
@@ -117,7 +117,7 @@ export default class Signup extends Vue {
   async setImage(data: any): Promise<void> {
     const {canvas} = data.getResult();
     canvas.toBlob((blob: Blob): void => {
-          ProfilePictureStore.set({file: blob as any});
+          PictureUploadStore.set({file: blob as any});
         }
     );
     this.activator = false;

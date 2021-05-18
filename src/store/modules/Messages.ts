@@ -1,6 +1,7 @@
 import { Action, getModule, Module, Mutation, MutationAction, VuexModule } from 'vuex-module-decorators';
 import store from '@/store';
-import {IMessages} from '@/entity/messages/messages.types';
+import {IMessages, MessagesResponseType} from '@/entity/messages/messages.types';
+import Messages from '@/entity/messages/messages';
 
 
 @Module({
@@ -23,6 +24,12 @@ class MessagesModule extends VuexModule {
         }
         
         return { messages, messagesLoaded };
+    }
+
+    @Mutation
+    addMessage(message: MessagesResponseType): void {
+        console.log(new Messages(message))
+        this.messages.push(new Messages(message))
     }
 }
 

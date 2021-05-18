@@ -5,12 +5,14 @@ export default class Messages implements IMessages {
     createdAt: string;
     text: string;
     isMy: boolean;
+    photoLink?: string[]
 
     constructor(data: MessagesResponseType) {
         this.id = data.id;
         this.createdAt = this.getTime(data.created_at);
         this.text = data.text;
         this.isMy = data.is_my;
+        this.photoLink = data.photo_links
     }
 
     getTime(createdAt: number): string {

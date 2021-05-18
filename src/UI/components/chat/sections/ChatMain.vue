@@ -11,7 +11,7 @@
               <v-divider style="background-color: rgba(66, 109, 246, 0.12);;"/>
             </div>
            
-           <Message :date="message.createdAt.split(',')[1]" :body="message.text" :key="idx" :friend="message.isMy ? false : true"/>
+           <Message :date="message.createdAt.split(',')[1]" :body="message" :key="idx" :friend="message.isMy ? false : true"/>
         </template>
         
         
@@ -19,6 +19,7 @@
       
     </div>
     <MessageSend v-if="!$adaptive.isMobile" @sendMessage="sendMessage"/>
+    
   </div>
 </template>
 
@@ -30,7 +31,6 @@ import MessageSend from '@/UI/components/message/MessageSend.vue';
 import { MessagesStore } from '@/store/modules/Messages';
 import { WebSocketStore } from '@/store/modules/WebSocket';
 import { IMessages } from '@/entity/messages/messages.types';
-import Messages from '@/entity/messages/messages';
 import { MONTHS } from '@/constants/month';
 @Component({
   components: {MessageSend, Message, Notification}
@@ -49,8 +49,6 @@ export default class ChatMain extends Vue {
     }
 
     this.socket!.send(JSON.stringify(el))
-
-
   }
 
   get socket(): WebSocket | null {
@@ -68,20 +66,10 @@ export default class ChatMain extends Vue {
     }
 
     this.socket!.send(JSON.stringify(el))
-
-
-    this.socket!.onmessage = async (event: any) => {
-
-      const {data} = JSON.parse(event.data)
-      
-      this.messages.push(new Messages(data))
-      const container =  await document.getElementById('chatDialogContainer');
-
-      container!.scrollTop = await container!.scrollHeight
-    }
   }
 
   get messages(): IMessages[] {
+    const photo = MessagesStore.messages.find(el => el.photoLink)
     return MessagesStore.messages
   }
 
@@ -101,7 +89,6 @@ export default class ChatMain extends Vue {
       data: {
         purposeAccountId: this.$route.params.id ,
         text: message.toString()
-
       }
     }
    
