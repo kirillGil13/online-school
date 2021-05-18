@@ -20,7 +20,7 @@
         </FilterComponent>
       </v-col>
     </v-row>
-    <CandidateSubscription @openSub="activatorSub = true" v-if="!user.subscription.isActual"/>
+    <CandidateSubscription @openSub="activatorSub = true" v-if="user.subscription.isActual === null"/>
     <v-row no-gutters  v-if="candidates !== {} || candidatesLoaded" class="d-flex">
       <v-col>
         <TableCandidates :candidates="candidates" :selects="selectsActions" :statuses="statuses" @select="selectStatus"

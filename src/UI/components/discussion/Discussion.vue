@@ -13,7 +13,7 @@
 <!--        </TextSelect>-->
       </div>
     </div>
-    <CommentsFormComponent :form="form" v-on='$listeners' v-if="user.subscription.isActual"/>
+    <CommentsFormComponent :form="form" v-on='$listeners' v-if="user.subscription.isActual !== null"/>
     <v-col class="mt-4 pa-0">
       <Comments :selects="selects" v-for="(item, index) in comments" :key="index" :comment="item" v-on="$listeners" :answers-form="answersForm"
                 :class="[index !== 0 ? 'mt-8' : '']" :form="changeForm"/>

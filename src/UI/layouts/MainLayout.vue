@@ -6,7 +6,7 @@
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
           <Sidebar :userInfo="user" :userId="user.id" @proceed="proceed"/>
-          <Banner v-if="!user.subscription.isActual" @show="activator = true"/>
+          <Banner v-if="user.subscription.isActual === null" @show="activator = true"/>
         </div>
         <div class="content-main pt-0 mb-16">
           <v-main class="pb-7">

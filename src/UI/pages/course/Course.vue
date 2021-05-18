@@ -53,14 +53,14 @@
                                 class="mb-4"
                                 :title="$adaptive.isMobile ? '' : 'Нравится'"
                                 :class="course.isLiked && 'like-active'"
-                                @click="user.subscription.isActual ? handleLike({form: formName.likeDislike, formButton: false}) : activator = true"
+                                @click="user.subscription.isActual !== null ? handleLike({form: formName.likeDislike, formButton: false}) : activator = true"
                             />
                             <Relation
                                 svg-class="svg-down"
                                 class="mb-4"
                                 :class="course.isDisliked && 'dislike-active'"
                                 svg-name="Finger"
-                                @click="user.subscription.isActual ? handleDisLike({form: formName.likeDislike, formButton: false}) : activator = true"
+                                @click="user.subscription.isActual !== null ? handleDisLike({form: formName.likeDislike, formButton: false}) : activator = true"
                                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
                             />
                             <Relation
@@ -86,7 +86,7 @@
                                 />
                             </template>
                         </v-row>
-                      <v-col v-if="!user.subscription.isActual" class="sub-card box-container d-flex flex-column justify-center align-center mb-6" :class="[ $adaptive.isMobile ? 'pa-4' : 'pa-6']">
+                      <v-col v-if="user.subscription.isActual === null" class="sub-card box-container d-flex flex-column justify-center align-center mb-6" :class="[ $adaptive.isMobile ? 'pa-4' : 'pa-6']">
                         <Subscription/>
                         <Button class="with_icon subs_button" @submit="activator = true"><svg-icon name="Subs_Play_Btn" class="mr-2 svg-16"></svg-icon>Смотреть по подписке</Button>
                       </v-col>
@@ -159,7 +159,7 @@
                                         </div>
                                     </div>
                                     </div>
-                                    <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}" v-if="user.subscription.isActual">
+                                    <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}" v-if="user.subscription.isActual !== null">
                                         <Button @submit="toggleShowSetReview" :style="{width: $adaptive.isMobile && '100%'}">Написать отзыв</Button>
                                     </div>
                                 </div>
