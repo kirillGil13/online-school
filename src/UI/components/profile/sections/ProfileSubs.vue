@@ -28,7 +28,7 @@
             <div class="sub-desc mt-2" v-if="user.subscription.isTestPeriod">
               Отменяя подписку сейчас, Вы прекращаете ее действие. Также, повторный тестовый период будет не доступен.
             </div>
-            <div class="sub-desc mt-2" v-else-if="user.subscription.isActual">
+            <div class="sub-desc mt-2" v-else-if="user.subscription.isActual !== null">
               Вы можете отменить подписку сейчас и продолжить ее использование до <strong>{{user.subscription.expiresAt}}</strong>
             </div>
             <div class="sub-desc mt-2" v-else>
@@ -79,7 +79,7 @@
             <div class="sub-desc mt-2" v-if="user.subscription.isTestPeriod">
               Отменяя подписку сейчас, Вы прекращаете ее действие. Также, повторный тестовый период будет не доступен.
             </div>
-            <div class="sub-desc mt-2" v-else-if="user.subscription.isActual">
+            <div class="sub-desc mt-2" v-else-if="user.subscription.isActual !== null">
               Вы можете отменить подписку сейчас и продолжить ее использование до <strong>{{user.subscription.expiresAt}}</strong>
             </div>
             <div class="sub-desc mt-2" v-else>

@@ -1,6 +1,6 @@
 <template>
   <div class="course" :style="{ width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : '' }">
-    <v-responsive v-if="lessonLoaded && user.subscription.isActual" :aspect-ratio="16 / 9" class="rounded-block" content-class="course-container rounded-block">
+    <v-responsive v-if="lessonLoaded && user.subscription.isActual !== null" :aspect-ratio="16 / 9" class="rounded-block" content-class="course-container rounded-block">
       <div
           v-if="lesson.status === lessonTypes.LOCKED"
           class="course-locked rounded-block"
@@ -30,7 +30,7 @@
         />
       </div>
     </v-responsive>
-    <v-responsive v-else-if="lessonLoaded && !user.subscription.isActual" :aspect-ratio="16 / 9"
+    <v-responsive v-else-if="lessonLoaded && user.subscription.isActual === null" :aspect-ratio="16 / 9"
                   content-class="course-container" @click="activatorSub = true">
       <v-img
           :aspect-ratio="16 / 9"
@@ -48,7 +48,7 @@
           class="mb-4"
           :class="isLiked && 'like-active'"
           :title="$adaptive.isMobile ? '' : 'Нравится'"
-          @click="user.subscription.isActual ? $emit('handleLike', {form: formName.likeDislike, formButton: false}) : activatorSub = true"
+          @click="user.subscription.isActual !== null ? $emit('handleLike', {form: formName.likeDislike, formButton: false}) : activatorSub = true"
       />
       <Relation
           svg-class="svg-down"
@@ -56,7 +56,7 @@
           :class="isDisliked && 'dislike-active'"
           svg-name="Finger"
           :title="$adaptive.isMobile ? '' : 'Не нравится'"
-          @click="user.subscription.isActual ? $emit('handleDisLike', {form: formName.likeDislike, formButton: false}) : activatorSub = true"
+          @click="user.subscription.isActual !== null ? $emit('handleDisLike', {form: formName.likeDislike, formButton: false}) : activatorSub = true"
       />
       <Relation
           svg-name="Chosen"
@@ -85,7 +85,7 @@
         />
       </template>
     </v-row>
-    <v-col v-if="!user.subscription.isActual" class="sub-card box-container d-flex flex-column justify-center align-center mb-4 "
+    <v-col v-if="user.subscription.isActual === null" class="sub-card box-container d-flex flex-column justify-center align-center mb-4 "
            :class="[$adaptive.isMobile ? 'pa-4' : 'pa-6']">
       <Subscription/>
       <Button class="with_icon subs_button" @submit="activatorSub = true">

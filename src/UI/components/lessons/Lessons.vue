@@ -9,7 +9,7 @@
           >
             <router-link :to="{name: $routeRules.Lesson, params: {lessonId: lesson.id.toString()}}"
                          active-class="lesson-current" :id="`lesson${index}`"
-                         :class="[ (course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED || !user.subscription.isActual) ? 'lesson-locked' : '']">
+                         :class="[ (course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED || user.subscription.isActual === null) ? 'lesson-locked' : '']">
               <svg-icon class="svg-wh" :name="user.subscription.isActual ? course.resolveType(index, $route.params.lessonId) : lessonType.LOCKED"></svg-icon>
               <div class="lesson_name">
                 <span class="desc d-flex justify-space-between">Урок {{ lesson.number }} </span>
