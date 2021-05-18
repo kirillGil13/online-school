@@ -56,13 +56,12 @@ export default class ChatHeader extends Vue {
 
 <style lang="scss">
 .chat-header {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  background-color: #FFFFFF;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
 
   .search {
-    width: 327px;
+    width: 31%;
+    background: none !important;
+    border: none;
 
     .svg-icon {
       left: 20px;

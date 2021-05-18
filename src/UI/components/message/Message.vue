@@ -3,21 +3,12 @@
     <div :class="['message-cont', friend ? 'friend' : 'my-message']">
       <div class="message-body d-flex flex-row justify-space-between mt-1">
         <div class="text mr-7" v-if="body.photoLink.length === 0">{{body.text}}</div>
-        <div class="text mr-3" v-else @click="() => showImg(0)">
-          <v-img @click="activator = true" max-width="150" max-height="150px"  :src="body.photoLink[0]" alt=""/>
+        <div class="text mr-3" v-else @click="() => showImg(idx)" v-for="(photo, idx) of body.photoLink " :key="idx">
+          <v-img @click="activator = true" max-width="150" max-height="150px"  :src="photo" alt=""/>
         </div>
         <div class="date mt-2 d-flex align-end">{{date}}</div>
       </div>
     </div>
-    <!-- <Modal :activator="activator" @activatorChange="activatorChange" max-width="max-content"  width="max-content" color="#ffffff" >
-      <template v-slot:content>
-        <div class="d-flex flex-column full-width px-4 py-6 modal-list">
-          <div class="d-flex flex-row">
-            <v-img contain max-width="100%" :src="body.photoLink[0]" alt=""/>
-          </div>
-        </div>
-      </template>
-    </Modal> -->
    <vue-easy-lightbox
     :visible="visible"
     :imgs="body.photoLink"
@@ -70,7 +61,6 @@ export default class Message extends Vue {
     padding: 7px 12px;
     background: #FFFFFF;
     border: 1px solid #F2F2F2;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
     border-radius: 18px;
 
     &.my-message {

@@ -3,7 +3,7 @@
         <div class="message-send d-flex flex-row align-end">
            <div class="d-flex align-center mr-2" style="height: 100%">
                <v-icon style="padding: 6px 4px; margin-top: 0 !important;" class="send-picture" @click="activateInput">mdi-folder-image</v-icon>
-              <input type="file" accept="image/*" id="upload" @change="loadPicture" />
+              <input type="file" multiple accept="image/*" id="upload" @change="loadPicture" />
             </div>
              
             <div class="send mr-5">
@@ -63,8 +63,9 @@ export default class MessageSend extends Vue {
     }
 
     async loadPicture(e: any): Promise<void> {
-      const selectedImage = e.target.files[0];
-      await PictureUploadStore.set({ file: selectedImage });
+      const selectedImages = e.target.files;
+      selectedImages.forEach(async (element: any) => {
+        await PictureUploadStore.set({ file: element });
         if (this.picture) {
           const el = {
             type: "send-message-service_type",
@@ -76,6 +77,8 @@ export default class MessageSend extends Vue {
         
         this.socket!.send(JSON.stringify(el))
       }
+      });
+      
 
       
     }
