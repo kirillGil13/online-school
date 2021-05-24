@@ -23,8 +23,8 @@
           </div>
         </div>
         <div>
-          <Button class="mt-4" v-if="user.subscription.isActual !== null && user.subscription.subType === subType.month" :disabled="user.subscription.isActual === false" small full-width>Отменить подписку</Button>
-          <Button class="mt-4" v-else :disabled="!checkSub1" small full-width>Оформить за 399 ₽</Button>
+          <Button class="mt-4" @submit="unSub" v-if="user.subscription.isActual !== null && user.subscription.subType === subType.month" :disabled="user.subscription.isActual === false" small full-width>Отменить подписку</Button>
+          <Button class="mt-4" v-else @submit="subscribe(subType.year)" :disabled="!checkSub1" small full-width>Оформить за 399 ₽</Button>
           <template v-if="user.subscription.isTestPeriod !== null && user.subExist(subType.month) !== null && user.subExist(subType.month) === true">
             <div class="sub-desc mt-2" v-if="user.subscription.isTestPeriod">
               Отменяя подписку сейчас, Вы прекращаете ее действие. Также, повторный тестовый период будет не доступен.
@@ -75,8 +75,8 @@
           </div>
         </div>
         <div>
-          <Button class="mt-4" v-if="user.subscription.isActual !== null && user.subscription.subType === subType.year" :disabled="user.subscription.isActual === false" small full-width>Отменить подписку</Button>
-          <Button class="mt-4" v-else :disabled="!checkSub2" small full-width>Оформить за 3990 ₽</Button>
+          <Button class="mt-4" @submit="unSub" v-if="user.subscription.isActual !== null && user.subscription.subType === subType.year" :disabled="user.subscription.isActual === false" small full-width>Отменить подписку</Button>
+          <Button class="mt-4" @submit="subscribe(subType.year)" v-else :disabled="!checkSub2" small full-width>Оформить за 3990 ₽</Button>
           <template v-if="user.subscription.isTestPeriod !== null && user.subExist(subType.year) !== null && user.subExist(subType.year) === true">
             <div class="sub-desc mt-2" v-if="user.subscription.isTestPeriod">
               Отменяя подписку сейчас, Вы прекращаете ее действие. Также, повторный тестовый период будет не доступен.
@@ -133,6 +133,12 @@ export default class ProfileSubs extends Vue {
   async subscribe(subType: string): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/camelcase
     window.location.href = await SubscriptionStore.subscribe({subscription_type: subType});
+  }
+
+  async unSub(): Promise<void> {
+    if (await SubscriptionStore.delete()) {
+      window.location.reload();
+    }
   }
 
   get user(): IUser | null {
