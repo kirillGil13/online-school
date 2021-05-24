@@ -32,21 +32,21 @@ export class User implements IUser {
         this.isLeader = data.isLeader;
         this.isEmailConfirmed = data.is_email_confirmed;
         this.siteLink = data.site_link;
-        this.subscription = {
-            isActual: true,
-            expiresAt: this.getTime(data.subscription.expires_at),
-            isTestPeriod: data.subscription.is_test_period,
-            isTestPeriodAvailable: data.subscription.is_test_period_available,
-            subType: data.subscription.sub_type
-        };
-        // 1622359880  1624519880
         // this.subscription = {
         //     isActual: true,
-        //     expiresAt: this.getTime(1624519880),
-        //     isTestPeriod: false,
-        //     isTestPeriodAvailable: false,
-        //     subType: 'year'
+        //     expiresAt: this.getTime(data.subscription.expires_at),
+        //     isTestPeriod: data.subscription.is_test_period,
+        //     isTestPeriodAvailable: data.subscription.is_test_period_available,
+        //     subType: data.subscription.sub_type
         // };
+        // 1622359880  1624519880
+        this.subscription = {
+            isActual: true,
+            expiresAt: this.getTime(1624519880),
+            isTestPeriod: false,
+            isTestPeriodAvailable: false,
+            subType: 'month'
+        };
     }
 
     get initials(): string {
