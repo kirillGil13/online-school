@@ -33,7 +33,7 @@ export class User implements IUser {
         this.isEmailConfirmed = data.is_email_confirmed;
         this.siteLink = data.site_link;
         this.subscription = {
-            isActual: data.subscription.is_actual,
+            isActual: true,
             expiresAt: this.getTime(data.subscription.expires_at),
             isTestPeriod: data.subscription.is_test_period,
             isTestPeriodAvailable: data.subscription.is_test_period_available,
