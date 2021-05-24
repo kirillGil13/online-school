@@ -15,7 +15,7 @@
           class="px-4 pb-4" :class="$adaptive.isMobile && 'pt-10'"
           cols="12"
       >
-        <div class="org">© Onelinks, 2020 г. Все права защищены.</div>
+        <div class="org">© Onelinks, 2021 г. Все права защищены.</div>
         <v-divider class="mt-3"></v-divider>
         <div class="d-flex flex-row flex-wrap mb-3">
           <div v-for="(item, index) in footerItems" :key="index" class="d-flex flex-row mt-3">

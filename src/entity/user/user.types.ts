@@ -18,7 +18,7 @@ export interface IUser {
     fullName: string;
     siteLink: string;
     subscription: IUserSubscription;
-    subType(type: string): boolean | null;
+    subExist(type: string): boolean | null;
 }
 
 export interface IUserSubscription {
