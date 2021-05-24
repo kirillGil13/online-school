@@ -33,12 +33,20 @@ export class User implements IUser {
         this.isEmailConfirmed = data.is_email_confirmed;
         this.siteLink = data.site_link;
         this.subscription = {
-            isActual: true,
-            expiresAt: '',
-            isTestPeriod: false,
-            isTestPeriodAvailable: true,
-            subType: ''
+            isActual: data.subscription.is_actual,
+            expiresAt: this.getTime(data.subscription.expires_at),
+            isTestPeriod: data.subscription.is_test_period,
+            isTestPeriodAvailable: data.subscription.is_test_period_available,
+            subType: data.subscription.sub_type
         };
+        // 1622359880  1624519880
+        // this.subscription = {
+        //     isActual: true,
+        //     expiresAt: this.getTime(1624519880),
+        //     isTestPeriod: false,
+        //     isTestPeriodAvailable: false,
+        //     subType: 'year'
+        // };
     }
 
     get initials(): string {
@@ -49,8 +57,8 @@ export class User implements IUser {
         return this.lastName + ' ' + this.name;
     }
 
-    subType(type: string): boolean | null {
-        if (this.subscription.subType !== null) {
+    subExist(type: string): boolean | null {
+        if (this.subscription.isActual !== null) {
             return this.subscription.subType === type;
         } else {
             return null;

@@ -53,6 +53,11 @@ export default class Recover extends Vue {
   async doRecover(): Promise<void> {
     if (await this.doCodeForm.submit(RecoverStore.recoverDo)) {
       await this.$router.push({name: RouterNameEnum.AuthLogin});
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertTypes.Info,
+        text: 'Ваш пароль успешно изменен'
+      })
     }
   }
 

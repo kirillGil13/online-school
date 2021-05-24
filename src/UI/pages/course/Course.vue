@@ -31,7 +31,7 @@
                         v-if="!$route.params.lessonId"
                         :style="{ width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : '' }"
                     >
-                        <v-responsive :aspect-ratio="16 / 9" content-class="course-container" @click="pushToCurrent">
+                        <v-responsive :aspect-ratio="16 / 9" content-class="course-container" v-if="course.cost === 0" @click="pushToCurrent">
                             <v-img
                                 :aspect-ratio="16 / 9"
                                 width="100%"
@@ -44,6 +44,23 @@
                                 <div class="course-info duration "><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-clock-time-four-outline</v-icon>{{course.totalDuration}}</div>
                             </v-img>
                         </v-responsive>
+                      <v-responsive :aspect-ratio="16 / 9" content-class="course-container" v-else>
+                        <div
+                            class="course-locked rounded-block"
+                            :style="{ backgroundImage: 'url(' + course.photoLink + ')' }"
+                        >
+                          <div class="background rounded-block d-flex flex-column align-center justify-center pa-3">
+                            <h1 class="text-center" v-if="!$adaptive.isMobile">Этот курс является платным</h1>
+                            <h2 class="text-center" v-else>Этот курс является платным</h2>
+                            <div class="text-center white--text font-16" :class="[!$adaptive.isMobile && 'mt-4']">
+                              После оплаты все уроки курса будут доступны вам в любое время
+                            </div>
+                            <Button :small="$adaptive.isMobile" :class="['white_button', $adaptive.isMobile ? 'mt-3' : 'mt-9']" @submit="buyCourse">Купить за {{course.cost}} ₽</Button>
+                            <div class="course-info views"><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-eye</v-icon>{{course.countViews}}</div>
+                            <div class="course-info duration "><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-clock-time-four-outline</v-icon>{{course.totalDuration}}</div>
+                          </div>
+                        </div>
+                      </v-responsive>
                         <v-row
                             no-gutters
                             :class="['mt-4 justify-center']"
@@ -240,6 +257,7 @@ import Router from 'vue-router';
 import {ReviewsFormName} from '../../../form/reviews/reviewsForm.types';
 import TextHide from '../../components/common/TextHide.vue';
 import {eventBus} from '../../../main';
+import {CommentsStore} from '../../../store/modules/Comments';
 @Component({
     components: {
       TextHide,
@@ -279,7 +297,7 @@ export default class Course extends Vue {
     @Watch('$route.params.lessonId', { immediate: true })
     async onChangeRoute(val: string, oldVal: string): Promise<void> {
         await this.fetchData();
-        await ReviewsStore.fetchAll(this.$route.params.id);
+        await ReviewsStore.fetchAll({route: this.$route.params.id});
         await this.autoDescriptionHeight();
         await this.reviewsForm.clearData();
         this.isSetReview = false;
@@ -301,6 +319,10 @@ export default class Course extends Vue {
 
     beforeUpdate(): void {
         this.componentKey += 0;
+    }
+
+    beforeDestroy(): void {
+      window.removeEventListener('scroll', this.fetchReviews);
     }
 
   proceed(id: number): void {
@@ -361,7 +383,7 @@ export default class Course extends Vue {
 
     startTimer(): void {
         this.interval = setTimeout(() => {
-            ReviewsStore.fetchAll(this.$route.params.lessonId);
+            ReviewsStore.fetchAll({route: this.$route.params.id});
             this.startTimer();
         }, 10000);
     }
@@ -440,6 +462,26 @@ export default class Course extends Vue {
         Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
     }
 
+  buyCourse(): void {
+    console.log(1);
+  }
+
+  fetchReviews = (): void => {
+    const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+    if (bottomOfWindow && this.reviews.length % 100 === 0) {
+      setTimeout(e => {
+        ReviewsStore.fetchAll({
+          route: this.$route.params.id,
+          scroll: true
+        });
+      }, 300);
+    }
+  };
+
+  mounted(): void {
+    window.addEventListener('scroll', this.fetchReviews);
+  }
+
 
     async created(): Promise<void> {
         if (this.courseLoaded) {
@@ -453,7 +495,7 @@ export default class Course extends Vue {
             param: this.$route.params.id,
             relation: { is_like: true},
         });
-        await ReviewsStore.fetchAll(this.$route.params.id);
+        await ReviewsStore.fetchAll({route: this.$route.params.id});
         await this.reviewsForm.clearData();
         this.toggleOpenLikeDislikeForm = false;
         this.isSetReview = false;
@@ -466,14 +508,14 @@ export default class Course extends Vue {
   async handleLike(data: {form: string; formButton: boolean}): Promise<void> {
         if(this.course?.isDisliked) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
-            await ReviewsStore.fetchAll(this.$route.params.id);
+            await ReviewsStore.fetchAll({route: this.$route.params.id});
             Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
         }
 
         if (this.course?.isLiked) {
           if (!data.formButton) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
-            await ReviewsStore.fetchAll(this.$route.params.id);
+            await ReviewsStore.fetchAll({route: this.$route.params.id});
             Vue.set(this.course!, 'countLikes', this.course!.countLikes - 1);
             this.course!.isLiked = false;
             this.course!.isDisliked = false;
@@ -501,14 +543,14 @@ export default class Course extends Vue {
     async handleDisLike(data: {form: string; formButton: boolean}): Promise<void> {
         if(this.course?.isLiked) {
                 await RelationStore.deleteLikeDislike(this.$route.params.id);
-                await ReviewsStore.fetchAll(this.$route.params.id);
+                await ReviewsStore.fetchAll({route: this.$route.params.id});
                 Vue.set(this.course!, 'countLikes', this.course!.countLikes - 1);
         }
 
         if (this.course!.isDisliked) {
           if (!data.formButton) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
-            await ReviewsStore.fetchAll(this.$route.params.id);
+            await ReviewsStore.fetchAll({route: this.$route.params.id});
             this.course!.isDisliked = false;
             this.course!.isLiked = false;
             Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
@@ -562,7 +604,7 @@ export default class Course extends Vue {
             relation: { is_like: this.reviewsForm.isLike, reviewText: this.reviewsForm.reviewText },
         });
 
-        await ReviewsStore.fetchAll(this.$route.params.id);
+        await ReviewsStore.fetchAll({route: this.$route.params.id});
         await this.reviewsForm.clearData();
         this.isSetReview = false;
         this.toggleOpenLikeDislikeForm = false;

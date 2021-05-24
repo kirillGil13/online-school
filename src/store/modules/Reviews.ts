@@ -1,6 +1,6 @@
-import {getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
+import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import { IReviews } from '@/entity/reviews/reviews.types';
+import {IReviews} from '@/entity/reviews/reviews.types';
 
 @Module({
     namespaced: true,
@@ -18,13 +18,27 @@ class ReviewsModule extends VuexModule {
         this.reviews = [];
     }
 
-    @MutationAction
-    async fetchAll(id: string): Promise<{ reviews: IReviews[]; reviewsLoaded: boolean }> {
-        const reviews = await store.$repository.reviews.fetchAll(id);
+    @Mutation
+    setReviews(data: {reviews: IReviews[]; reviewsLoaded: boolean; scroll: boolean}): void {
+        if (!data.scroll) {
+            this.reviews = data.reviews;
+        } else {
+            this.reviews = this.reviews.concat(data.reviews);
+        }
+        this.reviewsLoaded = data.reviewsLoaded;
+    }
+
+    @Action({commit: 'setReviews'})
+    async fetchAll(data: { route: string; scroll?: boolean }): Promise<{ reviews: IReviews[]; reviewsLoaded: boolean; scroll: boolean }> {
+        const reviews = await store.$repository.reviews.fetchAll(data.route);
         let reviewsLoaded = false;
+        let scroll = false;
+        if (data.scroll) {
+            scroll = data.scroll;
+        }
         if (reviews)
             reviewsLoaded = true;
-        return { reviews, reviewsLoaded };
+        return {reviews, reviewsLoaded, scroll};
     }
 }
 
