@@ -132,7 +132,7 @@ export default class ProfileSubs extends Vue {
 
   async subscribe(subType: string): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/camelcase
-    window.location.href = await SubscriptionStore.subscribe({subscription_type: subType});
+    // window.location.href = await SubscriptionStore.subscribe({subscription_type: subType});
   }
 
   async unSub(): Promise<void> {
