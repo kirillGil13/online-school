@@ -5,6 +5,7 @@ import {TrainingTabsNameEnum} from '@/entity/tabs/trainingTabs.types';
 import {PresentationTabsNameEnum} from '@/entity/tabs/presentationTabs.types';
 import {OrganizationTabsNameEnum} from '@/entity/tabs/organizationTabs.types';
 import {ProfileTabsNameEnum} from '@/entity/tabs/profileTabs.types';
+import {TodoTabsNameEnum} from '@/entity/tabs/todoTabs.types';
 
 
 @Module({
@@ -126,7 +127,60 @@ class TabsModule extends VuexModule {
             component: OrganizationTabsNameEnum.OrganizationGroup
         },
 
+    ];
+
+    todoTabs: ITabs[] = [
+        {
+            id: 'income',
+            title: 'Входящие',
+            filter: false,
+            iconName: 'Income',
+            component: TodoTabsNameEnum.TodoIncome
+        },
+        {
+            id: 'today',
+            title: 'Сегодня',
+            filter: false,
+            iconName: 'Star_small',
+            component: TodoTabsNameEnum.TodoToday
+        },
+        {
+            id: 'plans',
+            title: 'Планы',
+            filter: false,
+            iconName: 'Plans',
+            component: TodoTabsNameEnum.TodoPlans
+        },
+        {
+            id: 'any_times',
+            title: 'В любое время',
+            filter: false,
+            iconName: 'Any_times',
+            component: TodoTabsNameEnum.TodoAnyTimes
+        },
+        {
+            id: 'some_day',
+            title: 'Когда-нибудь',
+            filter: false,
+            iconName: 'Box',
+            component: TodoTabsNameEnum.TodoSomeDay
+        },
+        {
+            id: 'journal',
+            title: 'Журнал',
+            filter: false,
+            iconName: 'Archive',
+            component: TodoTabsNameEnum.TodoJournal
+        },
     ]
 }
 
 export const TabsStore = getModule(TabsModule);
+
+
+// { id: 'income', title: 'Входящие', iconName: 'Income' },
+// { id: 'today', title: 'Сегодня', iconName: 'Star_small' },
+// { id: 'plans', title: 'Планы', iconName: 'Plans' },
+// { id: 'any_times', title: 'В любое время', iconName: 'Any_times' },
+// { id: 'some_day', title: 'Когда-нибудь', iconName: 'Box' },
+// { id:  'jornal', title: 'Журнал', iconName: 'Archive' },
