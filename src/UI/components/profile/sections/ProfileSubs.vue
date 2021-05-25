@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="mt-3 pr-1" no-gutters>
-      <v-col class="sub-container pa-4 mr-3 d-flex flex-column justify-space-between" :style="{borderColor: (user.subExist(subType.month)) && '#426DF6'}">
+      <v-col class="sub-container pa-4 d-flex flex-column justify-space-between" :class="[!$adaptive.isMobile && 'mr-3']" :style="{borderColor: (user.subExist(subType.month)) && '#426DF6'}">
         <div>
           <div class="font-weight-bold text-center" :style="{color: '#426df6'}">
             <span class="font-18">1 месяц</span>
@@ -24,7 +24,7 @@
         </div>
         <div>
           <Button class="mt-4" @submit="unSub" v-if="user.subscription.isActual !== null && user.subscription.subType === subType.month" :disabled="user.subscription.isActual === false" small full-width>Отменить подписку</Button>
-          <Button class="mt-4" v-else @submit="subscribe(subType.year)" :disabled="!checkSub1" small full-width>Оформить за 399 ₽</Button>
+          <Button class="mt-4" v-else @submit="subscribe(subType.year)" :disabled="subBtnDisabled1" small full-width>Оформить за 399 ₽</Button>
           <template v-if="user.subscription.isTestPeriod !== null && user.subExist(subType.month) !== null && user.subExist(subType.month) === true">
             <div class="sub-desc mt-2" v-if="user.subscription.isTestPeriod">
               Отменяя подписку сейчас, Вы прекращаете ее действие. Также, повторный тестовый период будет не доступен.
@@ -53,7 +53,7 @@
           </div>
         </div>
       </v-col>
-      <v-col class="sub-container pa-4 d-flex flex-column justify-space-between" :style="{borderColor: (user.subExist(subType.year)) && '#426DF6'}">
+      <v-col class="sub-container pa-4 d-flex flex-column justify-space-between" :class="[$adaptive.isMobile && 'mt-3']" :style="{borderColor: (user.subExist(subType.year)) && '#426DF6'}">
         <div>
           <div class="font-weight-bold text-center" :style="{color: '#426df6'}">
             <span class="font-18">12 месяцев</span>
@@ -76,7 +76,7 @@
         </div>
         <div>
           <Button class="mt-4" @submit="unSub" v-if="user.subscription.isActual !== null && user.subscription.subType === subType.year" :disabled="user.subscription.isActual === false" small full-width>Отменить подписку</Button>
-          <Button class="mt-4" @submit="subscribe(subType.year)" v-else :disabled="!checkSub2" small full-width>Оформить за 3990 ₽</Button>
+          <Button class="mt-4" @submit="subscribe(subType.year)" v-else :disabled="subBtnDisabled2" small full-width>Оформить за 3990 ₽</Button>
           <template v-if="user.subscription.isTestPeriod !== null && user.subExist(subType.year) !== null && user.subExist(subType.year) === true">
             <div class="sub-desc mt-2" v-if="user.subscription.isTestPeriod">
               Отменяя подписку сейчас, Вы прекращаете ее действие. Также, повторный тестовый период будет не доступен.
@@ -132,13 +132,25 @@ export default class ProfileSubs extends Vue {
 
   async subscribe(subType: string): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/camelcase
-    // window.location.href = await SubscriptionStore.subscribe({subscription_type: subType});
+    window.location.href = await SubscriptionStore.subscribe({subscription_type: subType});
   }
 
   async unSub(): Promise<void> {
     if (await SubscriptionStore.delete()) {
       window.location.reload();
     }
+  }
+
+  get subBtnDisabled1(): boolean {
+    if (this.user!.subscription.isActual === null) {
+      return !this.checkSub1;
+    } else return true;
+  }
+
+  get subBtnDisabled2(): boolean {
+    if (this.user!.subscription.isActual === null) {
+      return !this.checkSub2;
+    } else return true;
   }
 
   get user(): IUser | null {
