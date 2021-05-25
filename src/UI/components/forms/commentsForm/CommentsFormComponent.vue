@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters :class="['message-container d-flex flex-row align-start mt-2', form.author ? '' : 'pt-3']">
+  <v-row no-gutters :class="['discussion-container d-flex flex-row align-start mt-2', form.author ? '' : 'pt-3']">
     <v-avatar size="36" class="mr-3" :color="user.photoLink ? '#F0F2F6' :randomColor(user.id % 10)">
       <template v-slot:default v-if="user.photoLink">
         <v-img :src="user.photoLink" alt=""/>
@@ -92,8 +92,8 @@ export default class CommentsFormComponent extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-.message-container {
+<style lang="scss">
+.discussion-container {
   flex-wrap: nowrap;
 
   .message-field {
@@ -104,7 +104,6 @@ export default class CommentsFormComponent extends Vue {
     width: 100%;
     text-indent: 16px;
     border: 1px solid rgba(66, 109, 246, 0.12);
-    //overflow: scroll;
     .v-input__slot {
       background: transparent !important;
       &::after {
