@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="mt-3 pr-1" no-gutters>
-      <v-col class="sub-container pa-4 mr-3 d-flex flex-column justify-space-between" :style="{borderColor: (user.subExist(subType.month)) && '#426DF6'}">
+      <v-col class="sub-container pa-4 d-flex flex-column justify-space-between" :class="[!$adaptive.isMobile && 'mr-3']" :style="{borderColor: (user.subExist(subType.month)) && '#426DF6'}">
         <div>
           <div class="font-weight-bold text-center" :style="{color: '#426df6'}">
             <span class="font-18">1 месяц</span>
@@ -53,7 +53,7 @@
           </div>
         </div>
       </v-col>
-      <v-col class="sub-container pa-4 d-flex flex-column justify-space-between" :style="{borderColor: (user.subExist(subType.year)) && '#426DF6'}">
+      <v-col class="sub-container pa-4 d-flex flex-column justify-space-between" :class="[$adaptive.isMobile && 'mt-3']" :style="{borderColor: (user.subExist(subType.year)) && '#426DF6'}">
         <div>
           <div class="font-weight-bold text-center" :style="{color: '#426df6'}">
             <span class="font-18">12 месяцев</span>
@@ -132,7 +132,7 @@ export default class ProfileSubs extends Vue {
 
   async subscribe(subType: string): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/camelcase
-    // window.location.href = await SubscriptionStore.subscribe({subscription_type: subType});
+    window.location.href = await SubscriptionStore.subscribe({subscription_type: subType});
   }
 
   async unSub(): Promise<void> {
