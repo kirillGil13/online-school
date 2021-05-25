@@ -1,4 +1,5 @@
 export enum ConfirmParams {
     Original = 'original',
-    Changed = 'changed'
+    Changed = 'changed',
+    SubCreated='success-payment'
 }
