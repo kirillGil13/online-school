@@ -1,5 +1,5 @@
 <template>
-  <div :class="['message d-flex mt-2', friend ? 'justify-start' : 'justify-end']">
+  <div :class="['message d-flex mt-2', friend ? 'justify-start' : 'justify-end']" :id="`message${idx + 1}`">
     <div :class="['message-cont', friend ? 'friend' : 'my-message']">
       <div class="message-body d-flex flex-row justify-space-between mt-1">
         <div class="text mr-7" v-if="body.photoLink.length === 0">{{body.text}}</div>
@@ -31,6 +31,7 @@ export default class Message extends Vue {
   @Prop() readonly body!: IMessages;
   @Prop() readonly date!: string;
   @Prop() readonly friend!: boolean;
+  @Prop() readonly idx!: number
 
   activator = false;
   imgs = '';

@@ -11,9 +11,8 @@
               <v-divider style="background-color: rgba(66, 109, 246, 0.12);;"/>
             </div>
            
-           <Message :date="message.createdAt.split(',')[1]" :body="message" :key="idx" :friend="message.isMy ? false : true"/>
+           <Message :date="message.createdAt.split(',')[1]" :body="message" :key="idx" :idx="idx" :friend="message.isMy ? false : true"/>
         </template>
-        
         
       </div>
       
@@ -37,9 +36,10 @@ import { MONTHS } from '@/constants/month';
 })
 export default class ChatMain extends Vue {
 
-  @Watch('$route.params.id', {immediate: true})
-  onChangeRoute(): void {
-    this.fetchData();
+  @Watch('$route.params.id')
+  async onChangeRoute(): Promise<void> {
+    await this.fetchData();
+    this.lastItems.scrollIntoView()
 
     const el = {
     type: "connect-to-dialog-type",
@@ -55,8 +55,24 @@ export default class ChatMain extends Vue {
     return WebSocketStore.socket;
   }
 
+  get messages(): IMessages[] {
+    const photo = MessagesStore.messages.find(el => el.photoLink)
+    return MessagesStore.messages
+  }
+
+  get lastItems(): HTMLElement {
+    console.log(document.getElementById(`message${this.messages.length}`) as HTMLElement)
+    return document.getElementById(`message${this.messages.length}`) as HTMLElement;
+  }
+
+  get parentElement(): HTMLElement {
+    return (this.$refs.chatDialogContainer as HTMLElement)
+  }
+
   async created(): Promise<void> {
-    this.fetchData();
+    await this.fetchData();
+    this.lastItems.scrollIntoView()
+    this.parentElement!.scrollTo(0, this.parentElement.scrollHeight * 10000);
 
     const el = {
     type: "connect-to-dialog-type",
@@ -68,16 +84,8 @@ export default class ChatMain extends Vue {
     this.socket!.send(JSON.stringify(el))
   }
 
-  get messages(): IMessages[] {
-    const photo = MessagesStore.messages.find(el => el.photoLink)
-    return MessagesStore.messages
-  }
-
   async fetchData(): Promise<void> {
     await  MessagesStore.fetchAll(this.$route.params.id.toString());
-    const container =  await document.getElementById('chatDialogContainer');
-
-    container!.scrollTop = await container!.scrollHeight
   }
 
   sendMessage(message: string): void {
@@ -115,9 +123,8 @@ export default class ChatMain extends Vue {
 }
 
 .scrool-container {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
+  overflow-y: auto;
+  max-height: 99%;
 }
 
 .data-title {
