@@ -19,7 +19,7 @@
                 </template>
             </v-list>
         </div>
-        <div class="d-flex todo__items" style="width: 100%"  @click.capture="showTextArea = false">
+        <div class="d-flex todo__items" style="width: 100%"  @click.self="showTextArea = false">
             <div class="items-title">
                 <svg-icon name="Star_big" style="width: 5%; height: 100%"/>
                 <span class="title-text">Сегодня</span>
@@ -69,6 +69,8 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import FormGroup from '../../components/common/form/FormGroup.vue';
 import Relation from '../../components/common/Relation.vue';
 import Button from '@/UI/components/common/Button.vue';
+import {ITabs} from '../../../entity/tabs/tabs.types';
+import {TabsStore} from '../../../store/modules/Tabs';
 
 @Component({
     components: {
@@ -86,6 +88,9 @@ export default class Candidates extends Vue {
         { id: 'some_day', title: 'Когда-нибудь', iconName: 'Box' },
         { id:  'jornal', title: 'Журнал', iconName: 'Archive' },
     ];
+    get tabs(): ITabs[] {
+        return TabsStore.profileTabs;
+    }
 
     showTextArea = false;
 
@@ -93,7 +98,7 @@ export default class Candidates extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .todo {
     background: none !important;
     display: flex;
@@ -186,6 +191,10 @@ export default class Candidates extends Vue {
 
     #jornal { 
         margin-top: 16px;
+    }
+
+    .v-list-item--dense .v-list-item__title, .v-list-item--dense .v-list-item__subtitle, .v-list--dense .v-list-item .v-list-item__title, .v-list--dense .v-list-item .v-list-item__subtitle {
+        font-size: 16px;
     }
 }
 </style>

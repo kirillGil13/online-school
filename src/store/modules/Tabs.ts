@@ -178,9 +178,3 @@ class TabsModule extends VuexModule {
 export const TabsStore = getModule(TabsModule);
 
 
-// { id: 'income', title: 'Входящие', iconName: 'Income' },
-// { id: 'today', title: 'Сегодня', iconName: 'Star_small' },
-// { id: 'plans', title: 'Планы', iconName: 'Plans' },
-// { id: 'any_times', title: 'В любое время', iconName: 'Any_times' },
-// { id: 'some_day', title: 'Когда-нибудь', iconName: 'Box' },
-// { id:  'jornal', title: 'Журнал', iconName: 'Archive' },

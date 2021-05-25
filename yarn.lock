@@ -4159,11 +4159,6 @@ fastclick-vue@^1.0.0:
   resolved "https://registry.yarnpkg.com/fastclick-vue/-/fastclick-vue-1.0.2.tgz#0a6854d04f67d0e4baa6ccfa4057170804f0a9b8"
   integrity sha512-Ih1iQMRNeNdanqt2ftVF/YwHHkDEWAp/VIgcPh5z2YK9cP6szWgSikq4dfeTcQXBMwbKzVp824dCbtTSAFiAuQ==
 
-fastclick@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/fastclick/-/fastclick-1.0.6.tgz#161625b27b1a5806405936bda9a2c1926d06be6a"
-  integrity sha1-FhYlsnsaWAZAWTa9qaLBkm0Gvmo=
-
 faye-websocket@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.10.0.tgz#4e492f8d04dfb6f89003507f6edbf2d501e7c6f4"
