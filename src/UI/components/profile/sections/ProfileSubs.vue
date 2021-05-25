@@ -15,7 +15,7 @@
             </div>
           </template>
           <div v-else-if="user.subscription.isTestPeriodAvailable" class="text-center mt-4">
-            7 дней бесплатно,<br>
+            7 дней за 1 ₽,<br>
             затем месяц за <strong>399 ₽</strong>
           </div>
           <div v-else class="text-center mt-4">
@@ -23,8 +23,8 @@
           </div>
         </div>
         <div>
-          <Button class="mt-4" @submit="unSub" v-if="user.subscription.isActual !== null && user.subscription.subType === subType.month" :disabled="user.subscription.isActual === false" small full-width>Отменить подписку</Button>
-          <Button class="mt-4" v-else @submit="subscribe(subType.year)" :disabled="subBtnDisabled1" small full-width>Оформить за 399 ₽</Button>
+          <Button class="mt-4" @submit="activator = true" v-if="user.subscription.isActual !== null && user.subscription.subType === subType.month" :disabled="user.subscription.isActual === false" small full-width>Отменить подписку</Button>
+          <Button class="mt-4" v-else @submit="subscribe(subType.month)" :disabled="subBtnDisabled1" small full-width>Оформить за 399 ₽</Button>
           <template v-if="user.subscription.isTestPeriod !== null && user.subExist(subType.month) !== null && user.subExist(subType.month) === true">
             <div class="sub-desc mt-2" v-if="user.subscription.isTestPeriod">
               Отменяя подписку сейчас, Вы прекращаете ее действие. Также, повторный тестовый период будет не доступен.
@@ -67,15 +67,15 @@
             </div>
           </template>
           <div v-else-if="user.subscription.isTestPeriodAvailable" class="text-center mt-4">
-            7 дней бесплатно,<br>
-            затем месяц за <strong>3 990 ₽</strong> вместо <strike>4 799 ₽</strike>
+            7 дней за 1 ₽,<br>
+            затем 12 месяцев за <strong>3 990 ₽</strong> вместо <strike>4 799 ₽</strike>
           </div>
           <div v-else class="text-center mt-4">
             Подписка на 12 месяцев за <strong>3990 ₽</strong>
           </div>
         </div>
         <div>
-          <Button class="mt-4" @submit="unSub" v-if="user.subscription.isActual !== null && user.subscription.subType === subType.year" :disabled="user.subscription.isActual === false" small full-width>Отменить подписку</Button>
+          <Button class="mt-4" @submit="activator = true" v-if="user.subscription.isActual !== null && user.subscription.subType === subType.year" :disabled="user.subscription.isActual === false" small full-width>Отменить подписку</Button>
           <Button class="mt-4" @submit="subscribe(subType.year)" v-else :disabled="subBtnDisabled2" small full-width>Оформить за 3990 ₽</Button>
           <template v-if="user.subscription.isTestPeriod !== null && user.subExist(subType.year) !== null && user.subExist(subType.year) === true">
             <div class="sub-desc mt-2" v-if="user.subscription.isTestPeriod">
@@ -111,6 +111,18 @@
       <br> по цене <strong>{{user.subscription.subType === subType.month ? '399 ₽ в мес.' : '3990 ₽ в год'}}</strong> начиная с <strong>{{user.subscription.expiresAt}}</strong>
       пока Вы не отмените ее по меньшей мере за день до этой даты.
     </div>
+    <Modal :activator="activator" :full-screen="$adaptive.isMobile" @activatorChange="activatorChange">
+      <template v-slot:content>
+        <div class="pa-5 d-flex flex-column justify-center">
+          <h2 class="text-center">Вы действительно хотите отменить подписку?</h2>
+          <div class="sub-desc text-center">При отмене подписки тестовый период больше не будет доступен</div>
+          <div class="d-flex flex-row mt-3">
+            <Button class="mr-3" full-width small @submit="unSub">Отменить</Button>
+            <Button class="secondary_blue" full-width small @submit="activator = false">Закрыть</Button>
+          </div>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -121,14 +133,20 @@ import {AuthStore} from '../../../../store/modules/Auth';
 import Button from '../../common/Button.vue';
 import {SubTypeName} from '../../../../entity/common/sub.types';
 import {SubscriptionStore} from '../../../../store/modules/Subscription';
+import Modal from '../../common/Modal.vue';
 @Component({
-  components: {Button}
+  components: {Modal, Button}
 })
 export default class ProfileSubs extends Vue {
 
+  activator = false;
   subType = SubTypeName;
   checkSub1 = false;
   checkSub2 = false;
+
+  activatorChange(act: boolean): void {
+    this.activator = act;
+  }
 
   async subscribe(subType: string): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/camelcase
