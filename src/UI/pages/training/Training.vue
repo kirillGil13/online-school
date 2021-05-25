@@ -31,9 +31,6 @@
         <MailFormComponent :form="mailForm" v-if="destroy" :levels="courseLevels" @close="close" @add="add"/>
       </template>
     </Modal>
-    <Alert :show="show" :type="alertType.Success"
-           text="Данные успешно отправлены"
-           @show="showAlert"/>
   </v-col>
 </template>
 <script lang="ts">
@@ -55,20 +52,17 @@ import {LeadersCoursesStore} from '../../../store/modules/LeadersCourses';
 import {ILeaderCourses} from '../../../entity/leaderCourses/leaderCourses.types';
 import {CourseLevelsStore} from '../../../store/modules/CourseLevels';
 import {ICourseLevels} from '../../../entity/courseLevels/courseLevels.types';
-import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import Modal from '../../components/common/Modal.vue';
 import MailFormComponent from '../../components/forms/mailForm/MailFormComponent.vue';
 import {MailForm} from '../../../form/mail/mailForm';
 import {MailStore} from '../../../store/modules/Mail';
-import { Validate } from '@/plugins/Vuelidate/Decorators';
-import { required} from 'vuelidate/lib/validators';
+import {eventBus} from '../../../main';
 
 @Component({
   components: {
     MailFormComponent,
     Modal,
-    Alert,
     FilterComponent,
     LeaderCourseItem,
     Button,
@@ -86,7 +80,6 @@ export default class Training extends Vue {
   mailForm: MailForm;
   destroy = true;
   activator = false;
-  show = false;
   dialog = false;
 
   constructor() {
@@ -140,10 +133,6 @@ export default class Training extends Vue {
     });
   }
 
-  showAlert(show: boolean): void {
-    this.show = show;
-  }
-
   activatorChange(act: boolean): void {
     this.destroy = true;
     this.activator = act;
@@ -183,7 +172,11 @@ export default class Training extends Vue {
 
   async add(): Promise<void> {
     if (await this.mailForm.submit(MailStore.create)) {
-      this.show = true;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertType.Success,
+        text: 'Данные успешно отправлены'
+      })
     }
     this.mailForm = new MailForm();
     this.rerender();

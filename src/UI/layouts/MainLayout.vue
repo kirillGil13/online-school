@@ -6,7 +6,7 @@
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
           <Sidebar :userInfo="user" :userId="user.id" :unReadMessages="unReadMessages" @proceed="proceed"/>
-          <Banner v-if="!user.isSubscriptionActual" @show="activator = true"/>
+          <Banner v-if="user.subscription.isActual === null" @show="activator = true"/>
         </div>
         <div class="content-main pt-0 mb-16">
           <v-main class="pb-7">
@@ -19,7 +19,6 @@
               />
             </v-col>
             <Alert :show="showAlertTemp" :type="type" :text="text" @show="showAlertTempAction"/>
-            <Alert :show="success" :type="alertType.Success" text="Ссылка успешно отправлена" @show="showAlert"/>
             <router-view></router-view>
           </v-main>
         </div>
@@ -98,10 +97,14 @@ export default class MainLayout extends Vue {
   activator = false;
   activatorCandidate = false;
   show = true;
-  success = false;
   alertType = AlertTypeEnum;
   destroy = true;
   candidateForm = new CandidateForm();
+
+  constructor() {
+    super();
+
+  }
 
   @Watch('$route.name')
   scrollTop(val: string, oldVal: string): void {
@@ -109,6 +112,15 @@ export default class MainLayout extends Vue {
         window.scroll(0, 0);
     }
   }
+
+  rerender(): void {
+    this.destroy = false;
+    this.$nextTick(() => {
+      this.destroy = true;
+    });
+  }
+
+  
 
   showAlertTempAction(show: boolean): void {
     this.showAlertTemp = show;
@@ -136,7 +148,6 @@ export default class MainLayout extends Vue {
 
     this.socket!.onmessage =  async (e) => {
       const {data} = JSON.parse(e.data)
-      console.log(data)
       data.is_read = !data.is_my && ( this.$route.name === (this.$routeRules.ChatMain || this.$routeRules.Course)) && this.$route.params.id === data.account_id.toString() ? true : false;
       MessagesStore.addMessage(data);
       
@@ -219,19 +230,6 @@ export default class MainLayout extends Vue {
     return DialogsStore.unReadMessages;
   }
 
-
-  rerender(): void {
-    this.destroy = false;
-    this.$nextTick(() => {
-      this.destroy = true;
-    });
-  }
-
-
-  showAlert(show: boolean): void {
-    this.success = show;
-  }
-
   proceed(): void {
     this.$router.push({name: this.$routeRules.Profile});
   }
@@ -268,17 +266,18 @@ export default class MainLayout extends Vue {
   }
 
   async mounted(): Promise<void> {
-    if (TourStore.newUser) {
-      this.$tours['tour'].start();
+    if (localStorage.getItem('newUser')) {
+      await this.$tours['tour'].start();
+      localStorage.removeItem('newUser');
     }
   }
 
   async sendCode(): Promise<boolean> {
-    const res = await ConfirmEmailStore.sendCode({email: this.user!.email});
-    if (res) {
-      this.success = true;
-      return true
-    } else return false;
+    await ConfirmEmailStore.sendCode({email: this.user!.email});
+    this.type = this.alertType.Success;
+    this.text = 'Ссылка успешно отправлена';
+    this.showAlertTemp = true;
+    return true
   }
 
   

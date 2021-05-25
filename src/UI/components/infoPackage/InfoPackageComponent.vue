@@ -5,14 +5,14 @@
         <template v-slot:placeholder>
           <CourseSkeleton/>
         </template>
-        <div class="course-info-container" v-if="user.isSubscriptionActual">
+        <div class="course-info-container" v-if="user.subscription.isActual !== null">
           <div class="course-info progress">
             <div class="text">
               <svg-icon name="Chart"></svg-icon>{{infoPackage.countViews}}
               <svg-icon name="Pack_Add_User"></svg-icon>{{infoPackage.countCandidates}}
             </div>
           </div>
-          <div class="share" @click.stop="share" v-if="user.isSubscriptionActual">
+          <div class="share" @click.stop="share" v-if="user.subscription.isActual !== null">
 <!--            <svg-icon v-clipboard="infoPackage.sharedLink" name="Share"></svg-icon>-->
             <v-icon size="18" color="#ffffff">mdi-export-variant</v-icon>
           </div>
@@ -20,7 +20,7 @@
       </v-img>
     </div>
     <div class="course-title">{{ infoPackage.name }}</div>
-    <div class="course-download" v-clipboard="infoPackage.sharedLink" :style="{cursor: !user.isSubscriptionActual && 'not-allowed'}" @click="$emit('copied')">
+    <div class="course-download" v-clipboard="infoPackage.sharedLink" :style="{cursor: user.subscription.isActual === null && 'not-allowed'}" @click="$emit('copied')">
       <svg-icon class="svg-wh" name="Copy" />
       <span>Скопировать ссылку</span>
     </div>

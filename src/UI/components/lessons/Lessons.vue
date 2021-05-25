@@ -13,23 +13,23 @@
                 v-for="(lesson, index) in course.lessons"
                 :key="index"
             >
-              <router-link :to="{name: $routeRules.Lesson, params: {lessonId: lesson.id.toString()}}"
-                          active-class="lesson-current" :id="`lesson${index}`"
-                          :class="[ course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED ? 'lesson-locked' : '']">
-                <svg-icon class="svg-wh" :name="course.resolveType(index, $route.params.lessonId)"></svg-icon>
-                <div class="lesson_name">
-                  <span class="desc d-flex justify-space-between">Урок {{ lesson.number }} </span>
-                  {{ lesson.name }}
-                </div>
-                <span class="lesson_duration">{{lesson.duration}}</span>
-              </router-link>
+              <router-link :to="course.cost === 0 && {name: $routeRules.Lesson, params: {lessonId: lesson.id.toString()}}"
+                         active-class="lesson-current" :id="`lesson${index}`"
+                         :class="[ (course.resolveType(index, $route.params.lessonId) === lessonType.LOCKED || user.subscription.isActual === null || course.cost > 0) ? 'lesson-locked' : '']">
+              <svg-icon class="svg-wh" :name="user.subscription.isActual && course.cost === 0 ? course.resolveType(index, $route.params.lessonId) : lessonType.LOCKED"></svg-icon>
+              <div class="lesson_name">
+                <span class="desc d-flex justify-space-between">Урок {{ lesson.number }} </span>
+                {{ lesson.name }}
+              </div>
+              <span class="lesson_duration">{{lesson.duration}}</span>
+            </router-link>
             </li>
           </ul>
         </v-col>
         <div class="chat-container" ref="chatContainer" id="chatContainer" v-else>
           <SingleChat :course="course" style="width: 100% !important"/>
         </div>
-        <div v-if="!isChat" class="lesson-btn pa-2" :style="{justifyContent: last ? 'flex-start' : '', width: '100%'}">
+        <div v-if="!isChat || !$adaptive.isMobile && $route.name === $routeRules.Lesson" class="lesson-btn pa-2" :style="{justifyContent: last ? 'flex-start' : '', width: '100%'}" >
           <v-col  class="d-flex pa-0" style="width: 100%;">
             <Button  @submit="toggleOpenChat" class="d-flex justify-center align-center mt-0" style="width: 100%"><svg-icon class="mr-2" name="Chat"></svg-icon><span style="font-size: 12px;">Задать вопрос</span></Button>
             <Button :class="['with_icon secondary_white ml-3 d-flex justify-center', $adaptive.isMobile ? 'py-4' : '']"
@@ -55,6 +55,8 @@ import {ICourseItem} from '@/entity/courseItem/courseItem.type';
 import SingleChat from '../../components/chat/singleChat/SingleChat.vue';
 import SendMessage  from '../../components/chat/singleChat/sendMessage/SendMessage.vue';
 import {WebSocketStore} from '../../../store/modules/WebSocket';
+import {IUser} from '../../../entity/user';
+import {AuthStore} from '../../../store/modules/Auth';
 
 @Component({
   components: {
@@ -102,6 +104,10 @@ export default class Lessons extends Vue {
 
     const container =  document.getElementById('chatContainer');
     container!.scrollTop = container!.scrollHeight;
+  }
+  
+  get user(): IUser | null {
+    return AuthStore.user;
   }
 }
 </script>

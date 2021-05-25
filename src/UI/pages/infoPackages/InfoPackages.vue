@@ -26,21 +26,20 @@ import {InfoPackagesStore} from '../../../store/modules/InfoPackages';
 import {IInfoPackage} from '../../../entity/infoPackages/infoPackage.types';
 import {IUser} from '../../../entity/user';
 import {AuthStore} from '../../../store/modules/Auth';
-import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import SubscribeFormalization from '../../components/subscribeFormalization/SubscribeFormalization.vue';
 import Modal from '../../components/common/Modal.vue';
 import {eventBus} from '../../../main';
 
 @Component({
-  components: {Modal, SubscribeFormalization, Alert, Header, InfoPackageComponent}
+  components: {Modal, SubscribeFormalization, Header, InfoPackageComponent}
 })
 export default class InfoPackages extends Vue {
   alertType = AlertTypeEnum;
   activatorSub = false;
 
   proceed(id: number): void {
-    if (this.user!.isSubscriptionActual) {
+    if (this.user!.subscription.isActual) {
       const routeData = this.$router.resolve({
         name: this.$routeRules.Landing,
         params: {id: id.toString()},
@@ -57,7 +56,7 @@ export default class InfoPackages extends Vue {
   }
 
   copied(): void {
-    if (this.user!.isSubscriptionActual) {
+    if (this.user!.subscription.isActual) {
       eventBus.$emit('showAlert', {
         show: true,
         type: this.alertType.Success,

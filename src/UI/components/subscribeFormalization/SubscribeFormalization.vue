@@ -23,12 +23,17 @@
             </div>
           </div>
         </div>
-        <Button :disabled="!checkSub1" small full-width @submit="subscribe">Оформить за 399 ₽</Button>
+        <Button :disabled="!checkSub1" small full-width @submit="subscribe(subType.month)">Оформить за 399 ₽</Button>
       </v-col>
-      <v-col :class="['d-flex flex-column box-container justify-center align-center pa-4', $adaptive.isMobile ? 'mt-4' : '']">
+      <v-col style="position: relative" :class="['d-flex flex-column box-container justify-center align-center pa-4', $adaptive.isMobile ? 'mt-4' : '']">
+        <div class="sail">
+          <div class="white--text text-center">Выгода -10%</div>
+        </div>
         <div class="subs-title">12 месяцев</div>
-        <div class="text-center mt-4">7 дней бесплатно,<br>
-          затем месяц за <strong>3 990 ₽</strong> вместо <strike>4 799 ₽</strike></div>
+        <div class="text-center mt-4">
+          7 дней бесплатно,<br>
+          затем месяц за <strong>3 990 ₽</strong> вместо <strike>4 799 ₽</strike>
+        </div>
         <div class="d-flex align-start flex-row mt-4">
           <v-checkbox
               dense
@@ -43,7 +48,7 @@
             </div>
           </div>
         </div>
-        <Button :disabled="!checkSub2" small full-width @submit="subscribe">Оформить за 3 990 ₽</Button>
+        <Button :disabled="!checkSub2" small full-width @submit="subscribe(subType.year)">Оформить за 3 990 ₽</Button>
       </v-col>
     </v-row>
     <div class="info-desc text-center mt-8">Отменить подписку можно в любой момент</div>
@@ -55,16 +60,19 @@ import {Component, Vue} from 'vue-property-decorator';
 import Subscription from '../subscription/Subscription.vue';
 import Button from '../common/Button.vue';
 import {SubscriptionStore} from '../../../store/modules/Subscription';
+import {SubTypeName} from '../../../entity/common/sub.types';
 @Component({
   components: {Button, Subscription}
 })
 export default class SubscribeFormalization extends Vue {
+  subType = SubTypeName;
   checkSub1 = false;
   checkSub2 = false;
-  async subscribe(): Promise<void> {
-    if (await SubscriptionStore.subscribe()) {
-      window.location.reload();
-    }
+
+
+  async subscribe(subType: string): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    window.location.href = await SubscriptionStore.subscribe({subscription_type: subType});
   }
 }
 </script>
@@ -81,6 +89,22 @@ export default class SubscribeFormalization extends Vue {
   .v-label {
     font-size: 12px !important;
     margin-left: 4px !important;
+  }
+}
+.sail {
+  position: absolute;
+  top: 16px;
+  left: -5px;
+  width: 64px;
+  border-radius: 4px 4px 4px 0px;
+  background: #E64646;
+  font-size: 12px;
+  padding: 6px 10px;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -7px;
+    border: 3px solid transparent; border-top: 4px solid #BE2F2F; border-right: 2px solid #BE2F2F;
   }
 }
 </style>

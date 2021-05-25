@@ -37,7 +37,7 @@
                 <div class="d-flex"><svg-icon class="align-self-center mr-2" name="Chosen"></svg-icon>Избранное</div>
                 <v-icon color="#4F79FF">mdi-chevron-right</v-icon>
               </div>
-              <!--              <Button v-if="user.isSubscriptionActual" @submit="unSub" full-width small class="py-3 mt-2">Отменить подписку</Button>-->
+<!--              <Button @submit="unSub" full-width small class="py-3 mt-2">Отменить подписку</Button>-->
               <Button @submit="logOut" full-width small class="secondary_blue py-3 mt-2">Выйти</Button>
             </div>
           </v-col>
@@ -47,7 +47,7 @@
                 <v-col cols="12" class="profile__col">
                   <v-tabs show-arrows class="mb-2" color="#426DF6" v-model="activeName">
                     <v-tabs-slider color="#426DF6"></v-tabs-slider>
-                    <v-tab v-for="(item, index) in tabs" :key="index">{{ item.title }}</v-tab>
+                    <v-tab :ripple="false" v-for="(item, index) in tabs" :key="index" :style="{borderRadius: '8px'}">{{ item.title }}</v-tab>
                   </v-tabs>
                   <v-tabs-items v-model="activeName">
                     <v-divider></v-divider>
@@ -61,6 +61,7 @@
                             @saveMain="saveMain"
                             @saveContact="saveContact"
                             @changeEmail="changeEmail"
+                            style="margin-right: 2px; margin-left: 2px;"
                         />
                       </keep-alive>
                     </v-tab-item>
@@ -77,12 +78,6 @@
         <PictureCropper :image="image" @close="close" @setImage="setImage"/>
       </template>
     </Modal>
-    <Alert :show="show" :type="alertType.Success"
-           text="Данные успешно изменены"
-           @show="showAlert"/>
-    <Alert :show="showEmail" :type="alertType.Success"
-           text="Ссылка успешно отправлена"
-           @show="showEmailAlert"/>
   </v-row>
 </template>
 
@@ -100,7 +95,6 @@ import {IUser} from '@/entity/user';
 import Header from '@/UI/components/common/Header.vue';
 import {ProfileMainInfoForm} from '@/form/profile/mainInfo/ProfileMainInfoForm';
 import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactDataForm';
-import Alert from '@/UI/components/common/Alert.vue';
 import {PictureUploadStore} from '../../../store/modules/PictureUpload';
 import {IPictureUpload} from '../../../entity/common/pictureUpload.types';
 import Modal from '../../components/common/Modal.vue';
@@ -114,9 +108,12 @@ import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import {ChangeEmailForm} from '../../../form/changeEmail/changeEmail';
 import {ChangeEmailStore} from '../../../store/modules/ChangeEmail';
 import {SubscriptionStore} from '../../../store/modules/Subscription';
+import {eventBus} from '../../../main';
+import ProfileSubs from '../../components/profile/sections/ProfileSubs.vue';
 
 @Component({
   components: {
+    ProfileSubs,
     PictureCropper,
     Modal,
     Badge,
@@ -126,7 +123,6 @@ import {SubscriptionStore} from '../../../store/modules/Subscription';
     ProfileContactData,
     ProfileAvatarChange,
     Header,
-    Alert,
     ProfileMain,
     ProfileContact,
   },
@@ -142,8 +138,6 @@ export default class Profile extends Vue {
   image = '';
   activator = false;
   destroy = true;
-  show = false;
-  showEmail = false;
   alertType = AlertTypeEnum;
   reader = new FileReader();
 
@@ -204,14 +198,6 @@ export default class Profile extends Vue {
     this.activator = false;
   }
 
-  showAlert(show: boolean): void {
-    this.show = show;
-  }
-
-  showEmailAlert(show: boolean): void {
-    this.show = show;
-  }
-
   activatorChange(act: boolean): void {
     this.activator = act;
   }
@@ -244,7 +230,11 @@ export default class Profile extends Vue {
 
   async changeEmail(): Promise<void> {
     if (await this.changeEmailForm.submit(ChangeEmailStore.sendCode)) {
-      this.showEmail = true;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertType.Success,
+        text: 'Ссылка успешно отправлена'
+      })
     }
   }
 
@@ -270,7 +260,11 @@ export default class Profile extends Vue {
       lastName: this.mainInfoForm.surname,
       description: this.mainInfoForm.description
     })) {
-      this.show = true;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertType.Success,
+        text: 'Данные успешно изменены'
+      })
       await AuthStore.fetch();
     }
   }
@@ -287,7 +281,11 @@ export default class Profile extends Vue {
       // eslint-disable-next-line @typescript-eslint/camelcase
       site_link: this.contactDataForm.siteLink
     })) {
-      this.show = true;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertType.Success,
+        text: 'Данные успешно изменены'
+      })
       await AuthStore.fetch();
     }
   }
@@ -360,5 +358,11 @@ export default class Profile extends Vue {
 
 .grid-conten {
   min-height: 32px;
+}
+.v-tabs .v-tab--active:focus::before {
+  border-radius: 8px;
+}
+.v-tab:before {
+  border-radius: 8px;
 }
 </style>

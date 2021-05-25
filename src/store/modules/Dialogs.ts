@@ -29,7 +29,6 @@ class DialogsModule extends VuexModule {
 
     @Mutation
     setUnReadMessage(data:{count: number, operation: string}): void {
-        console.log(data.operation)
         
         if(data.operation === 'plus') {
             this.unReadMessages += data.count;

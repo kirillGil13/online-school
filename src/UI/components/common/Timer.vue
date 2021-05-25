@@ -1,6 +1,6 @@
 <template>
     <v-col class="pa-0">
-        <div class="timer">{{ currentTimeTemp }} сек.</div>
+        <div class="timer mr-0">{{ currentTimeTemp }} сек.</div>
     </v-col>
 </template>
 <script lang="ts">

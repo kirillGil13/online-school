@@ -6,7 +6,7 @@
           <div class="container">
             <v-col class="pa-0">
               <v-row class="ma-0">
-                <v-col :cols="$adaptive.isMobile ? 4 : 2" class="pa-0">
+                <v-col cols="auto" class="pa-0 mr-3">
                   <v-avatar
                       :color="leader.photoLink ? '#F0F2F6' :randomColor(leader.id % 10)"
                       :size="$adaptive.isMobile ? 46 : 66"
@@ -20,9 +20,9 @@
                 </v-col>
               </v-row>
             </v-col>
-            <v-col class="leader-action pa-0">
-              <!--              <Button class="py-3">Подписаться</Button>-->
-            </v-col>
+<!--            <v-col class="leader-action pa-0">-->
+<!--              &lt;!&ndash;              <Button class="py-3">Подписаться</Button>&ndash;&gt;-->
+<!--            </v-col>-->
           </div>
           <div :class="['leader_page__desc wrap-text', $adaptive.isMobile ? 'mt-1' : 'mt-3']"
                v-if="leader.description !== null" v-html="leader.description">

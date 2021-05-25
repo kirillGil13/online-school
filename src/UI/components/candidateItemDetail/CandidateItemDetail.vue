@@ -35,7 +35,7 @@
                 </Select>
 
                 <div class="d-flex align-start justify-center flex-column ml-3">
-                    <div v-if="item && item.callTime" style="font-size: 16px; color: #101010; cursor: pointer" @click="$emit('candidateChangeCallTimeDetails', item.id)">Позвонить {{item.callTime}}</div>
+                    <div v-if="item && item.callTime" style="font-size: 16px; color: #426DF6 !important; cursor: pointer" @click="$emit('candidateChangeCallTimeDetails', item.id)">Позвонить {{item.callTime}}</div>
                     <div style="font-size: 16px; color: #101010; cursor: pointer" v-else-if="item && item.status.id === 3" @click="$emit('candidateChangeCallTimeDetails', item.id)">{{item && item.status.name}}</div>
                     <div style="font-size: 16px; color: #101010;" v-else>{{ item && item.status.name}}</div>
                 </div>

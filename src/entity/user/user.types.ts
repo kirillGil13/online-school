@@ -1,3 +1,5 @@
+import {SubTypeName} from '@/entity/common/sub.types';
+
 export interface IUser {
     id: number;
     email: string;
@@ -15,7 +17,16 @@ export interface IUser {
     initials: string;
     fullName: string;
     siteLink: string;
-    isSubscriptionActual: boolean;
+    subscription: IUserSubscription;
+    subExist(type: string): boolean | null;
+}
+
+export interface IUserSubscription {
+    isActual: boolean | null;
+    expiresAt: string | null;
+    isTestPeriod: boolean | null;
+    isTestPeriodAvailable: boolean;
+    subType: string | null;
 }
 
 export type UserResponseType = {
@@ -33,8 +44,15 @@ export type UserResponseType = {
     description: string;
     photoLink: string;
     site_link: string;
-    is_subscription_actual: boolean;
+    subscription: UserSubscriptionResponseType;
 };
+ export type UserSubscriptionResponseType = {
+     is_actual: boolean | null;
+     expires_at: number | null;
+     is_test_period: boolean | null;
+     is_test_period_available: boolean;
+     sub_type: string | null;
+ }
 
 export type UserUpdateRequestType = {
     name?: string;

@@ -31,7 +31,7 @@
                         v-if="!$route.params.lessonId"
                         :style="{ width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : '' }"
                     >
-                        <v-responsive :aspect-ratio="16 / 9" content-class="course-container" @click="pushToCurrent">
+                        <v-responsive :aspect-ratio="16 / 9" content-class="course-container" v-if="course.cost === 0" @click="pushToCurrent">
                             <v-img
                                 :aspect-ratio="16 / 9"
                                 width="100%"
@@ -44,6 +44,23 @@
                                 <div class="course-info duration "><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-clock-time-four-outline</v-icon>{{course.totalDuration}}</div>
                             </v-img>
                         </v-responsive>
+                      <v-responsive :aspect-ratio="16 / 9" content-class="course-container" v-else>
+                        <div
+                            class="course-locked rounded-block"
+                            :style="{ backgroundImage: 'url(' + course.photoLink + ')' }"
+                        >
+                          <div class="background rounded-block d-flex flex-column align-center justify-center pa-3">
+                            <h1 class="text-center" v-if="!$adaptive.isMobile">Этот курс является платным</h1>
+                            <h2 class="text-center" v-else>Этот курс является платным</h2>
+                            <div class="text-center white--text font-16" :class="[!$adaptive.isMobile && 'mt-4']">
+                              После оплаты все уроки курса будут доступны вам в любое время
+                            </div>
+                            <Button :small="$adaptive.isMobile" :class="['white_button', $adaptive.isMobile ? 'mt-3' : 'mt-9']" @submit="buyCourse">Купить за {{course.cost}} ₽</Button>
+                            <div class="course-info views"><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-eye</v-icon>{{course.countViews}}</div>
+                            <div class="course-info duration "><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-clock-time-four-outline</v-icon>{{course.totalDuration}}</div>
+                          </div>
+                        </div>
+                      </v-responsive>
                         <v-row
                             no-gutters
                             :class="['mt-4 justify-center']"
@@ -53,14 +70,14 @@
                                 class="mb-4"
                                 :title="$adaptive.isMobile ? '' : 'Нравится'"
                                 :class="course.isLiked && 'like-active'"
-                                @click="user.isSubscriptionActual ? handleLike({form: formName.likeDislike, formButton: false}) : activator = true"
+                                @click="user.subscription.isActual !== null ? handleLike({form: formName.likeDislike, formButton: false}) : activator = true"
                             />
                             <Relation
                                 svg-class="svg-down"
                                 class="mb-4"
                                 :class="course.isDisliked && 'dislike-active'"
                                 svg-name="Finger"
-                                @click="user.isSubscriptionActual ? handleDisLike({form: formName.likeDislike, formButton: false}) : activator = true"
+                                @click="user.subscription.isActual !== null ? handleDisLike({form: formName.likeDislike, formButton: false}) : activator = true"
                                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
                             />
                             <Relation
@@ -86,7 +103,7 @@
                                 />
                             </template>
                         </v-row>
-                      <v-col v-if="!user.isSubscriptionActual" class="sub-card box-container d-flex flex-column justify-center align-center mb-6" :class="[$adaptive.isMobile ? 'pa-4' : 'pa-6']">
+                      <v-col v-if="user.subscription.isActual === null" class="sub-card box-container d-flex flex-column justify-center align-center mb-6" :class="[ $adaptive.isMobile ? 'pa-4' : 'pa-6']">
                         <Subscription/>
                         <Button class="with_icon subs_button" @submit="activator = true"><svg-icon name="Subs_Play_Btn" class="mr-2 svg-16"></svg-icon>Смотреть по подписке</Button>
                       </v-col>
@@ -115,7 +132,7 @@
                                       <Socials :class="[$adaptive.isMobile && 'mt-3 ml-3']" :vk="course.author.vk_link" :facebook-link="course.author.facebook_link"
                                                :instagram-link="course.author.instagram_link" :telegram="course.author.telegram" :site-link="course.author.site_link"/>
                                     </div>
-                                    <TextHide :text="course.author.description"/>
+                                    <TextHide :text="course.author.description" v-if="course.author.description"/>
                                 </div>
                             </div>
                             <h5 style="color: #5f739c; font-weight: 600; font-size: 12px">ОПИСАНИЕ КУРСА</h5>
@@ -159,7 +176,7 @@
                                         </div>
                                     </div>
                                     </div>
-                                    <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}" v-if="user.isSubscriptionActual">
+                                    <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}" v-if="user.subscription.isActual !== null">
                                         <Button @submit="toggleShowSetReview" :style="{width: $adaptive.isMobile && '100%'}">Написать отзыв</Button>
                                     </div>
                                 </div>
@@ -203,8 +220,6 @@
               <SubscribeFormalization/>
             </template>
           </Modal>
-          <Alert :show="showSuccess" :type="alertTypes.Info" @show="showSuccessAlert" text="Курс успешно добавлен в избранное"/>
-          <Alert :show="showError" :type="alertTypes.Info" @show="showErrorAlert" text="Курс успешно удален из избранного"/>
         </v-row>
     </v-col>
 </template>
@@ -241,6 +256,8 @@ import {RouterNameEnum} from '../../../router/router.types';
 import Router from 'vue-router';
 import {ReviewsFormName} from '../../../form/reviews/reviewsForm.types';
 import TextHide from '../../components/common/TextHide.vue';
+import {eventBus} from '../../../main';
+import {CommentsStore} from '../../../store/modules/Comments';
 @Component({
     components: {
       TextHide,
@@ -265,8 +282,6 @@ export default class Course extends Vue {
         name: this.$routeRules.TrainingMain,
         label: 'Вернуться к списку курсов',
     };
-    showSuccess = false;
-    showError = false;
     alertTypes = AlertTypeEnum;
     activator = false;
     interval!: NodeJS.Timeout;
@@ -282,7 +297,7 @@ export default class Course extends Vue {
     @Watch('$route.params.lessonId', { immediate: true })
     async onChangeRoute(val: string, oldVal: string): Promise<void> {
         await this.fetchData();
-        await ReviewsStore.fetchAll(this.$route.params.id);
+        await ReviewsStore.fetchAll({route: this.$route.params.id});
         await this.autoDescriptionHeight();
         await this.reviewsForm.clearData();
         this.isSetReview = false;
@@ -306,24 +321,17 @@ export default class Course extends Vue {
         this.componentKey += 0;
     }
 
-
-    showSuccessAlert(show: boolean): void {
-        this.showSuccess = show;
+    beforeDestroy(): void {
+      window.removeEventListener('scroll', this.fetchReviews);
     }
 
     proceed(id: number): void {
         this.$router.push({name: RouterNameEnum.LeaderPage, params: {id: id.toString()}});
     }
 
-    showErrorAlert(show: boolean): void {
-        this.showError = show;
-    }
-
-
     activatorChange(act: boolean): void {
         this.activator = act;
     }
-
 
     get user(): IUser | null {
         return AuthStore.user;
@@ -351,7 +359,7 @@ export default class Course extends Vue {
 
     startTimer(): void {
         this.interval = setTimeout(() => {
-            ReviewsStore.fetchAll(this.$route.params.lessonId);
+            ReviewsStore.fetchAll({route: this.$route.params.id});
             this.startTimer();
         }, 10000);
     }
@@ -383,7 +391,7 @@ export default class Course extends Vue {
     }
 
     pushToCurrent(): void {
-     if (this.user!.isSubscriptionActual) {
+     if (this.user!.subscription.isActual) {
        this.$router.push({
          name: this.$routeRules.Lesson,
          params: { lessonId: this.findCurrent(this.course!.lessons).toString() },
@@ -453,6 +461,26 @@ export default class Course extends Vue {
         Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
     }
 
+  buyCourse(): void {
+    console.log(1);
+  }
+
+  fetchReviews = (): void => {
+    const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+    if (bottomOfWindow && this.reviews.length % 100 === 0) {
+      setTimeout(e => {
+        ReviewsStore.fetchAll({
+          route: this.$route.params.id,
+          scroll: true
+        });
+      }, 300);
+    }
+  };
+
+  mounted(): void {
+    window.addEventListener('scroll', this.fetchReviews);
+  }
+
 
     async created(): Promise<void> {
         if (this.courseLoaded) {
@@ -466,7 +494,7 @@ export default class Course extends Vue {
             param: this.$route.params.id,
             relation: { is_like: true},
         });
-        await ReviewsStore.fetchAll(this.$route.params.id);
+        await ReviewsStore.fetchAll({route: this.$route.params.id});
         await this.reviewsForm.clearData();
         this.toggleOpenLikeDislikeForm = false;
         this.isSetReview = false;
@@ -479,14 +507,14 @@ export default class Course extends Vue {
   async handleLike(data: {form: string; formButton: boolean}): Promise<void> {
         if(this.course?.isDisliked) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
-            await ReviewsStore.fetchAll(this.$route.params.id);
+            await ReviewsStore.fetchAll({route: this.$route.params.id});
             Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
         }
 
         if (this.course?.isLiked) {
           if (!data.formButton) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
-            await ReviewsStore.fetchAll(this.$route.params.id);
+            await ReviewsStore.fetchAll({route: this.$route.params.id});
             Vue.set(this.course!, 'countLikes', this.course!.countLikes - 1);
             this.course!.isLiked = false;
             this.course!.isDisliked = false;
@@ -514,14 +542,14 @@ export default class Course extends Vue {
     async handleDisLike(data: {form: string; formButton: boolean}): Promise<void> {
         if(this.course?.isLiked) {
                 await RelationStore.deleteLikeDislike(this.$route.params.id);
-                await ReviewsStore.fetchAll(this.$route.params.id);
+                await ReviewsStore.fetchAll({route: this.$route.params.id});
                 Vue.set(this.course!, 'countLikes', this.course!.countLikes - 1);
         }
 
         if (this.course!.isDisliked) {
           if (!data.formButton) {
             await RelationStore.deleteLikeDislike(this.$route.params.id);
-            await ReviewsStore.fetchAll(this.$route.params.id);
+            await ReviewsStore.fetchAll({route: this.$route.params.id});
             this.course!.isDisliked = false;
             this.course!.isLiked = false;
             Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
@@ -553,13 +581,19 @@ export default class Course extends Vue {
         if (!this.course!.isFavourite) {
             await RelationStore.postFavourite(this.$route.params.id); //eslint-disable-line
             await this.fetchData();
-            this.showError = false;
-            this.showSuccess = true;
+          eventBus.$emit('showAlert', {
+            show: true,
+            type: this.alertTypes.Info,
+            text: 'Курс успешно добавлен в избранное'
+          })
         } else {
             await RelationStore.deleteFavourite(this.$route.params.id);
             await this.fetchData();
-            this.showSuccess = false;
-            this.showError = true;
+          eventBus.$emit('showAlert', {
+            show: true,
+            type: this.alertTypes.Info,
+            text: 'Курс успешно удален из избранного'
+          })
         }
     }
 
@@ -569,7 +603,7 @@ export default class Course extends Vue {
             relation: { is_like: this.reviewsForm.isLike, reviewText: this.reviewsForm.reviewText },
         });
 
-        await ReviewsStore.fetchAll(this.$route.params.id);
+        await ReviewsStore.fetchAll({route: this.$route.params.id});
         await this.reviewsForm.clearData();
         this.isSetReview = false;
         this.toggleOpenLikeDislikeForm = false;

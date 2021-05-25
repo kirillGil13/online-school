@@ -15,7 +15,7 @@
                       </div>
                     </div>
                     <div class="review-text__actions">
-                        <div class="review-text__set-review">
+                         <div class="review-text__set-review">
                            <FormGroup
                              :form="form" show-custom-error 
                              field="reviewText"

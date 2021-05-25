@@ -159,11 +159,6 @@ export default class Landing extends Vue {
       }
     } else {
       if (res) {
-        eventBus.$emit('showAlert', {
-          show: true,
-          type: this.alertType.Success,
-          text: 'Код успешно отправлен'
-        })
         return true;
       }
       return false;

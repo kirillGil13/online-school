@@ -1,4 +1,4 @@
-import {IUser, UserResponseType} from './user.types';
+import {IUser, IUserSubscription, UserResponseType} from './user.types';
 
 export class User implements IUser {
     id: number;
@@ -15,7 +15,7 @@ export class User implements IUser {
     photoLink: string;
     isEmailConfirmed: boolean;
     siteLink: string;
-    isSubscriptionActual: boolean
+    subscription: IUserSubscription;
 
     constructor(data: UserResponseType) {
         this.id = data.id;
@@ -32,14 +32,46 @@ export class User implements IUser {
         this.isLeader = data.isLeader;
         this.isEmailConfirmed = data.is_email_confirmed;
         this.siteLink = data.site_link;
-        this.isSubscriptionActual = true;
+        this.subscription = {
+            isActual: data.subscription.is_actual,
+            expiresAt: this.getTime(data.subscription.expires_at),
+            isTestPeriod: data.subscription.is_test_period,
+            isTestPeriodAvailable: data.subscription.is_test_period_available,
+            subType: data.subscription.sub_type
+        };
+        // 1622359880  1624519880
+        // this.subscription = {
+        //     isActual: true,
+        //     expiresAt: this.getTime(1624519880),
+        //     isTestPeriod: false,
+        //     isTestPeriodAvailable: false,
+        //     subType: 'month'
+        // };
     }
 
     get initials(): string {
         return this.lastName[0].toUpperCase() + this.name[0].toUpperCase();
     }
+
     get fullName(): string {
         return this.lastName + ' ' + this.name;
+    }
+
+    subExist(type: string): boolean | null {
+        if (this.subscription.isActual !== null) {
+            return this.subscription.subType === type;
+        } else {
+            return null;
+        }
+    }
+
+    getTime(createdAt: number | null): string | null {
+        if (createdAt) {
+            const date = new Date(createdAt * 1000);
+            return date.toLocaleString().slice(0, 10);
+        } else {
+            return null;
+        }
     }
 
 }

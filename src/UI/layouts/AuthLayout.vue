@@ -4,6 +4,7 @@
         <div class="pa-6 auth__wrapper">
             <router-view />
         </div>
+      <Alert :show="showAlertTemp" :type="type" :text="text" @show="showAlertTempAction"/>
     </div>
 </template>
 <script lang="ts">
@@ -12,9 +13,12 @@ import Banner from '../components/common/Banner.vue';
 import Sidebar from '../components/sidebar/Sidebar.vue';
 import Logo from '../components/common/Logo.vue';
 import {startIntercomMessenger} from '../../plugins/Intercom';
+import {eventBus} from '../../main';
+import Alert from '../components/common/Alert.vue';
 
 @Component({
     components: {
+      Alert,
         Logo,
         Sidebar,
         Banner,
@@ -22,8 +26,21 @@ import {startIntercomMessenger} from '../../plugins/Intercom';
 })
 export default class AuthLayout extends Vue {
 
+  showAlertTemp = false;
+  type = '';
+  text = '';
+
+  showAlertTempAction(show: boolean): void {
+    this.showAlertTemp = show;
+  }
+
   created(): void {
     startIntercomMessenger();
+    eventBus.$on('showAlert', (data: any) => {
+      this.showAlertTemp = data.show;
+      this.type = data.type;
+      this.text = data.text;
+    })
   }
 }
 </script>
