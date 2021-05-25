@@ -1,7 +1,7 @@
 <template>
     <div class="todo">
         <div class="todo__menu">
-            <v-list :collapse-transition="false" style="background: none" nav rounded>
+            <v-list :collapse-transition="false" style="background: none" nav rounded dense>
                 <template v-for="item in items">
                     <v-list-item
                         :id="item.id"
@@ -19,16 +19,16 @@
                 </template>
             </v-list>
         </div>
-        <div class="d-flex todo__items" style="width: 100%">
+        <div class="d-flex todo__items" style="width: 100%"  @click.capture="showTextArea = false">
             <div class="items-title">
                 <svg-icon name="Star_big" style="width: 5%; height: 100%"/>
                 <span class="title-text">Сегодня</span>
             </div>
-            <div class="items-btn-add">
+            <div class="items-btn-add" @click="showTextArea = true">
                 <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
                 <span class="btn-add-text">Добавить задачу</span>
             </div>
-            <div class="items-add-place">
+            <div class="items-add-place" v-if="showTextArea">
                 <!-- <form-group class="width" field="review" :form="form" show-custom-error > -->
                 <div class="items-add-place-text">
                     <div class="items-add-place-text__title">Название задачи</div>
@@ -46,10 +46,10 @@
                         </div>
                         <div class="items-add-place-text__like-dislike d-flex">
                             <div>
-                                <v-icon>mdi-image</v-icon>
+                                <svg-icon name="Picture_outline" class="menu__icon" height="24" width="24" />
                             </div>
                             <div>
-                                <v-icon class="ml-4">mdi-account-multiple</v-icon>
+                                <svg-icon name="Users_outline" class="ml-4  mr-1 menu__icon" height="24" width="28" />
                             </div>
                         </div>
                     </div>
@@ -79,13 +79,15 @@ import Button from '@/UI/components/common/Button.vue';
 })
 export default class Candidates extends Vue {
     items = [
-        { id: Date.now(), title: 'Входящие', iconName: 'Income' },
-        { id: Date.now(), title: 'Сегодня', iconName: 'Star_small' },
-        { id: Date.now(), title: 'Планы', iconName: 'Plans' },
-        { id: Date.now(), title: 'В любое время', iconName: 'Any_times' },
-        { id: Date.now(), title: 'Когда-нибудь', iconName: 'Box' },
-        { id: Date.now(), title: 'Журнал', iconName: 'Archive' },
+        { id: 'income', title: 'Входящие', iconName: 'Income' },
+        { id: 'today', title: 'Сегодня', iconName: 'Star_small' },
+        { id: 'plans', title: 'Планы', iconName: 'Plans' },
+        { id: 'any_times', title: 'В любое время', iconName: 'Any_times' },
+        { id: 'some_day', title: 'Когда-нибудь', iconName: 'Box' },
+        { id:  'jornal', title: 'Журнал', iconName: 'Archive' },
     ];
+
+    showTextArea = false;
 
     checkbox = false;
 }
@@ -95,10 +97,12 @@ export default class Candidates extends Vue {
 .todo {
     background: none !important;
     display: flex;
+    height: 100%;
 
     &__items {
         flex-direction: column;
         margin-left: 48px;
+        height: 100%;
 
         .items-title {
             display: flex;
@@ -115,10 +119,12 @@ export default class Candidates extends Vue {
         
 
         .items-btn-add {
-            margin-left: 8px;
+            padding-left: 8px;
             margin-top: 36px;
             display: flex;
             align-items: center;
+            cursor: pointer;
+            max-width: max-content;
 
             .items-icon-plus {
                 border: 2px solid #426DF6;
@@ -154,6 +160,12 @@ export default class Candidates extends Vue {
                 justify-content: flex-end;
             }
         }
+
+        .items-check-boxes {
+            display: flex;
+            flex-direction: column;
+            padding-left: 7px;
+        }
     }
 
     .v-text-field > .v-input__control > .v-input__slot:after {
@@ -162,6 +174,18 @@ export default class Candidates extends Vue {
 
     .theme--light.v-text-field > .v-input__control > .v-input__slot:before {
         border: none !important;
+    }
+
+    .v-list--nav .v-list-item:not(:last-child):not(:only-child), .v-list--rounded .v-list-item:not(:last-child):not(:only-child) {
+        margin-bottom: 0;
+    }
+
+    #income {
+        margin-bottom: 16px;
+    }
+
+    #jornal { 
+        margin-top: 16px;
     }
 }
 </style>
