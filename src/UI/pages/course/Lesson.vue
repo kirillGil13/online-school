@@ -406,29 +406,6 @@ export default class Lesson extends Vue {
     this.activatorRespond = act;
   }
 
-  randomColor(i: number): string {
-    const COLORS = [
-    '#56CCF2',
-    '#BB6BD9',
-    '#6FCF97',
-    '#F2C94C',
-    '#967CBA',
-    '#FF9960',
-    '#566FF2',
-    '#FF5733',
-    '#FF89C9',
-    '#56F2DF',
-    '#F38460',
-    '#939ED6',
-    '#F271A0',
-    '#2ABF93',
-    '#FF9C9C',
-    '#6EC1F0',
-    '#3B4244'
-    ];
-    return COLORS[i || 0];
-  }
-
   respond(data: any): void {
     this.answersForm.commentId = data.id;
     if (this.$adaptive.isMobile) {
@@ -482,6 +459,29 @@ export default class Lesson extends Vue {
     }
   };
 
+  randomColor(i: number) {
+      const COLORS = [
+      '#56CCF2',
+      '#BB6BD9',
+      '#6FCF97',
+      '#F2C94C',
+      '#967CBA',
+      '#FF9960',
+      '#566FF2',
+      '#FF5733',
+      '#FF89C9',
+      '#56F2DF',
+      '#F38460',
+      '#939ED6',
+      '#F271A0',
+      '#2ABF93',
+      '#FF9C9C',
+      '#6EC1F0',
+      '#3B4244'
+      ];
+      return COLORS[i || 0];
+  }
+  
   get sortComments(): string {
     return this.sort;
   }

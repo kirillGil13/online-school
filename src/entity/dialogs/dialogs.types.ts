@@ -3,6 +3,7 @@ export interface IDialogs {
     account: IDialogsAuthor;
     lastMessage: IDialogsLastMessage;
     fullName: string;
+    countUnread: number;
     getTime(seconds: number | null): string;
 }
 export interface IDialogsLastMessage {
@@ -23,6 +24,7 @@ export type DialogsResponseType = {
     id: number;
     account: DialogsAuthorResponseType;
     last_message: DialogsLastMessageResponseType;
+    count_unread: number;
 }
 
 export type DialogsAuthorResponseType = {

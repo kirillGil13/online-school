@@ -1,4 +1,4 @@
-import { getModule, Module, MutationAction, VuexModule } from 'vuex-module-decorators';
+import { getModule, Module, Mutation, MutationAction, VuexModule } from 'vuex-module-decorators';
 import store from '@/store';
 import {IDialogs} from '@/entity/dialogs/dialogs.types';
 
@@ -11,16 +11,35 @@ import {IDialogs} from '@/entity/dialogs/dialogs.types';
 class DialogsModule extends VuexModule {
     dialogs: IDialogs[] = [];
     dialogsLoaded = false;
+    unReadMessages = 0;
 
     @MutationAction
-    async fetchAll(): Promise<{ dialogs: IDialogs[]; dialogsLoaded: boolean }> {
+    async fetchAll(): Promise<{ dialogs: IDialogs[]; dialogsLoaded: boolean; unReadMessages: number }> {
+        
         const dialogs = await store.$repository.dialogs.fetchAll();
         let dialogsLoaded = false;
         if (dialogs) {
             dialogsLoaded = true
         }
-        return { dialogs, dialogsLoaded };
+
+        const unReadMessages = dialogs.reduce((a, b) => a + b.countUnread, 0);
+        
+        return { dialogs, dialogsLoaded, unReadMessages };
     }
+
+    @Mutation
+    setUnReadMessage(data:{count: number, operation: string}): void {
+        
+        if(data.operation === 'plus') {
+            this.unReadMessages += data.count;
+        }
+        if(data.operation === 'minus'){
+            this.unReadMessages -= data.count;
+        }
+
+        
+    }
+
 }
 
 export const DialogsStore = getModule(DialogsModule);

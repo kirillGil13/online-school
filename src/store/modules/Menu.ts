@@ -27,6 +27,11 @@ class MenuModule extends VuexModule {
             route: RouterNameEnum.InfoPackages,
         },
         {
+            title: 'Чат',
+            iconName: 'Chat',
+            route: RouterNameEnum.Chat
+        },
+        {
             title: 'Избранное',
             iconName: 'Chosen',
             route: RouterNameEnum.Chosen,
