@@ -15,6 +15,21 @@
       </div>
     </v-col>
   </div>
+  <div v-else-if="$route.params.type === confirmType.SubCreated">
+    <v-col class="confirm_container d-flex flex-column justify-center align-center pa-6">
+      <v-icon size="72" color="#27AE60">mdi-checkbox-marked-circle</v-icon>
+      <div class="confirm_title mt-4 text-center">Подписка оформлена успешно!</div>
+      <div class="price px-4 py-3 mt-4 font-16">
+        <span class="font-weight-bold">{{user.subscription.subType === subType.month ? '399' : '3990'}} ₽</span> за {{user.subscription.subType === subType.month ? '1 месяц' : '12 месяцев'}}
+      </div>
+      <div class="form-desc mt-4">
+        Возобновление: {{user.subscription.expiresAt}}
+      </div>
+      <div class="text-center">
+        <Button small @submit="proceed" class="mt-8">Перейти на главную</Button>
+      </div>
+    </v-col>
+  </div>
 </template>
 
 <script lang="ts">
@@ -25,10 +40,13 @@ import {AuthStore} from '../../../store/modules/Auth';
 import {ConfirmParams} from '../../../entity/common/confirmParams.types';
 import {ConfirmEmailStore} from '../../../store/modules/ConfirmEmail';
 import {ChangeEmailStore} from '../../../store/modules/ChangeEmail';
+import {SubTypeName} from '../../../entity/common/sub.types';
 @Component({
   components: {Button}
 })
 export default class ConfirmPage extends Vue {
+  confirmType = ConfirmParams;
+  subType = SubTypeName;
   showSuccess = false;
 
   proceed(): void {
@@ -79,6 +97,12 @@ export default class ConfirmPage extends Vue {
   }
   button {
     width: auto !important;
+  }
+  .price {
+    width: max-content;
+    background: rgba(66, 109, 246, 0.12);
+    border-radius: 12px;
+    color: #426df6;
   }
 }
 </style>
