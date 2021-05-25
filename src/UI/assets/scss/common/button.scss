@@ -56,6 +56,13 @@ button {
     }
   }
 
+  &.white_button {
+    background: #FFFFFF;
+    border-radius: 8px;
+    color: #000000 !important;
+    font-size: 16px;
+  }
+
   &.secondary_blue {
     background: rgba(66, 109, 246, 0.12);
     border: none;

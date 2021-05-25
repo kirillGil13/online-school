@@ -47,7 +47,7 @@
                 <v-col cols="12" class="profile__col">
                   <v-tabs show-arrows class="mb-2" color="#426DF6" v-model="activeName">
                     <v-tabs-slider color="#426DF6"></v-tabs-slider>
-                    <v-tab v-for="(item, index) in tabs" :key="index">{{ item.title }}</v-tab>
+                    <v-tab :ripple="false" v-for="(item, index) in tabs" :key="index" :style="{borderRadius: '8px'}">{{ item.title }}</v-tab>
                   </v-tabs>
                   <v-tabs-items v-model="activeName">
                     <v-divider></v-divider>
@@ -61,6 +61,7 @@
                             @saveMain="saveMain"
                             @saveContact="saveContact"
                             @changeEmail="changeEmail"
+                            style="margin-right: 2px; margin-left: 2px;"
                         />
                       </keep-alive>
                     </v-tab-item>
@@ -357,5 +358,11 @@ export default class Profile extends Vue {
 
 .grid-conten {
   min-height: 32px;
+}
+.v-tabs .v-tab--active:focus::before {
+  border-radius: 8px;
+}
+.v-tab:before {
+  border-radius: 8px;
 }
 </style>
