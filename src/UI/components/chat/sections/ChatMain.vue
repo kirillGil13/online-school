@@ -1,5 +1,5 @@
 <template>
-  <div class="messages d-flex flex-column" :style="{width: $adaptive.isMobile ? '100% !importnat' : '69%'}">
+  <div class="messages d-flex flex-column" id="messages" :style="{width: $adaptive.isMobile ? '100% !importnat' : '69%'}">
     <div class="message-container d-flex flex-column justify-end" :style="{padding: !$adaptive.isMobile ? '16px 11px 16px 11px' : '0'}">
       <div class="scrool-container" id="chatDialogContainer" ref="chatDialogContainer">
           <template  v-for="(message, idx) in messages" >
@@ -39,7 +39,7 @@ export default class ChatMain extends Vue {
   @Watch('$route.params.id')
   async onChangeRoute(): Promise<void> {
     await this.fetchData();
-    this.lastItems.scrollIntoView()
+    this.parentElement.scrollTop = this.parentElement.scrollHeight;
 
     const el = {
     type: "connect-to-dialog-type",
@@ -60,19 +60,13 @@ export default class ChatMain extends Vue {
     return MessagesStore.messages
   }
 
-  get lastItems(): HTMLElement {
-    console.log(document.getElementById(`message${this.messages.length}`) as HTMLElement)
-    return document.getElementById(`message${this.messages.length}`) as HTMLElement;
-  }
-
   get parentElement(): HTMLElement {
     return (this.$refs.chatDialogContainer as HTMLElement)
   }
 
   async created(): Promise<void> {
     await this.fetchData();
-    this.lastItems.scrollIntoView()
-    this.parentElement!.scrollTo(0, this.parentElement.scrollHeight * 10000);
+    this.parentElement.scrollTop = this.parentElement.scrollHeight;
 
     const el = {
     type: "connect-to-dialog-type",
@@ -83,6 +77,7 @@ export default class ChatMain extends Vue {
 
     this.socket!.send(JSON.stringify(el))
   }
+
 
   async fetchData(): Promise<void> {
     await  MessagesStore.fetchAll(this.$route.params.id.toString());

@@ -3,9 +3,14 @@
     <div :class="['message-cont', friend ? 'friend' : 'my-message']">
       <div class="message-body d-flex flex-row justify-space-between mt-1">
         <div class="text mr-7" v-if="body.photoLink.length === 0">{{body.text}}</div>
-        <div class="text mr-3" v-else @click="() => showImg(idx)" v-for="(photo, idx) of body.photoLink " :key="idx">
-          <v-img @click="activator = true" max-width="150" max-height="150px"  :src="photo" alt=""/>
-        </div>
+        <button class="text mr-3 image-container" v-else @click="() => showImg(idx)" v-for="(photo, idx) of body.photoLink " :key="idx">
+           <div
+              @click="activator = true"
+              class="image"
+
+              :style="{ backgroundImage: `url(${photo})`, width: $adaptive.isMobile ? '150px': '300px', height: $adaptive.isMobile ? '150px': '300px' }"
+            />
+        </button>
         <div class="date mt-2 d-flex align-end">{{date}}</div>
       </div>
     </div>
@@ -31,12 +36,13 @@ export default class Message extends Vue {
   @Prop() readonly body!: IMessages;
   @Prop() readonly date!: string;
   @Prop() readonly friend!: boolean;
-  @Prop() readonly idx!: number
+  @Prop() readonly idx!: number;
 
   activator = false;
   imgs = '';
   visible = false;
-  index = 0 
+  index = 0;
+  messageWidth = 0;
 
   activatorChange(act: boolean): void {
     this.activator = act;
@@ -52,7 +58,7 @@ export default class Message extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .message {
   width: 100%;
   border: none !important;
@@ -72,6 +78,8 @@ export default class Message extends Vue {
       border: 1px solid rgba(87, 81, 183, 0.12);
     }
     .message-body {
+      
+      width: 100%;
       .text {
         color: #000000;
       }
@@ -80,6 +88,27 @@ export default class Message extends Vue {
         font-size: 12px;
       }
     }
+  }
+
+  .image-container {
+    outline: 0 !important;
+    background: 0;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    // position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .image {
+    width: 300px;
+    height: 300px;
+    // position: absolute;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 }
 </style>
