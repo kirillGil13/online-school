@@ -29,6 +29,7 @@ import {IChangeEmailRepository} from '@/repository/changeEmail/ChangeEmailReposi
 import {ICommentsAnswersRepository} from '@/repository/commentsAnswers/CommentsAnswersRepository.types';
 import { IReviewsRepository } from './reviews/ReviewsRepository.types';
 import {ISubscriptionRepository} from '@/repository/subscription/SubscriptionRespository.types';
+import {IPurchaseRepository} from '@/repository/purchase/PurchaseRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -62,4 +63,5 @@ export interface IProvider {
     reviews: IReviewsRepository;
     commentsAnswers: ICommentsAnswersRepository;
     subscriptions: ISubscriptionRepository;
+    purchase: IPurchaseRepository;
 }

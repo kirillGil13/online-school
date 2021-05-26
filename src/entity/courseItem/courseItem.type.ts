@@ -18,6 +18,8 @@ export interface ICourseItem {
     countViews: string;
     totalDuration: string;
     rating: number;
+    isPurchased: boolean;
+    canBeAddedToTeam: boolean;
     resolveType(index: number, routeParam: string): string;
     resolveDescription(s: string): string;
 }
@@ -65,6 +67,8 @@ export type CourseItemResponseType = {
     count_dislikes: number;
     total_duration: number;
     rating: number;
+    is_purchased: boolean;
+    can_be_added_to_team: boolean;
 }
 export type CourseLessonsResponseType = {
     id: number;

@@ -20,6 +20,9 @@ export default class CourseItem implements ICourseItem {
     countViews: string;
     totalDuration: string;
     rating: number;
+    isPurchased: boolean;
+    canBeAddedToTeam: boolean;
+
     constructor(data: CourseItemResponseType) {
         this.id = data.id;
         this.name = data.name;
@@ -37,7 +40,9 @@ export default class CourseItem implements ICourseItem {
         this.countDislikes = data.count_dislikes;
         this.countViews = data.count_views.toLocaleString();
         this.rating = data.rating;
-        this.totalDuration = this.fullDuration(data.total_duration)
+        this.totalDuration = this.fullDuration(data.total_duration);
+        this.isPurchased = data.is_purchased;
+        this.canBeAddedToTeam = data.can_be_added_to_team;
         for (let i = 0; i < data.lessons.length; i++) {
             this.lessons.push({
                 id: data.lessons[i].id,
