@@ -17,8 +17,8 @@
                 </div>
             </template>
         </div>
-        <div class="message-send d-flex flex-row align-center">
-            <div class="d-flex align-center mr-2" style="height: 100%">
+        <div class="message-send d-flex flex-row align-end">
+            <div class="d-flex align-end mr-2" style="height: 100%">
                 <v-icon style="padding: 6px 4px; margin-top: 0 !important" class="send-picture" @click="activateInput"
                     >mdi-folder-image</v-icon
                 >
@@ -27,21 +27,25 @@
 
             <div class="send mr-5">
                 <v-textarea
-                    class="input"
+                    class="input mt-0"
                     v-model="messageText"
                     placeholder="Сообщение"
                     color="#000000"
                     outlined
-                    row-height="30"
+                    row-height="2"
                     rows="1"
                     background-color="#FBFCFE"
                     auto-grow
                     single-line
+                    dense
+                    id="message-comment"
+                    filled
+                    hide-details
                 >
                 </v-textarea>
             </div>
 
-            <div class="d-flex align-center" style="height: 100%">
+            <div class="d-flex align-end" style="height: 100%">
                 <svg-icon class="send-icon" name="Send" @click="sendMessage"></svg-icon>
             </div>
         </div>
@@ -150,8 +154,8 @@ export default class MessageSend extends Vue {
 
                     .v-text-field__slot {
                         textarea {
-                            margin-top: 14px;
-                            max-height: 196px;
+                            
+                            max-height: 192px;
                             overflow: scroll;
                             &::placeholder {
                                 color: #5f739c;
