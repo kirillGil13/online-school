@@ -2,12 +2,13 @@
     <div class="todo">
         <div class="todo__menu">
             <v-list :collapse-transition="false" style="background: none" nav rounded dense>
-                <template v-for="item in items">
+                <template v-for="item in tabs">
                     <v-list-item
                         :id="item.id"
                         color=""
                         :key="item.title"
                         :ripple="!$adaptive.isMobile"
+                        @click="setComponent(item.component)"
                         exact
                         exact-active-class="active-menu"
                     >
@@ -31,7 +32,10 @@
             <div class="items-add-place" v-if="showTextArea">
                 <!-- <form-group class="width" field="review" :form="form" show-custom-error > -->
                 <div class="items-add-place-text">
-                    <div class="items-add-place-text__title">Название задачи</div>
+                    <div class="items-add-place-text__title">
+                        <v-checkbox v-model="todoTitle" class="mt-0 pt-0" />
+                        <v-text-field class="mt-0 pt-0" type="text" placeholder="Название задачи"/>
+                    </div>
                     <div class="items-add-place-text__actions">
                         <div class="items-add-place-text__set-items-add-place">
                             <v-textarea
@@ -80,25 +84,23 @@ import {TabsStore} from '../../../store/modules/Tabs';
     },
 })
 export default class Candidates extends Vue {
-    items = [
-        { id: 'income', title: 'Входящие', iconName: 'Income' },
-        { id: 'today', title: 'Сегодня', iconName: 'Star_small' },
-        { id: 'plans', title: 'Планы', iconName: 'Plans' },
-        { id: 'any_times', title: 'В любое время', iconName: 'Any_times' },
-        { id: 'some_day', title: 'Когда-нибудь', iconName: 'Box' },
-        { id:  'jornal', title: 'Журнал', iconName: 'Archive' },
-    ];
+    showTextArea = false;
+    todoTitle = false;
+    checkbox = false;
+
     get tabs(): ITabs[] {
-        return TabsStore.profileTabs;
+        return TabsStore.todoTabs;
     }
 
-    showTextArea = false;
 
-    checkbox = false;
+    setComponent(component: string): void {
+        console.log(component)
+    }
+   
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .todo {
     background: none !important;
     display: flex;
@@ -189,7 +191,7 @@ export default class Candidates extends Vue {
         margin-bottom: 16px;
     }
 
-    #jornal { 
+    #journal { 
         margin-top: 16px;
     }
 
