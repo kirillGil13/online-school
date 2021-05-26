@@ -1,13 +1,13 @@
 <template>
-  <v-responsive class="border" :style="{height: isChat ? '500px': '100%'}" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6  : isChat ? 2/5 : 42/44">
+  <v-responsive class="border" :style="{height: isChat && '500px'}" content-class="course-lessons-block" :aspect-ratio="$adaptive.isMobile ? 9/6  : isChat ? 2/5 : 42/44">
       <div class="lessons-block  d-flex flex-column align-end box-container">
          <v-col v-if="isChat" align-self="start" class=" d-flex  flex-row align-center justify-space-between chat-header px-3 py-3" style="max-height: 50px">
           <span class="chat-title">Чат</span>
-          <Button class="btn-close-chat" style="background-color: none !important" @submit="toggleOpenChat"><v-icon>mdi-close</v-icon></Button>
+          <Button class="btn-close-chat" style="background-color: transparent !important;" @submit="toggleOpenChat"><v-icon>mdi-close</v-icon></Button>
          </v-col>
          <v-col class="lesson-container  pa-0"  v-if="!isChat"  align-self="start" :style="{height: $adaptive.isMobile ? '100%' : ''}">
 
-       
+
           <ul class="lesson-list">
             <li
                 v-for="(lesson, index) in course.lessons"
@@ -29,20 +29,20 @@
         <div class="chat-container" ref="chatContainer" id="chatContainer" v-else>
           <SingleChat :course="course" style="width: 100% !important"/>
         </div>
-        <div v-if="!isChat || !$adaptive.isMobile && $route.name === $routeRules.Lesson" class="lesson-btn pa-2" :style="{justifyContent: last ? 'flex-start' : '', width: '100%'}" >
+        <div v-if="!isChat && (!$adaptive.isMobile && $route.name === $routeRules.Lesson)" class="lesson-btn pa-2" :style="{justifyContent: last ? 'flex-start' : '', width: '100%'}" >
           <v-col  class="d-flex pa-0" style="width: 100%;">
-            <Button  @submit="toggleOpenChat" class="d-flex justify-center align-center mt-0" style="width: 100%"><svg-icon class="mr-2" name="Chat"></svg-icon><span style="font-size: 12px;">Задать вопрос</span></Button>
-            <Button :class="['with_icon secondary_white ml-3 d-flex justify-center', $adaptive.isMobile ? 'py-4' : '']"
-                    style=" width: 20% !important"
+<!--            <Button  @submit="toggleOpenChat" class="d-flex justify-center align-center mt-0" style="width: 100%"><svg-icon class="mr-2" name="Chat"></svg-icon><span style="font-size: 12px;">Задать вопрос</span></Button>-->
+            <Button :class="['with_icon secondary_white d-flex justify-center', $adaptive.isMobile ? 'py-4' : '']"
                     @submit="$emit('moveToNextLesson', course.lessons.find(item => item.id === parseInt($route.params.lessonId)).number)"
                     v-if="!last && $route.params.lessonId" small full-width>
-              <svg-icon name="Next" :style="{marginRight: $adaptive.isMobile ? 0 : ''}"></svg-icon>
+              <svg-icon name="Next" class="mr-3" :style="{marginRight: $adaptive.isMobile ? 0 : ''}"></svg-icon>
+              Следующий урок
             </Button>
           </v-col>
         </div>
-        <div class="send-message" style="width:100%" v-else>
-          <SendMessage @sendMessage="sendMessage"/>
-        </div>
+<!--        <div class="send-message" style="width:100%" v-else>-->
+<!--          <SendMessage @sendMessage="sendMessage"/>-->
+<!--        </div>-->
       </div>
   </v-responsive>
 </template>
@@ -99,13 +99,13 @@ export default class Lessons extends Vue {
 
       }
     }
-   
+
     this.socket!.send(JSON.stringify(el));
 
     const container =  document.getElementById('chatContainer');
     container!.scrollTop = container!.scrollHeight;
   }
-  
+
   get user(): IUser | null {
     return AuthStore.user;
   }
