@@ -31,7 +31,7 @@
                         v-if="!$route.params.lessonId"
                         :style="{ width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : '' }"
                     >
-                        <v-responsive :aspect-ratio="16 / 9" content-class="course-container" v-if="course.cost === 0" @click="pushToCurrent">
+                        <v-responsive :aspect-ratio="16 / 9" content-class="course-container" v-if="course.isPurchased" @click="pushToCurrent">
                             <v-img
                                 :aspect-ratio="16 / 9"
                                 width="100%"
@@ -258,6 +258,8 @@ import {ReviewsFormName} from '../../../form/reviews/reviewsForm.types';
 import TextHide from '../../components/common/TextHide.vue';
 import {eventBus} from '../../../main';
 import {CommentsStore} from '../../../store/modules/Comments';
+import {SubscriptionStore} from '../../../store/modules/Subscription';
+import {PurchaseStore} from '../../../store/modules/Pucrhase';
 @Component({
     components: {
       TextHide,
@@ -461,8 +463,8 @@ export default class Course extends Vue {
         Vue.set(this.course!, 'countDislikes', this.course!.countDislikes - 1);
     }
 
-  buyCourse(): void {
-    console.log(1);
+  async buyCourse(): Promise<void> {
+    window.location.href = await PurchaseStore.buyTinkoff(this.course!.id);
   }
 
   fetchReviews = (): void => {
