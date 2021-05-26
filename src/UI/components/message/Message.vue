@@ -2,15 +2,21 @@
   <div :class="['message d-flex mt-2', friend ? 'justify-start' : 'justify-end']" :id="`message${idx + 1}`">
     <div :class="['message-cont', friend ? 'friend' : 'my-message']">
       <div class="message-body d-flex flex-row justify-space-between mt-1">
-        <div class="text mr-7" v-if="body.photoLink.length === 0">{{body.text}}</div>
-        <button class="text mr-3 image-container" v-else @click="() => showImg(idx)" v-for="(photo, idx) of body.photoLink " :key="idx">
-           <div
-              @click="activator = true"
-              class="image"
+        <div class="d-flex flex-column">
+          <div class="text mr-7" >{{body.text}}</div>
+          <div class="images-container" :style="{gridTemplateColumns: body.photoLink.length === 1 ? '1fr' : '1fr 1fr', marginRight:  body.photoLink.length === 1 ? '5px' : '10px'}">
+             <button class="text image-container" v-if="body.photoLink.length !== 0" @click="() => showImg(idx)" v-for="(photo, idx) of body.photoLink " :key="idx">
+              <div
+                  @click="activator = true"
+                  class="image"
 
-              :style="{ backgroundImage: `url(${photo})`, width: $adaptive.isMobile ? '150px': '300px', height: $adaptive.isMobile ? '150px': '300px' }"
-            />
-        </button>
+                  :style="{ backgroundImage: `url(${photo})`, width: $adaptive.isMobile ? '150px': body.photoLink.length  > 1 ? '150px' : '300px', height: $adaptive.isMobile ? '130px': body.photoLink.length > 1 ? '150px' : '300px'}"
+                />
+            </button>
+          </div>
+         
+        </div>
+        
         <div class="date mt-2 d-flex align-end">{{date}}</div>
       </div>
     </div>
@@ -64,7 +70,7 @@ export default class Message extends Vue {
   border: none !important;
   background-color: none !important;
   .message-cont {
-    max-width: 349px;
+    max-width: 379px;
     padding: 7px 12px;
     background: #FFFFFF;
     border: 1px solid #F2F2F2;
@@ -90,6 +96,11 @@ export default class Message extends Vue {
     }
   }
 
+  .images-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
   .image-container {
     outline: 0 !important;
     background: 0;
@@ -97,15 +108,13 @@ export default class Message extends Vue {
     padding: 0;
     margin: 0;
     width: 100%;
-    // position: relative;
     overflow: hidden;
-    border-radius: 8px;
+    
+    
   }
 
   .image {
-    width: 300px;
-    height: 300px;
-    // position: absolute;
+    border-radius: 8px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

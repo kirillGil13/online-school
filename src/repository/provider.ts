@@ -30,6 +30,7 @@ import {ChangeEmailRepository} from '@/repository/changeEmail/ChangeEmailReposit
 import { ReviewsRepository } from './reviews/ReviewsRepository';
 import {CommentsAnswersRepository} from '@/repository/commentsAnswers/CommentsAnswersRepository';
 import {SubscriptionRepository} from '@/repository/subscription/SubscriptionRespository';
+import {PurchaseRepository} from '@/repository/purchase/PurchaseRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -63,5 +64,6 @@ export const provider = (): IProvider => ({
     reviews: new ReviewsRepository(),
     commentsAnswers: new CommentsAnswersRepository(),
     subscriptions: new SubscriptionRepository(),
+    purchase: new PurchaseRepository(),
 });
 

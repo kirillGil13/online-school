@@ -140,7 +140,6 @@ export default class MainLayout extends Vue {
       })
 
     this.socket!.onclose = (e: any) => {
-      console.log(e)
         setTimeout(() => {
            WebSocketStore.setConnection();
         }, 2000);

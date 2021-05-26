@@ -2,7 +2,7 @@
   <div class="pa-0 conversation d-flex flex-column " :style="{width: !$adaptive.isMobile ? '31%' : '100%',}">
     <div class="conversation__item d-flex flex-row"  @click="chosePartner(elem.account.id)" v-for="elem in dialogs" :key="elem.account.id"
          :class="[elem.account.id === chousenChatId ? 'active' : '']">
-      <v-avatar size="56" class="mr-3" :color="elem && elem.account.photoLink ? '#F0F2F6' :randomColor(elem.account.id % 10)">
+      <v-avatar @click="showLastMessage(elem)" size="56" class="mr-3" :color="elem && elem.account.photoLink ? '#F0F2F6' :randomColor(elem.account.id % 10)">
          <template v-slot:default v-if="elem && elem.account.photoLink">
               <v-img :src="elem && elem.account.photoLink" alt="" />
           </template>
@@ -25,7 +25,7 @@
             {{showDate(elem.lastMessage.createdAt)}}
           </div>
         </div>
-        <span class="d-flex justify-space-between align-center flex-row">{{elem.lastMessage.text}} <span class="unReadDialog">{{getUnReadMessage(elem.account.id)}}</span></span>
+        <span class="d-flex justify-space-between align-center flex-row" >{{ elem.lastMessage.text ? elem.lastMessage.text : 'Фото'}} <span class="unReadDialog">{{getUnReadMessage(elem.account.id)}}</span></span>
       </div>
     </div>
   </div>
@@ -73,6 +73,11 @@ export default class Conversations extends Vue {
   get socket(): WebSocket | null {
     return WebSocketStore.socket;
   }
+
+  showLastMessage(el: any): void {
+    console.log( el)
+  }
+  
 
   chosePartner(id: number): void {
     this.chousenChatId = id;
