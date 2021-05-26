@@ -1,42 +1,85 @@
 <template>
-  <div :class="['message d-flex mt-3', friend ? 'justify-start' : 'justify-end']">
-    <div :class="['message-cont', friend ? 'friend' : '']">
+  <div :class="['message d-flex mt-2', friend ? 'justify-start' : 'justify-end']" :id="`message${idx + 1}`">
+    <div :class="['message-cont', friend ? 'friend' : 'my-message']">
       <div class="message-body d-flex flex-row justify-space-between mt-1">
-        <div class="text mr-7">{{body}}</div>
+        <div class="text mr-7" v-if="body.photoLink.length === 0">{{body.text}}</div>
+        <button class="text mr-3 image-container" v-else @click="() => showImg(idx)" v-for="(photo, idx) of body.photoLink " :key="idx">
+           <div
+              @click="activator = true"
+              class="image"
+
+              :style="{ backgroundImage: `url(${photo})`, width: $adaptive.isMobile ? '150px': '300px', height: $adaptive.isMobile ? '150px': '300px' }"
+            />
+        </button>
         <div class="date mt-2 d-flex align-end">{{date}}</div>
       </div>
     </div>
+   <vue-easy-lightbox
+    :visible="visible"
+    :imgs="body.photoLink"
+    :index="index"
+    @hide="handleHide"
+  ></vue-easy-lightbox>
   </div>
 </template>
 
 <script lang="ts">
+import { IMessages } from '@/entity/messages/messages.types';
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import Modal from '../common/Modal.vue';
+import VueEasyLightbox from 'vue-easy-lightbox'
 
-@Component
+@Component({
+  components: {Modal, VueEasyLightbox}
+})
 export default class Message extends Vue {
-  @Prop() readonly body!: string;
+  @Prop() readonly body!: IMessages;
   @Prop() readonly date!: string;
   @Prop() readonly friend!: boolean;
+  @Prop() readonly idx!: number;
+
+  activator = false;
+  imgs = '';
+  visible = false;
+  index = 0;
+  messageWidth = 0;
+
+  activatorChange(act: boolean): void {
+    this.activator = act;
+  }
+
+  showImg(index: number): void {
+      this.index = index
+      this.visible = true
+  }
+  handleHide(): void {
+    this.visible = false
+  }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .message {
   width: 100%;
+  border: none !important;
+  background-color: none !important;
   .message-cont {
     max-width: 349px;
-    padding: 12px 16px 13px 16px;
+    padding: 7px 12px;
     background: #FFFFFF;
     border: 1px solid #F2F2F2;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-    border-radius: 5px;
+    border-radius: 18px;
+
+    &.my-message {
+      background: #CEDDFB;
+    }
     &.friend {
       background: #F2F2F2;
       border: 1px solid rgba(87, 81, 183, 0.12);
-      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-      border-radius: 5px;
     }
     .message-body {
+      
+      width: 100%;
       .text {
         color: #000000;
       }
@@ -45,6 +88,27 @@ export default class Message extends Vue {
         font-size: 12px;
       }
     }
+  }
+
+  .image-container {
+    outline: 0 !important;
+    background: 0;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    // position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .image {
+    width: 300px;
+    height: 300px;
+    // position: absolute;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 }
 </style>

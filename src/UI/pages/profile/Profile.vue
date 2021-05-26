@@ -95,8 +95,8 @@ import {IUser} from '@/entity/user';
 import Header from '@/UI/components/common/Header.vue';
 import {ProfileMainInfoForm} from '@/form/profile/mainInfo/ProfileMainInfoForm';
 import {ProfileContactDataForm} from '@/form/profile/contactData/ProfileContactDataForm';
-import {ProfilePictureStore} from '../../../store/modules/ProfilePicture';
-import {IProfilePicture} from '../../../entity/common/profilePicture.types';
+import {PictureUploadStore} from '../../../store/modules/PictureUpload';
+import {IPictureUpload} from '../../../entity/common/pictureUpload.types';
 import Modal from '../../components/common/Modal.vue';
 import PictureCropper from '../../components/cropper/PictureCropper.vue';
 import {UserUpdateStore} from '../../../store/modules/UserUpdate';
@@ -161,7 +161,7 @@ export default class Profile extends Vue {
     if (this.pictureLoaded) {
       if (await UserUpdateStore.updateUser({shortPhotoLink: this.picture!.shortLink})) {
         await AuthStore.fetch();
-        ProfilePictureStore.clear();
+        PictureUploadStore.clear();
       }
     }
   }
@@ -174,12 +174,12 @@ export default class Profile extends Vue {
     }
   }
 
-  get picture(): IProfilePicture | null {
-    return ProfilePictureStore.profilePicture;
+  get picture(): IPictureUpload | null {
+    return PictureUploadStore.pictureUpload;
   }
 
   get pictureLoaded(): boolean {
-    return ProfilePictureStore.profilePictureLoaded;
+    return PictureUploadStore.pictureUploadLoaded;
   }
 
   get tabs(): ITabs[] {
@@ -248,7 +248,7 @@ export default class Profile extends Vue {
     this.pictureChanged = true;
     const {canvas} = data.getResult();
     canvas.toBlob((blob: Blob): void => {
-          ProfilePictureStore.set({file: blob as any});
+          PictureUploadStore.set({file: blob as any});
         }
     );
     this.activator = false;

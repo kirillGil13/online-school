@@ -12,7 +12,7 @@ import {InfoPackagesRepository} from '@/repository/infoPackages/InfoPackages';
 import {StatusIconsRepository} from '@/repository/statusIcons/StatusIconsRepository';
 import {CandidateItemRepository} from '@/repository/candidateItem/CandidateItemRepository';
 import {VideoAccessRepository} from '@/repository/videoAccess/VideoAccessRepository';
-import {ProfilePictureRepository} from '@/repository/profilePicture/ProfilePicture';
+import {PictureUploadRepository} from '@/repository/pictureUpload/PictureUpload';
 import {LeadersRepository} from '@/repository/leaders/LeadersRepository';
 import {LeaderCoursesRepository} from '@/repository/leaderCourses/LeaderCoursesRepository';
 import {CourseLevelsRepository} from '@/repository/courseLevels/CourseLevels';
@@ -45,7 +45,7 @@ export const provider = (): IProvider => ({
     statusIcons: new StatusIconsRepository(),
     candidateItem: new CandidateItemRepository(),
     videoAccess: new VideoAccessRepository(),
-    profilePicture: new ProfilePictureRepository(),
+    pictureUpload: new PictureUploadRepository(),
     leaders: new LeadersRepository(),
     leaderCourses: new LeaderCoursesRepository(),
     courseLevels: new CourseLevelsRepository(),

@@ -14,6 +14,7 @@ prepareRepository(store);
 Vue.config.ignoredElements = ['stream'];
 export const eventBus = new Vue()
 
+
 // @ts-ignore
 new Vue({
     render: (h): VNode => h(App),

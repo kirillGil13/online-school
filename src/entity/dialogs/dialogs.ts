@@ -9,6 +9,7 @@ export default class Dialogs implements IDialogs{
         text: '',
         isMy: false,
     };
+    countUnread: number;
 
     constructor(data: DialogsResponseType) {
         this.id = data.id;
@@ -17,6 +18,7 @@ export default class Dialogs implements IDialogs{
         this.lastMessage.text = data.last_message.text;
         this.lastMessage.id = data.last_message.id;
         this.lastMessage.isMy = data.last_message.is_my;
+        this.countUnread = data.count_unread;
     }
 
     get fullName(): string {

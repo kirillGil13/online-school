@@ -36,9 +36,11 @@
                             />
                             </FormGroup>
                         </div>
+                         
                     </div>
                     <div class="review-text__button">
                         <Button :full-width="$adaptive.isMobile" :disabled="form.disabled" class="btn-send-rewiew" @submit="sendMessage">Отправить</Button>
+                       
                         <Button :full-width="$adaptive.isMobile" class="secondary_blue" :class="[$adaptive.isMobile ? '' : 'ml-3']" @submit="buttonFunc">{{course.isLiked ? 'Оценить без отзыва' : 'Отменить оценку'}}</Button>
                     </div>
                 </div>

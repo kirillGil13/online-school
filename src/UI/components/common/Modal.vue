@@ -51,6 +51,7 @@ export default class Modal extends Vue {
   @Prop() readonly maxWidth!: number;
   @Prop() readonly width!: string;
   @Prop() readonly color!: string;
+  @Prop() readonly minWidth?: string;
 
   set activatorChange(activator: boolean) {
     this.$emit('activatorChange', activator);
