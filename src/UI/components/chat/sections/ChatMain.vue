@@ -17,7 +17,7 @@
       </div>
       
     </div>
-    <MessageSend v-if="!$adaptive.isMobile" @sendMessage="sendMessage"/>
+    <MessageSend v-if="!$adaptive.isMobile"/>
     
   </div>
 </template>
@@ -81,21 +81,6 @@ export default class ChatMain extends Vue {
 
   async fetchData(): Promise<void> {
     await  MessagesStore.fetchAll(this.$route.params.id.toString());
-  }
-
-  sendMessage(message: string): void {
-    if(message.length === 0) {
-      return
-    }
-    const el = {
-      type: "send-message-service_type",
-      data: {
-        purposeAccountId: this.$route.params.id ,
-        text: message.toString()
-      }
-    }
-   
-    this.socket!.send(JSON.stringify(el));
   }
 
   takeMonth(id: string): string {
