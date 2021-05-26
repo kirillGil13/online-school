@@ -12,7 +12,7 @@
     </v-row>
     <v-row v-if="myStatisticLoaded">
       <v-col>
-        <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease" >
+        <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease">
           <template v-slot:title>Баланс</template>
           <template v-slot:default>
             {{ myStatistic.purchasesIncomeCurrent.current | currency('RUB') }}
@@ -70,7 +70,7 @@
     </Modal>
     <Modal :full-screen="$adaptive.isMobile" :activator="activatorWithdraw" @activatorChange="activatorChangeWithdraw">
       <template v-slot:content>
-
+        <WithDrawFormComponent v-if="activatorWithdraw" :form="withdrawForm"/>
       </template>
     </Modal>
   </v-col>
@@ -97,9 +97,12 @@ import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import Button from '../../components/common/Button.vue';
 import MailFormComponent from '../../components/forms/mailForm/MailFormComponent.vue';
 import {eventBus} from '../../../main';
+import WithDrawFormComponent from '../../components/forms/withDrawForm/WithDrawFormComponent.vue';
+import {WithDrawForm} from '../../../form/withDraw/withDrawForm';
 
 @Component({
   components: {
+    WithDrawFormComponent,
     MailFormComponent,
     Button,
     Modal,
@@ -115,6 +118,7 @@ export default class Cabinet extends Vue {
   activator = false;
   activatorWithdraw = false;
   mailForm: MailForm;
+  withdrawForm = new WithDrawForm();
   alertType = AlertTypeEnum;
 
 
