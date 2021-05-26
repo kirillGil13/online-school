@@ -10,27 +10,41 @@
         <FilterComponent :search="false" :is-on-right="false" :filters="filters" @filter="onFilter" :count-element="[0]"/>
       </v-col>
     </v-row>
-    <v-row class="badges pa-0" v-if="myStatisticLoaded">
-      <Badge :profit="myStatistic.purchasesCount.isIncrease">
-        <template v-slot:title>Продажи (человек)</template>
-        <template v-slot:default>{{myStatistic.purchasesCount.current.toLocaleString()}}</template>
-        <template v-slot:stats>{{myStatistic.purchasesCount.change}}</template>
-      </Badge>
-      <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease">
-        <template v-slot:title>Заработано</template>
-        <template v-slot:default>{{ myStatistic.purchasesIncomeCurrent.current | currency('RUB') }}</template>
-        <template v-slot:stats>{{myStatistic.purchasesIncomeCurrent.change}}%</template>
-      </Badge>
-      <Badge :profit="myStatistic.viewCountCurrent.isIncrease">
-        <template v-slot:title>Просмотров</template>
-        <template v-slot:default>{{ myStatistic.viewCountCurrent.current.toLocaleString() }}</template>
-        <template v-slot:stats>{{ myStatistic.viewCountCurrent.change }}%</template>
-      </Badge>
-      <Badge :profit="myStatistic.ratingCurrent.isIncrease">
-        <template v-slot:title>Средняя оценка</template>
-        <template v-slot:default>{{ myStatistic.ratingCurrent.current.toString() }}</template>
-        <template v-slot:stats>{{ myStatistic.ratingCurrent.change }}%</template>
-      </Badge>
+    <v-row v-if="myStatisticLoaded">
+      <v-col>
+        <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease" >
+          <template v-slot:title>Баланс</template>
+          <template v-slot:default>
+            {{ myStatistic.purchasesIncomeCurrent.current | currency('RUB') }}
+          </template>
+          <template v-slot:stats>{{myStatistic.purchasesIncomeCurrent.change}}%</template>
+<!--          <template v-slot:extraAction>-->
+<!--            <div class="d-flex align-center">-->
+<!--              <div class="link mr-4">История выводов</div>-->
+<!--              <Button small class="mt-0 px-6" @submit="activatorWithdraw = true">Вывести</Button>-->
+<!--            </div>-->
+<!--          </template>-->
+        </Badge>
+      </v-col>
+    </v-row>
+    <v-row v-if="myStatisticLoaded">
+      <v-col class="badges">
+        <Badge :profit="myStatistic.purchasesCount.isIncrease">
+          <template v-slot:title>Продажи (человек)</template>
+          <template v-slot:default>{{myStatistic.purchasesCount.current.toLocaleString()}}</template>
+          <template v-slot:stats>{{myStatistic.purchasesCount.change}}</template>
+        </Badge>
+        <Badge :profit="myStatistic.viewCountCurrent.isIncrease">
+          <template v-slot:title>Просмотров</template>
+          <template v-slot:default>{{ myStatistic.viewCountCurrent.current.toLocaleString() }}</template>
+          <template v-slot:stats>{{ myStatistic.viewCountCurrent.change }}%</template>
+        </Badge>
+        <Badge :profit="myStatistic.ratingCurrent.isIncrease">
+          <template v-slot:title>Средняя оценка</template>
+          <template v-slot:default>{{ myStatistic.ratingCurrent.current.toString() }}</template>
+          <template v-slot:stats>{{ myStatistic.ratingCurrent.change }}%</template>
+        </Badge>
+      </v-col>
     </v-row>
     <v-col class="events__content">
       <v-row class="events__titles">
@@ -51,7 +65,12 @@
     </v-col>
     <Modal v-if="courseLevelsLoaded" :full-screen="$adaptive.isMobile" :activator="activator" @activatorChange="activatorChange">
       <template v-slot:content>
-        <MailFormComponent :form="mailForm" v-if="destroy" :levels="courseLevels" @close="close" @add="add"/>
+        <MailFormComponent :form="mailForm" v-if="activator" :levels="courseLevels" @close="close" @add="add"/>
+      </template>
+    </Modal>
+    <Modal :full-screen="$adaptive.isMobile" :activator="activatorWithdraw" @activatorChange="activatorChangeWithdraw">
+      <template v-slot:content>
+
       </template>
     </Modal>
   </v-col>
@@ -94,7 +113,7 @@ import {eventBus} from '../../../main';
 export default class Cabinet extends Vue {
   filters: Filters;
   activator = false;
-  destroy = true;
+  activatorWithdraw = false;
   mailForm: MailForm;
   alertType = AlertTypeEnum;
 
@@ -143,20 +162,16 @@ export default class Cabinet extends Vue {
     } else return (new Date()).getTime() / 1000 | 0;
   }
 
-  rerender(): void {
-    this.destroy = false;
-    this.$nextTick(() => {
-      this.destroy = true;
-    });
-  }
-
   close(): void {
     this.activator = false;
   }
 
   activatorChange(act: boolean): void {
-    this.destroy = true;
     this.activator = act;
+  }
+
+  activatorChangeWithdraw(act: boolean): void {
+    this.activatorWithdraw = act;
   }
 
   async fetchData(): Promise<void> {
@@ -181,7 +196,6 @@ export default class Cabinet extends Vue {
       })
     }
     this.mailForm = new MailForm();
-    this.rerender();
     this.activator = false;
   }
 
@@ -210,9 +224,8 @@ export default class Cabinet extends Vue {
   }
 
   .badges {
-    margin-top: 16px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     width: 100%;
     overflow-x: scroll;
@@ -220,7 +233,6 @@ export default class Cabinet extends Vue {
 
   .badge {
     margin-bottom: 0 !important;
-    padding: 16px 0 8px 24px !important;
     background-color: #ffffff;
     min-width: 230px;
     &__default {

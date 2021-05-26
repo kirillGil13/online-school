@@ -1,19 +1,29 @@
 <template>
-    <v-col class="badge px-3 py-2">
+    <v-col class="badge px-6 py-4">
         <div class="badge__title">
             <slot name="title" />
         </div>
         <div :class="['badge__default subs', subs ? 'active' : 'in-active']">
             <slot name="sub" />
         </div>
-      <div :class="['badge__default', profit === null ? 'mt-3' : '']">
-            <div><slot name="default" /></div>
-            <router-link class="link mt-5" :to="{name: linkName}" v-if="linkName"><slot name="link"/><svg-icon name="Arrow_Right"></svg-icon></router-link>
-            <div :class="['badge__stats', profit ? 'profit' : 'loss']" v-if="profit !== null">
-              <template v-if="profit !== null">{{profit ? '+' : '-'}}</template>
-              <slot name="stats"/>
-              <svg-icon class="ml-1" name="Badge_Arrow"></svg-icon>
-            </div>
+      <div :class="['badge__default', profit === null ? 'mt-3' : '', extraAction && 'justify-space-between', $adaptive.isMobile && 'flex-column align-start']">
+        <div class="d-flex flex-row align-end">
+          <div>
+            <slot name="default" />
+          </div>
+          <router-link class="link mt-5" :to="{name: linkName}" v-if="linkName">
+            <slot name="link"/>
+            <svg-icon name="Arrow_Right"></svg-icon>
+          </router-link>
+          <div :class="['badge__stats', profit ? 'profit' : 'loss']" v-if="profit !== null">
+            <template v-if="profit !== null">{{profit ? '+' : '-'}}</template>
+            <slot name="stats"/>
+            <svg-icon class="ml-1" name="Badge_Arrow"></svg-icon>
+          </div>
+        </div>
+        <div class="d-flex" :class="[$adaptive.isMobile && 'mt-3']" v-if="extraAction">
+          <slot name="extraAction"></slot>
+        </div>
         </div>
     </v-col>
 </template>
@@ -23,6 +33,7 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 @Component
 export default class Badge extends Vue {
   @Prop({default: false}) readonly subs!: boolean;
+  @Prop({default: false, type: Boolean}) readonly extraAction!: boolean;
   @Prop() readonly linkName!: string;
   @Prop() readonly sub!: boolean;
   @Prop() readonly profit!: boolean;
@@ -35,6 +46,7 @@ export default class Badge extends Vue {
     margin-bottom: 8px;
     border-radius: $main_border_radius;
     border: 1px solid #e8edfe;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 2px 24px rgba(0, 0, 0, 0.08);
     &:nth-last-child(1) {
       margin-bottom: 0;
     }
@@ -60,9 +72,10 @@ export default class Badge extends Vue {
         }
       }
       .link {
-        font-size: 16px;
+        font-size: 14px;
         color: #426DF6;
         font-weight: normal;
+        cursor: pointer;
         .svg-icon {
           margin-left: 8px;
           width: 11px !important;
