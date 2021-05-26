@@ -41,7 +41,7 @@ export default class CourseItem implements ICourseItem {
         this.countViews = data.count_views.toLocaleString();
         this.rating = data.rating;
         this.totalDuration = this.fullDuration(data.total_duration);
-        this.isPurchased = data.is_purchased;
+        this.isPurchased = true;
         this.canBeAddedToTeam = data.can_be_added_to_team;
         for (let i = 0; i < data.lessons.length; i++) {
             this.lessons.push({
