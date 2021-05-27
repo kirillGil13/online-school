@@ -3,11 +3,14 @@ import {numeric, required} from 'vuelidate/lib/validators';
 import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {WithDrawRequestType} from '@/form/withDraw/withDrawForm.types';
+import {IProfileDocs, ProfileDocsStatusEnum} from '@/entity/profileDocs/profileDocs.types';
 
 @Component
 export class WithDrawForm extends Form {
 
     public person = '';
+
+    public balance = 0;
 
     @Validate(required, 'Введите сумму')
     @Validate(numeric, 'Можно вводить только цифры')
@@ -17,10 +20,13 @@ export class WithDrawForm extends Form {
 
     getFormData(): WithDrawRequestType {
         return {
-            sum: +this.sum
+            amount: +this.sum
         };
     }
-    setFormData(person: string): void {
-        this.person = person;
+    setFormData(doc: IProfileDocs | null, balance: number): void {
+        if (doc && doc.status === ProfileDocsStatusEnum.ACCEPTED) {
+            this.person = doc.companyName;
+        }
+        this.balance = balance;
     }
 }

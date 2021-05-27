@@ -1,10 +1,10 @@
 import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import {CommentsRequestType, IComments} from '@/entity/comments/comments.types';
+import {IComments} from '@/entity/comments/comments.types';
 import {CommentsFormRequestType} from '@/form/comments/commentsForm.types';
 import {ICommentsAnswers} from '@/entity/commentsAnswers/commentsAnswers.types';
 import {CommentsChangeRequestType} from '@/form/commentsChange/commentsChangeForm.types';
-import {ICandidate} from '@/entity/candidates';
+import {PaginationRequestType} from '@/entity/common/pagination.types';
 
 @Module({
     namespaced: true,
@@ -33,7 +33,7 @@ class CommentsModule extends VuexModule {
     }
 
     @Action({commit: 'setComments'})
-    async fetchAll(data: {route: string; pagination?: CommentsRequestType; scroll?: boolean}): Promise<{ comments: IComments[]; commentsLoaded: boolean; scroll: boolean }> {
+    async fetchAll(data: {route: string; pagination?: PaginationRequestType; scroll?: boolean}): Promise<{ comments: IComments[]; commentsLoaded: boolean; scroll: boolean }> {
         const formData = new FormData();
         let commentsLoaded = false;
         let scroll = false;

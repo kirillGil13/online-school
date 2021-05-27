@@ -4,7 +4,7 @@ import Api from '@/repository/api';
 import MyStatistic from '@/entity/myStatistic/myStatistic';
 
 export class MyStatisticRepository implements IMyStatisticRepository{
-    async fetchData(data: MyStatisticRequestType): Promise<IMyStatistic> {
+    async fetchData(data?: MyStatisticRequestType): Promise<IMyStatistic> {
         const response = await Api.get('/statistics/my', {params: data, paramsSerializer: function paramsSerializer(params) {
                 return new URLSearchParams(params).toString()
             }});
