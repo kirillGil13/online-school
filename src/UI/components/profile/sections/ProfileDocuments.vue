@@ -8,7 +8,7 @@
       </div>
     </div>
     <InfoNote v-if="docs.status === statusName.REJECTED" class="mt-6" error title="Причина отклонения" :subtitle="docs.rejectReason"/>
-    <ProfileDocumentsFormComponent class="mt-6" v-if="docs.status === statusName.EMPTY || showForm" :form="docForm" @submit="$emit('sendRequest')"/>
+    <ProfileDocumentsFormComponent class="mt-6" v-if="docs.status === statusName.EMPTY || showForm" :form="docForm" @submit="sendRequest"/>
   </div>
 </template>
 
@@ -33,6 +33,11 @@ export default class ProfileDocuments extends Vue {
     if (this.docs.status !== this.statusName.MODERATED) {
       this.showForm = !this.showForm;
     }
+  }
+
+  sendRequest(): void {
+    this.showForm = false;
+    this.$emit('sendRequest');
   }
 
   resolveStatus(): {color: string; statusName: string} {
