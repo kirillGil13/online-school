@@ -44,13 +44,6 @@ export type CommentsAuthorResponseType = {
     photoLink: string;
 }
 
-export type CommentsRequestType = {
-    skip?: number;
-    limit?: number;
-    sort?: string;
-    orderBy?: string;
-}
-
 export enum CommentsSortNameEnum {
     RATING='rating',
     CREATEDAT='created_at'

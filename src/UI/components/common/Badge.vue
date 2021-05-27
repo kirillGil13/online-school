@@ -6,7 +6,7 @@
         <div :class="['badge__default subs', subs ? 'active' : 'in-active']">
             <slot name="sub" />
         </div>
-      <div :class="['badge__default', profit === null ? 'mt-3' : '', extraAction && 'justify-space-between', $adaptive.isMobile && 'flex-column align-start']">
+      <div :class="['badge__default mt-3', extraAction && 'justify-space-between', $adaptive.isMobile && 'flex-column align-start']">
         <div class="d-flex flex-row align-end">
           <div>
             <slot name="default" />
@@ -21,7 +21,7 @@
             <svg-icon class="ml-1" name="Badge_Arrow"></svg-icon>
           </div>
         </div>
-        <div class="d-flex" :class="[$adaptive.isMobile && 'mt-3']" v-if="extraAction">
+        <div class="d-flex" :class="[$adaptive.isMobile && 'mt-3 full-width']" v-if="extraAction">
           <slot name="extraAction"></slot>
         </div>
         </div>
@@ -45,8 +45,9 @@ export default class Badge extends Vue {
     min-width: 100px;
     margin-bottom: 8px;
     border-radius: $main_border_radius;
-    border: 1px solid #e8edfe;
+    border: 1px solid #F2F2F2;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 2px 24px rgba(0, 0, 0, 0.08);
+  background: #FFFFFF;
     &:nth-last-child(1) {
       margin-bottom: 0;
     }

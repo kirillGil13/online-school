@@ -12,18 +12,18 @@
     </v-row>
     <v-row v-if="myStatisticLoaded">
       <v-col>
-        <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease">
+        <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease" extra-action>
           <template v-slot:title>Баланс</template>
           <template v-slot:default>
             {{ myStatistic.purchasesIncomeCurrent.current | currency('RUB') }}
           </template>
           <template v-slot:stats>{{myStatistic.purchasesIncomeCurrent.change}}%</template>
-<!--          <template v-slot:extraAction>-->
-<!--            <div class="d-flex align-center">-->
-<!--              <div class="link mr-4">История выводов</div>-->
-<!--              <Button small class="mt-0 px-6" @submit="activatorWithdraw = true">Вывести</Button>-->
-<!--            </div>-->
-<!--          </template>-->
+          <template v-slot:extraAction>
+            <div class="d-flex" :class="[$adaptive.isMobile ? 'full-width flex-column' : 'align-center']">
+              <div class="link mr-4" :class="[$adaptive.isMobile && 'mb-3']" @click="$router.push({name: $routeRules.CabinetHistory})" style="cursor: pointer">История выводов</div>
+              <Button small class="mt-0 px-6" @submit="activatorWithdraw = true">Вывести</Button>
+            </div>
+          </template>
         </Badge>
       </v-col>
     </v-row>
@@ -70,7 +70,7 @@
     </Modal>
     <Modal :full-screen="$adaptive.isMobile" :activator="activatorWithdraw" @activatorChange="activatorChangeWithdraw">
       <template v-slot:content>
-        <WithDrawFormComponent v-if="activatorWithdraw" :form="withdrawForm"/>
+        <WithDrawFormComponent v-if="activatorWithdraw" :form="withdrawForm" @sendRequest="sendRequest" @close="close"/>
       </template>
     </Modal>
   </v-col>
@@ -99,6 +99,9 @@ import MailFormComponent from '../../components/forms/mailForm/MailFormComponent
 import {eventBus} from '../../../main';
 import WithDrawFormComponent from '../../components/forms/withDrawForm/WithDrawFormComponent.vue';
 import {WithDrawForm} from '../../../form/withDraw/withDrawForm';
+import {ProfileDocsStore} from '../../../store/modules/ProfileDocs';
+import {IProfileDocs} from '../../../entity/profileDocs/profileDocs.types';
+import {WithdrawsStore} from '../../../store/modules/Withdraw';
 
 @Component({
   components: {
@@ -152,6 +155,10 @@ export default class Cabinet extends Vue {
     return CourseLevelsStore.courseLevelsLoaded;
   }
 
+  get docs(): IProfileDocs | null {
+    return ProfileDocsStore.profileDocs;
+  }
+
   proceed(id: number): void {
     this.$router.push({path: `/course/${id}`});
   }
@@ -168,6 +175,7 @@ export default class Cabinet extends Vue {
 
   close(): void {
     this.activator = false;
+    this.activatorWithdraw = false;
   }
 
   activatorChange(act: boolean): void {
@@ -185,6 +193,8 @@ export default class Cabinet extends Vue {
       timestampFinish: this.getTime()
     });
     await CourseLevelsStore.fetchAll();
+    await ProfileDocsStore.fetchData();
+    await this.withdrawForm.setFormData(this.docs, this.myStatistic!.purchasesIncomeCurrent.current);
   }
 
   async created(): Promise<void> {
@@ -208,6 +218,17 @@ export default class Cabinet extends Vue {
       timestampStart: this.getTime(this.filters.filterBody[0].filterValue.find(item => item.value === this.filters.default[0])!.value),
       timestampFinish: this.getTime()
     })
+  }
+
+  async sendRequest(): Promise<void> {
+    if (await this.withdrawForm.submit(WithdrawsStore.withdraw)) {
+      this.activatorWithdraw = false;
+      eventBus.$emit('showAlert', {
+        show: true,
+        type: this.alertType.Success,
+        text: 'Ваша заявка на вывод успешно отправлена'
+      })
+    }
   }
 }
 </script>
@@ -239,11 +260,6 @@ export default class Cabinet extends Vue {
     margin-bottom: 0 !important;
     background-color: #ffffff;
     min-width: 230px;
-    &__default {
-      &:nth-last-child(1) {
-        margin-top: 12px;
-      }
-    }
     &__stats {
       margin-bottom: 5px;
     }
