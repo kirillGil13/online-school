@@ -20,7 +20,7 @@
       </v-col>
     </v-row>
     <v-row v-if="withdrawsLoaded">
-      <v-col v-if="withdraws !== null">
+      <v-col v-if="withdraws === []">
         <WithdrawsHistoryTable :withdraws="withdraws"/>
       </v-col>
       <v-col v-else class="d-flex align-center justify-center">
@@ -125,6 +125,7 @@ export default class WithdrawHistory extends Vue {
   async sendRequest(): Promise<void> {
     if (await this.withdrawForm.submit(WithdrawsStore.withdraw)) {
       this.activatorWithdraw = false;
+      await this.withdrawForm.clearData();
       eventBus.$emit('showAlert', {
         show: true,
         type: this.alertType.Success,
