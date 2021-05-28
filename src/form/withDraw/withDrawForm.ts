@@ -18,6 +18,10 @@ export class WithDrawForm extends Form {
 
     public serverErrors: { [key: string]: string[] } = {};
 
+    clearData(): void {
+        this.sum = '';
+    }
+
     getFormData(): WithDrawRequestType {
         return {
             amount: +this.sum

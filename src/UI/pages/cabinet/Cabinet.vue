@@ -223,6 +223,7 @@ export default class Cabinet extends Vue {
   async sendRequest(): Promise<void> {
     if (await this.withdrawForm.submit(WithdrawsStore.withdraw)) {
       this.activatorWithdraw = false;
+      await this.withdrawForm.clearData();
       eventBus.$emit('showAlert', {
         show: true,
         type: this.alertType.Success,
