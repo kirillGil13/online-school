@@ -31,11 +31,11 @@ class MenuModule extends VuexModule {
             iconName: 'Add_User',
             route: RouterNameEnum.InfoPackages,
         },
-        // {
-        //     title: 'Чат',
-        //     iconName: 'Chat',
-        //     route: RouterNameEnum.Chat
-        // },
+        {
+            title: 'Чат',
+            iconName: 'Chat',
+            route: RouterNameEnum.Chat
+        },
         {
             title: 'Избранное',
             iconName: 'Chosen',
