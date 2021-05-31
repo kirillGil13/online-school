@@ -6,19 +6,19 @@
             <div class="date-container d-flex  flex-row align-center mt-2" v-if="idx === 0 || messages[idx].createdAt.split(',')[0] !== (idx === 0 ? messages[idx + 1].createdAt.split(',')[0] : messages[idx - 1].createdAt.split(',')[0])" :key="idx + Date.now()" >
               <v-divider style="background-color: rgba(66, 109, 246, 0.12);;"/>
               <div class="data-title-container mx-4">
-                <span class="data-title" >{{messages[idx].createdAt.split(',')[0].split('.')[0] + ' ' + takeMonth(messages[idx].createdAt.split(',')[0].split('.')[1])}}</span> 
+                <span class="data-title" >{{messages[idx].createdAt.split(',')[0].split('.')[0] + ' ' + takeMonth(messages[idx].createdAt.split(',')[0].split('.')[1])}}</span>
               </div>
               <v-divider style="background-color: rgba(66, 109, 246, 0.12);;"/>
             </div>
-           
+
            <Message :date="message.createdAt.split(',')[1]" :body="message" :key="idx" :idx="idx" :friend="message.isMy ? false : true"/>
         </template>
-        
+
       </div>
-      
+
     </div>
     <MessageSend v-if="!$adaptive.isMobile"/>
-    
+
   </div>
 </template>
 
@@ -42,9 +42,9 @@ export default class ChatMain extends Vue {
     this.parentElement.scrollTop = this.parentElement.scrollHeight;
 
     const el = {
-    type: "connect-to-dialog-type",
+    type: 'connect-to-dialog-type',
       data: {
-        "purpose_account_id": this.$route.params.id
+        'purpose_account_id': this.$route.params.id
       }
     }
 
@@ -69,9 +69,9 @@ export default class ChatMain extends Vue {
     this.parentElement.scrollTop = this.parentElement.scrollHeight;
 
     const el = {
-    type: "connect-to-dialog-type",
+    type: 'connect-to-dialog-type',
       data: {
-        "purpose_account_id": this.$route.params.id
+        'purpose_account_id': this.$route.params.id
       }
     }
 
@@ -86,16 +86,16 @@ export default class ChatMain extends Vue {
   takeMonth(id: string): string {
     return MONTHS.find(el => id.includes(el.id.toString()))!.value;
   }
-  
+
 }
 </script>
 
-<style lang="scss"scoped >
+<style lang="scss" scoped>
 
 .message-container {
   height: 100%;
   border: none !important;
-  background-color: 0 !important;
+  background-color: transparent !important;
 }
 
 .messages {

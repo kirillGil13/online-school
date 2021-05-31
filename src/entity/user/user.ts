@@ -41,11 +41,11 @@ export class User implements IUser {
         };
         // 1622359880  1624519880
         // this.subscription = {
-        //     isActual: true,
-        //     expiresAt: this.getTime(1624519880),
-        //     isTestPeriod: false,
-        //     isTestPeriodAvailable: false,
-        //     subType: 'month'
+        //     isActual: null,
+        //     expiresAt: null,
+        //     isTestPeriod: null,
+        //     isTestPeriodAvailable: true,
+        //     subType: null
         // };
     }
 

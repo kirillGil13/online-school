@@ -51,7 +51,7 @@ export default class Conversations extends Vue {
     if(this.unReadMessages !== 0) {
       DialogsStore.setUnReadMessage({count: unreadCount!, operation: 'minus'})
     }
-    
+
   }
 
   async created(): Promise<void> {
@@ -77,7 +77,7 @@ export default class Conversations extends Vue {
   showLastMessage(el: any): void {
     console.log( el)
   }
-  
+
 
   chosePartner(id: number): void {
     this.chousenChatId = id;
@@ -104,7 +104,7 @@ export default class Conversations extends Vue {
 
     return false;
   }
-  
+
 
   randomColor(i: number): string {
     const COLORS = [
@@ -139,7 +139,7 @@ export default class Conversations extends Vue {
 
   getUnReadMessage(id: number): number | undefined {
     const elem = this.dialogs.find(el => el.account.id === id);
-    
+
     if (elem!.countUnread !== 0) {
       if(this.$route.params.id !== elem?.account.id.toString()) {
         return elem!.countUnread;
@@ -162,7 +162,7 @@ export default class Conversations extends Vue {
   transform: rotate(0) !important;
 }
 .conversation {
-  
+
   height: 100%;
   background: #FFFFFF;
   overflow: scroll;
@@ -193,6 +193,9 @@ export default class Conversations extends Vue {
       font-size: 18px;
       color: #000000;
       font-weight: 600;
+      max-width: 150px;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     .status {

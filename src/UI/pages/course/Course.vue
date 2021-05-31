@@ -6,9 +6,9 @@
                 <v-row :class="['mt-6', $adaptive.isMobile ? 'd-flex flex-column' : '']">
                     <router-view
                         @passFile="passFile"
-                        @handleLike="handleLike"
-                        @handleDisLike="handleDisLike"
+                        @openSub="activatorChange"
                         @handleFavourite="handleFavourite"
+                        @relation="relation"
                         @moveToNextLesson="moveToNextLesson"
                         @send="send"
                         @moveToPrevious="moveToPrevious"
@@ -41,7 +41,7 @@
                             >
                                 <div class="play-button"></div>
                                 <div class="course-info views"><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-eye</v-icon>{{course.countViews}}</div>
-                                <div class="course-info duration "><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-clock-time-four-outline</v-icon>{{course.totalDuration}}</div>
+                                <div class="course-info duration"><v-icon color="#ffffff" class="mr-1" style="marginTop: 2px" x-small>mdi-clock-time-four-outline</v-icon>{{course.totalDuration}}</div>
                             </v-img>
                         </v-responsive>
                       <v-responsive :aspect-ratio="16 / 9" content-class="course-container" v-else>
@@ -70,15 +70,17 @@
                                 class="mb-4"
                                 :title="$adaptive.isMobile ? '' : 'Нравится'"
                                 :class="course.isLiked && 'like-active'"
-                                @click="user.subscription.isActual !== null ? handleLike({form: formName.likeDislike, formButton: false}) : activator = true"
+                                @click="relation(true, formName.likeDislike)"
+                                :is-purchased="course.isPurchased"
                             />
                             <Relation
                                 svg-class="svg-down"
                                 class="mb-4"
                                 :class="course.isDisliked && 'dislike-active'"
                                 svg-name="Finger"
-                                @click="user.subscription.isActual !== null ? handleDisLike({form: formName.likeDislike, formButton: false}) : activator = true"
+                                @click="relation(false, formName.likeDislike)"
                                 :title="$adaptive.isMobile ? '' : 'Не нравится'"
+                                :is-purchased="course.isPurchased"
                             />
                             <Relation
                                 svg-name="Chosen"
@@ -103,7 +105,7 @@
                                 />
                             </template>
                         </v-row>
-                      <v-col v-if="user.subscription.isActual === null" class="sub-card box-container d-flex flex-column justify-center align-center mb-6" :class="[ $adaptive.isMobile ? 'pa-4' : 'pa-6']">
+                      <v-col v-if="user.subscription.isActual === null && course.cost === 0" class="sub-card box-container d-flex flex-column justify-center align-center mb-6" :class="[ $adaptive.isMobile ? 'pa-4' : 'pa-6']">
                         <Subscription/>
                         <Button class="with_icon subs_button" @submit="activator = true"><svg-icon name="Subs_Play_Btn" class="mr-2 svg-16"></svg-icon>Смотреть по подписке</Button>
                       </v-col>
@@ -158,7 +160,7 @@
                                                 svg-name="Finger"
                                                 class="mr-7"
                                                 :title="course.countLikes"
-                                                @click="handleLike({form: formName.review, formButton: false})"
+                                                @click="relation(true, formName.review)"
                                                 isRaiting="true"
                                             />
                                         </div>
@@ -171,12 +173,12 @@
                                                 svg-class="svg-down"
                                                 svg-name="Finger"
                                                 :title="course.countDislikes"
-                                                @click="handleDisLike({form: formName.review, formButton: false})"
+                                                @click="relation(false, formName.review)"
                                             />
                                         </div>
                                     </div>
                                     </div>
-                                    <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}" v-if="user.subscription.isActual !== null">
+                                    <div class="desc__btn-send-review" :style="{width: $adaptive.isMobile && '100%', marginTop: $adaptive.isMobile &&  '14px'}" v-if="course.courseAvailable">
                                         <Button @submit="toggleShowSetReview" :style="{width: $adaptive.isMobile && '100%'}">Написать отзыв</Button>
                                     </div>
                                 </div>
@@ -236,7 +238,6 @@ import { LessonsTypesEnum } from '../../../entity/common/lessons.types';
 import { ILessonItemFiles } from '../../../entity/lessonItem/lessonItem.types';
 import { RelationStore } from '../../../store/modules/Relation';
 import Discussion from '../../components/discussion/Discussion.vue';
-import { IDefaultCourseItem } from '@/entity/courseItem/courseItemDefault';
 import { ReviewsForm } from '@/form/reviews/reviewsForm';
 import { ICourseItem, ICourseLessons } from '@/entity/courseItem/courseItem.type';
 import { IReviews } from '@/entity/reviews/reviews.types';
@@ -253,12 +254,9 @@ import Modal from '../../components/common/Modal.vue';
 import Alert from '../../components/common/Alert.vue';
 import {AlertTypeEnum} from '../../../entity/common/alert.types';
 import {RouterNameEnum} from '../../../router/router.types';
-import Router from 'vue-router';
 import {ReviewsFormName} from '../../../form/reviews/reviewsForm.types';
 import TextHide from '../../components/common/TextHide.vue';
 import {eventBus} from '../../../main';
-import {CommentsStore} from '../../../store/modules/Comments';
-import {SubscriptionStore} from '../../../store/modules/Subscription';
 import {PurchaseStore} from '../../../store/modules/Pucrhase';
 @Component({
     components: {
@@ -297,7 +295,7 @@ export default class Course extends Vue {
 
 
     @Watch('$route.params.lessonId', { immediate: true })
-    async onChangeRoute(val: string, oldVal: string): Promise<void> {
+    async onChangeRoute(): Promise<void> {
         await this.fetchData();
         await ReviewsStore.fetchAll({route: this.$route.params.id});
         await this.autoDescriptionHeight();
@@ -333,6 +331,27 @@ export default class Course extends Vue {
 
     activatorChange(act: boolean): void {
         this.activator = act;
+    }
+
+    relation(like: boolean, formName: string): void {
+      if (this.course!.isPurchased && this.course!.cost > 0) {
+        if (like) {
+          this.handleLike({form: formName, formButton: false})
+        } else {
+          this.handleDisLike({form: formName, formButton: false})
+        }
+      } else if (this.course!.isPurchased) {
+        if (this.user!.subscription.isActual !== null) {
+          if (like) {
+            this.handleLike({form: formName, formButton: false})
+          } else {
+            this.handleDisLike({form: formName, formButton: false})
+          }
+        }
+        else {
+          this.activator = true;
+        }
+      }
     }
 
     get user(): IUser | null {
@@ -393,13 +412,19 @@ export default class Course extends Vue {
     }
 
     pushToCurrent(): void {
-     if (this.user!.subscription.isActual) {
-       this.$router.push({
-         name: this.$routeRules.Lesson,
-         params: { lessonId: this.findCurrent(this.course!.lessons).toString() },
-       });
-     } else this.activator = true;
-
+      if (this.course!.cost !== 0 && this.course!.isPurchased) {
+          this.$router.push({
+            name: this.$routeRules.Lesson,
+            params: { lessonId: this.findCurrent(this.course!.lessons).toString() },
+          });
+        } else if (this.course!.cost === 0 && this.user!.subscription.isActual === null) {
+        this.activator = true;
+      } else {
+        this.$router.push({
+          name: this.$routeRules.Lesson,
+          params: { lessonId: this.findCurrent(this.course!.lessons).toString() },
+        });
+      }
     }
 
     getLessonId(lessons: ICourseLessons[], number: number, next: boolean): number {
@@ -426,7 +451,7 @@ export default class Course extends Vue {
         });
     }
 
-    randomColor(i: number) {
+    randomColor(i: number): string {
         const COLORS = [
         '#56CCF2',
         '#BB6BD9',
@@ -834,20 +859,25 @@ export default class Course extends Vue {
 
 .like-active {
     .icon-container {
-        background: rgba(39, 174, 96, 0.12);
-
-        svg path {
-            fill: #27ae60;
+        background: rgba(39, 174, 96, 0.12) !important;
+        svg{
+          opacity: 1 !important;
+          path {
+            fill: #27ae60 !important;
+          }
         }
     }
 }
 
 .dislike-active {
     .icon-container {
-        background: rgba(230, 70, 70, 0.12);
-
-        svg path {
-            fill: #e64646;
+        background: rgba(230, 70, 70, 0.12) !important;
+        opacity: 1 !important;
+        svg {
+          opacity: 1 !important;
+          path {
+            fill: #e64646 !important;
+          }
         }
     }
 }

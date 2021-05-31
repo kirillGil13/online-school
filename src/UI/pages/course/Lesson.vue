@@ -1,6 +1,6 @@
 <template>
   <div class="course" :style="{ width: $adaptive.isMobile ? '100%' : '', order: $adaptive.isMobile ? 2 : '' }">
-    <v-responsive v-if="lessonLoaded && user.subscription.isActual !== null" :aspect-ratio="16 / 9" class="rounded-block" content-class="course-container rounded-block">
+    <v-responsive v-if="lessonLoaded && course.courseAvailable" :aspect-ratio="16 / 9" class="rounded-block" content-class="course-container rounded-block">
       <div
           v-if="lesson.status === lessonTypes.LOCKED"
           class="course-locked rounded-block"
@@ -31,7 +31,7 @@
       </div>
     </v-responsive>
     <v-responsive v-else-if="lessonLoaded && user.subscription.isActual === null" :aspect-ratio="16 / 9"
-                  content-class="course-container" @click="activatorSub = true">
+                  content-class="course-container" @click="$emit('openSub', true)">
       <v-img
           :aspect-ratio="16 / 9"
           width="100%"
@@ -47,16 +47,18 @@
           svg-name="Finger"
           class="mb-4"
           :class="isLiked && 'like-active'"
+          :is-purchased="course.isPurchased"
           :title="$adaptive.isMobile ? '' : 'Нравится'"
-          @click="user.subscription.isActual !== null ? $emit('handleLike', {form: formName.likeDislike, formButton: false}) : activatorSub = true"
+          @click="$emit('relation', true, formName.likeDislike)"
       />
       <Relation
           svg-class="svg-down"
           class="mb-4"
+          :is-purchased="course.isPurchased"
           :class="isDisliked && 'dislike-active'"
           svg-name="Finger"
           :title="$adaptive.isMobile ? '' : 'Не нравится'"
-          @click="user.subscription.isActual !== null ? $emit('handleDisLike', {form: formName.likeDislike, formButton: false}) : activatorSub = true"
+          @click="$emit('relation', false, formName.likeDislike)"
       />
       <Relation
           svg-name="Chosen"
@@ -69,6 +71,7 @@
           svgClass="discussionIcon"
           svg-name="Message"
           class="mb-4 mr-0"
+          :is-purchased="course.isPurchased"
           :title="$adaptive.isMobile ? '' : 'Обсудить'"
           @click="discuss"
       />
@@ -85,10 +88,10 @@
         />
       </template>
     </v-row>
-    <v-col v-if="user.subscription.isActual === null" class="sub-card box-container d-flex flex-column justify-center align-center mb-4 "
+    <v-col v-if="!course.courseAvailable" class="sub-card box-container d-flex flex-column justify-center align-center mb-4 "
            :class="[$adaptive.isMobile ? 'pa-4' : 'pa-6']">
       <Subscription/>
-      <Button class="with_icon subs_button" @submit="activatorSub = true">
+      <Button class="with_icon subs_button" @submit="$emit('openSub', true)">
         <svg-icon name="Subs_Play_Btn" class="mr-2 svg-16"></svg-icon>
         Смотреть по подписке
       </Button>
@@ -151,6 +154,7 @@
       />
     </v-col>
     <Discussion
+        :available="course.courseAvailable"
         :comments="comments"
         :selected-id="selectedId"
         :form="commentsForm"
@@ -179,11 +183,6 @@
           </h1>
           <Button small full-width class="secondary_blue mt-6" @submit="activator = false">Закрыть</Button>
         </v-col>
-      </template>
-    </Modal>
-    <Modal :activator="activatorSub" :max-width="1000" @activatorChange="activatorSubChange" color="#F2F2F2">
-      <template v-slot:content>
-        <SubscribeFormalization/>
       </template>
     </Modal>
     <Modal :activator="activatorRespond" full-screen :without-tool-bar="false" @activatorChange="activatorRespondChange" color="#F2F2F2">
@@ -275,7 +274,6 @@ export default class Lesson extends Vue {
   limit = 100;
   interval!: NodeJS.Timeout;
   activator = false;
-  activatorSub = false;
   activatorRespond = false;
   alertType = AlertTypeEnum;
   lessonTypes = LessonsTypesEnum;
@@ -398,10 +396,6 @@ export default class Lesson extends Vue {
     this.activator = act;
   }
 
-  activatorSubChange(act: boolean): void {
-    this.activatorSub = act;
-  }
-
   activatorRespondChange(act: boolean): void {
     this.activatorRespond = act;
   }
@@ -439,6 +433,7 @@ export default class Lesson extends Vue {
 
   beforeDestroy(): void {
     this.stopTimer();
+    VideoOptionsStore.clearData();
     CommentsStore.setCommentsToEmpty();
     window.removeEventListener('scroll', this.fetchComments);
   }
@@ -459,7 +454,7 @@ export default class Lesson extends Vue {
     }
   };
 
-  randomColor(i: number) {
+  randomColor(i: number): string {
       const COLORS = [
       '#56CCF2',
       '#BB6BD9',
@@ -481,7 +476,7 @@ export default class Lesson extends Vue {
       ];
       return COLORS[i || 0];
   }
-  
+
   get sortComments(): string {
     return this.sort;
   }
@@ -494,14 +489,13 @@ export default class Lesson extends Vue {
     return SelectsStore.selectsDiscussion;
   }
 
-  async discuss(): Promise<void> {
-
-    if (this.user!.subscription.isActual) {
+  discuss(): void {
+    if (this.course.courseAvailable) {
       const item = document.getElementById('message-comment')!;
       item.scrollIntoView({block: 'center'});
       item.focus();
     } else {
-      this.activatorSub = true;
+      this.$emit('openSub', true);
     }
   }
 
@@ -536,7 +530,7 @@ export default class Lesson extends Vue {
     });
     this.commentsForm = new CommentsForm();
     this.commentsForm.lessonId = parseInt(this.$route.params.lessonId);
-    if (this.lessonLoaded && this.user!.subscription.isActual) {
+    if (this.lessonLoaded && this.course.courseAvailable) {
       VideoOptionsStore.handleVideo({
         src: this.lesson!.m3u8FileLink,
         poster: this.lesson!.photoLink,

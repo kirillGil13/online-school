@@ -13,7 +13,7 @@
 <!--        </TextSelect>-->
       </div>
     </div>
-    <CommentsFormComponent :form="form" v-on='$listeners' v-if="user.subscription.isActual !== null"/>
+    <CommentsFormComponent :form="form" v-on='$listeners' v-if="available"/>
     <v-col class="mt-4 pa-0">
       <Comments :selects="selects" v-for="(item, index) in comments" :key="index" :comment="item" v-on="$listeners" :answers-form="answersForm"
                 :class="[index !== 0 ? 'mt-8' : '']" :form="changeForm"/>
@@ -31,8 +31,6 @@ import {CommentsForm} from '../../../form/comments/commentsForm';
 import Comments from './comments/Comments.vue';
 import {ISelect} from '../../../entity/select/select.types';
 import {CommentsChangeForm} from '../../../form/commentsChange/commentsChangeForm';
-import {IUser} from '../../../entity/user';
-import {AuthStore} from '../../../store/modules/Auth';
 import Select from '../common/Select.vue';
 import TextSelect from '../common/TextSelect.vue';
 
@@ -47,10 +45,7 @@ export default class Discussion extends Vue {
   @Prop() readonly selects!: ISelect[];
   @Prop() readonly selectedId!: number;
   @Prop() readonly selectsDiscussion!: ISelect[];
-
-  get user(): IUser | null {
-    return AuthStore.user;
-  }
+  @Prop() readonly available!: boolean;
 }
 </script>
 

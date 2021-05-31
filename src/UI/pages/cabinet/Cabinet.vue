@@ -10,14 +10,13 @@
         <FilterComponent :search="false" :is-on-right="false" :filters="filters" @filter="onFilter" :count-element="[0]"/>
       </v-col>
     </v-row>
-    <v-row v-if="myStatisticLoaded">
+    <v-row v-if="balance !== null">
       <v-col>
-        <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease" extra-action>
+        <Badge :profit="null" extra-action>
           <template v-slot:title>Баланс</template>
           <template v-slot:default>
-            {{ myStatistic.purchasesIncomeCurrent.current | currency('RUB') }}
+            {{ balance | currency('RUB') }}
           </template>
-          <template v-slot:stats>{{myStatistic.purchasesIncomeCurrent.change}}%</template>
           <template v-slot:extraAction>
             <div class="d-flex" :class="[$adaptive.isMobile ? 'full-width flex-column' : 'align-center']">
               <div class="link mr-4" :class="[$adaptive.isMobile && 'mb-3']" @click="$router.push({name: $routeRules.CabinetHistory})" style="cursor: pointer">История выводов</div>
@@ -102,6 +101,8 @@ import {WithDrawForm} from '../../../form/withDraw/withDrawForm';
 import {ProfileDocsStore} from '../../../store/modules/ProfileDocs';
 import {IProfileDocs} from '../../../entity/profileDocs/profileDocs.types';
 import {WithdrawsStore} from '../../../store/modules/Withdraw';
+import {BalanceRepository} from '../../../repository/balance/BalanceRepository';
+import {BalanceStore} from '../../../store/modules/Balance';
 
 @Component({
   components: {
@@ -133,6 +134,10 @@ export default class Cabinet extends Vue {
 
   get filtersPeriods(): IFilters[] {
     return FiltersStore.periods;
+  }
+
+  get balance(): number | null {
+    return BalanceStore.balance;
   }
 
   get myCourses(): ILeaderCourses[] {
@@ -194,7 +199,8 @@ export default class Cabinet extends Vue {
     });
     await CourseLevelsStore.fetchAll();
     await ProfileDocsStore.fetchData();
-    await this.withdrawForm.setFormData(this.docs, this.myStatistic!.purchasesIncomeCurrent.current);
+    await BalanceStore.fetchData();
+    await this.withdrawForm.setFormData(this.docs, this.balance!.toString());
   }
 
   async created(): Promise<void> {
@@ -229,6 +235,8 @@ export default class Cabinet extends Vue {
         type: this.alertType.Success,
         text: 'Ваша заявка на вывод успешно отправлена'
       })
+      await BalanceStore.fetchData();
+      this.withdrawForm.setFormData(this.docs, this.balance!.toString())
     }
   }
 }

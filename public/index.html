@@ -14,11 +14,9 @@
               'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
          f.parentNode.insertBefore(j, f);
     })(window, document, 'script', 'dataLayer', '<%= process.env.VUE_APP_TAG_MANAGER_KEY %>');</script>
-<!--    <script src="https://rest-api-test.tinkoff.ru/html/payForm/js/tinkoff_v2.js"></script>-->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <style>.tinkoffPayRow{display:block;margin:1%;width:160px;}</style>
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
@@ -33,38 +31,6 @@
 </noscript>
 <div id="app"></div>
 <!-- built files will be auto injected -->
-<!--<form name="TinkoffPayForm" onsubmit="pay(this); return false;">-->
-<!--    <input class="tinkoffPayRow" type="hidden" name="terminalkey" value="1618843802103">-->
-<!--    <input class="tinkoffPayRow" type="hidden" name="frame" value="false">-->
-<!--    <input class="tinkoffPayRow" type="hidden" name="language" value="ru">-->
-<!--    <input class="tinkoffPayRow" type="text" placeholder="Сумма заказа" name="amount" required>-->
-<!--    <input class="tinkoffPayRow" type="text" placeholder="Номер заказа" name="order">-->
-<!--    <input class="tinkoffPayRow" type="text" placeholder="Описание заказа" name="description">-->
-<!--    <input class="tinkoffPayRow" type="text" placeholder="ФИО плательщика" name="name">-->
-<!--    <input class="tinkoffPayRow" type="text" placeholder="E-mail" name="email">-->
-<!--    <input class="tinkoffPayRow" type="text" placeholder="Контактный телефон" name="phone">-->
-<!--    <input class="tinkoffPayRow" type="submit" value="Оплатить">-->
-<!--</form>-->
-<!--    <div id="tinkoffWidgetContainer"></div>-->
-<!--<script type="text/javascript">-->
-<!--     const terminalkey = document.forms.TinkoffPayForm.terminalkey-->
-<!--     const widgetParameters = {-->
-<!--          container: 'tinkoffWidgetContainer',-->
-<!--          terminalKey: terminalkey.value,-->
-<!--          paymentSystems: {-->
-<!--               ApplePay: {-->
-<!--                    paymentInfo: function () {-->
-<!--                         return {-->
-<!--                              infoEmail: "E-mail для отправки информации о платеже",-->
-<!--                              paymentData: document.forms.TinkoffPayForm-->
-<!--                         }-->
-<!--                    }-->
-<!--               }-->
-<!--          }-->
-<!--     }-->
-<!--     window.addEventListener('load', function () { initPayments(widgetParameters);-->
-<!--     });-->
-<!--</script>-->
 </body>
 
 </html>

@@ -3,4 +3,5 @@ export interface ITabs {
     title: string;
     filter: boolean;
     component: string;
+    hidden?: boolean;
 }

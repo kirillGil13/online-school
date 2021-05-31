@@ -33,6 +33,7 @@ import {SubscriptionRepository} from '@/repository/subscription/SubscriptionResp
 import {PurchaseRepository} from '@/repository/purchase/PurchaseRepository';
 import {ProfileDocsRepository} from '@/repository/profileDocs/ProfileDocsRepository';
 import WithdrawRepository from '@/repository/withdraw/WithdrawRepository';
+import {BalanceRepository} from '@/repository/balance/BalanceRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -69,5 +70,6 @@ export const provider = (): IProvider => ({
     purchase: new PurchaseRepository(),
     profileDocs: new ProfileDocsRepository(),
     withdraw: new WithdrawRepository(),
+    balance: new BalanceRepository(),
 });
 
