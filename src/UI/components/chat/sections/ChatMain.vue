@@ -30,7 +30,7 @@ import MessageSend from '@/UI/components/message/MessageSend.vue';
 import { MessagesStore } from '@/store/modules/Messages';
 import { WebSocketStore } from '@/store/modules/WebSocket';
 import { IMessages } from '@/entity/messages/messages.types';
-import { MONTHS } from '@/constants/month';
+import { MONTHS } from '@/constants';
 @Component({
   components: {MessageSend, Message, Notification}
 })

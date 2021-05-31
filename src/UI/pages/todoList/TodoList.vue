@@ -1,21 +1,21 @@
 <template>
     <div class="todo">
-        <div class="todo__menu">
+        <div class="todo__menu mr-12">
             <v-list :collapse-transition="false" style="background: none" nav rounded dense>
                 <template v-for="item in tabs">
                     <v-list-item
-                        :id="item.id"
+                        :id="item.categoryName"
                         color=""
-                        :key="item.title"
+                        :key="item.categoryName"
                         :ripple="!$adaptive.isMobile"
-                        @click="setComponent(item.component)"
+                        @click="setComponent(item)"
                         exact
                         exact-active-class="active-menu"
                     >
                         <v-list-item-icon>
-                            <svg-icon :name="item.iconName" class="menu__icon" height="24" width="24" />
+                          <svg-icon :name="getIconName(item.categoryId)" class="menu__icon" height="24" width="24" />
                         </v-list-item-icon>
-                        <v-list-item-title v-text="item.title" />
+                        <v-list-item-title v-text="item.categoryName" />
                     </v-list-item>
                 </template>
             </v-list>
@@ -23,6 +23,9 @@
         <keep-alive>
             <component
                 :is="activeComponent"
+                :id="componentId"
+                :tasks="tasks"
+                @createTask="createTask"
                 style="margin-right: 2px; margin-left: 2px;"
             />
          </keep-alive>
@@ -34,14 +37,16 @@ import { Component, Vue } from 'vue-property-decorator';
 import FormGroup from '../../components/common/form/FormGroup.vue';
 import Relation from '../../components/common/Relation.vue';
 import Button from '@/UI/components/common/Button.vue';
-import {ITabs} from '../../../entity/tabs/tabs.types';
-import {TabsStore} from '../../../store/modules/Tabs';
 import TodoIncome from '@/UI/components/todo/TodoIncome.vue';
 import TodoAnyTimes from '@/UI/components/todo/TodoAnyTimes.vue';
 import TodoJournal from '@/UI/components/todo/TodoJournal.vue';
 import TodoPlans from '@/UI/components/todo/TodoPlans.vue';
 import TodoSomeDay from '@/UI/components/todo/TodoSomeDay.vue';
 import TodoToday from '@/UI/components/todo/TodoToday.vue';
+import { TodoStore } from '@/store/modules/Todo';
+import { TodoStatus } from '@/entity/todo/todoStatus';
+import { TODOCOMPONENTS } from '@/constants';
+import { TodoTask } from '@/entity/todo/todo';
 
 
 
@@ -63,15 +68,46 @@ export default class Candidates extends Vue {
     todoTitle = false;
     checkbox = false;
     activeComponent = 'TodoToday';
+    componentId= 2;
 
-    get tabs(): ITabs[] {
-        return TabsStore.todoTabs;
+    get tabs(): TodoStatus[] {
+        return TodoStore.tasksStatuses;
+    }
+
+    get tasks(): TodoTask[] {
+        return TodoStore.todoTasks;
+    }
+
+    getIconName(id: number): string {
+        return TODOCOMPONENTS.find(el => el.id === id)!.iconName
     }
 
 
-    setComponent(component: string): void {
-        this.activeComponent = component;
+    setComponent(component: TodoStatus): void {
+        this.activeComponent = component.component!;
+        this.componentId = component.categoryId;
+        this.fetchData(component.categoryId)
     }
+
+   
+    fetchData(id: number = 2): void {
+        TodoStore.fetchAllTask({id});
+    }
+
+    fetchDatatStatusesTasks(): void {
+        TodoStore.fetchAllTaskStatus()
+    }
+
+
+    createTask(data: {name?: string, description?: string, do_date?: number, reminder_time?: number, candidate_id?: number, category_id: number, images_link?: string[] }): void {
+        TodoStore.createTask(data)
+    }
+
+    async created(): Promise<void> {
+        await this.fetchDatatStatusesTasks();
+        await this.fetchData();
+    }
+
    
 }
 </script>
@@ -128,7 +164,7 @@ export default class Candidates extends Vue {
             background: #ffffff;
             box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 2px 24px rgba(0, 0, 0, 0.08);
             border-radius: 12px;
-            padding: 14px;
+            padding: 12px;
 
             .items-add-place-text__title {
                 font-weight: 500;
@@ -163,16 +199,26 @@ export default class Candidates extends Vue {
         margin-bottom: 0;
     }
 
-    #income {
+    #Входящие {
         margin-bottom: 16px;
     }
 
-    #journal { 
+    #Журнал { 
         margin-top: 16px;
     }
 
     .v-list-item--dense .v-list-item__title, .v-list-item--dense .v-list-item__subtitle, .v-list--dense .v-list-item .v-list-item__title, .v-list--dense .v-list-item .v-list-item__subtitle {
         font-size: 16px;
+    }
+
+    .icon-statuses {
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .v-text-field {
+        padding-top: 0 !important;
     }
 }
 </style>

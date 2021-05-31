@@ -16,6 +16,21 @@ export interface ITaskCandidate  {
     candidate_name: string;
 }
 
+export interface ITaskStatus {
+    categoryId: number;
+    categoryName: string;
+    photoLink: string;
+    taskCount: number;
+    component: string;
+}
+
+export type TaskStatusResponceType = {
+    category_id: number;
+    category_name: string;
+    photo_link: string;
+    task_count: number;
+}
+
 export type TaskResponseType = {
     id: number;
     created_at: number;

@@ -4,7 +4,7 @@ import {Candidate, CandidateResponseType, ICandidate} from '@/entity/candidates'
 import {CandidateFormRequestType, CandidateStatusCount} from '@/form/candidate/candidateForm.types';
 import {PhoneRequestType} from '@/form/phone/phoneForm.types';
 import {CodeRequestType} from '@/form/code/codeForm.types';
-import {MONTHS} from '../../constants/month/index';
+import {MONTHS} from '../../constants/index';
 
 export class CandidatesRepository implements ICandidatesRepository {
     async fetchAll(data?: FormData): Promise<{[params: string]: ICandidate[]}> {

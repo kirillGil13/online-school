@@ -31,12 +31,9 @@ import { ReviewsRepository } from './reviews/ReviewsRepository';
 import {CommentsAnswersRepository} from '@/repository/commentsAnswers/CommentsAnswersRepository';
 import {SubscriptionRepository} from '@/repository/subscription/SubscriptionRespository';
 import {PurchaseRepository} from '@/repository/purchase/PurchaseRepository';
-<<<<<<< HEAD
 import { TodoRepository } from './todo/TodoRepository';
-=======
 import {ProfileDocsRepository} from '@/repository/profileDocs/ProfileDocsRepository';
 import WithdrawRepository from '@/repository/withdraw/WithdrawRepository';
->>>>>>> dev
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -71,11 +68,8 @@ export const provider = (): IProvider => ({
     commentsAnswers: new CommentsAnswersRepository(),
     subscriptions: new SubscriptionRepository(),
     purchase: new PurchaseRepository(),
-<<<<<<< HEAD
-    todo: new TodoRepository()
-=======
+    todo: new TodoRepository(),
     profileDocs: new ProfileDocsRepository(),
     withdraw: new WithdrawRepository(),
->>>>>>> dev
 });
 
