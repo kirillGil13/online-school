@@ -81,6 +81,7 @@ class TabsModule extends VuexModule {
             title: 'Документы',
             filter: false,
             component: ProfileTabsNameEnum.ProfileDocuments,
+            hidden: true
         },
     ];
     organizationTabs: ITabs[] = [

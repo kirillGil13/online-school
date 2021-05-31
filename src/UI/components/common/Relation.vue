@@ -1,7 +1,7 @@
 <template>
     <div class="relation d-flex flex-row align-center" @click="$emit('click')">
-      <div :class="['icon-container', active ? 'active' : '', svgClass ? svgClass : '']"><svg-icon :name="svgName" ></svg-icon></div>
-        <div v-if="!isRaiting" :style="{lineHeight: '100%'}">
+      <div :class="['icon-container', active ? 'active' : '', svgClass ? svgClass : '', !isPurchased && 'disabled']"><svg-icon :name="svgName" ></svg-icon></div>
+        <div v-if="!isRaiting" :style="{lineHeight: '100%', color: !isPurchased ? '#989898' : '#000000' }">
           {{ title }}
         </div>
         <template v-else>
@@ -18,6 +18,7 @@ export default class Relation extends Vue {
   @Prop({default: false}) active!: boolean;
   @Prop() readonly svgName!: string;
   @Prop() readonly title!: string | number;
+  @Prop({default: true}) readonly isPurchased!: boolean;
   @Prop({default: ''}) readonly svgClass!: string | string[];
   @Prop({default: false}) readonly isRaiting?: boolean
 }
@@ -39,6 +40,12 @@ export default class Relation extends Vue {
     height: 36px;
     background: rgba(66, 109, 246, 0.12);
     margin-right: 8px;
+    &.disabled {
+      background: rgba(66, 109, 246, 0.12);
+      svg {
+        opacity: 0.4;
+      }
+    }
     svg {
       width: 16px ;
       height: 16px ;

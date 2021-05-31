@@ -33,6 +33,7 @@ import {IPurchaseRepository} from '@/repository/purchase/PurchaseRepository.type
 import {ITodoRepository} from '@/repository/todo/TodoRepository.types';
 import {IProfileDocsRepository} from '@/repository/profileDocs/ProfileDocsRepository.types';
 import {IWithdrawRepository} from '@/repository/withdraw/WithdrawRepository.types';
+import {IBalanceRepository} from '@/repository/balance/BalanceRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -70,4 +71,5 @@ export interface IProvider {
     todo: ITodoRepository;
     profileDocs: IProfileDocsRepository;
     withdraw: IWithdrawRepository;
+    balance: IBalanceRepository;
 }

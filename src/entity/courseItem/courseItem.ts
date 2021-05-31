@@ -1,6 +1,7 @@
 import {CourseItemResponseType, ICourseItem, ICourseItemAuthor, ICourseLessons} from './courseItem.type';
 import { LessonsTypesEnum } from '@/entity/common/lessons.types';
 import {ICourseLevels} from '@/entity/courseLevels/courseLevels.types';
+import {AuthStore} from '@/store/modules/Auth';
 
 export default class CourseItem implements ICourseItem {
     id: number;
@@ -53,6 +54,18 @@ export default class CourseItem implements ICourseItem {
             });
         }
     }
+
+    get courseAvailable(): boolean {
+        let available  = false;
+        if (this.isPurchased) {
+            available = true;
+            if (AuthStore.user!.subscription.isActual === null && this.cost === 0) {
+                available = false;
+            }
+        }
+        return available;
+    }
+
     resolveType(index: number, routeParam?: string): string {
         let type = '';
         switch (this.lessons[index].status) {
@@ -64,6 +77,11 @@ export default class CourseItem implements ICourseItem {
             if (type !== LessonsTypesEnum.LOCKED && this.lessons[index].id.toString() === routeParam.toString()) {
                 type = LessonsTypesEnum.IN_PROGRESS;
             }
+        }
+        if (!this.isPurchased) {
+            type = LessonsTypesEnum.LOCKED;
+        } else if (AuthStore.user!.subscription.isActual === null && this.cost === 0) {
+            type = LessonsTypesEnum.LOCKED;
         }
         return type;
     }

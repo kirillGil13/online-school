@@ -4,16 +4,16 @@ import { Form } from '@/form/form';
 import { Validate } from '@/plugins/Vuelidate/Decorators';
 import {WithDrawRequestType} from '@/form/withDraw/withDrawForm.types';
 import {IProfileDocs, ProfileDocsStatusEnum} from '@/entity/profileDocs/profileDocs.types';
+import {less} from '@/constants/validators';
 
 @Component
 export class WithDrawForm extends Form {
-
     public person = '';
-
-    public balance = 0;
+    public balance = '';
 
     @Validate(required, 'Введите сумму')
     @Validate(numeric, 'Можно вводить только цифры')
+    @Validate(less('balance'), 'Введите сумму, не превышающую остатка на балансе')
     public sum = '';
 
     public serverErrors: { [key: string]: string[] } = {};
@@ -27,7 +27,7 @@ export class WithDrawForm extends Form {
             amount: +this.sum
         };
     }
-    setFormData(doc: IProfileDocs | null, balance: number): void {
+    setFormData(doc: IProfileDocs | null, balance: string): void {
         if (doc && doc.status === ProfileDocsStatusEnum.ACCEPTED) {
             this.person = doc.companyName;
         }

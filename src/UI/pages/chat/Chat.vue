@@ -50,16 +50,20 @@ import { WebSocketStore } from '@/store/modules/WebSocket';
 export default class Chat extends Vue {
   chosenPartnerId: number | null = null;
 
+  @Watch('$route.params.id')
+  async onChangeRoute(): Promise<void> {
+    await DialogsStore.fetchAll();
+  }
+
   @Watch('$route.name')
-  scrollTop() {
+  scrollTop(): void {
       if( this.$route.name === this.$routeRules.Chat) {
         window.scroll(0, 0)
       }
   }
 
-  async created() {
-    await DialogsStore.fetchAll()
-
+  async created(): Promise<void> {
+    await DialogsStore.fetchAll();
   }
   get dialogs(): IDialogs[] {
     return DialogsStore.dialogs;
@@ -76,7 +80,7 @@ export default class Chat extends Vue {
     }else {
       return null
     }
-    
+
   }
 
   get socket(): WebSocket | null {
@@ -92,7 +96,7 @@ export default class Chat extends Vue {
     this.$router.push({name: RouterNameEnum.ChatMain, params: {id: id.toString()}})
   }
 
-  activatorChat(act: boolean) :void {
+  activatorChat(act: boolean): void {
 
     if(act) {
       this.chosenPartnerId = Number(this.$route.params.id)
@@ -108,14 +112,14 @@ export default class Chat extends Vue {
       return
     }
     const el = {
-      type: "send-message-service_type",
+      type: 'send-message-service_type',
       data: {
         purposeAccountId: this.$route.params.id ,
         text: message.toString()
 
       }
     }
-   
+
     this.socket!.send(JSON.stringify(el));
   }
 

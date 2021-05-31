@@ -11,7 +11,7 @@
                         height: $adaptive.isMobile ? '50px' : '72px',
                     }"
                 >
-                    <div class="btn-delete-prev-img" @click="deletePrevImg(id)">
+                    <div class="btn-delete-prev-img mr-1" @click="deletePrevImg(id)">
                         <v-icon class="btn-delete-prev-img__icon" small>mdi-delete-forever</v-icon>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
         </div>
         <div class="message-send d-flex flex-row align-end">
             <div class="d-flex align-end mr-2" style="height: 100%">
-                <v-icon style="padding: 6px 4px; margin-top: 0 !important" class="send-picture" @click="activateInput"
+                <v-icon style="padding: 6px 8px; margin-top: 0 !important;min-height: 40px" class="send-picture" @click="activateInput"
                     >mdi-folder-image</v-icon
                 >
                 <input type="file" multiple accept="image/*" id="upload" @change="loadPicture" />
@@ -46,7 +46,7 @@
             </div>
 
             <div class="d-flex align-end" style="height: 100%">
-                <svg-icon class="send-icon" name="Send" @click="sendMessage"></svg-icon>
+                <svg-icon class="send-icon" style="margin-bottom: 6px" name="Send" @click="sendMessage"></svg-icon>
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@ import { WebSocketStore } from '@/store/modules/WebSocket';
 export default class MessageSend extends Vue {
     messageText = '';
     image = '';
-    pictures: {short: string, long: string}[] = [];
+    pictures: {short: string; long: string}[] = [];
 
     get picture(): IPictureUpload | null {
         return PictureUploadStore.pictureUpload;
@@ -154,7 +154,7 @@ export default class MessageSend extends Vue {
 
                     .v-text-field__slot {
                         textarea {
-                            
+
                             max-height: 192px;
                             overflow: scroll;
                             &::placeholder {

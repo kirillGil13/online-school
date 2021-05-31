@@ -20,6 +20,7 @@ export interface ICourseItem {
     rating: number;
     isPurchased: boolean;
     canBeAddedToTeam: boolean;
+    courseAvailable: boolean;
     resolveType(index: number, routeParam: string): string;
     resolveDescription(s: string): string;
 }

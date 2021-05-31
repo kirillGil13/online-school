@@ -46,7 +46,7 @@ export default class Badge extends Vue {
     margin-bottom: 8px;
     border-radius: $main_border_radius;
     border: 1px solid #F2F2F2;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 2px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 14px 12px rgb(0 0 0 / 1%);
   background: #FFFFFF;
     &:nth-last-child(1) {
       margin-bottom: 0;

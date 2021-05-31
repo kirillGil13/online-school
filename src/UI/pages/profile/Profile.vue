@@ -192,7 +192,15 @@ export default class Profile extends Vue {
   }
 
   get tabs(): ITabs[] {
-    return TabsStore.profileTabs;
+    const tabs = TabsStore.profileTabs
+    for (let i = 0; i < tabs.length; i++) {
+      if (tabs[i].hidden !== undefined) {
+        if (!this.user!.isLeader) {
+          tabs.splice(i, 1);
+        }
+      }
+    }
+    return tabs;
   }
 
   get user(): IUser | null {

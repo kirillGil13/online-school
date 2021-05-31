@@ -5,12 +5,11 @@
     </v-col>
     <v-row v-if="myStatisticLoaded" class="mt-8">
       <v-col>
-        <Badge :profit="myStatistic.purchasesIncomeCurrent.isIncrease" extra-action>
+        <Badge :profit="null" extra-action>
           <template v-slot:title>Баланс</template>
           <template v-slot:default>
-            {{ myStatistic.purchasesIncomeCurrent.current | currency('RUB') }}
+            {{ balance | currency('RUB') }}
           </template>
-          <template v-slot:stats>{{myStatistic.purchasesIncomeCurrent.change}}%</template>
           <template v-slot:extraAction>
             <div class="d-flex align-center" :class="[$adaptive.isMobile && 'full-width']">
               <Button small :full-width="$adaptive.isMobile" class="mt-0 px-6" @submit="activatorWithdraw = true">Вывести</Button>
@@ -20,7 +19,7 @@
       </v-col>
     </v-row>
     <v-row v-if="withdrawsLoaded">
-      <v-col v-if="withdraws === []">
+      <v-col v-if="withdraws !== []">
         <WithdrawsHistoryTable :withdraws="withdraws"/>
       </v-col>
       <v-col v-else class="d-flex align-center justify-center">
@@ -52,6 +51,7 @@ import Badge from '../../components/common/Badge.vue';
 import Button from '../../components/common/Button.vue';
 import {IWithdraw} from '../../../entity/withdraw/withdraw.types';
 import WithdrawsHistoryTable from '../../components/withdrawsHistoryTable/WithdrawsHistoryTable.vue';
+import {BalanceStore} from '../../../store/modules/Balance';
 @Component({
   components: {WithdrawsHistoryTable, Button, Badge, WithDrawFormComponent, Modal, Header}
 })
@@ -79,6 +79,10 @@ export default class WithdrawHistory extends Vue {
 
   get withdrawsLoaded(): boolean {
     return WithdrawsStore.withdrawsLoaded;
+  }
+
+  get balance(): number | null {
+    return BalanceStore.balance;
   }
 
   activatorChangeWithdraw(act: boolean): void {
@@ -115,7 +119,8 @@ export default class WithdrawHistory extends Vue {
     await MyStatisticStore.fetchData();
     await ProfileDocsStore.fetchData();
     await WithdrawsStore.fetchAll({pagination: {limit: 100}})
-    await this.withdrawForm.setFormData(this.docs, this.myStatistic!.purchasesIncomeCurrent.current);
+    await BalanceStore.fetchData();
+    await this.withdrawForm.setFormData(this.docs, this.balance!.toString());
   }
 
   async created(): Promise<void> {
@@ -131,6 +136,8 @@ export default class WithdrawHistory extends Vue {
         type: this.alertType.Success,
         text: 'Ваша заявка на вывод успешно отправлена'
       })
+      await BalanceStore.fetchData();
+      this.withdrawForm.setFormData(this.docs, this.balance!.toString());
     }
   }
 }

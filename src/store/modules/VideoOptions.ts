@@ -46,6 +46,13 @@ class VideoOptionsModule extends VuexModule {
         this.options.poster = data.poster;
         this.options.cache_.currentTime = data.currentTime;
     }
+
+    @Mutation
+    clearData(): void {
+        this.options.sources[0].src = '';
+        this.options.poster = '';
+        this.options.cache_.currentTime = 0;
+    }
 }
 
 export const VideoOptionsStore = getModule(VideoOptionsModule);

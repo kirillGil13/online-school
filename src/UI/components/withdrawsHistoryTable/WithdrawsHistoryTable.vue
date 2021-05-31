@@ -6,7 +6,7 @@
       </v-row>
       <v-row no-gutters v-for="(item, index) in withdraws" :key="index">
         <v-col class="table-col">{{ item.amount | currency('RUB') }}</v-col>
-        <v-col class="table-col">{{ item.commission }}</v-col>
+        <v-col class="table-col">{{ item.commission + '%' }}</v-col>
         <v-col class="table-col">{{ item.adjustedAmount | currency('RUB') }}</v-col>
         <v-col class="table-col">{{ item.createdAt }}</v-col>
         <v-col class="table-col" :style="{color: item.status === statusName.ACCEPTED ? '#27AE60' : '#F2994A'}">
@@ -22,7 +22,7 @@
         </v-col>
         <v-col class="table-col mobile pt-0 pb-5">
           <div class="table-col-title pa-0 mb-1">{{header[1]}}</div>
-          {{ item.commission }}
+          {{ item.commission + '%'}}
         </v-col>
         <v-col class="table-col mobile pt-0 pb-5">
           <div class="table-col-title pa-0 mb-1">{{header[2]}}</div>

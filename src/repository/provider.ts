@@ -34,6 +34,7 @@ import {PurchaseRepository} from '@/repository/purchase/PurchaseRepository';
 import { TodoRepository } from './todo/TodoRepository';
 import {ProfileDocsRepository} from '@/repository/profileDocs/ProfileDocsRepository';
 import WithdrawRepository from '@/repository/withdraw/WithdrawRepository';
+import {BalanceRepository} from '@/repository/balance/BalanceRepository';
 
 export const provider = (): IProvider => ({
     candidates: new CandidatesRepository(),
@@ -71,5 +72,6 @@ export const provider = (): IProvider => ({
     todo: new TodoRepository(),
     profileDocs: new ProfileDocsRepository(),
     withdraw: new WithdrawRepository(),
+    balance: new BalanceRepository(),
 });
 
