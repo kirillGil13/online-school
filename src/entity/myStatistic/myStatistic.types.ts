@@ -24,6 +24,6 @@ export type MyStatisticItemResponseType = {
 }
 
 export type MyStatisticRequestType = {
-    timestampStart: number;
-    timestampFinish: number;
+    timestampStart?: number;
+    timestampFinish?: number;
 }

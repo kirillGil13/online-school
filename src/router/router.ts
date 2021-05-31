@@ -179,7 +179,17 @@ const routes = [
                     isLeader: true,
                     title: 'Кабинет лидера - ONELINKS'
                 },
-                beforeEnter: leaderGuard
+                beforeEnter: leaderGuard,
+            },
+            {
+                path: 'cabinet/history',
+                name: RouterNameEnum.CabinetHistory,
+                meta: {
+                    isLeader: true,
+                    title: 'История выводов - ONELINKS'
+                },
+                beforeEnter: leaderGuard,
+                component: () => import('../UI/pages/withdrawHistory/WithdrawHistory.vue')
             },
             {
                 path: 'confirm/:type',
@@ -189,7 +199,6 @@ const routes = [
                 component: () => import('../UI/pages/confirm/ConfirmPage.vue'),
                 name: RouterNameEnum.Confirm
             },
-
         ],
     },
     {

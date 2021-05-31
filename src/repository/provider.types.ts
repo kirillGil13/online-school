@@ -30,7 +30,9 @@ import {ICommentsAnswersRepository} from '@/repository/commentsAnswers/CommentsA
 import { IReviewsRepository } from './reviews/ReviewsRepository.types';
 import {ISubscriptionRepository} from '@/repository/subscription/SubscriptionRespository.types';
 import {IPurchaseRepository} from '@/repository/purchase/PurchaseRepository.types';
-import {ITodoRepository} from '@/repository/todo/TodoRepository.types'
+import {ITodoRepository} from '@/repository/todo/TodoRepository.types';
+import {IProfileDocsRepository} from '@/repository/profileDocs/ProfileDocsRepository.types';
+import {IWithdrawRepository} from '@/repository/withdraw/WithdrawRepository.types';
 
 export interface IProvider {
     candidates: ICandidatesRepository;
@@ -66,4 +68,6 @@ export interface IProvider {
     subscriptions: ISubscriptionRepository;
     purchase: IPurchaseRepository;
     todo: ITodoRepository;
+    profileDocs: IProfileDocsRepository;
+    withdraw: IWithdrawRepository;
 }

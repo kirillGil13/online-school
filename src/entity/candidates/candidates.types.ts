@@ -35,12 +35,3 @@ export type CandidateStatusResponseType = {
     photoLink: string;
     name: string;
 }
-
-export type CandidateRequestType = {
-    statusId?: number;
-    isFiction?: boolean;
-    infoPackId?: number;
-    search?: string;
-    limit?: number;
-    skip?: number;
-}

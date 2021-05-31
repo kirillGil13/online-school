@@ -13,7 +13,7 @@ class MyStatisticModule extends VuexModule{
     myStatisticLoaded = false;
 
     @MutationAction
-    async fetchData(data: MyStatisticRequestType): Promise<{ myStatistic: IMyStatistic; myStatisticLoaded: boolean }> {
+    async fetchData(data?: MyStatisticRequestType): Promise<{ myStatistic: IMyStatistic; myStatisticLoaded: boolean }> {
         const myStatistic = await store.$repository.myStatistic.fetchData(data);
         let myStatisticLoaded = false;
         if (myStatistic) {

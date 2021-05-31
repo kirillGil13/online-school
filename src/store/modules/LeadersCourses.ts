@@ -1,6 +1,7 @@
 import {getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import {ILeaderCourses, LeaderCoursesRequestType} from '@/entity/leaderCourses/leaderCourses.types';
+import {ILeaderCourses} from '@/entity/leaderCourses/leaderCourses.types';
+import {PaginationRequestType} from '@/entity/common/pagination.types';
 
 @Module({
     namespaced: true,
@@ -19,7 +20,7 @@ class LeadersCoursesModule extends VuexModule {
     }
 
     @MutationAction
-    async fetchAll(data?: LeaderCoursesRequestType): Promise<{ leadersCourses: ILeaderCourses[]; leadersCoursesLoaded: boolean }> {
+    async fetchAll(data?: PaginationRequestType): Promise<{ leadersCourses: ILeaderCourses[]; leadersCoursesLoaded: boolean }> {
         const formData = new FormData();
         if(data) {
             if (data.name) {

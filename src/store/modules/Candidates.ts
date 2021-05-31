@@ -1,8 +1,9 @@
 import {Action, getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import {CandidateRequestType, ICandidate} from '@/entity/candidates';
+import {ICandidate} from '@/entity/candidates';
 import {CandidateFormRequestType, CandidatePhoneRequestType, CandidateStatusCount} from '@/form/candidate/candidateForm.types';
 import {CodeRequestType} from '@/form/code/codeForm.types';
+import {PaginationRequestType} from '@/entity/common/pagination.types';
 
 @Module({
     namespaced: true,
@@ -36,7 +37,7 @@ class CandidatesModule extends VuexModule {
     }
 
     @Action({commit: 'setCandidates', rawError: true})
-    async fetchAll(data?: {data?: CandidateRequestType; scroll?: boolean}): Promise<{ candidates: {[params: string]: ICandidate[]}; candidatesLoaded: boolean; scroll: boolean }> {
+    async fetchAll(data?: {data?: PaginationRequestType; scroll?: boolean}): Promise<{ candidates: {[params: string]: ICandidate[]}; candidatesLoaded: boolean; scroll: boolean }> {
         const formData = new FormData();
         let candidatesLoaded = false;
         let scroll = false;

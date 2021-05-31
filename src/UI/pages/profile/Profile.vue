@@ -58,7 +58,10 @@
                             :contactForm="contactDataForm"
                             :mainForm="mainInfoForm"
                             :changeEmailForm="changeEmailForm"
+                            :docForm="docForm"
+                            :docs="profileDocs"
                             @saveMain="saveMain"
+                            @sendRequest="sendRequest"
                             @saveContact="saveContact"
                             @changeEmail="changeEmail"
                             style="margin-right: 2px; margin-left: 2px;"
@@ -110,9 +113,14 @@ import {ChangeEmailStore} from '../../../store/modules/ChangeEmail';
 import {SubscriptionStore} from '../../../store/modules/Subscription';
 import {eventBus} from '../../../main';
 import ProfileSubs from '../../components/profile/sections/ProfileSubs.vue';
+import ProfileDocuments from '../../components/profile/sections/ProfileDocuments.vue';
+import {ProfileDocumentsForm} from '../../../form/profile/documents/profileDocumentsForm';
+import {ProfileDocsStore} from '../../../store/modules/ProfileDocs';
+import {IProfileDocs, ProfileDocsStatusEnum} from '../../../entity/profileDocs/profileDocs.types';
 
 @Component({
   components: {
+    ProfileDocuments,
     ProfileSubs,
     PictureCropper,
     Modal,
@@ -131,6 +139,7 @@ export default class Profile extends Vue {
   mainInfoForm: ProfileMainInfoForm;
   contactDataForm: ProfileContactDataForm;
   changeEmailForm: ChangeEmailForm;
+  docForm = new ProfileDocumentsForm();
   pictureChanged = false;
   success = false;
   activeName = 0;
@@ -190,6 +199,10 @@ export default class Profile extends Vue {
     return AuthStore.user;
   }
 
+  get profileDocs(): IProfileDocs | null {
+    return ProfileDocsStore.profileDocs;
+  }
+
   private logOut(): void {
     AuthStore.logout()
   }
@@ -224,8 +237,16 @@ export default class Profile extends Vue {
     this.reader.readAsDataURL(file);
   }
 
-  created(): void {
+  async created(): Promise<void> {
     document.title = this.user!.fullName + ' - ' + 'ONELINKS';
+    await ProfileDocsStore.fetchData();
+    if (this.profileDocs && this.profileDocs.status !== ProfileDocsStatusEnum.EMPTY) {
+      this.docForm.setFormData(this.profileDocs);
+    }
+  }
+
+  async sendRequest(): Promise<void> {
+    await this.docForm.submit(ProfileDocsStore.changeDoc);
   }
 
   async changeEmail(): Promise<void> {
