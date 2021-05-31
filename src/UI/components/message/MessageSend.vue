@@ -65,7 +65,7 @@ import { WebSocketStore } from '@/store/modules/WebSocket';
 export default class MessageSend extends Vue {
     messageText = '';
     image = '';
-    pictures: {short: string, long: string}[] = [];
+    pictures: {short: string; long: string}[] = [];
 
     get picture(): IPictureUpload | null {
         return PictureUploadStore.pictureUpload;
