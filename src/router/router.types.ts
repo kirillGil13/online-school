@@ -42,4 +42,5 @@ export enum RouterNameEnum {
     PersonalData = 'PersonalData',
     TermsOfUse = 'TermsOfUse',
     TermsOfSubscription = 'TermsOfSubscription',
+    TodoList = 'TodoList'
 }

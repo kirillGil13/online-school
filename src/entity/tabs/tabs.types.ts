@@ -4,4 +4,5 @@ export interface ITabs {
     filter: boolean;
     component: string;
     hidden?: boolean;
+    iconName?: string;
 }

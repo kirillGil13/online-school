@@ -4,7 +4,7 @@
         <template v-for="(item, index) in items">
             <v-list-item v-if="!item.subMenu" :id="`step-${index + 1}`" color="" v-show="handleMenuItem(item)" :key="item.title" :ripple="!$adaptive.isMobile" exact exact-active-class="active-menu" :to="{name: proceed(item.route)}">
                 <v-list-item-icon>
-                    <svg-icon :name="item.iconName" class="menu__icon" height="24" width="24" />
+                 <svg-icon :name="item.iconName" class="menu__icon" height="24" width="24" />
                 </v-list-item-icon>
                 <v-list-item-title v-text="item.title" />
                 <span class="count-unread-message">{{item.title === 'Чат' &&  $route.name !== $routeRules.Chat &&  $route.name !== $routeRules.ChatMain && unReadMessages !== 0 ? unReadMessages : ''}}</span>

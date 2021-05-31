@@ -94,6 +94,15 @@ const routes = [
                 ]
             },
             {
+                path: 'todo-list',
+                name: RouterNameEnum.TodoList,
+                meta: {
+                    title: 'Задачи - ONELINKS'
+                },
+                component: () => import('../UI/pages/todoList/TodoList.vue'),
+
+            },
+            {
                 path: 'candidates',
                 meta: {
                     title: 'Кандидаты - ONELINKS'

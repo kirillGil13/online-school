@@ -1,5 +1,5 @@
 import { IReviews, IReviewsAuthor, ReviewsResponseType } from './reviews.types';
-import {MONTHS} from '../../constants/month/index';
+import {MONTHS} from '../../constants/index';
 
 export default class Reviews implements IReviews{
     id: number;
