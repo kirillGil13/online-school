@@ -4,11 +4,11 @@
      <div class="d-flex todo__items" style="width: 100%"  @click.capture="showTextArea = false">
             <div class="items-title">
                 <svg-icon name="Any_times" style="width: 5%; height: 100%"/>
-                <span class="title-text">Планы</span>
+                <span class="title-text">В любое время</span>
             </div>
             <div class="items-btn-add" @click="showTextArea = true">
                 <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
-                <span class="btn-add-text">В любое время</span>
+                <span class="btn-add-text">Добавить задачу</span>
             </div>
             <div class="items-add-place" v-if="showTextArea">
                 <!-- <form-group class="width" field="review" :form="form" show-custom-error > -->
@@ -46,9 +46,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
 export default class TodoAnyTimes extends Vue {
      showTextArea = false;
+     checkbox = false
 }
 </script>
 

@@ -44,9 +44,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
 export default class TodoToday extends Vue {
      showTextArea = false;
+     checkbox = false;
 }
 </script>
 

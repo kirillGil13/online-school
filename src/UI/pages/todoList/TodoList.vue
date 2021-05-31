@@ -20,73 +20,49 @@
                 </template>
             </v-list>
         </div>
-        <div class="d-flex todo__items" style="width: 100%"  @click.self="showTextArea = false">
-            <div class="items-title">
-                <svg-icon name="Star_big" style="width: 5%; height: 100%"/>
-                <span class="title-text">Сегодня</span>
-            </div>
-            <div class="items-btn-add" @click="showTextArea = true">
-                <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
-                <span class="btn-add-text">Добавить задачу</span>
-            </div>
-            <div class="items-add-place" v-if="showTextArea">
-                <!-- <form-group class="width" field="review" :form="form" show-custom-error > -->
-                <div class="items-add-place-text">
-                    <div class="items-add-place-text__title">
-                        <v-checkbox v-model="todoTitle" class="mt-0 pt-0" />
-                        <v-text-field class="mt-0 pt-0" type="text" placeholder="Название задачи"/>
-                    </div>
-                    <div class="items-add-place-text__actions">
-                        <div class="items-add-place-text__set-items-add-place">
-                            <v-textarea
-                                ref="contentTextArea"
-                                no-resize
-                                id="message"
-                                placeholder="Напишите текст отзыва, чтобы сохранить оценку"
-                                rows="5"
-                                hide-details
-                                type="text"
-                            />
-                        </div>
-                        <div class="items-add-place-text__like-dislike d-flex">
-                            <div>
-                                <svg-icon name="Picture_outline" class="menu__icon" height="24" width="24" />
-                            </div>
-                            <div>
-                                <svg-icon name="Users_outline" class="ml-4  mr-1 menu__icon" height="24" width="28" />
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div> -->
-                </div>
-                <!-- </form-group> -->
-            </div>
-            <div class="items-check-boxes">
-                <v-checkbox v-model="checkbox" label="Задача очень важная"></v-checkbox>
-            </div>
-        </div>
+        <keep-alive>
+            <component
+                :is="activeComponent"
+                style="margin-right: 2px; margin-left: 2px;"
+            />
+         </keep-alive>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import FormGroup from '../../components/common/form/FormGroup.vue';
 import Relation from '../../components/common/Relation.vue';
 import Button from '@/UI/components/common/Button.vue';
 import {ITabs} from '../../../entity/tabs/tabs.types';
 import {TabsStore} from '../../../store/modules/Tabs';
+import TodoIncome from '@/UI/components/todo/TodoIncome.vue';
+import TodoAnyTimes from '@/UI/components/todo/TodoAnyTimes.vue';
+import TodoJournal from '@/UI/components/todo/TodoJournal.vue';
+import TodoPlans from '@/UI/components/todo/TodoPlans.vue';
+import TodoSomeDay from '@/UI/components/todo/TodoSomeDay.vue';
+import TodoToday from '@/UI/components/todo/TodoToday.vue';
+
+
 
 @Component({
     components: {
         FormGroup,
         Relation,
         Button,
+        TodoPlans,
+        TodoSomeDay,
+        TodoIncome,
+        TodoToday,
+        TodoAnyTimes,
+        TodoJournal
     },
 })
 export default class Candidates extends Vue {
     showTextArea = false;
     todoTitle = false;
     checkbox = false;
+    activeComponent = 'TodoToday';
 
     get tabs(): ITabs[] {
         return TabsStore.todoTabs;
@@ -94,7 +70,7 @@ export default class Candidates extends Vue {
 
 
     setComponent(component: string): void {
-        console.log(component)
+        this.activeComponent = component;
     }
    
 }
