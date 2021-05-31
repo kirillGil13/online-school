@@ -5,6 +5,7 @@ import {TrainingTabsNameEnum} from '@/entity/tabs/trainingTabs.types';
 import {PresentationTabsNameEnum} from '@/entity/tabs/presentationTabs.types';
 import {OrganizationTabsNameEnum} from '@/entity/tabs/organizationTabs.types';
 import {ProfileTabsNameEnum} from '@/entity/tabs/profileTabs.types';
+import {TodoTabsNameEnum} from '@/entity/tabs/todoTabs.types';
 
 
 @Module({
@@ -132,7 +133,9 @@ class TabsModule extends VuexModule {
             component: OrganizationTabsNameEnum.OrganizationGroup
         },
 
-    ]
+    ];
 }
 
 export const TabsStore = getModule(TabsModule);
+
+

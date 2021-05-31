@@ -17,6 +17,11 @@ class MenuModule extends VuexModule {
             route: RouterNameEnum.TrainingMain,
         },
         {
+            title: 'Задачи',
+            iconName: 'Todo_list',
+            route: RouterNameEnum.TodoList,
+        },
+        {
             title: 'Кандидаты',
             iconName: 'Users',
             route: RouterNameEnum.Candidates,

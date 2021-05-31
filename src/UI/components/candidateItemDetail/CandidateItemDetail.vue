@@ -93,7 +93,7 @@
 import {Component, Vue, Prop} from 'vue-property-decorator';
 import Button from '@/UI/components/common/Button.vue';
 import {ICandidate} from '@/entity/candidates/candidates.types';
-import {MONTHS} from '../../../constants/month/index';
+import {MONTHS} from '../../../constants/index';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 import Select from '@/UI/components/common/Select.vue';
 import {ISelect} from '@/entity/select/select.types';

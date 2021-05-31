@@ -1,4 +1,4 @@
-import {Action, getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
+import { getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import {IProfileDocs} from '@/entity/profileDocs/profileDocs.types';
 import {ProfileDocumentsRequestType} from '@/form/profile/documents/profileDocumentsForm.types';

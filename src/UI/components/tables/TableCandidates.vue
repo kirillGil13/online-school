@@ -75,7 +75,7 @@ import {Candidate, ICandidate} from '@/entity/candidates';
 import {ISelect} from '@/entity/select/select.types';
 import Select from '@/UI/components/common/Select.vue';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
-import {MONTHS} from '../../../constants/month/index'
+import {MONTHS} from '../../../constants/index'
 import {IUser} from '../../../entity/user';
 import {AuthStore} from '../../../store/modules/Auth';
 

@@ -28,7 +28,6 @@ class MessagesModule extends VuexModule {
 
     @Mutation
     addMessage(message: MessagesResponseType): void {
-        console.log(new Messages(message))
         this.messages.push(new Messages(message))
     }
 }
