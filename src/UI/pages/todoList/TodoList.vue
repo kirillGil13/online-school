@@ -1,23 +1,28 @@
 <template>
     <div class="todo">
         <div class="todo__menu mr-12">
-            <v-list :collapse-transition="false" style="background: none" nav rounded dense>
-                <template v-for="item in tabs">
-                    <v-list-item
-                        :id="item.categoryName"
-                        color=""
-                        :key="item.categoryName"
-                        :ripple="!$adaptive.isMobile"
-                        @click="setComponent(item)"
-                        exact
-                        exact-active-class="active-menu"
-                    >
-                        <v-list-item-icon>
-                          <svg-icon :name="getIconName(item.categoryId)" class="menu__icon" height="24" width="24" />
-                        </v-list-item-icon>
-                        <v-list-item-title v-text="item.categoryName" />
-                    </v-list-item>
-                </template>
+            <v-list :collapse-transition="false" v-model="componentId" style="background: none" width="300" nav dense>
+              <v-list-item-group
+                  v-model="activeTab"
+                  color="#426df6"
+              >
+                  <v-list-item
+                      v-for="item in tabs"
+                      :id="item.categoryName"
+                      :key="item.categoryName"
+                      :ripple="!$adaptive.isMobile"
+                      @click="setComponent(item)"
+                      exact
+                      active-class="active-todo"
+                      class="todo-list-item py-2 pl-3 pr-2"
+                  >
+                    <v-list-item-icon class="my-0 mr-3">
+                      <svg-icon :name="getIconName(item.categoryId)" class="menu__icon" height="24" width="24" />
+                    </v-list-item-icon>
+                    <v-list-item-title v-text="item.categoryName" />
+                    <span v-if="item.taskCount > 0" style="font-size: 16px; color: #5F739C;">{{item.taskCount}}</span>
+                  </v-list-item>
+              </v-list-item-group>
             </v-list>
         </div>
         <keep-alive>
@@ -26,6 +31,7 @@
                 :id="componentId"
                 :tasks="tasks"
                 @createTask="createTask"
+                @deleteTask="deleteTask"
                 style="margin-right: 2px; margin-left: 2px;"
             />
          </keep-alive>
@@ -46,8 +52,7 @@ import TodoToday from '@/UI/components/todo/TodoToday.vue';
 import { TodoStore } from '@/store/modules/Todo';
 import { TodoStatus } from '@/entity/todo/todoStatus';
 import { TODOCOMPONENTS } from '@/constants';
-import { TodoTask } from '@/entity/todo/todo';
-import { ITodoTask } from '@/entity/todo/todo.types';
+import {ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
 
 
 
@@ -64,22 +69,21 @@ import { ITodoTask } from '@/entity/todo/todo.types';
         TodoJournal
     },
 })
-export default class Candidates extends Vue {
+export default class TodoList extends Vue {
     showTextArea = false;
     todoTitle = false;
     checkbox = false;
     activeComponent = 'TodoToday';
     componentId= 2;
+    activeTab = 1;
 
-    get tabs(): TodoStatus[] {
+    get tabs(): ITaskStatus[] {
         return TodoStore.tasksStatuses;
     }
 
     get tasks(): ITodoTask[] {
         return TodoStore.todoTasks;
     }
-
-    
 
     getIconName(id: number): string {
         return TODOCOMPONENTS.find(el => el.id === id)!.iconName
@@ -92,7 +96,7 @@ export default class Candidates extends Vue {
         this.fetchData(component.categoryId)
     }
 
-   
+
     fetchData(id: number = 2): void {
         TodoStore.fetchAllTask({id});
     }
@@ -102,8 +106,14 @@ export default class Candidates extends Vue {
     }
 
 
-    createTask(data: {name?: string, description?: string, do_date?: number, reminder_time?: number, candidate_id?: number, category_id: number, images_link?: string[] }): void {
-        TodoStore.createTask(data)
+    createTask(data: {name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): void {
+        TodoStore.createTask(data);
+        TodoStore.setTaskCount({id: data.category_id, delete: false});
+    }
+
+    async deleteTask(id: number): Promise<void> {
+      await TodoStore.deletedTask({id});
+      await TodoStore.setTaskCount({id: this.tabs[this.activeTab].categoryId, delete: true});
     }
 
     async created(): Promise<void> {
@@ -111,7 +121,7 @@ export default class Candidates extends Vue {
         await this.fetchData();
     }
 
-   
+
 }
 </script>
 
@@ -138,7 +148,7 @@ export default class Candidates extends Vue {
             }
         }
 
-        
+
 
         .items-btn-add {
             padding-left: 8px;
@@ -162,27 +172,6 @@ export default class Candidates extends Vue {
             }
         }
 
-        .items-add-place {
-            margin-top: 12px;
-            background: #ffffff;
-            box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08), 0px 2px 24px rgba(0, 0, 0, 0.08);
-            border-radius: 12px;
-            padding: 12px;
-
-            .items-add-place-text__title {
-                font-weight: 500;
-                font-size: 16px;
-                line-height: 24px;
-                display: flex;
-                align-items: center;
-                color: #828282;
-            }
-
-            .items-add-place-text__like-dislike {
-                justify-content: flex-end;
-            }
-        }
-
         .items-check-boxes {
             display: flex;
             flex-direction: column;
@@ -202,16 +191,24 @@ export default class Candidates extends Vue {
         margin-bottom: 0;
     }
 
+  .todo-list-item {
+    min-height: max-content !important;
+    .v-list-item__title {
+      font-size: 16px !important;
+    }
+  }
+  .active-todo {
+    .v-list-item__title {
+      color: #000000 !important;
+    }
+  }
+
     #Входящие {
         margin-bottom: 16px;
     }
 
-    #Журнал { 
+    #Журнал {
         margin-top: 16px;
-    }
-
-    .v-list-item--dense .v-list-item__title, .v-list-item--dense .v-list-item__subtitle, .v-list--dense .v-list-item .v-list-item__title, .v-list--dense .v-list-item .v-list-item__subtitle {
-        font-size: 16px;
     }
 
     .icon-statuses {
@@ -223,5 +220,8 @@ export default class Candidates extends Vue {
     .v-text-field {
         padding-top: 0 !important;
     }
+  .v-list--nav .v-list-item, .v-list--nav .v-list-item:before {
+    border-radius: 8px !important;
+  }
 }
 </style>

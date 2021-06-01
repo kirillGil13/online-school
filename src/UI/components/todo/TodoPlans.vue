@@ -26,7 +26,7 @@
                             ref="contentTextArea"
                             no-resize
                             id="message"
-                            placeholder="Напишите текст отзыва, чтобы сохранить оценку"
+                            placeholder="Заметки"
                             rows="5"
                             hide-details
                             type="text"
@@ -64,56 +64,7 @@
                         </div>
                     </div>
                     </div>
-                    <div v-else>
-                         <div class="items-add-place">
-                            <!-- <form-group class="width" field="review" :form="form" show-custom-error > -->
-                            <div class="items-add-place-text">
-                                <div class="items-add-place-text__title d-flex">
-                                    <v-checkbox class="ma-0 pa-0" hide-details v-model="newTask.checked" />
-                                    <v-text-field
-                                        class="ma-0 pa-0"
-                                        hide-details
-                                        v-model="taskToUpdate.name"
-                                        placeholder="Название задачи"
-                                    />
-                                </div>
-                                <div class="items-add-place-text__actions">
-                                    <div class="items-add-place-text__set-items-add-place ml-8">
-                                        <v-textarea
-                                            ref="contentTextArea"
-                                            no-resize
-                                            id="message"
-                                            placeholder="Напишите текст отзыва, чтобы сохранить оценку"
-                                            rows="5"
-                                            hide-details
-                                            type="text"
-                                            v-model="taskToUpdate.description"
-                                        />
-                                    </div>
-                                    <div class="items-add-place-text__like-dislike d-flex">
-                                        <div>
-                                            <svg-icon
-                                                name="Picture_outline"
-                                                class="menu__icon"
-                                                height="24"
-                                                width="24"
-                                            />
-                                        </div>
-                                        <div>
-                                            <svg-icon
-                                                name="Users_outline"
-                                                class="ml-4 mr-1 menu__icon"
-                                                height="24"
-                                                width="28"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div> -->
-                            </div>
-                            <!-- </form-group> -->
-                        </div>
-                    </div>
+                    <TaskInput v-else :new-task="newTask" :task-to-update="taskToUpdate"/>
                 </div>
             </template>
         </div>
@@ -125,8 +76,10 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { TodoTask } from '@/entity/todo/todo';
 import { TodoStore } from '@/store/modules/Todo';
 import { ITodoTask } from '@/entity/todo/todo.types';
-
-@Component
+import TaskInput from '../taskInput/TaskInput.vue';
+@Component({
+  components: {TaskInput}
+})
 export default class TodoPlans extends Vue {
     @Prop() readonly tasks!: TodoTask;
     @Prop() readonly id!: number;
@@ -171,7 +124,7 @@ export default class TodoPlans extends Vue {
             };
         } else {
             this.setTaskShowid(null);
-            
+
         }
     }
 
@@ -182,10 +135,10 @@ export default class TodoPlans extends Vue {
                     id: this.taskShowId!,
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
-                    category_id: this.id 
+                    category_id: this.id
                 }
 
-               
+
                 TodoStore.updateCandidateTask(el!)
                 this.taskShowId = null;
             }else {
@@ -198,7 +151,7 @@ export default class TodoPlans extends Vue {
     }
 
      deleteTask(id: number): void {
-        TodoStore.deletedTask({id})
+       this.$emit('deleteTask', id);
     }
 }
 </script>

@@ -8,9 +8,9 @@
                 </v-list-item-icon>
                 <v-list-item-title v-text="item.title" />
                 <span class="count-unread-message">{{item.title === 'Чат' &&  $route.name !== $routeRules.Chat &&  $route.name !== $routeRules.ChatMain && unReadMessages !== 0 ? unReadMessages : ''}}</span>
-                
+
             </v-list-item>
-           
+
             <v-list-group v-else no-action :key="item.title">
                 <v-list-item slot="activator">
                     <v-list-item-icon>
@@ -83,9 +83,6 @@ export default class MenuComponent extends Vue {
     .v-list-item__title {
       font-size: 16px !important;
     }
-  }
-  .active-menu {
-
   }
 }
 

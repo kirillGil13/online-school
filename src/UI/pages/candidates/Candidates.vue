@@ -386,8 +386,6 @@ export default class Candidates extends Vue {
   }
 
   async selectStatus(data: { statusId: number; id: number}): Promise<void> {
-
-
     if( data.statusId === 4) {
       this.closeCandidateItemDetail();
     }
