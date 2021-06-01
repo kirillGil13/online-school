@@ -82,7 +82,19 @@ export default class TodoList extends Vue {
     }
 
     get tasks(): ITodoTask[] {
-        return TodoStore.todoTasks;
+        return TodoStore.todoTasks.map(el => {
+            if(this.activeComponent !== 'TodoJournal') {
+                return {
+                    ...el,
+                    checked: false
+                }
+            }else {
+                return {
+                    ...el,
+                    checked: true
+                }
+            }
+        })
     }
 
     getIconName(id: number): string {
