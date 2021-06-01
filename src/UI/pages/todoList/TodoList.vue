@@ -25,34 +25,29 @@
               </v-list-item-group>
             </v-list>
         </div>
-        <keep-alive>
-            <component
-                :is="activeComponent"
+        <div style="width: 100%">
+            <DefaultTodoComponent
+                :statusItem="tabs[activeTab]"
                 :id="componentId"
                 :tasks="tasks"
                 @createTask="createTask"
                 @deleteTask="deleteTask"
                 style="margin-right: 2px; margin-left: 2px;"
             />
-         </keep-alive>
+         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import FormGroup from '../../components/common/form/FormGroup.vue';
 import Relation from '../../components/common/Relation.vue';
 import Button from '@/UI/components/common/Button.vue';
-import TodoIncome from '@/UI/components/todo/TodoIncome.vue';
-import TodoAnyTimes from '@/UI/components/todo/TodoAnyTimes.vue';
-import TodoJournal from '@/UI/components/todo/TodoJournal.vue';
-import TodoPlans from '@/UI/components/todo/TodoPlans.vue';
-import TodoSomeDay from '@/UI/components/todo/TodoSomeDay.vue';
-import TodoToday from '@/UI/components/todo/TodoToday.vue';
 import { TodoStore } from '@/store/modules/Todo';
 import { TodoStatus } from '@/entity/todo/todoStatus';
 import { TODOCOMPONENTS } from '@/constants';
 import {ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
+import DefaultTodoComponent from '@/UI/components/todo/DefaultTodoComponent.vue';
 
 
 
@@ -61,21 +56,20 @@ import {ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
         FormGroup,
         Relation,
         Button,
-        TodoPlans,
-        TodoSomeDay,
-        TodoIncome,
-        TodoToday,
-        TodoAnyTimes,
-        TodoJournal
+        DefaultTodoComponent
     },
 })
 export default class TodoList extends Vue {
     showTextArea = false;
     todoTitle = false;
     checkbox = false;
-    activeComponent = 'TodoToday';
     componentId= 2;
     activeTab = 1;
+
+    @Watch('activeTab')
+    onChange(): void {
+        this.fetchData(this.tabs[this.activeTab].categoryId)
+    }
 
     get tabs(): ITaskStatus[] {
         return TodoStore.tasksStatuses;
@@ -83,7 +77,7 @@ export default class TodoList extends Vue {
 
     get tasks(): ITodoTask[] {
         return TodoStore.todoTasks.map(el => {
-            if(this.activeComponent !== 'TodoJournal') {
+            if(this.activeTab !== 6) {
                 return {
                     ...el,
                     checked: false
@@ -103,9 +97,9 @@ export default class TodoList extends Vue {
 
 
     setComponent(component: TodoStatus): void {
-        this.activeComponent = component.component!;
         this.componentId = component.categoryId;
-        this.fetchData(component.categoryId)
+        console.log(this.tabs[this.activeTab ])
+
     }
 
 
