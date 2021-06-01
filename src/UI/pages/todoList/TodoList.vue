@@ -46,7 +46,6 @@ import TodoToday from '@/UI/components/todo/TodoToday.vue';
 import { TodoStore } from '@/store/modules/Todo';
 import { TodoStatus } from '@/entity/todo/todoStatus';
 import { TODOCOMPONENTS } from '@/constants';
-import { TodoTask } from '@/entity/todo/todo';
 import { ITodoTask } from '@/entity/todo/todo.types';
 
 
@@ -76,7 +75,19 @@ export default class Candidates extends Vue {
     }
 
     get tasks(): ITodoTask[] {
-        return TodoStore.todoTasks;
+        return TodoStore.todoTasks.map(el => {
+            if(this.activeComponent !== 'TodoJournal') {
+                return {
+                    ...el,
+                    checked: false
+                }
+            }else {
+                return {
+                    ...el,
+                    checked: true
+                }
+            }
+        })
     }
 
     
@@ -109,6 +120,7 @@ export default class Candidates extends Vue {
     async created(): Promise<void> {
         await this.fetchDatatStatusesTasks();
         await this.fetchData();
+        
     }
 
    
