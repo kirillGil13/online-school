@@ -57,9 +57,9 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {ITodoTask} from '../../../entity/todo/todo.types';
-import TodoTaskImages from '../todo/todoTaskImages/TodoTaskImages.vue';
-import Modal from '../common/Modal.vue';
+import {ITodoTask} from '../../../../entity/todo/todo.types';
+import TodoTaskImages from '../todoTaskImages/TodoTaskImages.vue';
+import Modal from '../../common/Modal.vue';
 @Component({
   components: {Modal, TodoTaskImages}
 })

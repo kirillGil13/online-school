@@ -9,67 +9,32 @@
                 <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
                 <span class="btn-add-text">Добавить задачу</span>
             </div>
-            <div class="items-add-place" v-if="showTextArea">
-                <div class="items-add-place-text">
-                    <div class="items-add-place-text__title d-flex">
-                        <v-checkbox class="ma-0 pa-0" hide-details v-model="newTask.checked" />
-                        <v-text-field
-                            class="ma-0 pa-0"
-                            hide-details
-                            v-model="newTask.title"
-                            placeholder="Название задачи"
-                        />
-                    </div>
-                    <div class="items-add-place-text__actions">
-                        <div class="items-add-place-text__set-items-add-place ml-8">
-                            <v-textarea
-                                ref="contentTextArea"
-                                no-resize
-                                id="message"
-                                placeholder="Заметки"
-                                rows="5"
-                                hide-details
-                                type="text"
-                                v-model="newTask.description"
-                            />
-                        </div>
-                        <div class="items-add-place-text__like-dislike d-flex">
-                            <div>
-                                <svg-icon name="Picture_outline" class="menu__icon" height="24" width="24" />
-                            </div>
-                            <div>
-                                <svg-icon name="Users_outline" class="ml-4 mr-1 menu__icon" height="24" width="28" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <TaskInput v-if="showTextArea" :new-task="newTask" :task-to-update="taskToUpdate" />
         </template>
 
         <div class="items-check-boxes">
             <template v-for="item in tasks">
                 <div class="d-flex flex-column mt-1" :key="item.id">
                     <div class="d-flex align-center justify-space-between" v-if="taskShowId !== item.id">
-                        <div class="d-flex align-center">
+                        <div class="d-flex align-end">
                             <v-checkbox
                                 hide-details
                                 class="mt-0"
                                 @click="statusItem.categoryId !== 6 ? setToJurnal(item.id) : setToIncome(item.id)"
                                 v-model="item.checked"
                             />
-                            <span class="item-text" @click.self="setTaskShowid(item.id)">{{
-                                item.name ? `${item.name}` : 'Новая задача'
-                            }}</span>
+                            <span class="item-text" @click.self="setTaskShowid(item.id)">{{ item.name ? `${item.name}` : 'Новая задача' }}</span>
                         </div>
-                        <div>
+                        <div class="d-flex align-center">
                             <v-btn
                                 @click="deleteTask(item.id)"
                                 style="background: none"
+                                class="mt-0"
                                 text
                                 icon
                                 color="red lighten-2"
                             >
-                                <svg-icon name="Todo_delete" class="ml-1 mr-1 menu__icon" height="24" width="28" />
+                                <svg-icon name="Todo_delete" class="ml-1 mr-1 menu__icon" height="20" width="24" />
                             </v-btn>
                         </div>
                     </div>
@@ -81,10 +46,10 @@
 </template>
 
 <script lang="ts">
-import { ITodoTask} from '@/entity/todo/todo.types';
+import {ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
 import { TodoStore } from '@/store/modules/Todo';
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import TaskInput from '../taskInput/TaskInput.vue';
+import TaskInput from './taskInput/TaskInput.vue';
 import { TODOCOMPONENTS } from '@/constants';
 
 @Component({
@@ -93,7 +58,7 @@ import { TODOCOMPONENTS } from '@/constants';
 export default class DefaultTodoComponent extends Vue {
     @Prop() readonly tasks!: ITodoTask[];
     @Prop() readonly id!: number;
-    @Prop() readonly statusItem!: any;
+    @Prop() readonly statusItem!: ITaskStatus;
     taskShowId: number | null = null;
     showTextArea = false;
     checkbox = false;
@@ -136,7 +101,7 @@ export default class DefaultTodoComponent extends Vue {
                 description: this.newTask.description,
                 category_id: 6,
             };
-            
+
             this.$emit('createTask', el);
 
             this.showTextArea = false;
