@@ -29,7 +29,7 @@ import { IDialogsAuthor } from '@/entity/dialogs/dialogs.types';
 export default class ChatHeader extends Vue {
   @Prop() readonly chosenPartner!: IDialogsAuthor;
 
-  randomColor(i: number) {
+  randomColor(i: number): string {
     const COLORS = [
     '#56CCF2',
     '#BB6BD9',

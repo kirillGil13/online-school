@@ -25,8 +25,8 @@ export const TYPESTASK = [
 export const TODOCOMPONENTS = [
     {id: 1, iconName: 'Income', component: 'TodoIncome', value: 'Входящие'},
     {id: 2, iconName: 'Star_small', component: 'TodoToday', value: 'Сегодня',},
-    {id: 3, iconName: 'Plans', component: 'TodoPlans', value: "Планы"},
+    {id: 3, iconName: 'Plans', component: 'TodoPlans', value: 'Планы'},
     {id: 4, iconName: 'Any_times', component: 'TodoAnyTimes', value: 'В любое время'},
-    {id: 5, iconName: 'Box', component: 'TodoSomeDay', value: "Когда-нибудь"},
-    {id: 6, iconName: 'Archive', component: 'TodoJournal', value: "Журнал"},
+    {id: 5, iconName: 'Box', component: 'TodoSomeDay', value: 'Когда-нибудь'},
+    {id: 6, iconName: 'Archive', component: 'TodoJournal', value: 'Журнал'},
 ]
