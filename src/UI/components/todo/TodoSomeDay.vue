@@ -116,7 +116,7 @@ export default class TodoSomeDay extends Vue {
         TodoStore.getCandidateTask({ id: id });
     }
 
-    setTask() {
+    setTask(): void {
         if (this.showTextArea === true) {
             if (this.newTask.checked) {
                 const el = {

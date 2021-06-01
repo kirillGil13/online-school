@@ -18,7 +18,7 @@ export class TodoRepository implements ITodoRepository {
         return respData.map((el: TaskStatusResponceType) => new TodoStatus(el));
     }
 
-    async createTask(data: {name?: string, description?: string, do_date?: number, reminder_time?: number, candidate_id?: number, category_id: number, images_link?: string[] }): Promise<TaskResponseType> {
+    async createTask(data: {name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): Promise<TaskResponseType> {
         const responce = await Api.post('candidateTasks', data);
 
         return responce.data as TaskResponseType;
@@ -34,7 +34,7 @@ export class TodoRepository implements ITodoRepository {
         await Api.delete(`candidateTasks/${data.id}`);
     }
 
-    async updateCandidateTask(data: {id: number,name?: string, description?: string, do_date?: number, reminder_time?: number, candidate_id?: number, category_id: number, images_link?: string[] }): Promise<ITodoTask> {
+    async updateCandidateTask(data: {id: number;name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): Promise<ITodoTask> {
 
         const {id, ...dataEl} = data;
         const responce = await Api.patch(`candidateTasks/${id}`, dataEl);

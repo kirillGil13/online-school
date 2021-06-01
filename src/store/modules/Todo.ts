@@ -71,7 +71,7 @@ class TodoModule extends VuexModule {
     }
 
     @MutationAction
-    async updateCandidateTask(data: {id: number, name?: string, description?: string, do_date?: number, reminder_time?: number, candidate_id?: number, category_id: number, images_link?: string[] }): Promise<{todoTasks: ITodoTask[]}> {
+    async updateCandidateTask(data: {id: number; name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): Promise<{todoTasks: ITodoTask[]}> {
         const upDateTask = await store.$repository.todo.updateCandidateTask(data);
 
           //@ts-ignore
@@ -84,7 +84,7 @@ class TodoModule extends VuexModule {
     }
 
     @MutationAction
-    async ToJurnalOrIncome(data: {id: number, name?: string, description?: string, do_date?: number, reminder_time?: number, candidate_id?: number, category_id: number, images_link?: string[] }): Promise<{todoTasks: ITodoTask[]}> {
+    async ToJurnalOrIncome(data: {id: number; name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): Promise<{todoTasks: ITodoTask[]}> {
         await store.$repository.todo.updateCandidateTask(data);
         //@ts-ignore
         const todoTasks = [...store.state.todoTask.todoTasks];
