@@ -87,7 +87,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { TodoTask } from '@/entity/todo/todo';
 import { TodoStore } from '@/store/modules/Todo';
 import { ITodoTask } from '@/entity/todo/todo.types';
-import TaskInput from '../taskInput/TaskInput.vue';
+import TaskInput from './taskInput/TaskInput.vue';
 @Component({
   components: {TaskInput}
 })
