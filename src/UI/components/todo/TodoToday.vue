@@ -48,23 +48,34 @@
                 <div class="d-flex flex-column mt-1" :key="item.id">
                     <div class="d-flex align-center justify-space-between" v-if="taskShowId !== item.id">
                         <div class="d-flex align-center">
-                            <v-checkbox hide-details class="mt-0" />
+                            <v-checkbox
+                                hide-details
+                                class="mt-0"
+                                @click="setToJurnal(item.id)"
+                                v-model="item.checked"
+                            />
                             <span @click.self="setTaskShowid(item.id)">{{
                                 item.name ? `${item.name}` : 'Новая задача'
                             }}</span>
                         </div>
                         <div>
-                            <v-btn @click="deleteTask(item.id)" style="background: none" text icon color="red lighten-2">
+                            <v-btn
+                                @click="deleteTask(item.id)"
+                                style="background: none"
+                                text
+                                icon
+                                color="red lighten-2"
+                            >
                                 <svg-icon name="Todo_delete" class="ml-1 mr-1 menu__icon" height="24" width="28" />
                             </v-btn>
                         </div>
                     </div>
                     <div v-else>
-                         <div class="items-add-place">
+                        <div class="items-add-place">
                             <!-- <form-group class="width" field="review" :form="form" show-custom-error > -->
                             <div class="items-add-place-text">
                                 <div class="items-add-place-text__title d-flex">
-                                    <v-checkbox class="ma-0 pa-0" hide-details v-model="newTask.checked" />
+                                    <v-checkbox class="ma-0 pa-0" hide-details v-model="taskToUpdate.checked" />
                                     <v-text-field
                                         class="ma-0 pa-0"
                                         hide-details
@@ -116,14 +127,13 @@
 </template>
 
 <script lang="ts">
-import { TodoTask } from '@/entity/todo/todo';
 import { ITodoTask } from '@/entity/todo/todo.types';
 import { TodoStore } from '@/store/modules/Todo';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class TodoToday extends Vue {
-    @Prop() readonly tasks!: ITodoTask;
+    @Prop() readonly tasks!: ITodoTask[];
     @Prop() readonly id!: number;
     taskShowId: number | null = null;
     showTextArea = false;
@@ -135,7 +145,10 @@ export default class TodoToday extends Vue {
     };
 
     get taskToUpdate(): ITodoTask | null {
-        const taskToUpdate = {...this.taskById};
+        const taskToUpdate = {
+            ...this.taskById,
+            checked: false,
+        };
 
         //@ts-ignore
         return taskToUpdate;
@@ -166,33 +179,45 @@ export default class TodoToday extends Vue {
     }
 
     setTaskById(id: number): void {
-        TodoStore.getCandidateTask({id: id})
+        TodoStore.getCandidateTask({ id: id });
     }
 
     deleteTask(id: number): void {
-        TodoStore.deletedTask({id})
+        TodoStore.deletedTask({ id });
     }
 
     setTaskShowid(id: number | null): void {
         if (this.taskShowId === id || id === null) {
-           if(this.taskToUpdate !== null) {
+            if (this.taskToUpdate !== null) {
                 const el = {
                     id: this.taskShowId!,
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
-                    category_id: this.id 
-                }
+                    category_id: this.id,
+                };
 
-               
-                TodoStore.updateCandidateTask(el!)
+                TodoStore.updateCandidateTask(el!);
                 this.taskShowId = null;
-            }else {
+            } else {
                 this.taskShowId = null;
             }
         } else {
             this.taskShowId = id;
             this.setTaskById(id);
         }
+    }
+
+    setToJurnal(id: number): void {
+        const item = this.tasks.find((el) => el.id === id);
+        const el = {
+            id: id,
+            name: item!.name,
+            description: item!.description,
+            category_id: 6,
+        };
+
+        TodoStore.ToJurnalOrIncome(el!);
+        this.taskShowId = null;
     }
 }
 </script>

@@ -9,6 +9,7 @@ export interface ITodoTask {
     isDone: boolean;
     candidate: ITaskCandidate;
     imagesLink: string[];
+    checked?: boolean;
 }
 
 export interface ITaskCandidate  {
