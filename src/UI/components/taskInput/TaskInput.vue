@@ -31,6 +31,8 @@
                   class="menu__icon"
                   height="24"
                   width="24"
+                  style="cursor: pointer"
+                  @click="activatorImages = true"
               />
             </div>
             <div>
@@ -45,17 +47,31 @@
         </div>
       </div>
     </div>
+    <Modal :activator="activatorImages" :full-screen="$adaptive.isMobile" @activatorChange="activatorImagesChange">
+      <template v-slot:content>
+        <TodoTaskImages v-if="activatorImages" :task-to-update="taskToUpdate"/>
+      </template>
+    </Modal>
   </div>
 </template>
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {ITodoTask} from '../../../entity/todo/todo.types';
-
-@Component
+import TodoTaskImages from '../todo/todoTaskImages/TodoTaskImages.vue';
+import Modal from '../common/Modal.vue';
+@Component({
+  components: {Modal, TodoTaskImages}
+})
 export default class TaskInput extends Vue {
   @Prop() readonly taskToUpdate!: ITodoTask;
   @Prop() readonly newTask!: any;
+  activatorImages = false;
+  activatorCandidates = false;
+
+  activatorImagesChange(act: boolean): void {
+    this.activatorImages = act;
+  }
 }
 </script>
 
@@ -86,6 +102,11 @@ export default class TaskInput extends Vue {
             }
           }
         }
+      }
+    }
+    .v-input--selection-controls__input {
+      input {
+        border-radius: 6px !important;
       }
     }
   }
