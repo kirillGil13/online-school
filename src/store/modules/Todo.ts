@@ -2,6 +2,7 @@ import {getModule, Module, MutationAction, VuexModule} from 'vuex-module-decorat
 import store from '@/store';
 import { TodoTask } from '@/entity/todo/todo';
 import { TodoStatus } from '@/entity/todo/todoStatus';
+import { ITaskStatus, ITodoTask } from '@/entity/todo/todo.types';
 
 @Module({
     namespaced: true,
@@ -10,26 +11,26 @@ import { TodoStatus } from '@/entity/todo/todoStatus';
     dynamic: true,
 })
 class TodoModule extends VuexModule {
-    todoTasks: TodoTask[] = [];
-    tasksStatuses: TodoStatus[] = [];
-    taskById: TodoTask | null = null;
+    todoTasks: ITodoTask[] = [];
+    tasksStatuses: ITaskStatus[] = [];
+    taskById: ITodoTask | null = null;
 
     @MutationAction
-    async fetchAllTask(data?: {id: number}): Promise<{todoTasks:TodoTask[]}> {
+    async fetchAllTask(data?: {id: number}): Promise<{todoTasks:ITodoTask[]}> {
         const todoTasks = await store.$repository.todo.fetchAll(data);
        
         return {todoTasks};
     }
 
     @MutationAction
-    async fetchAllTaskStatus(): Promise<{tasksStatuses: TodoStatus[]}> {
+    async fetchAllTaskStatus(): Promise<{tasksStatuses: ITaskStatus[]}> {
         const tasksStatuses = await store.$repository.todo.fetchAllTaskStatus();
 
         return {tasksStatuses};
     }
 
     @MutationAction
-    async createTask(data: {name?: string, description?: string, do_date?: number, reminder_time?: number, candidate_id?: number, category_id: number, images_link?: string[] }): Promise<{todoTasks: TodoTask[]}> {
+    async createTask(data: {name?: string, description?: string, do_date?: number, reminder_time?: number, candidate_id?: number, category_id: number, images_link?: string[] }): Promise<{todoTasks: ITodoTask[]}> {
         const task = await store.$repository.todo.createTask(data);
 
         //@ts-ignore
@@ -41,14 +42,14 @@ class TodoModule extends VuexModule {
 
 
     @MutationAction
-    async getCandidateTask(data: {id: number}): Promise<{taskById: TodoTask}> {
+    async getCandidateTask(data: {id: number}): Promise<{taskById: ITodoTask | null }> {
         const taskById = await store.$repository.todo.getCandidateTask(data);
 
         return {taskById}
     }
 
     @MutationAction
-    async deletedTask(data: {id: number}): Promise<{todoTasks: TodoTask[]}> {
+    async deletedTask(data: {id: number}): Promise<{todoTasks: ITodoTask[]}> {
         await store.$repository.todo.deleteTask(data);
 
         //@ts-ignore
@@ -56,6 +57,19 @@ class TodoModule extends VuexModule {
         const idx = todoTasks.findIndex(el => el.id === data.id);
 
         todoTasks.splice(idx, 1)
+        return {todoTasks}
+    }
+
+    @MutationAction
+    async updateCandidateTask(data: {id: number, name?: string, description?: string, do_date?: number, reminder_time?: number, candidate_id?: number, category_id: number, images_link?: string[] }): Promise<{todoTasks: ITodoTask[]}> {
+        const upDateTask = await store.$repository.todo.updateCandidateTask(data);
+
+          //@ts-ignore
+        const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]
+        const idx = todoTasks.findIndex(el => el.id === data.id);
+        todoTasks[idx] = {
+            ...upDateTask
+        }
         return {todoTasks}
     }
     

@@ -1,7 +1,7 @@
 import Api from '@/repository/api';
 import { ITodoRepository } from './TodoRepository.types';
 import { TodoTask } from '@/entity/todo/todo';
-import { TaskResponseType, TaskStatusResponceType } from '@/entity/todo/todo.types';
+import { ITaskStatus, ITodoTask, TaskResponseType, TaskStatusResponceType } from '@/entity/todo/todo.types';
 import { TodoStatus } from '@/entity/todo/todoStatus';
 
 export class TodoRepository implements ITodoRepository {
@@ -11,7 +11,7 @@ export class TodoRepository implements ITodoRepository {
         return respData.map((el: TaskResponseType) => new TodoTask(el));
     }
 
-    async fetchAllTaskStatus(): Promise<TodoStatus[]> {
+    async fetchAllTaskStatus(): Promise<ITaskStatus[]> {
         const responce = await Api.get('candidateTasks/statuses');
         const respData = responce.data as TaskStatusResponceType[];
 
@@ -32,6 +32,15 @@ export class TodoRepository implements ITodoRepository {
 
     async deleteTask(data: {id: number}): Promise<void> {
         await Api.delete(`candidateTasks/${data.id}`);
+    }
+
+    async updateCandidateTask(data: {id: number,name?: string, description?: string, do_date?: number, reminder_time?: number, candidate_id?: number, category_id: number, images_link?: string[] }): Promise<ITodoTask> {
+
+        const {id, ...dataEl} = data;
+        const responce = await Api.patch(`candidateTasks/${id}`, dataEl);
+        const request = responce.data as TaskResponseType;
+
+        return new TodoTask(request);
     }
 
     getTime(createdAt: number): string {

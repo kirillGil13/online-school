@@ -58,7 +58,7 @@
                             }}</span>
                         </div>
                         <div>
-                            <v-btn style="background: none" text icon color="red lighten-2">
+                            <v-btn @click="deleteTask(item.id)" style="background: none" text icon color="red lighten-2">
                                 <svg-icon name="Todo_delete" class="ml-1 mr-1 menu__icon" height="24" width="28" />
                             </v-btn>
                         </div>
@@ -73,7 +73,7 @@
                                     <v-text-field
                                         class="ma-0 pa-0"
                                         hide-details
-                                        v-model="taskById.name"
+                                        v-model="taskToUpdate.name"
                                         placeholder="Название задачи"
                                     />
                                 </div>
@@ -87,7 +87,7 @@
                                             rows="5"
                                             hide-details
                                             type="text"
-                                            v-model="taskById.description"
+                                            v-model="taskToUpdate.description"
                                         />
                                     </div>
                                     <div class="items-add-place-text__like-dislike d-flex">
@@ -124,6 +124,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { TodoTask } from '@/entity/todo/todo';
 import { TodoStore } from '@/store/modules/Todo';
+import { ITodoTask } from '@/entity/todo/todo.types';
 
 @Component
 export default class TodoPlans extends Vue {
@@ -138,7 +139,14 @@ export default class TodoPlans extends Vue {
         description: '',
     };
 
-    get taskById(): TodoTask | null {
+    get taskToUpdate(): ITodoTask | null {
+        const taskToUpdate = {...this.taskById};
+
+        //@ts-ignore
+        return taskToUpdate;
+    }
+
+    get taskById(): ITodoTask | null {
         return TodoStore.taskById;
     }
 
@@ -169,11 +177,28 @@ export default class TodoPlans extends Vue {
 
     setTaskShowid(id: number | null): void {
         if (this.taskShowId === id || id === null) {
-            this.taskShowId = null;
+            if(this.taskToUpdate !== null) {
+                const el = {
+                    id: this.taskShowId!,
+                    name: this.taskToUpdate.name,
+                    description: this.taskToUpdate.description,
+                    category_id: this.id 
+                }
+
+               
+                TodoStore.updateCandidateTask(el!)
+                this.taskShowId = null;
+            }else {
+                this.taskShowId = null;
+            }
         } else {
             this.taskShowId = id;
             this.setTaskById(id)
         }
+    }
+
+     deleteTask(id: number): void {
+        TodoStore.deletedTask({id})
     }
 }
 </script>
