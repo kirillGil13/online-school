@@ -47,6 +47,7 @@ import { TodoStore } from '@/store/modules/Todo';
 import { TodoStatus } from '@/entity/todo/todoStatus';
 import { TODOCOMPONENTS } from '@/constants';
 import { TodoTask } from '@/entity/todo/todo';
+import { ITodoTask } from '@/entity/todo/todo.types';
 
 
 
@@ -74,9 +75,11 @@ export default class Candidates extends Vue {
         return TodoStore.tasksStatuses;
     }
 
-    get tasks(): TodoTask[] {
+    get tasks(): ITodoTask[] {
         return TodoStore.todoTasks;
     }
+
+    
 
     getIconName(id: number): string {
         return TODOCOMPONENTS.find(el => el.id === id)!.iconName
