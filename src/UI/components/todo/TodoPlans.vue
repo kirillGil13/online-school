@@ -1,10 +1,10 @@
 <template>
     <div class="d-flex todo__items" style="width: 100%" @click.self="setTask">
         <div class="items-title">
-            <svg-icon name="Plans" style="width: 5%; height: 100%" />
+            <svg-icon name="Plans" style="width: 28px; height: 28px" />
             <span class="title-text">Планы</span>
         </div>
-        <div class="items-btn-add" @click="showTextArea = true">
+        <div class="items-btn-add px-4" @click="showTextArea = true">
             <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
             <span class="btn-add-text">Добавить задачу</span>
         </div>
@@ -42,42 +42,61 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="red--text mt-1 ml-4" v-if="form.getErrors('0')[0]">{{ form.getErrors('0')[0] }}</div> -->
             </div>
-            <!-- </form-group> -->
         </div>
-        <div class="items-check-boxes">
-            <template v-for="item in tasks">
-                <div class="d-flex flex-column mt-1" :key="item.id">
-                    <div class="d-flex align-center" v-if="taskShowId !== item.id">
-                        <div class="d-flex align-center justify-space-between" v-if="taskShowId !== item.id">
-                            <div class="d-flex align-center">
-                                <v-checkbox
-                                    hide-details
-                                    class="mt-0"
-                                    @click="setToJurnal(item.id)"
-                                    v-model="item.checked"
-                                />
-                                <span @click.self="setTaskShowid(item.id)">{{
-                                    item.name ? `${item.name}` : 'Новая задача'
-                                }}</span>
-                            </div>
-                            <div>
-                                <v-btn
-                                    @click="deleteTask(item.id)"
-                                    style="background: none"
-                                    text
-                                    icon
-                                    color="red lighten-2"
-                                >
-                                    <svg-icon name="Todo_delete" class="ml-1 mr-1 menu__icon" height="24" width="28" />
-                                </v-btn>
-                            </div>
-                        </div>
-                    </div>
-                    <TaskInput v-else :new-task="item" :task-to-update="taskToUpdate"/>
+        <div class="plans-items pl-4">
+            <div class="d-flex flex-column plans-item" style="width: 100%">
+                <div class="d-flex align-baseline" style="width: 100%">
+                    <div class="plans-items__task-date">2</div> 
+                    <div class="plans-items__task-date-text">Tomorow</div>
                 </div>
-            </template>
+                <div class="d-flex flex-column mt-7">
+                    <div class="d-flex align-center">
+                        <v-checkbox  hide-details class="mt-0 pa-0" />
+                        <span class="plans-items__task-text" >Task</span>
+                    </div>
+                    
+                </div>
+            </div>
+             <div class="d-flex flex-column plans-item" style="width: 100%">
+                <div class="d-flex align-baseline" style="width: 100%">
+                    <div class="plans-items__task-date">2</div> 
+                    <div class="plans-items__task-date-text">Tomorow</div>
+                </div>
+                <div class="d-flex flex-column mt-7">
+                    <div class="d-flex align-center">
+                        <v-checkbox  hide-details class="mt-0 pa-0" />
+                        <span class="plans-items__task-text" >Task</span>
+                    </div>
+                    
+                </div>
+            </div>
+             <div class="d-flex flex-column plans-item" style="width: 100%">
+                <div class="d-flex align-baseline" style="width: 100%">
+                    <div class="plans-items__task-date">2</div> 
+                    <div class="plans-items__task-date-text">Tomorow</div>
+                </div>
+                <div class="d-flex flex-column mt-7">
+                    <div class="d-flex align-center">
+                        <v-checkbox  hide-details class="mt-0 pa-0" />
+                        <span class="plans-items__task-text" >Task</span>
+                    </div>
+                    
+                </div>
+            </div>
+             <div class="d-flex flex-column plans-item" style="width: 100%">
+                <div class="d-flex align-baseline" style="width: 100%">
+                    <div class="plans-items__task-date">2</div> 
+                    <div class="plans-items__task-date-text">Tomorow</div>
+                </div>
+                <div class="d-flex flex-column mt-7">
+                    <div class="d-flex align-center">
+                        <v-checkbox  hide-details class="mt-0 pa-0" />
+                        <span class="plans-items__task-text" >Task</span>
+                    </div>
+                    
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -89,7 +108,7 @@ import { TodoStore } from '@/store/modules/Todo';
 import { ITodoTask } from '@/entity/todo/todo.types';
 import TaskInput from './taskInput/TaskInput.vue';
 @Component({
-  components: {TaskInput}
+    components: { TaskInput },
 })
 export default class TodoPlans extends Vue {
     @Prop() readonly tasks!: TodoTask[];
@@ -155,16 +174,16 @@ export default class TodoPlans extends Vue {
 
     setTaskShowid(id: number | null): void {
         if (this.taskShowId === id || id === null) {
-            if(this.taskToUpdate !== null) {
+            if (this.taskToUpdate !== null) {
                 const el = {
                     id: this.taskShowId!,
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
-                    category_id: this.id
-                }
-                TodoStore.updateCandidateTask(el!)
+                    category_id: this.id,
+                };
+                TodoStore.updateCandidateTask(el!);
                 this.taskShowId = null;
-            }else {
+            } else {
                 this.taskShowId = null;
             }
         } else {
@@ -173,25 +192,67 @@ export default class TodoPlans extends Vue {
         }
     }
 
-     deleteTask(id: number): void {
-       this.$emit('deleteTask', id);
+    deleteTask(id: number): void {
+        this.$emit('deleteTask', id);
     }
 
-  setToJurnal(id: number): void {
-    const item = this.tasks.find((el) => el.id === id);
-    const el = {
-      id: id,
-      name: item!.name,
-      description: item!.description,
-      category_id: 6,
-    };
+    setToJurnal(id: number): void {
+        const item = this.tasks.find((el) => el.id === id);
+        const el = {
+            id: id,
+            name: item!.name,
+            description: item!.description,
+            category_id: 6,
+        };
 
-    TodoStore.ToJurnalOrIncome(el!);
-    this.taskShowId = null;
-  }
+        TodoStore.ToJurnalOrIncome(el!);
+        this.taskShowId = null;
+    }
 }
 </script>
 
 
 <style lang="scss" scoped>
+
+.plans-items {
+    width: 100%;
+    padding-left: 8px;
+    margin-top: 36px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    flex-direction: column;
+
+   .plans-item {
+       margin-top: 40px;
+
+       &:nth-child(1) {
+           margin-top: 0px !important;
+       }
+   }
+    
+    &__task-date {
+        font-size: 30px;font-weight: bold;
+        color:rgb(95, 115, 156);
+    }
+
+    &__task-date-text {
+        width: 100%;
+        margin-left: 4px;
+        border-top: 1px solid rgb(95, 115, 156);
+        font-size: 16px;
+        text-transform: lowercase;
+        font-weight: bold;
+        color:rgb(95, 115, 156);
+    }
+
+    &__task-text {
+        font-weight: bold;
+        color:rgb(95, 115, 156);
+    }
+}
 </style>

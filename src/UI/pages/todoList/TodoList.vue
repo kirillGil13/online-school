@@ -26,14 +26,26 @@
             </v-list>
         </div>
         <div style="width: 100%">
-            <DefaultTodoComponent
-                :statusItem="tabs[activeTab]"
-                :id="componentId"
-                :tasks="tasks"
-                @createTask="createTask"
-                @deleteTask="deleteTask"
-                style="margin-right: 2px; margin-left: 2px;"
-            />
+            <template v-if="activeTab !== 2" >
+                <DefaultTodoComponent
+                    :statusItem="tabs[activeTab]"
+                    :id="componentId"
+                    :tasks="tasks"
+                    @createTask="createTask"
+                    @deleteTask="deleteTask"
+                    style="margin-right: 2px; margin-left: 2px;"
+                />
+            </template>
+            <template v-else>
+                <TodoPlans
+                    :tasks="tasks"
+                    @createTask="createTask"
+                    @deleteTask="deleteTask"
+                    style="margin-right: 2px; margin-left: 2px;"
+                />
+            </template>
+            
+            
          </div>
     </div>
 </template>
@@ -48,7 +60,7 @@ import { TodoStatus } from '@/entity/todo/todoStatus';
 import { TODOCOMPONENTS } from '@/constants';
 import {ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
 import DefaultTodoComponent from '@/UI/components/todo/DefaultTodoComponent.vue';
-
+import TodoPlans from '@/UI/components/todo/TodoPlans.vue';
 
 
 @Component({
@@ -56,7 +68,8 @@ import DefaultTodoComponent from '@/UI/components/todo/DefaultTodoComponent.vue'
         FormGroup,
         Relation,
         Button,
-        DefaultTodoComponent
+        DefaultTodoComponent,
+        TodoPlans
     },
 })
 export default class TodoList extends Vue {
@@ -64,7 +77,7 @@ export default class TodoList extends Vue {
     todoTitle = false;
     checkbox = false;
     componentId= 2;
-    activeTab = 1;
+    activeTab = 2;
 
     @Watch('activeTab')
     onChange(): void {
@@ -98,7 +111,6 @@ export default class TodoList extends Vue {
 
     setComponent(component: TodoStatus): void {
         this.componentId = component.categoryId;
-        console.log(this.tabs[this.activeTab ])
 
     }
 
@@ -139,7 +151,6 @@ export default class TodoList extends Vue {
 
     &__items {
         flex-direction: column;
-        margin-left: 48px;
         height: 100%;
 
         .items-title {
@@ -162,8 +173,7 @@ export default class TodoList extends Vue {
             display: flex;
             align-items: center;
             cursor: pointer;
-            max-width: max-content;
-
+            
             .items-icon-plus {
                 border: 2px solid #426DF6;
                 border-radius: 5px;

@@ -5,16 +5,16 @@
             <span class="title-text">{{ statusItem.categoryName }}</span>
         </div>
         <template v-if="statusItem.categoryId !== 6">
-            <div class="items-btn-add" @click="openCardToCreateTask">
+            <div class="items-btn-add px-4" @click="openCardToCreateTask">
                 <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
                 <span class="btn-add-text">Добавить задачу</span>
             </div>
-          <TaskInput v-if="showTextArea" :new-task="newTask" :task-to-update="taskToUpdate" />
+            <TaskInput v-if="showTextArea" :new-task="newTask" :task-to-update="taskToUpdate" :isNewTask="true" />
         </template>
 
         <div class="items-check-boxes">
             <template v-for="item in tasks">
-                <div class="d-flex flex-column mt-1" :key="item.id">
+                <div class="d-flex flex-column mt-1 px-2 task-item-container" :key="item.id">
                     <div class="d-flex align-center justify-space-between" v-if="taskShowId !== item.id">
                         <div class="d-flex align-end">
                             <v-checkbox
@@ -23,7 +23,9 @@
                                 @click="statusItem.categoryId !== 6 ? setToJurnal(item.id) : setToIncome(item.id)"
                                 v-model="item.checked"
                             />
-                            <span class="item-text" @click.self="setTaskShowid(item.id)">{{ item.name ? `${item.name}` : 'Новая задача' }}</span>
+                            <span class="item-text" @click.self="setTaskShowid(item.id)">{{
+                                item.name ? `${item.name}` : 'Новая задача'
+                            }}</span>
                         </div>
                         <div class="d-flex align-center">
                             <v-btn
@@ -38,7 +40,7 @@
                             </v-btn>
                         </div>
                     </div>
-                    <TaskInput v-else :new-task="item" :task-to-update="taskToUpdate" />
+                    <TaskInput v-else :new-task="item" :task-to-update="taskToUpdate" :isNewTask="false" />
                 </div>
             </template>
         </div>
@@ -46,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import {ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
+import { ITaskStatus, ITodoTask } from '@/entity/todo/todo.types';
 import { TodoStore } from '@/store/modules/Todo';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TaskInput from './taskInput/TaskInput.vue';
@@ -63,9 +65,10 @@ export default class DefaultTodoComponent extends Vue {
     showTextArea = false;
     checkbox = false;
     newTask = {
-        title: '',
+        name: '',
         checked: false,
         description: '',
+        doDate: new Date().toISOString().substr(0, 10)
     };
 
     get taskById(): ITodoTask | null {
@@ -73,13 +76,7 @@ export default class DefaultTodoComponent extends Vue {
     }
 
     get taskToUpdate(): ITodoTask | null {
-        const taskToUpdate = {
-            ...this.taskById,
-            checked: false,
-        };
-
-        //@ts-ignore
-        return taskToUpdate;
+        return this.tasks.find((el) => el.id === this.taskShowId)!;
     }
 
     getIconName(id: number): string {
@@ -93,30 +90,31 @@ export default class DefaultTodoComponent extends Vue {
     setTask(): void {
         if (this.showTextArea === true) {
             const date = Date.now();
+            console.log(this.newTask.doDate)
 
             const el = {
                 checked: this.newTask.checked ? true : false,
-                name: this.newTask.title,
-                do_date: this. statusItem.categoryId === 1 ? date : null,
-                description: this.newTask.description,
-                category_id: 6,
+                name: this.newTask.name || null,
+                do_date: this.statusItem.categoryId === 2 ? date / 1000 : null,
+                description: this.newTask.description || null,
+                category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
             };
-
             this.$emit('createTask', el);
 
             this.showTextArea = false;
 
             this.newTask = {
-                title: '',
+                name: '',
                 checked: false,
                 description: '',
+                doDate: new Date().toISOString().substr(0, 10)
             };
         } else {
             this.setTaskShowid(null);
         }
     }
 
-    openCardToCreateTask(): void  {
+    openCardToCreateTask(): void {
         this.taskShowId = null;
         this.showTextArea = this.showTextArea ? false : true;
     }
@@ -126,16 +124,6 @@ export default class DefaultTodoComponent extends Vue {
 
         if (this.taskShowId === id || id === null) {
             if (this.taskToUpdate !== null) {
-                const el = {
-                    id: this.taskShowId!,
-                    name: this.taskToUpdate.name,
-                    description: this.taskToUpdate.description,
-                    category_id: this.id,
-                };
-
-                TodoStore.updateCandidateTask(el!);
-                this.taskShowId = null;
-            } else {
                 this.taskShowId = null;
             }
         } else {
@@ -187,5 +175,11 @@ export default class DefaultTodoComponent extends Vue {
     font-size: 16px;
     line-height: 24px;
     color: #101010;
+    cursor: pointer;
+}
+
+.task-item-container:hover {
+    background: #F2F2F2;
+    border-radius: 12px;
 }
 </style>
