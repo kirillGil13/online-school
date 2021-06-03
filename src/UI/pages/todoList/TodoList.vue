@@ -31,21 +31,28 @@
                     :statusItem="tabs[activeTab]"
                     :id="componentId"
                     :tasks="tasks"
+                    :taskById="taskById"
                     @createTask="createTask"
                     @deleteTask="deleteTask"
+                    @setTaskById="setTaskById"
+                    @upDateTask="upDateTask"
+                    @toJurnalOrIncome="toJurnalOrIncome"
                     style="margin-right: 2px; margin-left: 2px;"
                 />
             </template>
             <template v-else>
                 <TodoPlans
-                    :tasks="tasks"
+                    :statusItem="tabs[activeTab]"
+                    :activeTab="activeTab"
+                    :taskById="taskById"
                     @createTask="createTask"
                     @deleteTask="deleteTask"
+                    @setTaskById="setTaskById"
+                    @upDateTask="upDateTask"
+                    @toJurnalOrIncome="toJurnalOrIncome"
                     style="margin-right: 2px; margin-left: 2px;"
                 />
             </template>
-            
-            
          </div>
     </div>
 </template>
@@ -77,15 +84,23 @@ export default class TodoList extends Vue {
     todoTitle = false;
     checkbox = false;
     componentId= 2;
-    activeTab = 2;
+    activeTab = 0;
 
     @Watch('activeTab')
     onChange(): void {
         this.fetchData(this.tabs[this.activeTab].categoryId)
     }
 
+    get taskById(): ITodoTask | null {
+        return TodoStore.taskById;
+    }
+
     get tabs(): ITaskStatus[] {
         return TodoStore.tasksStatuses;
+    }
+
+    get tasksLoaded(): boolean {
+        return TodoStore.todoTasksLoaded;
     }
 
     get tasks(): ITodoTask[] {
@@ -115,7 +130,7 @@ export default class TodoList extends Vue {
     }
 
 
-    fetchData(id: number = 2): void {
+    fetchData(id: number = 1): void {
         TodoStore.fetchAllTask({id});
     }
 
@@ -135,9 +150,24 @@ export default class TodoList extends Vue {
     }
 
     async created(): Promise<void> {
-        await this.fetchDatatStatusesTasks();
         await this.fetchData();
+        await this.fetchDatatStatusesTasks();
+        
     }
+
+    async setTaskById(id: number): Promise<void> {
+        await TodoStore.getCandidateTask({ id: id });
+    }
+
+    async upDateTask(el: any): Promise<void> {
+        await TodoStore.updateCandidateTask(el!);
+    }
+
+    async toJurnalOrIncome(el: any): Promise<void> {
+        TodoStore.ToJurnalOrIncome(el!);
+    }
+
+    
 
 
 }
