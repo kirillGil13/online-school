@@ -22,7 +22,7 @@ export class TodoTask implements ITodoTask {
         this.categoryId = data.category_id;
         this.isDone = data.is_done;
         this.candidate = data.candidate;
-        this.imagesLink = data.images_link;
+        this.imagesLink = data.images_link ? data.images_link : [];
     }
 
     getTime(createdAt: number): string {

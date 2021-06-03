@@ -4,14 +4,13 @@
             <svg-icon :name="getIconName(statusItem.categoryId)" style="width: 28px; height: 28px" />
             <span class="title-text">{{ statusItem.categoryName }}</span>
         </div>
-        <template v-if="statusItem.categoryId !== 6">
-            <div class="items-btn-add px-4" @click="openCardToCreateTask">
-                <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
-                <span class="btn-add-text">Добавить задачу</span>
-            </div>
-            <TaskInput v-if="showTextArea" :new-task="newTask" :task-to-update="taskToUpdate" :isNewTask="true" />
-        </template>
-
+      <template v-if="statusItem.categoryId !== 6">
+        <div class="items-btn-add px-4" @click="openCardToCreateTask">
+          <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
+          <span class="btn-add-text">Добавить задачу</span>
+        </div>
+        <TaskInput v-if="showTextArea" :new-task="newTask" :task-to-update="taskToUpdate" :isNewTask="true"/>
+      </template>
         <div class="items-check-boxes">
             <template v-for="item in tasks">
                 <div class="d-flex flex-column mt-1 px-2 task-item-container" :key="item.id">
@@ -40,7 +39,7 @@
                             </v-btn>
                         </div>
                     </div>
-                    <TaskInput v-else :new-task="item" :task-to-update="taskToUpdate" :isNewTask="false" />
+                    <TaskInput v-else :new-task="item" :task-to-update="taskToUpdate" :isNewTask="false"/>
                 </div>
             </template>
         </div>
@@ -48,11 +47,12 @@
 </template>
 
 <script lang="ts">
-import { ITaskStatus, ITodoTask } from '@/entity/todo/todo.types';
+import {ITaskStatus, ITodoTask, TaskRequestType} from '@/entity/todo/todo.types';
 import { TodoStore } from '@/store/modules/Todo';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TODOCOMPONENTS } from '@/constants';
+import {ICandidate} from '../../../entity/candidates';
 
 @Component({
     components: { TaskInput },
@@ -61,6 +61,7 @@ export default class DefaultTodoComponent extends Vue {
     @Prop() readonly tasks!: ITodoTask[];
     @Prop() readonly id!: number;
     @Prop() readonly statusItem!: ITaskStatus;
+    @Prop() readonly candidates!: {[p: string]: ICandidate[]};
     taskShowId: number | null = null;
     showTextArea = false;
     checkbox = false;
@@ -68,7 +69,8 @@ export default class DefaultTodoComponent extends Vue {
         name: '',
         checked: false,
         description: '',
-        doDate: new Date().toISOString().substr(0, 10)
+        doDate: new Date().toISOString().substr(0, 10),
+        imagesLink: []
     };
 
     get taskById(): ITodoTask | null {
@@ -98,6 +100,7 @@ export default class DefaultTodoComponent extends Vue {
                 do_date: this.statusItem.categoryId === 2 ? date / 1000 : null,
                 description: this.newTask.description || null,
                 category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
+                images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink
             };
             this.$emit('createTask', el);
 
@@ -107,7 +110,8 @@ export default class DefaultTodoComponent extends Vue {
                 name: '',
                 checked: false,
                 description: '',
-                doDate: new Date().toISOString().substr(0, 10)
+                doDate: new Date().toISOString().substr(0, 10),
+                imagesLink: []
             };
         } else {
             this.setTaskShowid(null);
