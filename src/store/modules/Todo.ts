@@ -24,6 +24,14 @@ class TodoModule extends VuexModule {
         }
     }
 
+    @Mutation
+    setTaskImages(data: {id: number; image: string}): void {
+        if(this.todoTasks.find(item => item.id === data.id)!.imagesLink === null) {
+            this.todoTasks.find(item => item.id === data.id)!.imagesLink = [];
+        }
+        this.todoTasks.find(item => item.id === data.id)!.imagesLink.push(data.image);
+    }
+
     @MutationAction
     async fetchAllTask(data?: {id: number}): Promise<{todoTasks: ITodoTask[]}> {
         const todoTasks = await store.$repository.todo.fetchAll(data);

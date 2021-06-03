@@ -35,15 +35,15 @@
                                 @click="activatorCallTime = true"
                             />
                         </div>
-                        <div class="ml-4">
+                        <div class="ml-4 d-flex flex-row" style="cursor: pointer;" @click="activatorImages = true">
                             <svg-icon
                                 name="Picture_outline"
-                                class="menu__icon"
+                                class="menu__icon mr-2"
+                                :class="[itemToUpdateOrCreate().imagesLink.length !== 0 && 'active-icon']"
                                 height="24"
                                 width="24"
-                                style="cursor: pointer"
-                                @click="activatorImages = true"
                             />
+                            <div style="margin-top: 2px;" v-if="itemToUpdateOrCreate().imagesLink.length !== 0">{{'Вложения: ' + itemToUpdateOrCreate().imagesLink.length}}</div>
                         </div>
                         <div class="ml-4">
                             <svg-icon name="Users_outline" class=" mr-1 menu__icon" height="24" width="28" />
@@ -52,10 +52,13 @@
                 </div>
             </div>
         </div>
-        <Modal :activator="activatorImages" :full-screen="$adaptive.isMobile" @activatorChange="activatorImagesChange">
-            <template v-slot:content>
-                <TodoTaskImages v-if="activatorImages" :task-to-update="taskToUpdate" />
+        <Modal :activator="activatorImages" :without-tool-bar="!$adaptive.isMobile" tool-bar-title="" :full-screen="$adaptive.isMobile" @activatorChange="activatorImagesChange">
+            <template v-slot:full-screen-content v-if="$adaptive.isMobile">
+                <TodoTaskImages v-if="activatorImages" :images="itemToUpdateOrCreate().imagesLink" :id="itemToUpdateOrCreate().id" @handleImage="handleImage" @deleteImage="deleteImage"/>
             </template>
+          <template v-slot:content v-else>
+            <TodoTaskImages v-if="activatorImages" :images="itemToUpdateOrCreate().imagesLink" :id="itemToUpdateOrCreate().id" @handleImage="handleImage" @deleteImage="deleteImage"/>
+          </template>
         </Modal>
         <Modal :activator="activatorCallTime" :full-screen="$adaptive.isMobile" @activatorChange="activatorChangeCallTime">
             <template v-slot:content>
@@ -75,6 +78,9 @@ import { ITodoTask } from '../../../../entity/todo/todo.types';
 import TodoTaskImages from '../todoTaskImages/TodoTaskImages.vue';
 import Modal from '../../common/Modal.vue';
 import { Datetime } from 'vue-datetime';
+import {PictureUploadStore} from '../../../../store/modules/PictureUpload';
+import {IPictureUpload} from '../../../../entity/common/pictureUpload.types';
+import {CandidatesStore} from '../../../../store/modules/Candidates';
 @Component({
     components: { Modal, TodoTaskImages, Datetime },
 })
@@ -86,17 +92,36 @@ export default class TaskInput extends Vue {
     activatorCandidates = false;
     activatorCallTime = false;
 
+
+  get picture(): IPictureUpload | null {
+    return PictureUploadStore.pictureUpload;
+  }
+
     activatorImagesChange(act: boolean): void {
         this.activatorImages = act;
     }
 
-    itemToUpdateOrCreate(): void {
+    itemToUpdateOrCreate(): any {
         return this.isNewTask ? this.newTask : this.taskToUpdate;
     }
 
     activatorChangeCallTime(act: boolean): void {
         this.activatorCallTime = act;
     }
+
+  deleteImage(image: string): void {
+    this.itemToUpdateOrCreate().imagesLink.splice(this.itemToUpdateOrCreate().imagesLink.findIndex((item: string) => item === image)!, 1);
+  }
+
+  async handleImage(e: any, id: number): Promise<void> {
+    const selectedImages = e.target.files;
+    for (let i = 0; i < selectedImages.length; i++) {
+      await PictureUploadStore.set({ file: selectedImages[i] });
+      if (this.picture) {
+        this.itemToUpdateOrCreate().imagesLink.push(this.picture.fullLink)
+      }
+    }
+  }
 }
 </script>
 
@@ -135,6 +160,13 @@ export default class TaskInput extends Vue {
             }
         }
     }
+  .menu__icon {
+    &.active-icon {
+      path {
+        fill: #426DF6;
+      }
+    }
+  }
 
     .items-add-place-text__like-dislike {
         justify-content: flex-end;
