@@ -38,4 +38,5 @@ export default class CallTimeFormComponent extends Vue{
     border: 1px solid #F2F2F2;
   }
 }
+
 </style>

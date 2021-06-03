@@ -48,10 +48,12 @@
 </template>
 
 <script lang="ts">
-import { ITaskStatus, ITodoTask } from '@/entity/todo/todo.types';
+import {ITaskStatus, ITodoTask, TaskRequestType} from '@/entity/todo/todo.types';
+import { TodoStore } from '@/store/modules/Todo';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TODOCOMPONENTS } from '@/constants';
+import {ICandidate} from '../../../entity/candidates';
 
 @Component({
     components: { TaskInput },
@@ -61,6 +63,7 @@ export default class DefaultTodoComponent extends Vue {
     @Prop() readonly id!: number;
     @Prop() readonly statusItem!: ITaskStatus;
     @Prop() readonly taskById!: ITodoTask;
+    @Prop() readonly candidates!: {[p: string]: ICandidate[]};
     taskShowId: number | null = null;
     showTextArea = false;
     checkbox = false;
@@ -68,7 +71,8 @@ export default class DefaultTodoComponent extends Vue {
         name: '',
         checked: false,
         description: '',
-        doDate: null
+        doDate: null,
+        imagesLink: []
     };
 
     get taskToUpdate(): ITodoTask | null {
@@ -93,6 +97,7 @@ export default class DefaultTodoComponent extends Vue {
                 do_date: this.statusItem.categoryId === 2 ? date / 1000 : this.newTask.doDate !== null ? Date.parse(this.newTask.doDate!) /1000  : null,
                 description: this.newTask.description || null,
                 category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
+                images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink
             };
 
             this.$emit('createTask', el);
@@ -103,7 +108,8 @@ export default class DefaultTodoComponent extends Vue {
                 name: '',
                 checked: false,
                 description: '',
-                doDate: null
+                doDate: null,
+                imagesLink: []
             };
         } else {
             this.setTaskShowid(null);

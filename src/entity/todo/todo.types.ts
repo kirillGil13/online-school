@@ -48,3 +48,13 @@ export type TaskCandidateItemResponseType = {
     candidate_id: number;
     candidate_name: string;
 }
+
+export type TaskRequestType = {
+    name?: string;
+    description?: string;
+    do_date?: number;
+    reminder_time?: number;
+    candidate_id?: number;
+    category_id: number;
+    images_link?: string[];
+}

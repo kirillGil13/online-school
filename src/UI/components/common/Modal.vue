@@ -23,7 +23,7 @@
                  dark
                  color="primary"
       >
-        <v-toolbar-title>Ответ пользователю</v-toolbar-title>
+        <v-toolbar-title>{{toolBarTitle}}</v-toolbar-title>
         <v-spacer></v-spacer>
         <div @click.stop="activatorChange = false">
           <v-icon>mdi-close</v-icon>
@@ -45,6 +45,7 @@ export default class Modal extends Vue {
   @Prop({default: false, type: Boolean}) readonly fullScreen!: boolean;
   @Prop({default: false, type: Boolean}) readonly fromBottom!: boolean;
   @Prop({default: true, type: Boolean}) readonly withoutToolBar!: boolean;
+  @Prop({default: 'Ответ пользователю'}) readonly toolBarTitle!: boolean;
   @Prop() readonly modalClass!: string;
   @Prop() readonly videoModal!: boolean;
   @Prop() readonly origin!: string;

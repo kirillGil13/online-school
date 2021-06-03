@@ -53,6 +53,8 @@
                     style="margin-right: 2px; margin-left: 2px;"
                 />
             </template>
+
+
          </div>
     </div>
 </template>
@@ -67,7 +69,12 @@ import { TodoStatus } from '@/entity/todo/todoStatus';
 import { TODOCOMPONENTS } from '@/constants';
 import {ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
 import DefaultTodoComponent from '@/UI/components/todo/DefaultTodoComponent.vue';
+import {PictureUploadStore} from '../../../store/modules/PictureUpload';
+import {IPictureUpload} from '../../../entity/common/pictureUpload.types';
+import {TodoTask} from '../../../entity/todo/todo';
 import TodoPlans from '@/UI/components/todo/TodoPlans.vue';
+import {CandidatesStore} from '../../../store/modules/Candidates';
+import {ICandidate} from '../../../entity/candidates';
 
 
 @Component({
@@ -102,6 +109,10 @@ export default class TodoList extends Vue {
     get tasksLoaded(): boolean {
         return TodoStore.todoTasksLoaded;
     }
+    
+    get candidates(): {[p: string]: ICandidate[]} {
+      return CandidatesStore.candidates;
+    }
 
     get tasks(): ITodoTask[] {
         return TodoStore.todoTasks.map(el => {
@@ -126,12 +137,12 @@ export default class TodoList extends Vue {
 
     setComponent(component: TodoStatus): void {
         this.componentId = component.categoryId;
-
     }
 
 
     fetchData(id: number = 1): void {
         TodoStore.fetchAllTask({id});
+        CandidatesStore.fetchAll();
     }
 
     fetchDatatStatusesTasks(): void {
@@ -139,7 +150,7 @@ export default class TodoList extends Vue {
     }
 
 
-    createTask(data: {name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): void {
+    createTask(data: {name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[]; }): void {
         TodoStore.createTask(data);
         TodoStore.setTaskCount({id: data.category_id, delete: false});
     }
@@ -203,7 +214,7 @@ export default class TodoList extends Vue {
             display: flex;
             align-items: center;
             cursor: pointer;
-            
+
             .items-icon-plus {
                 border: 2px solid #426DF6;
                 border-radius: 5px;
