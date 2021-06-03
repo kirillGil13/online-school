@@ -35,7 +35,7 @@
                                 @click="activatorCallTime = true"
                             />
                         </div>
-                        <div class="ml-4 d-flex flex-row" style="cursor: pointer;" @click="activatorImages = true">
+                        <div class="ml-4" v-if="![1,4,5].includes(tabId) " style="cursor: pointer;" @click="activatorImages = true">
                             <svg-icon
                                 name="Picture_outline"
                                 class="menu__icon mr-2"
@@ -88,6 +88,7 @@ export default class TaskInput extends Vue {
     @Prop() readonly taskToUpdate!: ITodoTask;
     @Prop() readonly newTask!: any;
     @Prop() readonly isNewTask?: boolean;
+    @Prop() readonly tabId?: number;
     activatorImages = false;
     activatorCandidates = false;
     activatorCallTime = false;
