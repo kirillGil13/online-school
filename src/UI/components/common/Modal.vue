@@ -25,7 +25,7 @@
       >
         <v-toolbar-title>{{toolBarTitle}}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <div @click.stop="activatorChange = false">
+        <div @click.stop="activatorChange = false" style="cursor: pointer">
           <v-icon>mdi-close</v-icon>
         </div>
       </v-toolbar>

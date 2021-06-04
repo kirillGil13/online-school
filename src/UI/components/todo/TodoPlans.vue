@@ -10,6 +10,8 @@
         </div>
         <TaskInput
             v-if="showTextArea"
+            :statuses="statuses"
+            :candidates="candidates"
             :tabId="id"
             :new-task="newTask"
             :task-to-update="taskToUpdate"
@@ -66,6 +68,8 @@
                                 </div>
                                 <TaskInput
                                     v-else
+                                    :statuses="statuses"
+                                    :candidates="candidates"
                                     :new-task="item"
                                     :tabId="id"
                                     :task-to-update="taskToUpdate"
@@ -86,6 +90,8 @@ import { ITaskStatus, ITodoTask } from '@/entity/todo/todo.types';
 import draggable from 'vuedraggable';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
+import {ICandidate} from '../../../entity/candidates';
+import {IStatuses} from '../../../entity/statuses/statuses.types';
 
 @Component({
     components: { TaskInput, draggable },
@@ -95,6 +101,8 @@ export default class TodoPlans extends Vue {
     @Prop() readonly id!: number;
     @Prop() readonly taskById!: ITodoTask;
     @Prop() readonly activeTab!: number;
+    @Prop() readonly candidates!: {[p: string]: ICandidate[]};
+  @Prop() readonly statuses!: IStatuses[];
     array = [...this.tasks]
     taskShowId: number | null = null;
 
@@ -105,6 +113,8 @@ export default class TodoPlans extends Vue {
         checked: false,
         description: '',
         doDate: null,
+        imagesLink: [],
+      candidateId: null
     };
 
      get tasks(): ITodoTask[] {
@@ -156,6 +166,8 @@ export default class TodoPlans extends Vue {
                         : null,
                 description: this.newTask.description || null,
                 category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
+              images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
+              candidate_id: this.newTask.candidateId ? this.newTask.candidateId : null
             };
 
             this.$emit('createTask', el);
@@ -167,6 +179,8 @@ export default class TodoPlans extends Vue {
                 checked: false,
                 description: '',
                 doDate: null,
+              imagesLink: [],
+              candidateId: null
             };
         } else {
             this.setTaskShowid(null);
@@ -182,6 +196,8 @@ export default class TodoPlans extends Vue {
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
                     category_id: this.taskToUpdate.checked ? 6 : this.statusItem.categoryId,
+                  images_link: this.taskToUpdate.imagesLink,
+                  candidate_id: this.taskToUpdate.candidate.candidate_id
                 };
                 this.$emit('upDateTask', el);
                 this.taskShowId = null;
