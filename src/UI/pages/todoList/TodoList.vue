@@ -68,7 +68,7 @@ import Button from '@/UI/components/common/Button.vue';
 import { TodoStore } from '@/store/modules/Todo';
 import { TodoStatus } from '@/entity/todo/todoStatus';
 import { TODOCOMPONENTS } from '@/constants';
-import {ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
+import {ITaskStatus, ITodoTask, TaskRequestType} from '@/entity/todo/todo.types';
 import DefaultTodoComponent from '@/UI/components/todo/DefaultTodoComponent.vue';
 import TodoPlans from '@/UI/components/todo/TodoPlans.vue';
 import {CandidatesStore} from '../../../store/modules/Candidates';
@@ -155,8 +155,8 @@ export default class TodoList extends Vue {
     }
 
 
-    createTask(data: {name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[]; }): void {
-        TodoStore.createTask(data);
+    createTask(data: TaskRequestType, checked: boolean): void {
+        TodoStore.createTask({data: data, checked: checked});
         TodoStore.setTaskCount({id: data.category_id, delete: false});
     }
 
@@ -174,12 +174,12 @@ export default class TodoList extends Vue {
         await TodoStore.getCandidateTask({ id: id });
     }
 
-    async upDateTask(el: any): Promise<void> {
-        await TodoStore.updateCandidateTask(el!);
+    async upDateTask(el: TaskRequestType, checked: boolean, route: number): Promise<void> {
+        await TodoStore.updateCandidateTask({data: el, checked: checked, route: route});
     }
 
-    async toJurnalOrIncome(el: any): Promise<void> {
-        await TodoStore.ToJurnalOrIncome(el!);
+    async toJurnalOrIncome(el: TaskRequestType, route: number): Promise<void> {
+        await TodoStore.ToJurnalOrIncome({data: el, route: route});
         if (el.category_id === 1) {
           await TodoStore.setTaskCount({id: 6, delete: true});
           await TodoStore.setTaskCount({id: el.category_id, delete: false});

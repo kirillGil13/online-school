@@ -1,7 +1,13 @@
 import Api from '@/repository/api';
 import { ITodoRepository } from './TodoRepository.types';
 import { TodoTask } from '@/entity/todo/todo';
-import { ITaskStatus, ITodoTask, TaskResponseType, TaskStatusResponceType } from '@/entity/todo/todo.types';
+import {
+    ITaskStatus,
+    ITodoTask,
+    TaskRequestType,
+    TaskResponseType,
+    TaskStatusResponceType
+} from '@/entity/todo/todo.types';
 import { TodoStatus } from '@/entity/todo/todoStatus';
 
 export class TodoRepository implements ITodoRepository {
@@ -12,34 +18,31 @@ export class TodoRepository implements ITodoRepository {
     }
 
     async fetchAllTaskStatus(): Promise<ITaskStatus[]> {
-        const responce = await Api.get('candidateTasks/statuses');
-        const respData = responce.data as TaskStatusResponceType[];
+        const response = await Api.get('candidateTasks/statuses');
+        const respData = response.data as TaskStatusResponceType[];
 
         return respData.map((el: TaskStatusResponceType) => new TodoStatus(el));
     }
 
-    async createTask(data: {name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): Promise<TaskResponseType> {
-        const responce = await Api.post('candidateTasks', data);
+    async createTask(data: TaskRequestType): Promise<TaskResponseType> {
+        const response = await Api.post('candidateTasks', data);
 
-        return responce.data as TaskResponseType;
+        return response.data as TaskResponseType;
     }
 
     async getCandidateTask(data: {id: number}): Promise<TodoTask> {
-        const responce = await Api.get(`candidateTasks/${data.id}`);
+        const response = await Api.get(`candidateTasks/${data.id}`);
 
-        return new TodoTask(responce.data as TaskResponseType);
+        return new TodoTask(response.data as TaskResponseType);
     }
 
     async deleteTask(data: {id: number}): Promise<void> {
         await Api.delete(`candidateTasks/${data.id}`);
     }
 
-    async updateCandidateTask(data: {id: number;name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): Promise<ITodoTask> {
-
-        const {id, ...dataEl} = data;
-        const responce = await Api.patch(`candidateTasks/${id}`, dataEl);
-        const request = responce.data as TaskResponseType;
-
+    async updateCandidateTask(data: {data: TaskRequestType; route: number}): Promise<ITodoTask> {
+        const response = await Api.patch(`candidateTasks/${data.route}`, data.data);
+        const request = response.data as TaskResponseType;
         return new TodoTask(request);
     }
 

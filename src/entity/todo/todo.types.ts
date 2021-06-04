@@ -30,6 +30,15 @@ export interface ITaskToDate {
     tasks: ITodoTask[];
 }
 
+export interface ITaskNewItem {
+    name: string;
+    checked: boolean;
+    description: string;
+    doDate: string | null;
+    imagesLink: string[];
+    candidateId: number | null;
+}
+
 export type TaskStatusResponceType = {
     category_id: number;
     category_name: string;

@@ -1,7 +1,7 @@
 import {getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import { TodoTask } from '@/entity/todo/todo';
-import { ITaskStatus, ITodoTask } from '@/entity/todo/todo.types';
+import {ITaskStatus, ITodoTask, TaskRequestType} from '@/entity/todo/todo.types';
 
 @Module({
     namespaced: true,
@@ -56,13 +56,11 @@ class TodoModule extends VuexModule {
     }
 
     @MutationAction
-    async createTask(data: {checked?: boolean; name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): Promise<{todoTasks: ITodoTask[]}> {
-        const {checked, ...info} = data;
-        console.log(info)
-        const task = await store.$repository.todo.createTask(info);
+    async createTask(data: {data: TaskRequestType; checked: boolean}): Promise<{todoTasks: ITodoTask[]}> {
+        const task = await store.$repository.todo.createTask(data.data);
         //@ts-ignore
         const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]
-        if(!checked) {
+        if(!data.checked) {
             todoTasks.push(new TodoTask(task))
         }
         return {todoTasks};
@@ -89,30 +87,27 @@ class TodoModule extends VuexModule {
     }
 
     @MutationAction
-    async updateCandidateTask(data: {checked: boolean;id: number; name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): Promise<{todoTasks: ITodoTask[]}> {
-        const {checked, ...info} = data;
-        const upDateTask = await store.$repository.todo.updateCandidateTask(info);
-        console.log(checked)
-
+    async updateCandidateTask(data: {data: TaskRequestType; checked: boolean; route: number}): Promise<{todoTasks: ITodoTask[]}> {
+        const upDateTask = await store.$repository.todo.updateCandidateTask({data: data.data, route: data.route});
           //@ts-ignore
         const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]
-        const idx = todoTasks.findIndex(el => el.id === data.id);
+        const idx = todoTasks.findIndex(el => el.id === data.route);
         todoTasks[idx] = {
             ...upDateTask
         }
 
-        if(checked) {
+        if(data.checked) {
             todoTasks.splice(idx, 1);
         }
         return {todoTasks}
     }
 
     @MutationAction
-    async ToJurnalOrIncome(data: {id: number; name?: string; description?: string; do_date?: number; reminder_time?: number; candidate_id?: number; category_id: number; images_link?: string[] }): Promise<{todoTasks: ITodoTask[]}> {
+    async ToJurnalOrIncome(data: {data: TaskRequestType; route: number}): Promise<{todoTasks: ITodoTask[]}> {
         await store.$repository.todo.updateCandidateTask(data);
         //@ts-ignore
         const todoTasks = [...store.state.todoTask.todoTasks];
-        const idx = todoTasks.findIndex(el => el.id === data.id);
+        const idx = todoTasks.findIndex(el => el.id === data.route);
 
         todoTasks.splice(idx, 1);
 

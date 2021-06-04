@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import {ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
+import {ITaskNewItem, ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TODOCOMPONENTS } from '@/constants';
@@ -68,13 +68,13 @@ export default class DefaultTodoComponent extends Vue {
     taskShowId: number | null = null;
     showTextArea = false;
     checkbox = false;
-    newTask = {
+    newTask: ITaskNewItem = {
         name: '',
         checked: false,
         description: '',
         doDate: null,
         imagesLink: [],
-      candidateId: null
+        candidateId: null
     };
 
     get include(): (HTMLElement | null)[] {
@@ -99,7 +99,6 @@ export default class DefaultTodoComponent extends Vue {
           const date = Date.now();
 
           const el = {
-            checked: this.newTask.checked ? true : false,
             name: this.newTask.name || null,
             do_date:
                 this.statusItem.categoryId === 2
@@ -113,7 +112,7 @@ export default class DefaultTodoComponent extends Vue {
             candidate_id: this.newTask.candidateId ? this.newTask.candidateId : null
           };
 
-          this.$emit('createTask', el);
+          this.$emit('createTask', el,  this.newTask.checked);
 
           this.showTextArea = false;
 
@@ -142,8 +141,6 @@ export default class DefaultTodoComponent extends Vue {
         if (this.taskShowId === id || id === null) {
             if (this.taskToUpdate !== null) {
                  const el = {
-                    checked: this.taskToUpdate.checked,
-                    id: this.taskShowId!,
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
                     category_id:
@@ -155,8 +152,7 @@ export default class DefaultTodoComponent extends Vue {
                    images_link: this.taskToUpdate.imagesLink,
                    candidate_id: this.taskToUpdate.candidate ? this.taskToUpdate.candidate.candidate_id : null
                 };
-                console.log(el.category_id);
-                this.$emit('upDateTask', el);
+                this.$emit('upDateTask', el, this.taskToUpdate.checked, this.taskShowId!);
                 this.taskShowId = null;
             }
         } else {
@@ -172,26 +168,24 @@ export default class DefaultTodoComponent extends Vue {
     setToJurnal(id: number): void {
         const item = this.tasks.find((el) => el.id === id);
         const el = {
-            id: id,
             name: item!.name,
             description: item!.description,
             category_id: 6,
         };
 
-        this.$emit('toJurnalOrIncome', el);
+        this.$emit('toJurnalOrIncome', el, id);
         this.taskShowId = null;
     }
 
     setToIncome(id: number): void {
         const item = this.tasks.find((el) => el.id === id);
         const el = {
-            id: id,
             name: item!.name,
             description: item!.description,
             category_id: 1,
         };
 
-        this.$emit('toJurnalOrIncome', el);
+        this.$emit('toJurnalOrIncome', el, id);
         this.taskShowId = null;
     }
 }
