@@ -176,8 +176,8 @@ export default class TodoPlans extends Vue {
       candidateId: null
     };
 
-    get date(): [{ data?: string; tasks?: ITodoTask[] }] {
-        const candidateTodate: [{ data: string; tasks: ITodoTask[] }] = [];
+    get date(): { data?: string; tasks?: ITodoTask[] }[] {
+        const candidateTodate: { data: string; tasks: ITodoTask[] }[] = [];
 
 
 
