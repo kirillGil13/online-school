@@ -9,10 +9,16 @@
                 <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
                 <span class="btn-add-text">Добавить задачу</span>
             </div>
-            <TaskInput v-if="showTextArea" :tabId="id" :new-task="newTask" :task-to-update="taskToUpdate" :isNewTask="true" />
+            <TaskInput
+                v-if="showTextArea"
+                :tabId="id"
+                :new-task="newTask"
+                :task-to-update="taskToUpdate"
+                :isNewTask="true"
+            />
         </template>
 
-        <div class="items-check-boxes" :style="{marginTop: statusItem.categoryId === 6 && '2rem'}">
+        <div class="items-check-boxes" :style="{ marginTop: statusItem.categoryId === 6 && '2rem' }">
             <template v-for="item in tasks">
                 <div class="d-flex flex-column mt-1 px-2 task-item-container" :key="item.id">
                     <div class="d-flex align-center justify-space-between" v-if="taskShowId !== item.id">
@@ -48,12 +54,11 @@
 </template>
 
 <script lang="ts">
-import {ITaskStatus, ITodoTask, TaskRequestType} from '@/entity/todo/todo.types';
-import { TodoStore } from '@/store/modules/Todo';
+import { ITaskStatus, ITodoTask } from '@/entity/todo/todo.types';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TODOCOMPONENTS } from '@/constants';
-import {ICandidate} from '../../../entity/candidates';
+import { ICandidate } from '../../../entity/candidates';
 
 @Component({
     components: { TaskInput },
@@ -63,7 +68,7 @@ export default class DefaultTodoComponent extends Vue {
     @Prop() readonly id!: number;
     @Prop() readonly statusItem!: ITaskStatus;
     @Prop() readonly taskById!: ITodoTask;
-    @Prop() readonly candidates!: {[p: string]: ICandidate[]};
+    @Prop() readonly candidates!: { [p: string]: ICandidate[] };
     taskShowId: number | null = null;
     showTextArea = false;
     checkbox = false;
@@ -72,9 +77,10 @@ export default class DefaultTodoComponent extends Vue {
         checked: false,
         description: '',
         doDate: null,
-        imagesLink: []
+        imagesLink: [],
     };
 
+    
     get taskToUpdate(): ITodoTask | null {
         return this.tasks.find((el) => el.id === this.taskShowId)!;
     }
@@ -84,7 +90,7 @@ export default class DefaultTodoComponent extends Vue {
     }
 
     setTaskById(id: number): void {
-        this.$emit('setTaskById', id)
+        this.$emit('setTaskById', id);
     }
 
     setTask(): void {
@@ -94,10 +100,15 @@ export default class DefaultTodoComponent extends Vue {
             const el = {
                 checked: this.newTask.checked ? true : false,
                 name: this.newTask.name || null,
-                do_date: this.statusItem.categoryId === 2 ? date / 1000 : this.newTask.doDate !== null ? Date.parse(this.newTask.doDate!) /1000  : null,
+                do_date:
+                    this.statusItem.categoryId === 2
+                        ? date / 1000
+                        : this.newTask.doDate !== null
+                        ? Date.parse(this.newTask.doDate!) / 1000
+                        : null,
                 description: this.newTask.description || null,
                 category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
-                images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink
+                images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
             };
 
             this.$emit('createTask', el);
@@ -109,7 +120,7 @@ export default class DefaultTodoComponent extends Vue {
                 checked: false,
                 description: '',
                 doDate: null,
-                imagesLink: []
+                imagesLink: [],
             };
         } else {
             this.setTaskShowid(null);
@@ -125,19 +136,23 @@ export default class DefaultTodoComponent extends Vue {
         this.showTextArea = false;
 
         if (this.taskShowId === id || id === null) {
-           
             if (this.taskToUpdate !== null) {
-                 const el = {
+                const el = {
                     checked: this.taskToUpdate.checked,
                     id: this.taskShowId!,
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
-                    category_id: this.taskToUpdate.checked && this.statusItem.categoryId !== 6  ? 6 : this.taskToUpdate.checked && this.statusItem.categoryId === 6 ? 1 : this.statusItem.categoryId,
+                    category_id:
+                        this.taskToUpdate.checked && this.statusItem.categoryId !== 6
+                            ? 6
+                            : this.taskToUpdate.checked && this.statusItem.categoryId === 6
+                            ? 1
+                            : this.statusItem.categoryId,
                 };
 
-                 console.log(el.category_id)
-                this.$emit('upDateTask', el)
-                
+                console.log(el.category_id);
+                this.$emit('upDateTask', el);
+
                 this.taskShowId = null;
             }
         } else {
@@ -159,7 +174,7 @@ export default class DefaultTodoComponent extends Vue {
             category_id: 6,
         };
 
-        this.$emit('toJurnalOrIncome', el)
+        this.$emit('toJurnalOrIncome', el);
         this.taskShowId = null;
     }
 
@@ -172,7 +187,7 @@ export default class DefaultTodoComponent extends Vue {
             category_id: 1,
         };
 
-        this.$emit('toJurnalOrIncome', el)
+        this.$emit('toJurnalOrIncome', el);
         this.taskShowId = null;
     }
 }
@@ -193,7 +208,7 @@ export default class DefaultTodoComponent extends Vue {
 }
 
 .task-item-container:hover {
-    background: #F2F2F2;
+    background: #f2f2f2;
     border-radius: 12px;
 }
 </style>

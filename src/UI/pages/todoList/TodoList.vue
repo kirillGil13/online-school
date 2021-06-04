@@ -69,9 +69,6 @@ import { TodoStatus } from '@/entity/todo/todoStatus';
 import { TODOCOMPONENTS } from '@/constants';
 import {ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
 import DefaultTodoComponent from '@/UI/components/todo/DefaultTodoComponent.vue';
-import {PictureUploadStore} from '../../../store/modules/PictureUpload';
-import {IPictureUpload} from '../../../entity/common/pictureUpload.types';
-import {TodoTask} from '../../../entity/todo/todo';
 import TodoPlans from '@/UI/components/todo/TodoPlans.vue';
 import {CandidatesStore} from '../../../store/modules/Candidates';
 import {ICandidate} from '../../../entity/candidates';
@@ -109,14 +106,15 @@ export default class TodoList extends Vue {
     get tasksLoaded(): boolean {
         return TodoStore.todoTasksLoaded;
     }
-    
+
     get candidates(): {[p: string]: ICandidate[]} {
       return CandidatesStore.candidates;
     }
 
     get tasks(): ITodoTask[] {
         return TodoStore.todoTasks.map(el => {
-            if(this.activeTab !== 6) {
+            
+            if(this.activeTab !== 5) {
                 return {
                     ...el,
                     checked: false
