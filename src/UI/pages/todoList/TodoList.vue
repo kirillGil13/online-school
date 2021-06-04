@@ -120,7 +120,7 @@ export default class TodoList extends Vue {
 
     get tasks(): ITodoTask[] {
         return TodoStore.todoTasks.map(el => {
-            if(this.activeTab !== 6) {
+            if(this.activeTab !== 5) {
                 return {
                     ...el,
                     checked: false
@@ -168,7 +168,6 @@ export default class TodoList extends Vue {
     async created(): Promise<void> {
         await this.fetchData();
         await this.fetchDatatStatusesTasks();
-
     }
 
     async setTaskById(id: number): Promise<void> {
@@ -189,10 +188,6 @@ export default class TodoList extends Vue {
           await TodoStore.setTaskCount({id: el.category_id, delete: false});
         }
     }
-
-
-
-
 }
 </script>
 

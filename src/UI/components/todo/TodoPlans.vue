@@ -81,6 +81,64 @@
                 </div>
             </div>
         </div>
+        <template v-for="(item, id) in date">
+            <div class="plans-items pl-4" :key="id">
+                <div class="d-flex flex-column plans-item" style="width: 100%">
+                    <div class="d-flex align-baseline" style="width: 100%">
+                        <div class="plans-items__task-date">{{ getitemTaskText(item.data) }}</div>
+                        <div class="plans-items__task-date-text">{{ getDayOfWeek(item.data) }}</div>
+                    </div>
+                    <div class="d-flex flex-column mt-7">
+                        <draggable v-model="tasks" class="list-group" handle=".handle" tag="div">
+                            <template v-for="(item, key) in item.tasks">
+                                <div class="d-flex flex-column mt-1 px-2 task-item-container" :key="key">
+                                    <div
+                                        class="d-flex align-center justify-space-between handle"
+                                        v-if="taskShowId !== item.id"
+                                    >
+                                        <div class="d-flex align-end">
+                                            <v-checkbox
+                                                hide-details
+                                                class="mt-0"
+                                                @click="setToJurnal(item.id)"
+                                                v-model="item.checked"
+                                            />
+                                            <span class="item-text" @click.self="setTaskShowid(item.id)">{{
+                                                item.name ? `${item.name}` : 'Новая задача'
+                                            }}</span>
+                                        </div>
+                                        <div class="d-flex align-center">
+                                            <v-btn
+                                                @click="deleteTask(item.id)"
+                                                style="background: none"
+                                                class="mt-0"
+                                                text
+                                                icon
+                                                color="red lighten-2"
+                                            >
+                                                <svg-icon
+                                                    name="Todo_delete"
+                                                    class="ml-1 mr-1 menu__icon"
+                                                    height="20"
+                                                    width="24"
+                                                />
+                                            </v-btn>
+                                        </div>
+                                    </div>
+                                    <TaskInput
+                                        v-else
+                                        :new-task="item"
+                                        :tabId="id"
+                                        :task-to-update="taskToUpdate"
+                                        :isNewTask="false"
+                                    />
+                                </div>
+                            </template>
+                        </draggable>
+                    </div>
+                </div>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -92,6 +150,7 @@ import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
 import {ICandidate} from '../../../entity/candidates';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
+import { MONTHS } from '@/constants';
 
 @Component({
     components: { TaskInput, draggable },
@@ -103,7 +162,7 @@ export default class TodoPlans extends Vue {
     @Prop() readonly activeTab!: number;
     @Prop() readonly candidates!: {[p: string]: ICandidate[]};
   @Prop() readonly statuses!: IStatuses[];
-    array = [...this.tasks]
+    array = [...this.tasks];
     taskShowId: number | null = null;
 
     showTextArea = false;
@@ -117,24 +176,73 @@ export default class TodoPlans extends Vue {
       candidateId: null
     };
 
-     get tasks(): ITodoTask[] {
-        return TodoStore.todoTasks.map(el => {
-            if(this.activeTab !== 6) {
-                return {
-                    ...el,
-                    checked: false
-                }
+    get date(): [{ data?: string; tasks?: ITodoTask[] }] {
+        const candidateTodate: [{ data: string; tasks: ITodoTask[] }] = [];
+
+
+
+        for (let i = 1; i < 16; i++) {
+            const date = Date.now();
+            const tom = new Date(date);
+            tom.setDate(tom.getDate() + i);
+
+            const key = `${tom.getDate()}.${tom.getMonth() + 1}.${tom.getFullYear()}`;
+
+            candidateTodate.push({
+                data: key,
+                tasks: [],
+            });
+        }
+
+        this.tasks.forEach((task) => {
+            const tasksDate = new Date(task.doDate * 1000);
+            const taskDateStr = `${tasksDate.getDate()}.${tasksDate.getMonth() + 1}.${tasksDate.getFullYear()}`;
+
+            if(candidateTodate.some(el => el.data == taskDateStr) ) {
+                const item = candidateTodate.find(el => el.data === taskDateStr);
+                const idx = candidateTodate.findIndex(el => el.data === item!.data);
+
+
+                candidateTodate[idx].tasks.push(task)
             }else {
-                return {
-                    ...el,
-                    checked: true
+                if(candidateTodate.some(el => el.data.split('.')[1] === taskDateStr.split('.')[1])) {
+                    const item = candidateTodate.find(el => el.data.split('.')[1] === taskDateStr.split('.')[1]);
+                    const idx = candidateTodate.findIndex(el => el.data.split('.')[1] === item!.data.split('.')[1]);
+
+                    candidateTodate[idx].tasks.push(task);
+                    return
                 }
+
+
+
+                candidateTodate.push({
+                    data: taskDateStr,
+                    tasks: [task],
+                })
             }
         })
+
+        return candidateTodate;
+    }
+
+    get tasks(): ITodoTask[] {
+        return TodoStore.todoTasks.map((el) => {
+            if (this.activeTab !== 6) {
+                return {
+                    ...el,
+                    checked: false,
+                };
+            } else {
+                return {
+                    ...el,
+                    checked: true,
+                };
+            }
+        });
     }
 
     set tasks(value: ITodoTask[]) {
-        TodoStore.setDraggableTasks(value)
+        TodoStore.setDraggableTasks(value);
     }
 
     get taskToUpdate(): ITodoTask | null {
@@ -145,6 +253,38 @@ export default class TodoPlans extends Vue {
 
         //@ts-ignore
         return taskToUpdate;
+    }
+
+    getitemTaskText(date: string): string {
+        const title = date.split('.');
+        const secondsToday = Date.now();
+        const some = new Date(secondsToday).getMonth() + 1;
+
+        return some.toString() === title[1] ? `${title[0]}` : '';
+    }
+
+    getDayOfWeek(date: string): string {
+        const title = date.split('.');
+        const secondsToday = Date.now();
+        const todayByRightFormat = new Date(secondsToday);
+        const checkToday =
+            date ===
+            `${todayByRightFormat.getDate() + 1}.${
+                todayByRightFormat.getMonth() + 1
+            }.${todayByRightFormat.getFullYear()}`;
+
+        if (checkToday) {
+            return 'Завтра';
+        }
+
+        let daysWeek = ['Вoскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+
+        //@ts-ignore
+        const numberDayWeek = new Date(title[2], title[1] - 1 <= 0 ? 0 : title[1] - 1, title[0]).getDay();
+
+        return (todayByRightFormat.getMonth() + 1).toString() === title[1]
+            ? daysWeek[numberDayWeek]
+            : MONTHS.find((el) => el.id.toString() === title[1])!.value;
     }
 
     setTaskById(id: number): void {

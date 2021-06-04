@@ -77,7 +77,6 @@ export default class DefaultTodoComponent extends Vue {
       candidateId: null
     };
 
-
     get include(): (HTMLElement | null)[] {
       return [document.querySelector('.v-dialog__content')];
     }
@@ -95,7 +94,6 @@ export default class DefaultTodoComponent extends Vue {
     }
 
     setTask(e: any): void {
-      console.log('id ' + this.taskShowId, 'show ' + this.showTextArea);
       if (e.target.classList[0] === 'content-main' && e.target.classList[0] !== 'add-task' && e.target.classList[0] !== 'v-dialog__content' && (this.showTextArea || this.taskShowId)) {
         if (this.showTextArea === true) {
           const date = Date.now();
@@ -103,7 +101,12 @@ export default class DefaultTodoComponent extends Vue {
           const el = {
             checked: this.newTask.checked ? true : false,
             name: this.newTask.name || null,
-            do_date: this.statusItem.categoryId === 2 ? date / 1000 : this.newTask.doDate !== null ? Date.parse(this.newTask.doDate!) /1000  : null,
+            do_date:
+                this.statusItem.categoryId === 2
+                    ? date / 1000
+                    : this.newTask.doDate !== null
+                    ? Date.parse(this.newTask.doDate!) / 1000
+                    : null,
             description: this.newTask.description || null,
             category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
             images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
@@ -137,21 +140,23 @@ export default class DefaultTodoComponent extends Vue {
         this.showTextArea = false;
 
         if (this.taskShowId === id || id === null) {
-
             if (this.taskToUpdate !== null) {
                  const el = {
                     checked: this.taskToUpdate.checked,
                     id: this.taskShowId!,
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
-                    category_id: this.taskToUpdate.checked && this.statusItem.categoryId !== 6  ? 6 : this.taskToUpdate.checked && this.statusItem.categoryId === 6 ? 1 : this.statusItem.categoryId,
+                    category_id:
+                        this.taskToUpdate.checked && this.statusItem.categoryId !== 6
+                            ? 6
+                            : this.taskToUpdate.checked && this.statusItem.categoryId === 6
+                            ? 1
+                            : this.statusItem.categoryId,
                    images_link: this.taskToUpdate.imagesLink,
                    candidate_id: this.taskToUpdate.candidate ? this.taskToUpdate.candidate.candidate_id : null
                 };
-
-                 console.log(el.category_id)
-                this.$emit('upDateTask', el)
-
+                console.log(el.category_id);
+                this.$emit('upDateTask', el);
                 this.taskShowId = null;
             }
         } else {
@@ -173,7 +178,7 @@ export default class DefaultTodoComponent extends Vue {
             category_id: 6,
         };
 
-        this.$emit('toJurnalOrIncome', el)
+        this.$emit('toJurnalOrIncome', el);
         this.taskShowId = null;
     }
 
@@ -186,7 +191,7 @@ export default class DefaultTodoComponent extends Vue {
             category_id: 1,
         };
 
-        this.$emit('toJurnalOrIncome', el)
+        this.$emit('toJurnalOrIncome', el);
         this.taskShowId = null;
     }
 }
@@ -207,7 +212,7 @@ export default class DefaultTodoComponent extends Vue {
 }
 
 .task-item-container:hover {
-    background: #F2F2F2;
+    background: #f2f2f2;
     border-radius: 12px;
 }
 </style>

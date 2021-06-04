@@ -114,9 +114,9 @@ export default class TaskInput extends Vue {
     activatorCandidates = false;
     activatorCallTime = false;
 
-  get picture(): IPictureUpload | null {
-    return PictureUploadStore.pictureUpload;
-  }
+    get picture(): IPictureUpload | null {
+        return PictureUploadStore.pictureUpload;
+    }
 
     activatorImagesChange(act: boolean): void {
         this.activatorImages = act;
@@ -208,13 +208,13 @@ export default class TaskInput extends Vue {
             }
         }
     }
-  .menu__icon {
-    &.active-icon {
-      path {
-        fill: #426DF6;
-      }
+    .menu__icon {
+        &.active-icon {
+            path {
+                fill: #426df6;
+            }
+        }
     }
-  }
 
     .items-add-place-text__like-dislike {
         justify-content: flex-end;
