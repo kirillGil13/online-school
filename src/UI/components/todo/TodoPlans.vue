@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex todo__items" style="width: 100%" >
+    <div class="d-flex todo__items" style="width: 100%" v-click-outside="setTask">
         <div class="items-title">
             <svg-icon name="Plans" style="width: 28px; height: 28px" />
             <span class="title-text">Планы</span>
@@ -133,7 +133,7 @@ export default class TodoPlans extends Vue {
         }
 
         this.tasks.forEach((task) => {
-            const tasksDate = new Date(task.doDate * 1000);
+            const tasksDate = new Date(+task.doDate * 1000);
             const taskDateStr = `${tasksDate.getDate()}.${tasksDate.getMonth() + 1}.${tasksDate.getFullYear()}`;
 
             if(candidateTodate.some(el => el.date == taskDateStr) ) {
