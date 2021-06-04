@@ -81,9 +81,9 @@
           <v-row class="mb-6">
             <v-col class="mt-6">
               <FilterComponent :isCandidates="true" :isOnRight="false" :button="false" :search="true" :count-element="$adaptive.isMobile && [1,2]"
-                               :filters="filters" @filter="onFilter">
+                               :filters="filters" @filter="$emit('onFilter')">
                 <template v-slot:search>
-                  <Search @search="search"/>
+                  <Search @search="$emit('search')"/>
                 </template>
               </FilterComponent>
             </v-col>
