@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex todo__items" style="width: 100%" @click.self="setTask">
+    <div class="d-flex todo__items" style="width: 100%">
         <div class="items-title">
             <svg-icon name="Plans" style="width: 28px; height: 28px" />
             <span class="title-text">Планы</span>
@@ -18,7 +18,7 @@
             :isNewTask="true"
         />
 
-        <div class="plans-items pl-4">
+        <div class="plans-items pl-4" v-click-outside="setTask">
             <div class="d-flex flex-column plans-item" style="width: 100%">
                 <div class="d-flex align-baseline" style="width: 100%">
                     <div class="plans-items__task-date">22</div>
@@ -291,36 +291,38 @@ export default class TodoPlans extends Vue {
         this.$emit('setTaskById', id);
     }
 
-    setTask(): void {
+    setTask(e: any): void {
+      if (e.target.classList[0] === 'content-main' && e.target.classList[0] !== 'add-task' && e.target.classList[0] !== 'v-dialog__content' && (this.showTextArea || this.taskShowId)) {
         if (this.showTextArea === true) {
-            const date = Date.now();
+          const date = Date.now();
 
-            const el = {
-                name: this.newTask.name || null,
-                do_date:
-                    this.statusItem.categoryId === 2
-                        ? date / 1000
-                        : this.newTask.doDate !== null
-                        ? Date.parse(this.newTask.doDate!) / 1000
-                        : null,
-                description: this.newTask.description || null,
-                category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
-              images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
-              candidate_id: this.newTask.candidateId ? this.newTask.candidateId : null
-            };
-            this.$emit('createTask', el,  this.newTask.checked);
-            this.showTextArea = false;
-            this.newTask = {
-                name: '',
-                checked: false,
-                description: '',
-                doDate: null,
-              imagesLink: [],
-              candidateId: null
-            };
+          const el = {
+            name: this.newTask.name || null,
+            do_date:
+                this.statusItem.categoryId === 2
+                    ? date / 1000
+                    : this.newTask.doDate !== null
+                    ? Date.parse(this.newTask.doDate!) / 1000
+                    : null,
+            description: this.newTask.description || null,
+            category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
+            images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
+            candidate_id: this.newTask.candidateId ? this.newTask.candidateId : null
+          };
+          this.$emit('createTask', el, this.newTask.checked);
+          this.showTextArea = false;
+          this.newTask = {
+            name: '',
+            checked: false,
+            description: '',
+            doDate: null,
+            imagesLink: [],
+            candidateId: null
+          };
         } else {
-            this.setTaskShowid(null);
+          this.setTaskShowid(null);
         }
+      }
     }
 
     setTaskShowid(id: number | null): void {

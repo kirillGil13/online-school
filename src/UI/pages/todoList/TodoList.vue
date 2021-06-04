@@ -75,6 +75,11 @@ import {CandidatesStore} from '../../../store/modules/Candidates';
 import {ICandidate} from '../../../entity/candidates';
 import {StatusesStore} from '../../../store/modules/Statuses';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
+import Filters from '../../../entity/filters/filters';
+import {IFilters} from '../../../entity/filters/filters.types';
+import {FiltersStore} from '../../../store/modules/Filters';
+import {IInfoPackage} from '../../../entity/infoPackages/infoPackage.types';
+import {InfoPackagesStore} from '../../../store/modules/InfoPackages';
 
 
 @Component({
@@ -88,15 +93,52 @@ import {IStatuses} from '../../../entity/statuses/statuses.types';
 })
 export default class TodoList extends Vue {
     showTextArea = false;
-    todoTitle = false;
-    checkbox = false;
     componentId= 2;
     activeTab = 0;
+  filters: Filters;
+
+  constructor() {
+    super();
+    this.filters = new Filters(this.filtersCandidates);
+  }
+
+  get filtersCandidates(): IFilters[] {
+    return FiltersStore.candidates;
+  }
 
     @Watch('activeTab')
     onChange(): void {
         this.fetchData(this.tabs[this.activeTab].categoryId)
     }
+
+  @Watch('statusesLoaded', {immediate: true})
+  onFilterStatusChange(): void {
+    for (let i = 0; i < this.statuses.length; i++) {
+      this.$set(this.filters.filterBody[0].filterValue, i + 1, {text: this.statuses[i].name, value: this.statuses[i].id});
+    }
+  }
+
+  @Watch('infoPackagesLoaded', {immediate: true})
+  onFilterInfoPackagesChange(): void {
+    for (let i = 0; i < this.infoPackages.length; i++) {
+      this.$set(this.filters.filterBody[2].filterValue, i + 1, {
+        text: this.infoPackages[i].name,
+        value: this.infoPackages[i].id
+      });
+    }
+  }
+
+  get infoPackages(): IInfoPackage[] {
+    return InfoPackagesStore.infoPackages;
+  }
+
+  get infoPackagesLoaded(): boolean {
+    return InfoPackagesStore.infoPackagesLoaded;
+  }
+
+  get statusesLoaded(): boolean {
+    return StatusesStore.statusesLoaded;
+  }
 
     get taskById(): ITodoTask | null {
         return TodoStore.taskById;
@@ -104,10 +146,6 @@ export default class TodoList extends Vue {
 
     get tabs(): ITaskStatus[] {
         return TodoStore.tasksStatuses;
-    }
-
-    get tasksLoaded(): boolean {
-        return TodoStore.todoTasksLoaded;
     }
 
   get statuses(): IStatuses[] {
@@ -148,6 +186,7 @@ export default class TodoList extends Vue {
         TodoStore.fetchAllTask({id});
         CandidatesStore.fetchAll();
       StatusesStore.fetchAll();
+      InfoPackagesStore.fetchAll();
     }
 
     fetchDatatStatusesTasks(): void {

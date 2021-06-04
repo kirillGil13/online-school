@@ -13,7 +13,7 @@
              v-on:mouseover="onHover" v-on:mouseout="onOutHover" @click="!el.isLocked && setChosenCandidate(el.id)"
              v-for="(el, idx) in candidate" :key="idx">
           <div class="status_select">
-            <Select v-if="!el.isLocked" class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
+            <Select v-if="!el.isLocked && !task" class-name="select_content" :selects="statuses" v-on="$listeners" :id="el.id" style="{flex:1}">
               <template v-slot:act>
                 <div class="d-flex flex-row align-center">
                   <v-img :src="el.status.photoLink" max-width="22" max-height="22"></v-img>
@@ -29,6 +29,9 @@
                 </v-list-item>
               </template>
             </Select>
+            <div v-else-if="task && !el.isLocked">
+              <v-img :src="el.status.photoLink" max-width="22" max-height="22"></v-img>
+            </div>
             <div v-else>
               <svg-icon class="svg-24" name="unavailable"></svg-icon>
             </div>
@@ -51,7 +54,7 @@
             <div class="product">{{ el.infoPackName }}</div>
           </div>
           <div class="pr-0 selects-dots" v-if="!el.isLocked">
-            <Select class-name="select_content action" :selects="el.status.id === 4 ? newSelect : selects"
+            <Select v-if="!task" class-name="select_content action" :selects="el.status.id === 4 ? newSelect : selects"
                     v-on="$listeners" :id="el.id">
               <template v-slot:act>
                 <div class="d-flex justify-end pr-0">
@@ -89,6 +92,7 @@ export default class TableCandidates extends Vue {
   @Prop() readonly candidates!: {[params: string]: ICandidate[]};
   @Prop() readonly statuses!: IStatuses[];
   @Prop() readonly selects!: ISelect[];
+  @Prop({default: false, type: Boolean}) readonly task!: boolean;
   archiveSelects: ISelect[] = [];
   isHover = false;
   isShowList = false;
