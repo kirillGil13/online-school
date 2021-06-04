@@ -78,9 +78,19 @@
         </Modal>
       <Modal :activator="activatorCandidates" :without-tool-bar="false" tool-bar-title="Выберите исполнителя" :full-screen="true" @activatorChange="activatorCandidatesChange">
         <template v-slot:full-screen-content v-if="activatorCandidates">
+          <v-row class="mb-6">
+            <v-col class="mt-6">
+              <FilterComponent :isCandidates="true" :isOnRight="false" :button="false" :search="true" :count-element="$adaptive.isMobile && [1,2]"
+                               :filters="filters" @filter="onFilter">
+                <template v-slot:search>
+                  <Search @search="search"/>
+                </template>
+              </FilterComponent>
+            </v-col>
+          </v-row>
           <v-row justify="center" style="background: #fbfcfe" no-gutters>
             <div class="mb-6 px-3" style="max-width: 1600px; width: 100%">
-              <TableCandidates :candidates="candidates" :statuses="statuses"
+              <TableCandidates task :candidates="candidates" :statuses="statuses"
                                @choseCandidate="chooseCandidate"/>
             </div>
           </v-row>
@@ -100,8 +110,10 @@ import {IPictureUpload} from '../../../../entity/common/pictureUpload.types';
 import {ICandidate} from '../../../../entity/candidates';
 import {IStatuses} from '../../../../entity/statuses/statuses.types';
 import TableCandidates from '../../tables/TableCandidates.vue';
+import FilterComponent from '../../filter/FilterComponent.vue';
+import Filters from '../../../../entity/filters/filters';
 @Component({
-    components: {TableCandidates, Modal, TodoTaskImages, Datetime },
+    components: {FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime },
 })
 export default class TaskInput extends Vue {
     @Prop() readonly taskToUpdate!: ITodoTask;
@@ -110,6 +122,7 @@ export default class TaskInput extends Vue {
     @Prop() readonly tabId?: number;
     @Prop() readonly candidates!: {[p: string]: ICandidate[]};
     @Prop() readonly statuses!: IStatuses[];
+    @Prop() readonly filters!: Filters;
     activatorImages = false;
     activatorCandidates = false;
     activatorCallTime = false;
