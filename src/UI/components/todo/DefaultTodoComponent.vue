@@ -51,7 +51,7 @@
 import {ITaskNewItem, ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TaskInput from './taskInput/TaskInput.vue';
-import { TODOCOMPONENTS } from '@/constants';
+import {PARENTCLASSES, TODOCOMPONENTS} from '@/constants';
 import {ICandidate} from '../../../entity/candidates';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 
@@ -77,8 +77,8 @@ export default class DefaultTodoComponent extends Vue {
         candidateId: null
     };
 
-    get include(): (HTMLElement | null)[] {
-      return [document.querySelector('.v-dialog__content')];
+    include(className: string): boolean {
+      return PARENTCLASSES.includes(className);
     }
 
     get taskToUpdate(): ITodoTask | null {
@@ -94,7 +94,8 @@ export default class DefaultTodoComponent extends Vue {
     }
 
     setTask(e: any): void {
-      if (e.target.classList[0] === 'content-main' && e.target.classList[0] !== 'add-task' && e.target.classList[0] !== 'v-dialog__content' && (this.showTextArea || this.taskShowId)) {
+      console.log(e.target.className);
+      if (this.include(e.target.classList[0]) && e.target.classList[0] !== 'add-task' && e.target.classList[0] !== 'v-dialog__content' && (this.showTextArea || this.taskShowId)) {
         if (this.showTextArea === true) {
           const date = Date.now();
 

@@ -30,3 +30,5 @@ export const TODOCOMPONENTS = [
     {id: 5, iconName: 'Box', component: 'TodoSomeDay', value: 'Когда-нибудь'},
     {id: 6, iconName: 'Archive', component: 'TodoJournal', value: 'Журнал'},
 ]
+
+export const PARENTCLASSES = ['content-main','todo__menu','container','v-main__wrap', 'items-title']
