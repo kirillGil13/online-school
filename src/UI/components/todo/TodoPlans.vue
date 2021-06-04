@@ -10,12 +10,77 @@
         </div>
         <TaskInput
             v-if="showTextArea"
+            :statuses="statuses"
+            :candidates="candidates"
             :tabId="id"
             :new-task="newTask"
             :task-to-update="taskToUpdate"
             :isNewTask="true"
         />
 
+        <div class="plans-items pl-4">
+            <div class="d-flex flex-column plans-item" style="width: 100%">
+                <div class="d-flex align-baseline" style="width: 100%">
+                    <div class="plans-items__task-date">22</div>
+                    <div class="plans-items__task-date-text">Завтра</div>
+                </div>
+                <div class="d-flex flex-column mt-7">
+                    <!-- <div class="d-flex align-center handle">
+                            <v-checkbox hide-details class="mt-0 pa-0" />
+                            <span class="plans-items__task-text">Task</span>
+                        </div> -->
+                    <draggable v-model="tasks" class="list-group" handle=".handle" tag="div">
+                        <template v-for="(item, key) in tasks">
+                            <div class="d-flex flex-column mt-1 px-2 task-item-container " :key="key">
+                                <div class="d-flex align-center justify-space-between handle" v-if="taskShowId !== item.id">
+                                    <div class="d-flex align-end">
+                                        <v-checkbox
+                                            hide-details
+                                            class="mt-0"
+                                            @click="
+                                                statusItem.categoryId !== 6
+                                                    ? setToJurnal(item.id)
+                                                    : setToIncome(item.id)
+                                            "
+                                            v-model="item.checked"
+                                        />
+                                        <span class="item-text " @click.self="setTaskShowid(item.id)">{{
+                                            item.name ? `${item.name}` : 'Новая задача'
+                                        }}</span>
+                                    </div>
+                                    <div class="d-flex align-center">
+                                        <v-btn
+                                            @click="deleteTask(item.id)"
+                                            style="background: none"
+                                            class="mt-0"
+                                            text
+                                            icon
+                                            color="red lighten-2"
+                                        >
+                                            <svg-icon
+                                                name="Todo_delete"
+                                                class="ml-1 mr-1 menu__icon"
+                                                height="20"
+                                                width="24"
+                                            />
+                                        </v-btn>
+                                    </div>
+                                </div>
+                                <TaskInput
+                                    v-else
+                                    :statuses="statuses"
+                                    :candidates="candidates"
+                                    :new-task="item"
+                                    :tabId="id"
+                                    :task-to-update="taskToUpdate"
+                                    :isNewTask="false"
+                                />
+                            </div>
+                        </template>
+                    </draggable>
+                </div>
+            </div>
+        </div>
         <template v-for="(item, id) in date">
             <div class="plans-items pl-4" :key="id">
                 <div class="d-flex flex-column plans-item" style="width: 100%">
@@ -83,6 +148,8 @@ import { ITaskStatus, ITodoTask } from '@/entity/todo/todo.types';
 import draggable from 'vuedraggable';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
+import {ICandidate} from '../../../entity/candidates';
+import {IStatuses} from '../../../entity/statuses/statuses.types';
 import { MONTHS } from '@/constants';
 
 @Component({
@@ -93,6 +160,8 @@ export default class TodoPlans extends Vue {
     @Prop() readonly id!: number;
     @Prop() readonly taskById!: ITodoTask;
     @Prop() readonly activeTab!: number;
+    @Prop() readonly candidates!: {[p: string]: ICandidate[]};
+  @Prop() readonly statuses!: IStatuses[];
     array = [...this.tasks];
     taskShowId: number | null = null;
 
@@ -104,12 +173,13 @@ export default class TodoPlans extends Vue {
         description: '',
         doDate: null,
         imagesLink: [],
+      candidateId: null
     };
 
-    get date(): [{ data?: string; tasks?: ITodoTask[] }] {
-        const candidateTodate: [{ data: string; tasks: ITodoTask[] }] = [];
-        
-       
+    get date(): { data?: string; tasks?: ITodoTask[] }[] {
+        const candidateTodate: { data: string; tasks: ITodoTask[] }[] = [];
+
+
 
         for (let i = 1; i < 16; i++) {
             const date = Date.now();
@@ -127,11 +197,11 @@ export default class TodoPlans extends Vue {
         this.tasks.forEach((task) => {
             const tasksDate = new Date(task.doDate * 1000);
             const taskDateStr = `${tasksDate.getDate()}.${tasksDate.getMonth() + 1}.${tasksDate.getFullYear()}`;
-            
+
             if(candidateTodate.some(el => el.data == taskDateStr) ) {
                 const item = candidateTodate.find(el => el.data === taskDateStr);
                 const idx = candidateTodate.findIndex(el => el.data === item!.data);
-               
+
 
                 candidateTodate[idx].tasks.push(task)
             }else {
@@ -142,9 +212,9 @@ export default class TodoPlans extends Vue {
                     candidateTodate[idx].tasks.push(task);
                     return
                 }
-              
-                
-                
+
+
+
                 candidateTodate.push({
                     data: taskDateStr,
                     tasks: [task],
@@ -236,6 +306,8 @@ export default class TodoPlans extends Vue {
                         : null,
                 description: this.newTask.description || null,
                 category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
+              images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
+              candidate_id: this.newTask.candidateId ? this.newTask.candidateId : null
             };
 
             this.$emit('createTask', el);
@@ -247,7 +319,8 @@ export default class TodoPlans extends Vue {
                 checked: false,
                 description: '',
                 doDate: null,
-                imagesLink: [],
+              imagesLink: [],
+              candidateId: null
             };
         } else {
             this.setTaskShowid(null);
@@ -263,6 +336,8 @@ export default class TodoPlans extends Vue {
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
                     category_id: this.taskToUpdate.checked ? 6 : this.statusItem.categoryId,
+                  images_link: this.taskToUpdate.imagesLink,
+                  candidate_id: this.taskToUpdate.candidate.candidate_id
                 };
                 this.$emit('upDateTask', el);
                 this.taskShowId = null;

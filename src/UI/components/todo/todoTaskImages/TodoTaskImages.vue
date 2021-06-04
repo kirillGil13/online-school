@@ -6,7 +6,7 @@
           <svg-icon name="Picture_outline" width="36" height="36"></svg-icon>
           <div class="link font-14 mt-2">Добавить фото</div>
           <input type="file" v-show="false" accept="image/*" id="upload-picture"
-                 @change="$emit('handleImage', $event, id)">
+                 @change="$emit('handleImage', $event, id)" multiple>
         </div>
       </div>
       <div class="task-images-item pa-0"

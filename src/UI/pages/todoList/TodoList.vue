@@ -30,6 +30,7 @@
                 <DefaultTodoComponent
                     :statusItem="tabs[activeTab]"
                     :id="componentId"
+                    :candidates="candidates"
                     :tasks="tasks"
                     :taskById="taskById"
                     @createTask="createTask"
@@ -72,6 +73,8 @@ import DefaultTodoComponent from '@/UI/components/todo/DefaultTodoComponent.vue'
 import TodoPlans from '@/UI/components/todo/TodoPlans.vue';
 import {CandidatesStore} from '../../../store/modules/Candidates';
 import {ICandidate} from '../../../entity/candidates';
+import {StatusesStore} from '../../../store/modules/Statuses';
+import {IStatuses} from '../../../entity/statuses/statuses.types';
 
 
 @Component({
@@ -107,13 +110,16 @@ export default class TodoList extends Vue {
         return TodoStore.todoTasksLoaded;
     }
 
+  get statuses(): IStatuses[] {
+    return StatusesStore.statuses;
+  }
+
     get candidates(): {[p: string]: ICandidate[]} {
       return CandidatesStore.candidates;
     }
 
     get tasks(): ITodoTask[] {
         return TodoStore.todoTasks.map(el => {
-            
             if(this.activeTab !== 5) {
                 return {
                     ...el,
@@ -141,6 +147,7 @@ export default class TodoList extends Vue {
     fetchData(id: number = 1): void {
         TodoStore.fetchAllTask({id});
         CandidatesStore.fetchAll();
+      StatusesStore.fetchAll();
     }
 
     fetchDatatStatusesTasks(): void {
@@ -161,7 +168,6 @@ export default class TodoList extends Vue {
     async created(): Promise<void> {
         await this.fetchData();
         await this.fetchDatatStatusesTasks();
-        
     }
 
     async setTaskById(id: number): Promise<void> {
@@ -173,12 +179,15 @@ export default class TodoList extends Vue {
     }
 
     async toJurnalOrIncome(el: any): Promise<void> {
-        TodoStore.ToJurnalOrIncome(el!);
+        await TodoStore.ToJurnalOrIncome(el!);
+        if (el.category_id === 1) {
+          await TodoStore.setTaskCount({id: 6, delete: true});
+          await TodoStore.setTaskCount({id: el.category_id, delete: false});
+        } else {
+          await TodoStore.setTaskCount({id: 1, delete: true});
+          await TodoStore.setTaskCount({id: el.category_id, delete: false});
+        }
     }
-
-    
-
-
 }
 </script>
 

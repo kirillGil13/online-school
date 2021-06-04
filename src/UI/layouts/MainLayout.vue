@@ -101,11 +101,6 @@ export default class MainLayout extends Vue {
   destroy = true;
   candidateForm = new CandidateForm();
 
-  constructor() {
-    super();
-
-  }
-
   @Watch('$route.name')
   scrollTop(val: string, oldVal: string): void {
     if(val !== oldVal && this.$adaptive.isMobile){
@@ -120,7 +115,7 @@ export default class MainLayout extends Vue {
     });
   }
 
-  
+
 
   showAlertTempAction(show: boolean): void {
     this.showAlertTemp = show;
@@ -149,18 +144,18 @@ export default class MainLayout extends Vue {
       const {data} = JSON.parse(e.data)
       data.is_read = !data.is_my && ( this.$route.name === (this.$routeRules.ChatMain || this.$routeRules.Course)) && this.$route.params.id === data.account_id.toString() ? true : false;
       MessagesStore.addMessage(data);
-      
+
 
       if(data.is_my) {
         if(this.$route.name === this.$routeRules.Course) {
           const container =  await document.getElementById('chatContainer');
-          container!.scrollTop = await container!.scrollHeight;    
+          container!.scrollTop = await container!.scrollHeight;
         }
 
         if(this.$route.name === this.$routeRules.ChatMain) {
            const container =  await document.getElementById('chatDialogContainer');
            container!.scrollTop = await container!.scrollHeight;
-           
+
         }
       }
 
@@ -168,31 +163,31 @@ export default class MainLayout extends Vue {
         if(this.$route.params.id !== data.account_id.toString() && this.$route.name !== this.$routeRules.ChatMain){
           DialogsStore.setUnReadMessage({count: 1, operation: 'plus'});
         }
-        
+
 
          if(this.$route.name === this.$routeRules.Course) {
           const container =  await document.getElementById('chatContainer');
-          container!.scrollTop = await container!.scrollHeight;    
+          container!.scrollTop = await container!.scrollHeight;
         }
 
         if(this.$route.name === this.$routeRules.ChatMain) {
           if(this.$route.params.id === data.account_id.toString()) {
-            
+
           }
            const container =  await document.getElementById('chatDialogContainer');
            container!.scrollTop = await container!.scrollHeight;
-           
+
         }
       }
-      
+
     }
-     
+
   }
 
   get socket(): WebSocket | null {
     return WebSocketStore.socket;
   }
-  
+
   addCandidate(): void {
     this.activatorCandidate = true;
   }
@@ -237,11 +232,11 @@ export default class MainLayout extends Vue {
     this.show = show;
   }
 
-  
+
   close(): void {
     this.activatorCandidate = false;
   }
-  
+
   activatorCandidateChange(act: boolean): void {
     this.activatorCandidate = act;
   }
@@ -279,7 +274,7 @@ export default class MainLayout extends Vue {
     return true
   }
 
-  
+
 
 }
 </script>
