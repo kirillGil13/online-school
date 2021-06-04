@@ -1,12 +1,13 @@
 <template>
-    <div class="d-flex todo__items" style="width: 100%" v-click-outside="setTask">
+    <div class="d-flex todo__items" style="width: 100%">
         <div class="items-title">
             <svg-icon name="Plans" style="width: 28px; height: 28px" />
             <span class="title-text">Планы</span>
         </div>
+      <div class="add-task">
         <div class="items-btn-add px-4" @click="showTextArea = true">
-            <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
-            <span class="btn-add-text">Добавить задачу</span>
+          <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
+          <span class="btn-add-text">Добавить задачу</span>
         </div>
         <TaskInput
             v-if="showTextArea"
@@ -17,10 +18,9 @@
             :task-to-update="taskToUpdate"
             :isNewTask="true"
         />
-
-       
-        <template v-for="(item, id) in date">
-            <div class="plans-items pl-4" :key="id" v-click-outside="setTask">
+      </div>
+        <div v-click-outside="setTask">
+            <div class="plans-items pl-4" v-for="(item, id) in date" :key="id">
                 <div class="d-flex flex-column plans-item" style="width: 100%">
                     <div class="d-flex align-baseline" style="width: 100%">
                         <div class="plans-items__task-date">{{ getitemTaskText(item.date) }}</div>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
             </div>
-        </template>
+        </div>
     </div>
 </template>
 
@@ -88,7 +88,7 @@ import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
 import {ICandidate} from '../../../entity/candidates';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
-import { MONTHS } from '@/constants';
+import {MONTHS, PARENTCLASSES} from '@/constants';
 
 @Component({
     components: { TaskInput, draggable },
@@ -116,9 +116,6 @@ export default class TodoPlans extends Vue {
 
     get date(): ITaskToDate[] {
         const candidateTodate: ITaskToDate[] = [];
-
-
-
         for (let i = 1; i < 16; i++) {
             const date = Date.now();
             const tom = new Date(date);
@@ -150,9 +147,6 @@ export default class TodoPlans extends Vue {
                     candidateTodate[idx].tasks.push(task);
                     return
                 }
-
-
-
                 candidateTodate.push({
                     date: taskDateStr,
                     tasks: [task],
@@ -193,6 +187,10 @@ export default class TodoPlans extends Vue {
         return taskToUpdate;
     }
 
+  include(className: string): boolean {
+    return PARENTCLASSES.includes(className);
+  }
+
     getitemTaskText(date: string): string {
         const title = date.split('.');
         const secondsToday = Date.now();
@@ -230,7 +228,7 @@ export default class TodoPlans extends Vue {
     }
 
     setTask(e: any): void {
-      if (e.target.classList[0] === 'content-main' && e.target.classList[0] !== 'add-task' && e.target.classList[0] !== 'v-dialog__content' && (this.showTextArea || this.taskShowId)) {
+      if (this.include(e.target.classList[0]) && e.target.classList[0] !== 'add-task' && e.target.classList[0] !== 'v-dialog__content' && (this.showTextArea || this.taskShowId)) {
         if (this.showTextArea === true) {
           const date = Date.now();
 
@@ -272,10 +270,10 @@ export default class TodoPlans extends Vue {
                     description: this.taskToUpdate.description,
                     category_id: this.taskToUpdate.checked ? 6 : this.statusItem.categoryId,
                   images_link: this.taskToUpdate.imagesLink,
-                  candidate_id: this.taskToUpdate.candidate.candidate_id!
+                  candidate_id: this.taskToUpdate.candidate ? this.taskToUpdate.candidate.candidate_id : null
                 };
                 console.log(el);
-                
+
                 this.$emit('upDateTask', el, this.taskToUpdate.checked, this.taskShowId!);
                 this.taskShowId = null;
             } else {

@@ -39,11 +39,11 @@
                             <svg-icon
                                 name="Picture_outline"
                                 class="menu__icon"
-                                :class="[itemToUpdateOrCreate().task.imagesLink.length !== 0 && 'active-icon mr-2']"
+                                :class="[itemToUpdateOrCreate().task.imagesLink.length !== 0 && itemToUpdateOrCreate().task.imagesLink && 'active-icon mr-2']"
                                 height="24"
                                 width="24"
                             />
-                            <div style="margin-top: 3px;" v-if="itemToUpdateOrCreate().task.imagesLink.length !== 0">{{'Вложения: ' + itemToUpdateOrCreate().task.imagesLink.length}}</div>
+                            <div style="margin-top: 3px;" v-if="itemToUpdateOrCreate().task.imagesLink.length !== 0 && itemToUpdateOrCreate().task.imagesLink">{{'Вложения: ' + itemToUpdateOrCreate().task.imagesLink.length}}</div>
                         </div>
                         <div class="ml-4 d-flex flex-row" style="cursor: pointer;" @click="activatorCandidates = true">
                             <svg-icon
