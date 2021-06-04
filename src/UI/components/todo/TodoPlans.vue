@@ -144,7 +144,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import {ITaskStatus, ITaskToDate, ITodoTask} from '@/entity/todo/todo.types';
+import {ITaskNewItem, ITaskStatus, ITaskToDate, ITodoTask} from '@/entity/todo/todo.types';
 import draggable from 'vuedraggable';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
@@ -167,13 +167,13 @@ export default class TodoPlans extends Vue {
 
     showTextArea = false;
     checkbox = false;
-    newTask = {
+    newTask: ITaskNewItem = {
         name: '',
         checked: false,
         description: '',
         doDate: null,
         imagesLink: [],
-      candidateId: null
+        candidateId: null
     };
 
     get date(): ITaskToDate[] {
@@ -296,7 +296,6 @@ export default class TodoPlans extends Vue {
             const date = Date.now();
 
             const el = {
-                checked: this.newTask.checked ? true : false,
                 name: this.newTask.name || null,
                 do_date:
                     this.statusItem.categoryId === 2
@@ -309,11 +308,8 @@ export default class TodoPlans extends Vue {
               images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
               candidate_id: this.newTask.candidateId ? this.newTask.candidateId : null
             };
-
-            this.$emit('createTask', el);
-
+            this.$emit('createTask', el,  this.newTask.checked);
             this.showTextArea = false;
-
             this.newTask = {
                 name: '',
                 checked: false,
@@ -331,15 +327,13 @@ export default class TodoPlans extends Vue {
         if (this.taskShowId === id || id === null) {
             if (this.taskToUpdate !== null) {
                 const el = {
-                    checked: this.taskToUpdate.checked,
-                    id: this.taskShowId!,
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
                     category_id: this.taskToUpdate.checked ? 6 : this.statusItem.categoryId,
                   images_link: this.taskToUpdate.imagesLink,
                   candidate_id: this.taskToUpdate.candidate.candidate_id
                 };
-                this.$emit('upDateTask', el);
+                this.$emit('upDateTask', el, this.taskToUpdate.checked, this.taskShowId!);
                 this.taskShowId = null;
             } else {
                 this.taskShowId = null;
@@ -357,13 +351,11 @@ export default class TodoPlans extends Vue {
     setToJurnal(id: number): void {
         const item = this.tasks.find((el) => el.id === id);
         const el = {
-            id: id,
             name: item!.name,
             description: item!.description,
             category_id: 6,
         };
-
-        this.$emit('toJurnalOrIncome', el);
+        this.$emit('toJurnalOrIncome', el, id);
         this.taskShowId = null;
     }
 }

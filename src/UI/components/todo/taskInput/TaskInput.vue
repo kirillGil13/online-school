@@ -91,7 +91,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { ITodoTask } from '../../../../entity/todo/todo.types';
+import {ITaskNewItem, ITodoTask} from '../../../../entity/todo/todo.types';
 import TodoTaskImages from '../todoTaskImages/TodoTaskImages.vue';
 import Modal from '../../common/Modal.vue';
 import { Datetime } from 'vue-datetime';
@@ -105,7 +105,7 @@ import TableCandidates from '../../tables/TableCandidates.vue';
 })
 export default class TaskInput extends Vue {
     @Prop() readonly taskToUpdate!: ITodoTask;
-    @Prop() readonly newTask!: any;
+    @Prop() readonly newTask!: ITaskNewItem;
     @Prop() readonly isNewTask?: boolean;
     @Prop() readonly tabId?: number;
     @Prop() readonly candidates!: {[p: string]: ICandidate[]};
@@ -122,16 +122,16 @@ export default class TaskInput extends Vue {
         this.activatorImages = act;
     }
 
-    itemToUpdateOrCreate(): {task: any; candidate: string | null} {
+    itemToUpdateOrCreate(): {task: ITaskNewItem | ITodoTask; candidate: string | null} {
         const task = this.isNewTask ? this.newTask : this.taskToUpdate;
         let candidate = null;
         if (this.isNewTask) {
-          if (task.candidateId) {
-            candidate = Object.values(this.candidates).flat().find(el => el.id === task.candidateId)!.name;
+          if ((task as ITaskNewItem).candidateId) {
+            candidate = Object.values(this.candidates).flat().find(el => el.id === (task as ITaskNewItem).candidateId)!.name;
           }
         } else {
-          if (task.candidate) {
-            candidate = task.candidate.candidate_name;
+          if ((task as ITodoTask).candidate) {
+            candidate = (task as ITodoTask).candidate.candidate_name;
           }
         }
         return {task, candidate};
@@ -151,11 +151,11 @@ export default class TaskInput extends Vue {
 
   chooseCandidate(id: number): void {
     if (this.isNewTask) {
-      this.itemToUpdateOrCreate().task.candidateId = Object.values(this.candidates).flat().find(el => el.id === id)!.id;
+      (this.itemToUpdateOrCreate().task as ITaskNewItem).candidateId = Object.values(this.candidates).flat().find(el => el.id === id)!.id;
     } else {
-      this.itemToUpdateOrCreate().task.candidate = {
+      (this.itemToUpdateOrCreate().task as ITodoTask).candidate = {
         candidate_id: Object.values(this.candidates).flat().find(el => el.id === id)!.id,
-        candidate_name: Object.values(this.candidates).flat().find(el => el.id === id)!.name
+        candidate_name: Object.values(this.candidates).flat().find(el => el.id === id)!.name!.toString()
       }
     }
     this.activatorCandidates = false;
