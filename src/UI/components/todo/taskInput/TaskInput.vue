@@ -70,7 +70,7 @@
         <Modal :activator="activatorCallTime" :full-screen="$adaptive.isMobile" @activatorChange="activatorChangeCallTime">
             <template v-slot:content>
                 <v-date-picker
-                  v-model="itemToUpdateOrCreate().task.doDate"
+                  v-model="itemToUpdateOrCreate(true).task.doDate"
                   class="mt-4"
                   full-width
                 ></v-date-picker>
@@ -135,7 +135,7 @@ export default class TaskInput extends Vue {
         this.activatorImages = act;
     }
 
-    itemToUpdateOrCreate(): {task: ITaskNewItem | ITodoTask; candidate: string | null} {
+    itemToUpdateOrCreate(isDate: boolean = false): {task: ITaskNewItem | ITodoTask; candidate: string | null} {
         const task = this.isNewTask ? this.newTask : this.taskToUpdate;
         let candidate = null;
         if (this.isNewTask) {
@@ -146,6 +146,10 @@ export default class TaskInput extends Vue {
           if ((task as ITodoTask).candidate) {
             candidate = (task as ITodoTask).candidate.candidate_name;
           }
+        }
+
+        if(isDate && !this.isNewTask) {
+          task.doDate = new Date(task.doDate! * 1000).toISOString().substr(0, 10)
         }
         return {task, candidate};
     }

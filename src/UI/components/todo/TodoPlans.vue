@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex todo__items" style="width: 100%">
+    <div class="d-flex todo__items" style="width: 100%" >
         <div class="items-title">
             <svg-icon name="Plans" style="width: 28px; height: 28px" />
             <span class="title-text">Планы</span>
@@ -18,75 +18,13 @@
             :isNewTask="true"
         />
 
-        <div class="plans-items pl-4" v-click-outside="setTask">
-            <div class="d-flex flex-column plans-item" style="width: 100%">
-                <div class="d-flex align-baseline" style="width: 100%">
-                    <div class="plans-items__task-date">22</div>
-                    <div class="plans-items__task-date-text">Завтра</div>
-                </div>
-                <div class="d-flex flex-column mt-7">
-                    <!-- <div class="d-flex align-center handle">
-                            <v-checkbox hide-details class="mt-0 pa-0" />
-                            <span class="plans-items__task-text">Task</span>
-                        </div> -->
-                    <draggable v-model="tasks" class="list-group" handle=".handle" tag="div">
-                        <template v-for="(item, key) in tasks">
-                            <div class="d-flex flex-column mt-1 px-2 task-item-container " :key="key">
-                                <div class="d-flex align-center justify-space-between handle" v-if="taskShowId !== item.id">
-                                    <div class="d-flex align-end">
-                                        <v-checkbox
-                                            hide-details
-                                            class="mt-0"
-                                            @click="
-                                                statusItem.categoryId !== 6
-                                                    ? setToJurnal(item.id)
-                                                    : setToIncome(item.id)
-                                            "
-                                            v-model="item.checked"
-                                        />
-                                        <span class="item-text " @click.self="setTaskShowid(item.id)">{{
-                                            item.name ? `${item.name}` : 'Новая задача'
-                                        }}</span>
-                                    </div>
-                                    <div class="d-flex align-center">
-                                        <v-btn
-                                            @click="deleteTask(item.id)"
-                                            style="background: none"
-                                            class="mt-0"
-                                            text
-                                            icon
-                                            color="red lighten-2"
-                                        >
-                                            <svg-icon
-                                                name="Todo_delete"
-                                                class="ml-1 mr-1 menu__icon"
-                                                height="20"
-                                                width="24"
-                                            />
-                                        </v-btn>
-                                    </div>
-                                </div>
-                                <TaskInput
-                                    v-else
-                                    :statuses="statuses"
-                                    :candidates="candidates"
-                                    :new-task="item"
-                                    :tabId="id"
-                                    :task-to-update="taskToUpdate"
-                                    :isNewTask="false"
-                                />
-                            </div>
-                        </template>
-                    </draggable>
-                </div>
-            </div>
-        </div>
+       
         <template v-for="(item, id) in date">
-            <div class="plans-items pl-4" :key="id">
+            <div class="plans-items pl-4" :key="id" v-click-outside="setTask">
                 <div class="d-flex flex-column plans-item" style="width: 100%">
                     <div class="d-flex align-baseline" style="width: 100%">
-                        <div class="plans-items__task-date">{{ getitemTaskText(item.data) }}</div>
-                        <div class="plans-items__task-date-text">{{ getDayOfWeek(item.data) }}</div>
+                        <div class="plans-items__task-date">{{ getitemTaskText(item.date) }}</div>
+                        <div class="plans-items__task-date-text">{{ getDayOfWeek(item.date) }}</div>
                     </div>
                     <div class="d-flex flex-column mt-7">
                         <draggable v-model="tasks" class="list-group" handle=".handle" tag="div">
@@ -328,13 +266,16 @@ export default class TodoPlans extends Vue {
     setTaskShowid(id: number | null): void {
         if (this.taskShowId === id || id === null) {
             if (this.taskToUpdate !== null) {
+                console.log()
                 const el = {
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
                     category_id: this.taskToUpdate.checked ? 6 : this.statusItem.categoryId,
                   images_link: this.taskToUpdate.imagesLink,
-                  candidate_id: this.taskToUpdate.candidate.candidate_id
+                  candidate_id: this.taskToUpdate.candidate.candidate_id!
                 };
+                console.log(el);
+                
                 this.$emit('upDateTask', el, this.taskToUpdate.checked, this.taskShowId!);
                 this.taskShowId = null;
             } else {

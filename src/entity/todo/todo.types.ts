@@ -3,7 +3,7 @@ export interface ITodoTask {
     createdAt: string;
     name: string;
     description: string;
-    doDate: number;
+    doDate: number | string;
     reminderTime: number;
     categoryId: number;
     isDone: boolean;
