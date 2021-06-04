@@ -25,6 +25,11 @@ export interface ITaskStatus {
     component: string;
 }
 
+export interface ITaskToDate {
+    date: string;
+    tasks: ITodoTask[];
+}
+
 export type TaskStatusResponceType = {
     category_id: number;
     category_name: string;

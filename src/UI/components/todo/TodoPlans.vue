@@ -144,7 +144,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { ITaskStatus, ITodoTask } from '@/entity/todo/todo.types';
+import {ITaskStatus, ITaskToDate, ITodoTask} from '@/entity/todo/todo.types';
 import draggable from 'vuedraggable';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
@@ -176,8 +176,8 @@ export default class TodoPlans extends Vue {
       candidateId: null
     };
 
-    get date(): { data?: string; tasks?: ITodoTask[] }[] {
-        const candidateTodate: { data: string; tasks: ITodoTask[] }[] = [];
+    get date(): ITaskToDate[] {
+        const candidateTodate: ITaskToDate[] = [];
 
 
 
@@ -189,7 +189,7 @@ export default class TodoPlans extends Vue {
             const key = `${tom.getDate()}.${tom.getMonth() + 1}.${tom.getFullYear()}`;
 
             candidateTodate.push({
-                data: key,
+                date: key,
                 tasks: [],
             });
         }
@@ -198,16 +198,16 @@ export default class TodoPlans extends Vue {
             const tasksDate = new Date(task.doDate * 1000);
             const taskDateStr = `${tasksDate.getDate()}.${tasksDate.getMonth() + 1}.${tasksDate.getFullYear()}`;
 
-            if(candidateTodate.some(el => el.data == taskDateStr) ) {
-                const item = candidateTodate.find(el => el.data === taskDateStr);
-                const idx = candidateTodate.findIndex(el => el.data === item!.data);
+            if(candidateTodate.some(el => el.date == taskDateStr) ) {
+                const item = candidateTodate.find(el => el.date === taskDateStr);
+                const idx = candidateTodate.findIndex(el => el.date === item!.date);
 
 
                 candidateTodate[idx].tasks.push(task)
             }else {
-                if(candidateTodate.some(el => el.data.split('.')[1] === taskDateStr.split('.')[1])) {
-                    const item = candidateTodate.find(el => el.data.split('.')[1] === taskDateStr.split('.')[1]);
-                    const idx = candidateTodate.findIndex(el => el.data.split('.')[1] === item!.data.split('.')[1]);
+                if(candidateTodate.some(el => el.date.split('.')[1] === taskDateStr.split('.')[1])) {
+                    const item = candidateTodate.find(el => el.date.split('.')[1] === taskDateStr.split('.')[1]);
+                    const idx = candidateTodate.findIndex(el => el.date.split('.')[1] === item!.date.split('.')[1]);
 
                     candidateTodate[idx].tasks.push(task);
                     return
@@ -216,7 +216,7 @@ export default class TodoPlans extends Vue {
 
 
                 candidateTodate.push({
-                    data: taskDateStr,
+                    date: taskDateStr,
                     tasks: [task],
                 })
             }
