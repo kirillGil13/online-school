@@ -78,22 +78,24 @@
         </Modal>
       <Modal :activator="activatorCandidates" :without-tool-bar="false" tool-bar-title="Выберите исполнителя" :full-screen="true" @activatorChange="activatorCandidatesChange">
         <template v-slot:full-screen-content v-if="activatorCandidates">
-          <v-row class="mb-6">
-            <v-col class="mt-6">
-              <FilterComponent :isCandidates="true" :isOnRight="false" :button="false" :search="true" :count-element="$adaptive.isMobile && [1,2]"
-                               :filters="filters" @filter="$emit('onFilter')">
-                <template v-slot:search>
-                  <Search @search="$emit('search')"/>
-                </template>
-              </FilterComponent>
-            </v-col>
-          </v-row>
-          <v-row justify="center" style="background: #fbfcfe" no-gutters>
-            <div class="mb-6 px-3" style="max-width: 1600px; width: 100%">
-              <TableCandidates task :candidates="candidates" :statuses="statuses"
-                               @choseCandidate="chooseCandidate"/>
-            </div>
-          </v-row>
+          <div>
+            <v-row justify="center" :no-gutters="$adaptive.isMobile">
+              <v-col class="mt-6" :class="$adaptive.isMobile && 'px-3'" style="max-width: 1600px; width: 100%">
+                <FilterComponent :isCandidates="false" :isOnRight="!$adaptive.isMobile" :is-archive="false" :button="false" :search="true" :count-element="$adaptive.isMobile ? [1,2] : [2]"
+                                 :filters="filters" v-on="$listeners">
+                  <template v-slot:search>
+                    <Search v-on="$listeners"/>
+                  </template>
+                </FilterComponent>
+              </v-col>
+            </v-row>
+            <v-row class="mt-3" justify="center" no-gutters>
+              <div class="mb-6 px-3" style="max-width: 1600px; width: 100%">
+                <TableCandidates task :candidates="candidates" :statuses="statuses"
+                                 @choseCandidate="chooseCandidate"/>
+              </div>
+            </v-row>
+          </div>
         </template>
       </Modal>
     </div>
@@ -112,8 +114,9 @@ import {IStatuses} from '../../../../entity/statuses/statuses.types';
 import TableCandidates from '../../tables/TableCandidates.vue';
 import FilterComponent from '../../filter/FilterComponent.vue';
 import Filters from '../../../../entity/filters/filters';
+import Search from '../../common/Search.vue';
 @Component({
-    components: {FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime },
+    components: {Search, FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime },
 })
 export default class TaskInput extends Vue {
     @Prop() readonly taskToUpdate!: ITodoTask;

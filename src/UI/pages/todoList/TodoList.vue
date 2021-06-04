@@ -25,18 +25,21 @@
               </v-list-item-group>
             </v-list>
         </div>
-        <div style="width: 100%">
+        <div style="width: 100%" v-if="!$adaptive.isMobile && tabs.length !== 0">
             <template v-if="activeTab !== 2" >
                 <DefaultTodoComponent
                     :statusItem="tabs[activeTab]"
                     :id="componentId"
                     :candidates="candidates"
+                    :filters="filters"
                     :tasks="tasks"
                     :taskById="taskById"
                     @createTask="createTask"
                     @deleteTask="deleteTask"
                     @setTaskById="setTaskById"
                     @upDateTask="upDateTask"
+                    @filter="onFilter"
+                    @search="search"
                     @toJurnalOrIncome="toJurnalOrIncome"
                     style="margin-right: 2px; margin-left: 2px;"
                 />
@@ -46,17 +49,58 @@
                     :statusItem="tabs[activeTab]"
                     :activeTab="activeTab"
                     :taskById="taskById"
+                    :candidates="candidates"
+                    :filters="filters"
                     @createTask="createTask"
                     @deleteTask="deleteTask"
                     @setTaskById="setTaskById"
                     @upDateTask="upDateTask"
+                    @filter="onFilter"
+                    @search="search"
                     @toJurnalOrIncome="toJurnalOrIncome"
                     style="margin-right: 2px; margin-left: 2px;"
                 />
             </template>
-
-
          </div>
+      <Modal :activator="activator" :without-tool-bar="false" tool-bar-title="" :full-screen="true" @activatorChange="activatorChange">
+        <template v-slot:full-screen-content>
+          <template v-if="activeTab !== 2" >
+            <DefaultTodoComponent
+                :statusItem="tabs[activeTab]"
+                :id="componentId"
+                :candidates="candidates"
+                :filters="filters"
+                :tasks="tasks"
+                :taskById="taskById"
+                @createTask="createTask"
+                @deleteTask="deleteTask"
+                @setTaskById="setTaskById"
+                @upDateTask="upDateTask"
+                @filter="onFilter"
+                @search="search"
+                @toJurnalOrIncome="toJurnalOrIncome"
+                style="margin-right: 2px; margin-left: 2px;"
+            />
+          </template>
+          <template v-else>
+            <TodoPlans
+                :statusItem="tabs[activeTab]"
+                :activeTab="activeTab"
+                :taskById="taskById"
+                :candidates="candidates"
+                :filters="filters"
+                @createTask="createTask"
+                @deleteTask="deleteTask"
+                @setTaskById="setTaskById"
+                @upDateTask="upDateTask"
+                @filter="onFilter"
+                @search="search"
+                @toJurnalOrIncome="toJurnalOrIncome"
+                style="margin-right: 2px; margin-left: 2px;"
+            />
+          </template>
+        </template>
+      </Modal>
     </div>
 </template>
 
@@ -76,14 +120,16 @@ import {ICandidate} from '../../../entity/candidates';
 import {StatusesStore} from '../../../store/modules/Statuses';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 import Filters from '../../../entity/filters/filters';
-import {IFilters} from '../../../entity/filters/filters.types';
+import {FiltersCandidatesNameEnum, IFilters} from '../../../entity/filters/filters.types';
 import {FiltersStore} from '../../../store/modules/Filters';
 import {IInfoPackage} from '../../../entity/infoPackages/infoPackage.types';
 import {InfoPackagesStore} from '../../../store/modules/InfoPackages';
+import Modal from '../../components/common/Modal.vue';
 
 
 @Component({
     components: {
+      Modal,
         FormGroup,
         Relation,
         Button,
@@ -96,6 +142,8 @@ export default class TodoList extends Vue {
     componentId= 2;
     activeTab = 0;
   filters: Filters;
+  activator = false;
+  searchBody = '';
 
   constructor() {
     super();
@@ -172,6 +220,10 @@ export default class TodoList extends Vue {
         })
     }
 
+    activatorChange(act: boolean): void {
+      this.activator = act;
+    }
+
     getIconName(id: number): string {
         return TODOCOMPONENTS.find(el => el.id === id)!.iconName
     }
@@ -179,10 +231,13 @@ export default class TodoList extends Vue {
 
     setComponent(component: TodoStatus): void {
         this.componentId = component.categoryId;
+        if (this.$adaptive.isMobile) {
+          this.activator = true;
+        }
     }
 
 
-    fetchData(id: number = 1): void {
+    fetchData(id = 1): void {
         TodoStore.fetchAllTask({id});
         CandidatesStore.fetchAll();
       StatusesStore.fetchAll();
@@ -198,6 +253,26 @@ export default class TodoList extends Vue {
         TodoStore.createTask({data: data, checked: checked});
         TodoStore.setTaskCount({id: data.category_id, delete: false});
     }
+
+  async search(searchBody: string): Promise<void> {
+    this.searchBody = searchBody;
+    await this.filtration();
+  }
+
+  async onFilter(): Promise<void> {
+    await this.filtration();
+  }
+
+  async filtration(): Promise<void> {
+    console.log(this.searchBody);
+    await CandidatesStore.fetchAll({data: {
+        statusId: this.filters.default[0],
+        infoPackId: this.filters.default[2],
+        search: this.searchBody,
+        isFiction: this.filters.filterBody.find(item => item.filterType === FiltersCandidatesNameEnum.Type)?.filterValue.find(item => item.value === this.filters.default[1])?.isFiction
+      }});
+
+  }
 
     async deleteTask(id: number): Promise<void> {
       await TodoStore.deletedTask({id});
@@ -267,7 +342,7 @@ export default class TodoList extends Vue {
             }
 
             .btn-add-text {
-                margin-left: 14px;
+                margin-left: 11px;
                 font-weight: 500;
                 font-size: 16px;
                 line-height: 24px;
@@ -278,7 +353,6 @@ export default class TodoList extends Vue {
         .items-check-boxes {
             display: flex;
             flex-direction: column;
-            padding-left: 7px;
         }
     }
 
