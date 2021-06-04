@@ -149,7 +149,7 @@ export default class TaskInput extends Vue {
         }
 
         if(isDate && !this.isNewTask) {
-          task.doDate = new Date(task.doDate! * 1000).toISOString().substr(0, 10)
+          task.doDate = new Date(+task.doDate! * 1000).toISOString().substr(0, 10)
         }
         return {task, candidate};
     }
