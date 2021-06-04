@@ -5,7 +5,7 @@
             <span class="title-text">Планы</span>
         </div>
       <div class="add-task">
-        <div class="items-btn-add px-4" @click="showTextArea = true">
+        <div class="items-btn-add" style="padding-left: 10px" @click="showTextArea = true">
           <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
           <span class="btn-add-text">Добавить задачу</span>
         </div>
@@ -13,10 +13,12 @@
             v-if="showTextArea"
             :statuses="statuses"
             :candidates="candidates"
+            :filters="filters"
             :tabId="id"
             :new-task="newTask"
             :task-to-update="taskToUpdate"
             :isNewTask="true"
+            v-on="$listeners"
         />
       </div>
         <div v-click-outside="setTask">
@@ -29,15 +31,15 @@
                     <div class="d-flex flex-column mt-7">
                         <draggable v-model="tasks" class="list-group" handle=".handle" tag="div">
                             <template v-for="(item, key) in item.tasks">
-                                <div class="d-flex flex-column mt-1 px-2 task-item-container" :key="key">
+                                <div class="d-flex flex-column mt-2" :key="key">
                                     <div
-                                        class="d-flex align-center justify-space-between handle"
+                                        class="d-flex align-center justify-space-between handle task-item-container px-2"
                                         v-if="taskShowId !== item.id"
                                     >
                                         <div class="d-flex align-end">
                                             <v-checkbox
                                                 hide-details
-                                                class="mt-0"
+                                                class="mt-0 pt-0"
                                                 @click="setToJurnal(item.id)"
                                                 v-model="item.checked"
                                             />
@@ -67,8 +69,12 @@
                                         v-else
                                         :new-task="item"
                                         :tabId="id"
+                                        :candidates="candidates"
+                                        :filters="filters"
+                                        :statuses="statuses"
                                         :task-to-update="taskToUpdate"
                                         :isNewTask="false"
+                                        v-on="$listeners"
                                     />
                                 </div>
                             </template>
@@ -89,6 +95,7 @@ import { TodoStore } from '@/store/modules/Todo';
 import {ICandidate} from '../../../entity/candidates';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 import {MONTHS, PARENTCLASSES} from '@/constants';
+import Filters from '../../../entity/filters/filters';
 
 @Component({
     components: { TaskInput, draggable },
@@ -100,6 +107,7 @@ export default class TodoPlans extends Vue {
     @Prop() readonly activeTab!: number;
     @Prop() readonly candidates!: {[p: string]: ICandidate[]};
   @Prop() readonly statuses!: IStatuses[];
+  @Prop() readonly filters!: Filters;
     array = [...this.tasks];
     taskShowId: number | null = null;
 
@@ -347,5 +355,9 @@ export default class TodoPlans extends Vue {
         align-items: center;
         color: #101010;
     }
+}
+.task-item-container:hover {
+  background: #f2f2f2;
+  border-radius: 12px;
 }
 </style>
