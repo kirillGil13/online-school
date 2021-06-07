@@ -4,22 +4,6 @@
             <svg-icon name="Plans" style="width: 28px; height: 28px" />
             <span class="title-text">Планы</span>
         </div>
-<<<<<<< HEAD
-        <div class="add-task">
-            <div class="items-btn-add px-4" @click="showTextArea = true">
-                <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
-                <span class="btn-add-text">Добавить задачу</span>
-            </div>
-            <TaskInput
-                v-if="showTextArea"
-                :statuses="statuses"
-                :candidates="candidates"
-                :tabId="id"
-                :new-task="newTask"
-                :isNewTask="true"
-            />
-        </div>
-=======
       <div class="add-task">
         <div class="items-btn-add" style="padding-left: 10px" @click="showTextArea = true">
           <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
@@ -37,7 +21,6 @@
             v-on="$listeners"
         />
       </div>
->>>>>>> dev
         <div v-click-outside="setTask">
             <div class="plans-items pl-4" v-for="(item, id) in dates" :key="id">
                 <div class="d-flex flex-column plans-item" style="width: 100%">
