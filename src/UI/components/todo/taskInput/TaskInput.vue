@@ -27,7 +27,6 @@
                     <div class="items-add-place-text__like-dislike d-flex pa-3">
                         <div v-if="itemToUpdateOrCreate().task.doDate " class="d-flex align-center" style="width: 100%; justify-self:flex-start">
                           <div>
-                            
                               <svg-icon
                                 name="Calendar_Icon"
                                 class="menu__icon"
@@ -36,7 +35,6 @@
                                 style="cursor: pointer"
                                 @click="activatorCallTime = true"
                               />
-                            
                           </div>
                           <div @click="activatorCallTime = true">
                             {{shortDaysOfWeek(itemToUpdateOrCreate(this.task).task.doDate)}}

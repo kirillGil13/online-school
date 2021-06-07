@@ -57,13 +57,8 @@ export default class TodoTaskImages extends Vue {
 <style lang="scss">
 .todo-task-images {
   .task-images-item {
-    border-radius: 8px;
     width: calc((100% / 3) - 6px);
     margin-right: 9px;
-
-    .v-image {
-      border-radius: 8px !important;
-    }
 
     &:nth-child(3n + 3) {
       margin-right: 0;
@@ -85,7 +80,6 @@ export default class TodoTaskImages extends Vue {
   .picture-upload {
     height: 200px;
     background: rgba(66, 109, 246, 0.12);
-    border-radius: 8px;
     color: #426DF6;
     cursor: pointer;
 

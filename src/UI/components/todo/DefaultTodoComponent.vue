@@ -5,21 +5,21 @@
             <span class="title-text">{{ statusItem.categoryName }}</span>
         </div>
         <div class="add-task" v-if="statusItem.categoryId !== 6">
-            <div class="items-btn-add px-4" @click="openCardToCreateTask">
+            <div class="items-btn-add" style="padding-left: 10px" @click="openCardToCreateTask">
                 <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
                 <span class="btn-add-text">Добавить задачу</span>
             </div>
-            <TaskInput v-if="showTextArea" :statuses="statuses" :candidates="candidates" :tabId="id" :new-task="newTask" :task-to-update="taskToUpdate" :isNewTask="true" />
+            <TaskInput v-if="showTextArea" :filters="filters" :statuses="statuses" :candidates="candidates" :tabId="id" :new-task="newTask" :task-to-update="taskToUpdate" :isNewTask="true" v-on="$listeners"  />
         </div>
 
         <div class="items-check-boxes" :style="{marginTop: statusItem.categoryId === 6 && '2rem'}" v-click-outside="setTask">
             <template v-for="item in tasks">
-                <div class="d-flex flex-column mt-1 px-2 task-item-container" :key="item.id">
-                    <div class="d-flex align-center justify-space-between" v-if="taskShowId !== item.id">
+                <div class="d-flex flex-column mt-2" :key="item.id">
+                    <div class="d-flex align-center justify-space-between task-item-container px-2" v-if="taskShowId !== item.id">
                         <div class="d-flex align-end">
                             <v-checkbox
                                 hide-details
-                                class="mt-0"
+                                class="mt-0 pt-0"
                                 @click="statusItem.categoryId !== 6 ? setToJurnal(item.id) : setToIncome(item.id)"
                                 v-model="item.checked"
                             />
@@ -40,7 +40,7 @@
                             </v-btn>
                         </div>
                     </div>
-                    <TaskInput v-else :statuses="statuses" :candidates="candidates" :new-task="item" :tabId="id" :task-to-update="taskToUpdate" :isNewTask="false" />
+                    <TaskInput v-else :filters="filters" :statuses="statuses" :candidates="candidates" :new-task="item" :tabId="id" :task-to-update="taskToUpdate" :isNewTask="false" v-on="$listeners" />
                 </div>
             </template>
         </div>
@@ -54,6 +54,7 @@ import TaskInput from './taskInput/TaskInput.vue';
 import {PARENTCLASSES, TODOCOMPONENTS} from '@/constants';
 import {ICandidate} from '../../../entity/candidates';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
+import Filters from '../../../entity/filters/filters';
 
 @Component({
     components: { TaskInput },
@@ -65,6 +66,7 @@ export default class DefaultTodoComponent extends Vue {
     @Prop() readonly taskById!: ITodoTask;
     @Prop() readonly candidates!: {[p: string]: ICandidate[]};
     @Prop() readonly statuses!: IStatuses[];
+  @Prop() readonly filters!: Filters;
     taskShowId: number | null = null;
     showTextArea = false;
     checkbox = false;
@@ -94,7 +96,6 @@ export default class DefaultTodoComponent extends Vue {
     }
 
     setTask(e: any): void {
-      console.log(e.target.className);
       if (this.include(e.target.classList[0]) && e.target.classList[0] !== 'add-task' && e.target.classList[0] !== 'v-dialog__content' && (this.showTextArea || this.taskShowId)) {
         if (this.showTextArea === true) {
           const date = Date.now();
