@@ -107,7 +107,7 @@ export default class TodoPlans extends Vue {
     @Prop() readonly candidates!: { [p: string]: ICandidate[] };
     @Prop() readonly statuses!: IStatuses[];
     @Prop() readonly filters!: Filters;
-    
+
     array = [...this.tasks];
     taskShowId: number | null = null;
     globalDefaultDays: string[] = [];
@@ -160,12 +160,12 @@ export default class TodoPlans extends Vue {
 
                 const idx = defaultDays.findIndex((el) => el.date === item!.date);
 
-                    
-                
+
+
                 defaultDays[idx].tasks.push(task);
                 return;
             }else {
-                
+
                 defaultDays.push({
                     date: taskDateStr,
                     tasks: [task],
@@ -221,7 +221,7 @@ export default class TodoPlans extends Vue {
 
     getitemTaskText(date: string): string {
         const title = date.split('.');
-        
+
 
         return this.globalDefaultDays.includes(date) ? `${title[0]}` : '';
     }
@@ -240,12 +240,12 @@ export default class TodoPlans extends Vue {
             return 'Завтра';
         }
 
-        
+
 
         //@ts-ignore
         const numberDayWeek = new Date(title[2], title[1] - 1 <= 0 ? 0 : title[1] - 1, title[0]).getDay();
 
-        return (todayByRightFormat.getMonth() + 1).toString() === title[1] && this.globalDefaultDays.includes(date) 
+        return (todayByRightFormat.getMonth() + 1).toString() === title[1] && this.globalDefaultDays.includes(date)
             ? DAYS_WEEK[numberDayWeek]
             : MONTHS.find((el) => el.id.toString() === title[1])!.defaultValue;
     }
@@ -299,7 +299,7 @@ export default class TodoPlans extends Vue {
                 const el = {
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
-                    do_date: this.taskToUpdate.doDate ? Date.parse(this.taskToUpdate.doDate!) / 1000 : null,
+                    do_date: this.taskToUpdate.doDate ? Date.parse(this.taskToUpdate.doDate!.toString()) / 1000 : null,
                     category_id: this.taskToUpdate.checked ? 6 : this.statusItem.categoryId,
                     images_link: this.taskToUpdate.imagesLink,
                     candidate_id: this.taskToUpdate.candidate ? this.taskToUpdate.candidate.candidate_id : null,
