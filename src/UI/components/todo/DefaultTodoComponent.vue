@@ -76,7 +76,8 @@ export default class DefaultTodoComponent extends Vue {
         description: '',
         doDate: null,
         imagesLink: [],
-        candidateId: null
+        candidateId: null,
+        reminder_time: null
     };
 
     include(className: string): boolean {
@@ -126,7 +127,8 @@ export default class DefaultTodoComponent extends Vue {
             description: '',
             doDate: null,
             imagesLink: [],
-            candidateId: null
+            candidateId: null,
+            reminder_time: null
           };
         } else {
           this.setTaskShowid(null);

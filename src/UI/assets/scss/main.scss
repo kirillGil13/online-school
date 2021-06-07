@@ -829,6 +829,7 @@ iframe {
     border-radius: 12px;
   }
 
+  
   .vjs-big-play-button {
     z-index: 2;
     border-radius: 50% !important;
@@ -1164,4 +1165,13 @@ iframe {
     background: rgba(230, 70, 70, 0.12);
     color: #E64646;
   }
+}
+.v-picker__body {
+  button {
+    color: #000000 !important;
+  }
+
+  button:enabled {
+    background: white !important
+  };
 }

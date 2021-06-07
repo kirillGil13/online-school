@@ -334,7 +334,7 @@ export default class TodoPlans extends Vue {
 </script>
 
 
-<style lang="scss" scooped>
+<style lang="scss" scoped>
 .plans-items {
     width: 100%;
     padding-left: 8px;

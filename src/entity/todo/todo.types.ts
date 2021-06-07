@@ -37,6 +37,7 @@ export interface ITaskNewItem {
     doDate: string | null;
     imagesLink: string[];
     candidateId: number | null;
+    reminder_time: number | null;
 }
 
 export type TaskStatusResponceType = {

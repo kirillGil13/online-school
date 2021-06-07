@@ -306,7 +306,7 @@ export default class TodoList extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 .todo {
     background: none !important;
     display: flex;
