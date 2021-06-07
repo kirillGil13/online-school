@@ -3,11 +3,11 @@
         <div class="items-add-place">
             <div class="items-add-place-text">
                 <div class="items-add-place-text__title d-flex">
-                    <v-checkbox class="ma-0 pa-0" hide-details v-model="itemToUpdateOrCreate().task.checked" />
+                    <v-checkbox class="ma-0 pa-0" hide-details v-model="taskItem.checked" />
                     <v-text-field
                         class="ma-0 pa-0"
                         hide-details
-                        v-model="itemToUpdateOrCreate().task.name"
+                        v-model="taskItem.name"
                         placeholder="Название задачи"
                     />
                 </div>
@@ -21,12 +21,12 @@
                             rows="5"
                             hide-details
                             type="text"
-                            v-model="itemToUpdateOrCreate().task.description"
+                            v-model="taskItem.description"
                         />
                     </div>
                     <div class="items-add-place-text__like-dislike d-flex pa-3">
                         <div
-                            v-if="itemToUpdateOrCreate().task.doDate !== null"
+                            v-if="taskItem.doDate"
                             class="d-flex align-center"
                             style="width: 100%; justify-self: flex-start"
                         >
@@ -41,7 +41,7 @@
                                     />
                                 </div>
                                 <div class="d-flex align-center">
-                                    {{ shortDaysOfWeek(itemToUpdateOrCreate().task.doDate) }}
+                                    {{ shortDaysOfWeek(taskItem.doDate) }}
                                 </div>
                             </div>
                             <div class="d-flex align-center ml-2">Напомнить</div>
@@ -65,8 +65,8 @@
                                 name="Picture_outline"
                                 class="menu__icon"
                                 :class="[
-                                    itemToUpdateOrCreate().task.imagesLink.length !== 0 &&
-                                        itemToUpdateOrCreate().task.imagesLink &&
+                                   taskItem.imagesLink.length !== 0 &&
+                                        taskItem.imagesLink &&
                                         'active-icon mr-2',
                                 ]"
                                 height="24"
@@ -75,11 +75,11 @@
                             <div
                                 style="margin-top: 3px; white-space: nowrap"
                                 v-if="
-                                    itemToUpdateOrCreate().task.imagesLink.length !== 0 &&
-                                    itemToUpdateOrCreate().task.imagesLink
+                                    taskItem.imagesLink.length !== 0 &&
+                                    taskItem.imagesLink
                                 "
                             >
-                                {{ 'Вложения: ' + itemToUpdateOrCreate().task.imagesLink.length }}
+                                {{ 'Вложения: ' + taskItem.imagesLink.length }}
                             </div>
                         </div>
                         <div
@@ -90,23 +90,23 @@
                             <svg-icon
                                 name="Users_outline"
                                 class="menu__icon"
-                                :class="[itemToUpdateOrCreate().candidate && 'active-icon mr-2']"
+                                :class="[taskItem.candidateId && 'active-icon mr-2']"
                                 height="24"
                                 width="28"
                             />
-                            <div style="margin-top: 2px" v-if="itemToUpdateOrCreate().candidate">
-                                {{ itemToUpdateOrCreate().candidate }}
+                            <div style="margin-top: 2px" v-if="taskItem.candidateId">
+                                {{ taskItem.candidateName }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <Modal>
-            <template>
-                <v-time-picker v-model="picker" ampm-in-title></v-time-picker>
-            </template>
-        </Modal>
+<!--        <Modal>-->
+<!--            <template>-->
+<!--                <v-time-picker v-model="picker" ampm-in-title></v-time-picker>-->
+<!--            </template>-->
+<!--        </Modal>-->
 
         <Modal
             :activator="activatorImages"
@@ -118,8 +118,7 @@
             <template v-slot:full-screen-content v-if="$adaptive.isMobile">
                 <TodoTaskImages
                     v-if="activatorImages"
-                    :images="itemToUpdateOrCreate().task.imagesLink"
-                    :id="itemToUpdateOrCreate().task.id"
+                    :images="taskItem.imagesLink"
                     @handleImage="handleImage"
                     @deleteImage="deleteImage"
                 />
@@ -127,8 +126,7 @@
             <template v-slot:content v-else>
                 <TodoTaskImages
                     v-if="activatorImages"
-                    :images="itemToUpdateOrCreate().task.imagesLink"
-                    :id="itemToUpdateOrCreate().task.id"
+                    :images="taskItem.imagesLink"
                     @handleImage="handleImage"
                     @deleteImage="deleteImage"
                 />
@@ -141,7 +139,7 @@
         >
             <template v-slot:content>
                 <v-date-picker
-                    v-model="itemToUpdateOrCreate(true).task.doDate"
+                    v-model="taskDate"
                     class="mt-4"
                     full-width
                     min="2016-06-15"
@@ -180,7 +178,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { ITaskNewItem, ITodoTask } from '../../../../entity/todo/todo.types';
+import { ITaskItem } from '../../../../entity/todo/todo.types';
 import TodoTaskImages from '../todoTaskImages/TodoTaskImages.vue';
 import Modal from '../../common/Modal.vue';
 import { Datetime } from 'vue-datetime';
@@ -197,8 +195,7 @@ import Search from '../../common/Search.vue';
     components: { FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime, Search },
 })
 export default class TaskInput extends Vue {
-    @Prop() readonly taskToUpdate!: ITodoTask;
-    @Prop() readonly newTask!: ITaskNewItem;
+    @Prop() readonly taskItem!: ITaskItem;
     @Prop() readonly isNewTask?: boolean;
     @Prop() readonly tabId?: number;
     @Prop() readonly candidates!: { [p: string]: ICandidate[] };
@@ -213,15 +210,21 @@ export default class TaskInput extends Vue {
         return PictureUploadStore.pictureUpload;
     }
 
+    get taskDate(): string {
+      return (new Date(this.taskItem.doDate!)).toISOString().substr(0, 10);
+    }
+
+    set taskDate(date: string) {
+      this.taskItem.doDate = Date.parse(date);
+    }
+
     getIconName(id: number): string {
         return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;
     }
 
-    shortDaysOfWeek(date: number): string {
+    shortDaysOfWeek(date: string): string {
         const dateFormat = new Date(date!).toISOString().substr(0, 10);
         const title: string[] = dateFormat.split('-');
-        console.log(title);
-
         const day = new Date(
             Number(title[0]),
             Number(title[1]) - 1 <= 0 ? 0 : Number(title[1]) - 1,
@@ -237,32 +240,6 @@ export default class TaskInput extends Vue {
         this.activatorImages = act;
     }
 
-    itemToUpdateOrCreate(isDate: boolean = false): { task: ITaskNewItem | ITodoTask; candidate: string | null } {
-        const task = this.isNewTask ? this.newTask : this.taskToUpdate;
-        let candidate = null;
-        if (this.isNewTask) {
-            if ((task as ITaskNewItem).candidateId) {
-                candidate = Object.values(this.candidates)
-                    .flat()
-                    .find((el) => el.id === (task as ITaskNewItem).candidateId)!.name;
-            }
-        } else {
-            if ((task as ITodoTask).candidate) {
-                candidate = (task as ITodoTask).candidate.candidate_name;
-            }
-        }
-
-        if(isDate && this.isNewTask === false) {
-          task.doDate = (new Date(task.doDate!)).toISOString().substr(0, 10);
-
-
-          return {task, candidate};
-
-        }
-
-        return { task, candidate };
-    }
-
     activatorChangeCallTime(act: boolean): void {
         this.activatorCallTime = act;
     }
@@ -272,37 +249,28 @@ export default class TaskInput extends Vue {
     }
 
     deleteImage(image: string): void {
-        this.itemToUpdateOrCreate().task.imagesLink.splice(
-            this.itemToUpdateOrCreate().task.imagesLink.findIndex((item: string) => item === image)!,
+        this.taskItem.imagesLink.splice(
+            this.taskItem.imagesLink.findIndex((item: string) => item === image)!,
             1
         );
     }
 
     chooseCandidate(id: number): void {
-        if (this.isNewTask) {
-            (this.itemToUpdateOrCreate().task as ITaskNewItem).candidateId = Object.values(this.candidates)
+      this.taskItem.candidateId = Object.values(this.candidates)
                 .flat()
                 .find((el) => el.id === id)!.id;
-        } else {
-            (this.itemToUpdateOrCreate().task as ITodoTask).candidate = {
-                candidate_id: Object.values(this.candidates)
-                    .flat()
-                    .find((el) => el.id === id)!.id,
-                candidate_name: Object.values(this.candidates)
-                    .flat()
-                    .find((el) => el.id === id)!
-                    .name!.toString(),
-            };
-        }
+      this.taskItem.candidateName = Object.values(this.candidates)
+          .flat()
+          .find((el) => el.id === id)!.name;
         this.activatorCandidates = false;
     }
 
-    async handleImage(e: any, id: number): Promise<void> {
+    async handleImage(e: any): Promise<void> {
         const selectedImages = e.target.files;
         for (let i = 0; i < selectedImages.length; i++) {
             await PictureUploadStore.set({ file: selectedImages[i] });
             if (this.picture) {
-                this.itemToUpdateOrCreate().task.imagesLink.push(this.picture.fullLink);
+                this.taskItem.imagesLink.push(this.picture.fullLink);
             }
         }
     }

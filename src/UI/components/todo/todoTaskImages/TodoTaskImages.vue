@@ -6,7 +6,7 @@
           <svg-icon name="Picture_outline" width="36" height="36"></svg-icon>
           <div class="link font-14 mt-2">Добавить фото</div>
           <input type="file" v-show="false" accept="image/*" id="upload-picture"
-                 @change="$emit('handleImage', $event, id)" multiple>
+                 @change="$emit('handleImage', $event)" multiple>
         </div>
       </div>
       <div class="task-images-item pa-0"
@@ -35,7 +35,6 @@ import VueEasyLightbox from 'vue-easy-lightbox'
 })
 export default class TodoTaskImages extends Vue {
   @Prop() readonly images!: string[];
-  @Prop() readonly id!: number;
   visible = false;
   index = 0;
 
