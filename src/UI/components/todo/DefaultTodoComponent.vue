@@ -84,7 +84,9 @@ export default class DefaultTodoComponent extends Vue {
     }
 
     get taskToUpdate(): ITodoTask | null {
-        return this.tasks.find((el) => el.id === this.taskShowId)!;
+        const item = this.tasks.find((el) => el.id === this.taskShowId);
+        item!.doDate = Number(item!.doDate) * 1000;
+        return item!;
     }
 
     getIconName(id: number): string {

@@ -46,6 +46,7 @@
             </template>
             <template v-else>
                 <TodoPlans
+                    :id="componentId"
                     :statusItem="tabs[activeTab]"
                     :activeTab="activeTab"
                     :taskById="taskById"
@@ -141,9 +142,9 @@ export default class TodoList extends Vue {
     showTextArea = false;
     componentId= 2;
     activeTab = 0;
-  filters: Filters;
-  activator = false;
-  searchBody = '';
+    filters: Filters;
+    activator = false;
+    searchBody = '';
 
   constructor() {
     super();

@@ -25,26 +25,28 @@
                         />
                     </div>
                     <div class="items-add-place-text__like-dislike d-flex pa-3">
-                        <div v-if="itemToUpdateOrCreate().task.doDate " class="d-flex align-center" style="width: 100%; justify-self:flex-start">
-                          <div>
-                              <svg-icon
-                                name="Calendar_Icon"
-                                class="menu__icon"
-                                height="27"
-                                width="27"
-                                style="cursor: pointer"
-                                @click="activatorCallTime = true"
-                              />
-                          </div>
-                          <div @click="activatorCallTime = true">
-                            {{shortDaysOfWeek(itemToUpdateOrCreate(this.task).task.doDate)}}
-                          </div>
-                          <div>
-                            Напомнить
-                          </div>
-                          
+                        <div
+                            v-if="itemToUpdateOrCreate().task.doDate !== null"
+                            class="d-flex align-center"
+                            style="width: 100%; justify-self: flex-start"
+                        >
+                            <div class="d-flex align-center shortDate" @click="activatorCallTime = true">
+                                <div class="d-flex align-center mr-3">
+                                    <svg-icon
+                                        :name="getIconName(tabId)"
+                                        class="menu__icon"
+                                        height="24"
+                                        width="24"
+                                        style="cursor: pointer"
+                                    />
+                                </div>
+                                <div class="d-flex align-center">
+                                    {{ shortDaysOfWeek(itemToUpdateOrCreate().task.doDate) }}
+                                </div>
+                            </div>
+                            <div class="d-flex align-center ml-2">Напомнить</div>
                         </div>
-                        <div v-if="![1,4,5].includes(tabId)">
+                        <div v-if="![1, 4, 5].includes(tabId)" class="d-flex">
                             <svg-icon
                                 name="Calendar_Icon"
                                 class="menu__icon"
@@ -54,17 +56,37 @@
                                 @click="activatorCallTime = true"
                             />
                         </div>
-                        <div class="ml-4 d-flex flex-row" style="cursor: pointer;" @click="activatorImages = true">
+                        <div
+                            class="ml-4 d-flex align-center flex-row"
+                            style="cursor: pointer"
+                            @click="activatorImages = true"
+                        >
                             <svg-icon
                                 name="Picture_outline"
                                 class="menu__icon"
-                                :class="[itemToUpdateOrCreate().task.imagesLink.length !== 0 && itemToUpdateOrCreate().task.imagesLink && 'active-icon mr-2']"
+                                :class="[
+                                    itemToUpdateOrCreate().task.imagesLink.length !== 0 &&
+                                        itemToUpdateOrCreate().task.imagesLink &&
+                                        'active-icon mr-2',
+                                ]"
                                 height="24"
                                 width="24"
                             />
-                            <div style="margin-top: 3px;" v-if="itemToUpdateOrCreate().task.imagesLink.length !== 0 && itemToUpdateOrCreate().task.imagesLink">{{'Вложения: ' + itemToUpdateOrCreate().task.imagesLink.length}}</div>
+                            <div
+                                style="margin-top: 3px; white-space: nowrap"
+                                v-if="
+                                    itemToUpdateOrCreate().task.imagesLink.length !== 0 &&
+                                    itemToUpdateOrCreate().task.imagesLink
+                                "
+                            >
+                                {{ 'Вложения: ' + itemToUpdateOrCreate().task.imagesLink.length }}
+                            </div>
                         </div>
-                        <div class="ml-4 d-flex flex-row" style="cursor: pointer;" @click="activatorCandidates = true">
+                        <div
+                            class="ml-4 d-flex flex-row align-center"
+                            style="cursor: pointer; white-space: nowrap"
+                            @click="activatorCandidates = true"
+                        >
                             <svg-icon
                                 name="Users_outline"
                                 class="menu__icon"
@@ -72,163 +94,229 @@
                                 height="24"
                                 width="28"
                             />
-                            <div style="margin-top: 2px;" v-if="itemToUpdateOrCreate().candidate">{{itemToUpdateOrCreate().candidate}}</div>
+                            <div style="margin-top: 2px" v-if="itemToUpdateOrCreate().candidate">
+                                {{ itemToUpdateOrCreate().candidate }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
         </div>
-        
-        <Modal :activator="activatorImages" :without-tool-bar="!$adaptive.isMobile" tool-bar-title="" :full-screen="$adaptive.isMobile" @activatorChange="activatorImagesChange">
-            <template v-slot:full-screen-content v-if="$adaptive.isMobile">
-                <TodoTaskImages v-if="activatorImages" :images="itemToUpdateOrCreate().task.imagesLink" :id="itemToUpdateOrCreate().task.id" @handleImage="handleImage" @deleteImage="deleteImage"/>
+        <Modal>
+            <template>
+                <v-time-picker v-model="picker" ampm-in-title></v-time-picker>
             </template>
-          <template v-slot:content v-else>
-            <TodoTaskImages v-if="activatorImages" :images="itemToUpdateOrCreate().task.imagesLink" :id="itemToUpdateOrCreate().task.id" @handleImage="handleImage" @deleteImage="deleteImage"/>
-          </template>
         </Modal>
-        <Modal :activator="activatorCallTime" :full-screen="$adaptive.isMobile" @activatorChange="activatorChangeCallTime">
+
+        <Modal
+            :activator="activatorImages"
+            :without-tool-bar="!$adaptive.isMobile"
+            tool-bar-title=""
+            :full-screen="$adaptive.isMobile"
+            @activatorChange="activatorImagesChange"
+        >
+            <template v-slot:full-screen-content v-if="$adaptive.isMobile">
+                <TodoTaskImages
+                    v-if="activatorImages"
+                    :images="itemToUpdateOrCreate().task.imagesLink"
+                    :id="itemToUpdateOrCreate().task.id"
+                    @handleImage="handleImage"
+                    @deleteImage="deleteImage"
+                />
+            </template>
+            <template v-slot:content v-else>
+                <TodoTaskImages
+                    v-if="activatorImages"
+                    :images="itemToUpdateOrCreate().task.imagesLink"
+                    :id="itemToUpdateOrCreate().task.id"
+                    @handleImage="handleImage"
+                    @deleteImage="deleteImage"
+                />
+            </template>
+        </Modal>
+        <Modal
+            :activator="activatorCallTime"
+            :full-screen="$adaptive.isMobile"
+            @activatorChange="activatorChangeCallTime"
+        >
             <template v-slot:content>
                 <v-date-picker
-                  v-model="itemToUpdateOrCreate(true).task.doDate"
-                  class="mt-4"
-                  full-width
-                  min="2016-06-15"
-                  max="2023-03-20"
-                  year-icon="mdi-calendar-blank"
-                  prev-icon="mdi-skip-previous"
-                  next-icon="mdi-skip-next"
+                    v-model="itemToUpdateOrCreate(true).task.doDate"
+                    class="mt-4"
+                    full-width
+                    min="2016-06-15"
+                    max="2023-03-20"
+                    year-icon="mdi-calendar-blank"
+                    prev-icon="mdi-skip-previous"
+                    next-icon="mdi-skip-next"
                 ></v-date-picker>
             </template>
         </Modal>
-      <Modal :activator="activatorCandidates" :without-tool-bar="false" tool-bar-title="Выберите исполнителя" :full-screen="true" @activatorChange="activatorCandidatesChange">
-        <template v-slot:full-screen-content v-if="activatorCandidates">
-          <v-row class="mb-6">
-            <v-col class="mt-6">
-              <FilterComponent :isCandidates="true" :isOnRight="false" :button="false" :search="true" :count-element="$adaptive.isMobile && [1,2]"
-                               :filters="filters" @filter="$emit('onFilter')">
-                <template v-slot:search>
-                  <Search @search="$emit('search')"/>
-                </template>
-              </FilterComponent>
-            </v-col>
-          </v-row>
-          <v-row justify="center" style="background: #fbfcfe" no-gutters>
-            <div class="mb-6 px-3" style="max-width: 1600px; width: 100%">
-              <TableCandidates task :candidates="candidates" :statuses="statuses"
-                               @choseCandidate="chooseCandidate"/>
-            </div>
-          </v-row>
-        </template>
-      </Modal>
+        <Modal
+            :activator="activatorCandidates"
+            :without-tool-bar="false"
+            tool-bar-title="Выберите исполнителя"
+            :full-screen="true"
+            @activatorChange="activatorCandidatesChange"
+        >
+            <template v-slot:full-screen-content v-if="activatorCandidates">
+                <v-row class="mb-6">
+                    <v-col class="mt-6">
+                        <FilterComponent
+                            :isCandidates="true"
+                            :isOnRight="false"
+                            :button="false"
+                            :search="true"
+                            :count-element="$adaptive.isMobile && [1, 2]"
+                            :filters="filters"
+                            @filter="$emit('onFilter')"
+                        >
+                            <template v-slot:search>
+                                <Search @search="$emit('search')" />
+                            </template>
+                        </FilterComponent>
+                    </v-col>
+                </v-row>
+                <v-row justify="center" style="background: #fbfcfe" no-gutters>
+                    <div class="mb-6 px-3" style="max-width: 1600px; width: 100%">
+                        <TableCandidates
+                            task
+                            :candidates="candidates"
+                            :statuses="statuses"
+                            @choseCandidate="chooseCandidate"
+                        />
+                    </div>
+                </v-row>
+            </template>
+        </Modal>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import {ITaskNewItem, ITodoTask} from '../../../../entity/todo/todo.types';
+import { ITaskNewItem, ITodoTask } from '../../../../entity/todo/todo.types';
 import TodoTaskImages from '../todoTaskImages/TodoTaskImages.vue';
 import Modal from '../../common/Modal.vue';
 import { Datetime } from 'vue-datetime';
-import {PictureUploadStore} from '../../../../store/modules/PictureUpload';
-import {IPictureUpload} from '../../../../entity/common/pictureUpload.types';
-import {ICandidate} from '../../../../entity/candidates';
-import {IStatuses} from '../../../../entity/statuses/statuses.types';
+import { PictureUploadStore } from '../../../../store/modules/PictureUpload';
+import { IPictureUpload } from '../../../../entity/common/pictureUpload.types';
+import { ICandidate } from '../../../../entity/candidates';
+import { IStatuses } from '../../../../entity/statuses/statuses.types';
 import TableCandidates from '../../tables/TableCandidates.vue';
 import FilterComponent from '../../filter/FilterComponent.vue';
 import Filters from '../../../../entity/filters/filters';
-import { MONTHS, SHORT_DAYS_WEEK } from '@/constants';
+import { MONTHS, SHORT_DAYS_WEEK, TODOCOMPONENTS } from '@/constants';
 @Component({
-    components: {FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime },
+    components: { FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime },
 })
 export default class TaskInput extends Vue {
     @Prop() readonly taskToUpdate!: ITodoTask;
     @Prop() readonly newTask!: ITaskNewItem;
     @Prop() readonly isNewTask?: boolean;
     @Prop() readonly tabId?: number;
-    @Prop() readonly candidates!: {[p: string]: ICandidate[]};
+    @Prop() readonly candidates!: { [p: string]: ICandidate[] };
     @Prop() readonly statuses!: IStatuses[];
     @Prop() readonly filters!: Filters;
     activatorImages = false;
     activatorCandidates = false;
     activatorCallTime = false;
+    activatorTime = false;
 
     get picture(): IPictureUpload | null {
         return PictureUploadStore.pictureUpload;
     }
 
-    shortDaysOfWeek(date: number): string {
-      const dateFormat = (new Date(date!)).toISOString().substr(0, 10);
-      const title: string[] = dateFormat.split('-');
-      
-  
-      const day = new Date(Number(title[0]), Number(title[1]) - 1 <= 0 ? 0 : Number(title[1]) - 1, Number(title[2])).getDay();
-      const dateStr = `${SHORT_DAYS_WEEK[day]}, ${title[2]} ${(MONTHS.find(el => title[1].includes(el.id.toString()))!.value)}`;
-      return   dateStr
+    getIconName(id: number): string {
+        return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;
     }
-    
+
+    shortDaysOfWeek(date: number): string {
+        const dateFormat = new Date(date!).toISOString().substr(0, 10);
+        const title: string[] = dateFormat.split('-');
+        console.log(title);
+
+        const day = new Date(
+            Number(title[0]),
+            Number(title[1]) - 1 <= 0 ? 0 : Number(title[1]) - 1,
+            Number(title[2])
+        ).getDay();
+        const dateStr = `${SHORT_DAYS_WEEK[day]}, ${title[2]} ${
+            MONTHS.find((el) => title[1].includes(el.id.toString()))!.value
+        }`;
+        return dateStr;
+    }
 
     activatorImagesChange(act: boolean): void {
         this.activatorImages = act;
     }
 
-    itemToUpdateOrCreate(isDate: boolean = false): {task: ITaskNewItem | ITodoTask; candidate: string | null} {
+    itemToUpdateOrCreate(isDate: boolean = false): { task: ITaskNewItem | ITodoTask; candidate: string | null } {
         const task = this.isNewTask ? this.newTask : this.taskToUpdate;
         let candidate = null;
         if (this.isNewTask) {
-          if ((task as ITaskNewItem).candidateId) {
-            candidate = Object.values(this.candidates).flat().find(el => el.id === (task as ITaskNewItem).candidateId)!.name;
-          }
+            if ((task as ITaskNewItem).candidateId) {
+                candidate = Object.values(this.candidates)
+                    .flat()
+                    .find((el) => el.id === (task as ITaskNewItem).candidateId)!.name;
+            }
         } else {
-          if ((task as ITodoTask).candidate) {
-            candidate = (task as ITodoTask).candidate.candidate_name;
-          }
+            if ((task as ITodoTask).candidate) {
+                candidate = (task as ITodoTask).candidate.candidate_name;
+            }
         }
 
-        if(isDate && this.isNewTask === false) {
-          task.doDate = (new Date(task.doDate!)).toISOString().substr(0, 10);
-          
-          
-          return {task, candidate};
-          
+        if (isDate && this.isNewTask === false) {
+            task.doDate = new Date(task.doDate!).toISOString().substr(0, 10);
+
+            return { task, candidate };
         }
-        return {task, candidate};
+
+        return { task, candidate };
     }
 
     activatorChangeCallTime(act: boolean): void {
         this.activatorCallTime = act;
     }
 
-  activatorCandidatesChange(act: boolean): void {
+    activatorCandidatesChange(act: boolean): void {
         this.activatorCandidates = act;
     }
 
-  deleteImage(image: string): void {
-    this.itemToUpdateOrCreate().task.imagesLink.splice(this.itemToUpdateOrCreate().task.imagesLink.findIndex((item: string) => item === image)!, 1);
-  }
-
-  chooseCandidate(id: number): void {
-    if (this.isNewTask) {
-      (this.itemToUpdateOrCreate().task as ITaskNewItem).candidateId = Object.values(this.candidates).flat().find(el => el.id === id)!.id;
-    } else {
-      (this.itemToUpdateOrCreate().task as ITodoTask).candidate = {
-        candidate_id: Object.values(this.candidates).flat().find(el => el.id === id)!.id,
-        candidate_name: Object.values(this.candidates).flat().find(el => el.id === id)!.name!.toString()
-      }
+    deleteImage(image: string): void {
+        this.itemToUpdateOrCreate().task.imagesLink.splice(
+            this.itemToUpdateOrCreate().task.imagesLink.findIndex((item: string) => item === image)!,
+            1
+        );
     }
-    this.activatorCandidates = false;
-  }
 
-  async handleImage(e: any, id: number): Promise<void> {
-    const selectedImages = e.target.files;
-    for (let i = 0; i < selectedImages.length; i++) {
-      await PictureUploadStore.set({ file: selectedImages[i] });
-      if (this.picture) {
-        this.itemToUpdateOrCreate().task.imagesLink.push(this.picture.fullLink)
-      }
+    chooseCandidate(id: number): void {
+        if (this.isNewTask) {
+            (this.itemToUpdateOrCreate().task as ITaskNewItem).candidateId = Object.values(this.candidates)
+                .flat()
+                .find((el) => el.id === id)!.id;
+        } else {
+            (this.itemToUpdateOrCreate().task as ITodoTask).candidate = {
+                candidate_id: Object.values(this.candidates)
+                    .flat()
+                    .find((el) => el.id === id)!.id,
+                candidate_name: Object.values(this.candidates)
+                    .flat()
+                    .find((el) => el.id === id)!
+                    .name!.toString(),
+            };
+        }
+        this.activatorCandidates = false;
     }
-  }
+
+    async handleImage(e: any, id: number): Promise<void> {
+        const selectedImages = e.target.files;
+        for (let i = 0; i < selectedImages.length; i++) {
+            await PictureUploadStore.set({ file: selectedImages[i] });
+            if (this.picture) {
+                this.itemToUpdateOrCreate().task.imagesLink.push(this.picture.fullLink);
+            }
+        }
+    }
 }
 </script>
 
@@ -277,10 +365,21 @@ export default class TaskInput extends Vue {
 
     .items-add-place-text__like-dislike {
         justify-content: flex-end;
+        align-items: end;
     }
     #message {
         &::placeholder {
             font-size: 14px !important;
+        }
+    }
+
+    .shortDate {
+        cursor: pointer;
+        padding: 1px;
+
+        &:hover {
+            border: 1px solid black;
+            border-radius: 5px;
         }
     }
 }
