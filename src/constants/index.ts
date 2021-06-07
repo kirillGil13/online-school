@@ -1,16 +1,16 @@
 export const MONTHS = [
-    {id: 1, value: 'Января'},
-    {id: 2, value: 'Февраля'},
-    {id: 3, value: 'Марта'},
-    {id: 4, value: 'Апреля'},
-    {id: 5, value: 'Мая'},
-    {id: 6, value: 'Июня'},
-    {id: 7, value: 'Июля'},
-    {id: 8, value: 'Августа'},
-    {id: 9, value: 'Сентября'},
-    {id: 10, value: 'Октября'},
-    {id: 11, value: 'Ноября'},
-    {id: 12, value: 'Декабря'},
+    {id: 1, value: 'Января',  defaultValue: 'Январь'},
+    {id: 2, value: 'Февраля', defaultValue: 'Февраль'},
+    {id: 3, value: 'Марта', defaultValue: 'Март'},
+    {id: 4, value: 'Апреля', defaultValue: 'Апрель'},
+    {id: 5, value: 'Мая', defaultValue: 'Май'},
+    {id: 6, value: 'Июня', defaultValue: 'Июнь'},
+    {id: 7, value: 'Июля', defaultValue: 'Июль'},
+    {id: 8, value: 'Августа', defaultValue: 'Август'},
+    {id: 9, value: 'Сентября', defaultValue: 'Сентября'},
+    {id: 10, value: 'Октября', defaultValue:  'Октябрь'},
+    {id: 11, value: 'Ноября', defaultValue: 'Ноябрь'},
+    {id: 12, value: 'Декабря', defaultValue: 'Декабрь'},
 ];
 
 export const TYPESTASK = [
@@ -32,3 +32,8 @@ export const TODOCOMPONENTS = [
 ]
 
 export const PARENTCLASSES = ['content-main','todo__menu','container','v-main__wrap', 'items-title']
+
+
+export const DAYS_WEEK = ['Вoскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+
+export const SHORT_DAYS_WEEK = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];

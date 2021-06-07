@@ -25,6 +25,25 @@
                         />
                     </div>
                     <div class="items-add-place-text__like-dislike d-flex pa-3">
+                        <div v-if="itemToUpdateOrCreate().task.doDate " class="d-flex align-center" style="width: 100%; justify-self:flex-start">
+                          <div>
+                              <svg-icon
+                                name="Calendar_Icon"
+                                class="menu__icon"
+                                height="27"
+                                width="27"
+                                style="cursor: pointer"
+                                @click="activatorCallTime = true"
+                              />
+                          </div>
+                          <div @click="activatorCallTime = true">
+                            {{shortDaysOfWeek(itemToUpdateOrCreate(this.task).task.doDate)}}
+                          </div>
+                          <div>
+                            Напомнить
+                          </div>
+                          
+                        </div>
                         <div v-if="![1,4,5].includes(tabId)">
                             <svg-icon
                                 name="Calendar_Icon"
@@ -58,7 +77,9 @@
                     </div>
                 </div>
             </div>
+            
         </div>
+        
         <Modal :activator="activatorImages" :without-tool-bar="!$adaptive.isMobile" tool-bar-title="" :full-screen="$adaptive.isMobile" @activatorChange="activatorImagesChange">
             <template v-slot:full-screen-content v-if="$adaptive.isMobile">
                 <TodoTaskImages v-if="activatorImages" :images="itemToUpdateOrCreate().task.imagesLink" :id="itemToUpdateOrCreate().task.id" @handleImage="handleImage" @deleteImage="deleteImage"/>
@@ -73,29 +94,32 @@
                   v-model="itemToUpdateOrCreate(true).task.doDate"
                   class="mt-4"
                   full-width
+                  min="2016-06-15"
+                  max="2023-03-20"
+                  year-icon="mdi-calendar-blank"
+                  prev-icon="mdi-skip-previous"
+                  next-icon="mdi-skip-next"
                 ></v-date-picker>
             </template>
         </Modal>
       <Modal :activator="activatorCandidates" :without-tool-bar="false" tool-bar-title="Выберите исполнителя" :full-screen="true" @activatorChange="activatorCandidatesChange">
         <template v-slot:full-screen-content v-if="activatorCandidates">
-          <div>
-            <v-row justify="center" :no-gutters="$adaptive.isMobile">
-              <v-col class="mt-6" :class="$adaptive.isMobile && 'px-3'" style="max-width: 1600px; width: 100%">
-                <FilterComponent :isCandidates="false" :isOnRight="!$adaptive.isMobile" :is-archive="false" :button="false" :search="true" :count-element="$adaptive.isMobile ? [1,2] : [2]"
-                                 :filters="filters" v-on="$listeners">
-                  <template v-slot:search>
-                    <Search v-on="$listeners"/>
-                  </template>
-                </FilterComponent>
-              </v-col>
-            </v-row>
-            <v-row class="mt-3" justify="center" no-gutters>
-              <div class="mb-6 px-3" style="max-width: 1600px; width: 100%">
-                <TableCandidates task :candidates="candidates" :statuses="statuses"
-                                 @choseCandidate="chooseCandidate"/>
-              </div>
-            </v-row>
-          </div>
+          <v-row class="mb-6">
+            <v-col class="mt-6">
+              <FilterComponent :isCandidates="true" :isOnRight="false" :button="false" :search="true" :count-element="$adaptive.isMobile && [1,2]"
+                               :filters="filters" @filter="$emit('onFilter')">
+                <template v-slot:search>
+                  <Search @search="$emit('search')"/>
+                </template>
+              </FilterComponent>
+            </v-col>
+          </v-row>
+          <v-row justify="center" style="background: #fbfcfe" no-gutters>
+            <div class="mb-6 px-3" style="max-width: 1600px; width: 100%">
+              <TableCandidates task :candidates="candidates" :statuses="statuses"
+                               @choseCandidate="chooseCandidate"/>
+            </div>
+          </v-row>
         </template>
       </Modal>
     </div>
@@ -114,9 +138,9 @@ import {IStatuses} from '../../../../entity/statuses/statuses.types';
 import TableCandidates from '../../tables/TableCandidates.vue';
 import FilterComponent from '../../filter/FilterComponent.vue';
 import Filters from '../../../../entity/filters/filters';
-import Search from '../../common/Search.vue';
+import { MONTHS, SHORT_DAYS_WEEK } from '@/constants';
 @Component({
-    components: {Search, FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime },
+    components: {FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime },
 })
 export default class TaskInput extends Vue {
     @Prop() readonly taskToUpdate!: ITodoTask;
@@ -133,6 +157,17 @@ export default class TaskInput extends Vue {
     get picture(): IPictureUpload | null {
         return PictureUploadStore.pictureUpload;
     }
+
+    shortDaysOfWeek(date: number): string {
+      const dateFormat = (new Date(date!)).toISOString().substr(0, 10);
+      const title: string[] = dateFormat.split('-');
+      
+  
+      const day = new Date(Number(title[0]), Number(title[1]) - 1 <= 0 ? 0 : Number(title[1]) - 1, Number(title[2])).getDay();
+      const dateStr = `${SHORT_DAYS_WEEK[day]}, ${title[2]} ${(MONTHS.find(el => title[1].includes(el.id.toString()))!.value)}`;
+      return   dateStr
+    }
+    
 
     activatorImagesChange(act: boolean): void {
         this.activatorImages = act;
@@ -151,8 +186,12 @@ export default class TaskInput extends Vue {
           }
         }
 
-        if(isDate && !this.isNewTask) {
-          task.doDate = new Date(+task.doDate! * 1000).toISOString().substr(0, 10)
+        if(isDate && this.isNewTask === false) {
+          task.doDate = (new Date(task.doDate!)).toISOString().substr(0, 10);
+          
+          
+          return {task, candidate};
+          
         }
         return {task, candidate};
     }
@@ -193,7 +232,7 @@ export default class TaskInput extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .items-add-place {
     margin-top: 12px;
     background: #ffffff;
