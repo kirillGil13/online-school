@@ -61,7 +61,7 @@ class TodoModule extends VuexModule {
         //@ts-ignore
         const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]
         if(!data.checked) {
-            todoTasks.push(new TodoTask(task))
+            todoTasks.unshift(new TodoTask(task))
         }
         return {todoTasks};
     }

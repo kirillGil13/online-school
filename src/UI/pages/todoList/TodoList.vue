@@ -36,7 +36,6 @@
                     :taskById="taskById"
                     @createTask="createTask"
                     @deleteTask="deleteTask"
-                    @setTaskById="setTaskById"
                     @upDateTask="upDateTask"
                     @filter="onFilter"
                     @search="search"
@@ -54,7 +53,6 @@
                     :filters="filters"
                     @createTask="createTask"
                     @deleteTask="deleteTask"
-                    @setTaskById="setTaskById"
                     @upDateTask="upDateTask"
                     @filter="onFilter"
                     @search="search"
@@ -75,7 +73,6 @@
                 :taskById="taskById"
                 @createTask="createTask"
                 @deleteTask="deleteTask"
-                @setTaskById="setTaskById"
                 @upDateTask="upDateTask"
                 @filter="onFilter"
                 @search="search"
@@ -92,7 +89,6 @@
                 :filters="filters"
                 @createTask="createTask"
                 @deleteTask="deleteTask"
-                @setTaskById="setTaskById"
                 @upDateTask="upDateTask"
                 @filter="onFilter"
                 @search="search"
@@ -283,10 +279,6 @@ export default class TodoList extends Vue {
     async created(): Promise<void> {
         await this.fetchData();
         await this.fetchDatatStatusesTasks();
-    }
-
-    async setTaskById(id: number): Promise<void> {
-        await TodoStore.getCandidateTask({ id: id });
     }
 
     async upDateTask(el: TaskRequestType, checked: boolean, route: number): Promise<void> {

@@ -15,7 +15,7 @@
             :candidates="candidates"
             :filters="filters"
             :tabId="3"
-            :new-task="newTask"
+            :task-item="taskItem"
             :isNewTask="true"
             v-on="$listeners"
         />
@@ -66,12 +66,11 @@
                                     </div>
                                     <TaskInput
                                         v-else
-                                        :new-task="item"
+                                        :task-item="taskItem"
                                         :tabId="3"
                                         :candidates="candidates"
                                         :filters="filters"
                                         :statuses="statuses"
-                                        :task-to-update="taskToUpdate"
                                         :isNewTask="false"
                                         v-on="$listeners"
                                     />
@@ -87,7 +86,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { ITaskNewItem, ITaskStatus, ITaskToDate, ITodoTask } from '@/entity/todo/todo.types';
+import { ITaskItem, ITaskStatus, ITaskToDate, ITodoTask } from '@/entity/todo/todo.types';
 import draggable from 'vuedraggable';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
@@ -113,14 +112,15 @@ export default class TodoPlans extends Vue {
     globalDefaultDays: string[] = [];
     showTextArea = false;
     checkbox = false;
-    newTask: ITaskNewItem = {
-        name: '',
-        checked: false,
-        description: '',
-        doDate: null,
-        imagesLink: [],
-        candidateId: null,
-    };
+  taskItem: ITaskItem = {
+    name: '',
+    checked: false,
+    description: '',
+    doDate: null,
+    imagesLink: [],
+    candidateId: null,
+    candidateName: ''
+  };
 
     get dates(): ITaskToDate[] {
         const defaultDays: ITaskToDate[] = [];
@@ -143,7 +143,7 @@ export default class TodoPlans extends Vue {
         }
 
         this.tasks.forEach((task) => {
-            const tasksDate = new Date(+task.doDate * 1000);
+            const tasksDate = new Date(+task.doDate! * 1000);
             const taskDateStr = `${tasksDate.getDate()}.${tasksDate.getMonth() + 1}.${tasksDate.getFullYear()}`;
 
             if (defaultDaysNumber!.includes(taskDateStr)) {
@@ -207,13 +207,17 @@ export default class TodoPlans extends Vue {
         TodoStore.setDraggableTasks(value);
     }
 
-    get taskToUpdate(): ITodoTask | null {
-        const item = this.tasks.find((el) => el.id === this.taskShowId);
-        item!.doDate = Number(item!.doDate) * 1000;
-        
-
-        return item!;
-    }
+  setTaskToNull(): void {
+    this.taskItem = {
+      name: '',
+      checked: false,
+      description: '',
+      doDate: null,
+      imagesLink: [],
+      candidateId: null,
+      candidateName: ''
+    };
+  }
 
     include(className: string): boolean {
         return PARENTCLASSES.includes(className);
@@ -265,28 +269,21 @@ export default class TodoPlans extends Vue {
                 const date = Date.now();
 
                 const el = {
-                    name: this.newTask.name || null,
+                    name: this.taskItem.name || null,
                     do_date:
                         this.statusItem.categoryId === 2
                             ? date / 1000
-                            : this.newTask.doDate !== null
-                            ? Date.parse(this.newTask.doDate!) / 1000
+                            : this.taskItem.doDate !== null
+                            ? this.taskItem.doDate / 1000
                             : null,
-                    description: this.newTask.description || null,
-                    category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
-                    images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
-                    candidate_id: this.newTask.candidateId ? this.newTask.candidateId : null,
+                    description: this.taskItem.description || null,
+                    category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
+                    images_link: this.taskItem.imagesLink.length === 0 ? null : this.taskItem.imagesLink,
+                    candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
                 };
-                this.$emit('createTask', el, this.newTask.checked);
+                this.$emit('createTask', el, this.taskItem.checked);
                 this.showTextArea = false;
-                this.newTask = {
-                    name: '',
-                    checked: false,
-                    description: '',
-                    doDate: null,
-                    imagesLink: [],
-                    candidateId: null,
-                };
+                this.setTaskToNull();
             } else {
                 this.setTaskShowid(null);
             }
@@ -295,17 +292,17 @@ export default class TodoPlans extends Vue {
 
     setTaskShowid(id: number | null): void {
         if (this.taskShowId === id || id === null) {
-            if (this.taskToUpdate !== null) {
+            if (this.taskItem !== null) {
                 const el = {
-                    name: this.taskToUpdate.name,
-                    description: this.taskToUpdate.description,
-                    do_date: this.taskToUpdate.doDate ? Date.parse(this.taskToUpdate.doDate!.toString()) / 1000 : null,
-                    category_id: this.taskToUpdate.checked ? 6 : this.statusItem.categoryId,
-                    images_link: this.taskToUpdate.imagesLink,
-                    candidate_id: this.taskToUpdate.candidate ? this.taskToUpdate.candidate.candidate_id : null,
+                    name: this.taskItem.name,
+                    description: this.taskItem.description,
+                    do_date: this.taskItem.doDate ? this.taskItem.doDate / 1000 : null,
+                    category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
+                    images_link: this.taskItem.imagesLink,
+                    candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
                 };
 
-                this.$emit('upDateTask', el, this.taskToUpdate.checked, this.taskShowId!);
+                this.$emit('upDateTask', el, this.taskItem.checked, this.taskShowId!);
                 this.taskShowId = null;
             } else {
                 this.taskShowId = null;
