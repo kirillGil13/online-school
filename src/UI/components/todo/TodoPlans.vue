@@ -14,7 +14,7 @@
             :statuses="statuses"
             :candidates="candidates"
             :filters="filters"
-            :tabId="id"
+            :tabId="3"
             :new-task="newTask"
             :isNewTask="true"
             v-on="$listeners"
@@ -67,7 +67,7 @@
                                     <TaskInput
                                         v-else
                                         :new-task="item"
-                                        :tabId="id"
+                                        :tabId="3"
                                         :candidates="candidates"
                                         :filters="filters"
                                         :statuses="statuses"
@@ -91,7 +91,7 @@ import { ITaskNewItem, ITaskStatus, ITaskToDate, ITodoTask } from '@/entity/todo
 import draggable from 'vuedraggable';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
-import { DAYS_WEEK, MONTHS, PARENTCLASSES } from '@/constants';
+import { DAYS_WEEK, MONTHS, PARENTCLASSES, TODOCOMPONENTS } from '@/constants';
 import {ICandidate} from '../../../entity/candidates';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 import Filters from '../../../entity/filters/filters';
@@ -210,6 +210,7 @@ export default class TodoPlans extends Vue {
     get taskToUpdate(): ITodoTask | null {
         const item = this.tasks.find((el) => el.id === this.taskShowId);
         item!.doDate = Number(item!.doDate) * 1000;
+        
 
         return item!;
     }
