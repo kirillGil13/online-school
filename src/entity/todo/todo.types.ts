@@ -3,7 +3,7 @@ export interface ITodoTask {
     createdAt: string;
     name: string;
     description: string;
-    doDate: number | string;
+    doDate: number | null;
     reminderTime: number;
     categoryId: number;
     isDone: boolean;
@@ -30,14 +30,15 @@ export interface ITaskToDate {
     tasks: ITodoTask[];
 }
 
-export interface ITaskNewItem {
+export interface ITaskItem {
     name: string;
     checked: boolean;
     description: string;
-    doDate: string | null;
+    doDate: number | null;
     imagesLink: string[];
     candidateId: number | null;
-    reminder_time: number | null;
+    // reminder_time: number | null;
+    candidateName: string | null;
 }
 
 export type TaskStatusResponceType = {
@@ -52,7 +53,7 @@ export type TaskResponseType = {
     created_at: number;
     name: string;
     description: string;
-    do_date: number;
+    do_date: number | null;
     reminder_time: number;
     category_id: number;
     is_done: boolean;

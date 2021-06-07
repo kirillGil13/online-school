@@ -9,7 +9,7 @@
                 <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
                 <span class="btn-add-text">Добавить задачу</span>
             </div>
-            <TaskInput v-if="showTextArea" :filters="filters" :statuses="statuses" :candidates="candidates" :tabId="id" :new-task="newTask" :task-to-update="taskToUpdate" :isNewTask="true" v-on="$listeners"  />
+            <TaskInput v-if="showTextArea" :filters="filters" :statuses="statuses" :candidates="candidates" :tabId="id" :task-item="taskItem" :isNewTask="true" v-on="$listeners"  />
         </div>
 
         <div class="items-check-boxes" :style="{marginTop: statusItem.categoryId === 6 && '2rem'}" v-click-outside="setTask">
@@ -40,7 +40,7 @@
                             </v-btn>
                         </div>
                     </div>
-                    <TaskInput v-else :filters="filters" :statuses="statuses" :candidates="candidates" :new-task="item" :tabId="id" :task-to-update="taskToUpdate" :isNewTask="false" v-on="$listeners" />
+                    <TaskInput v-else :filters="filters" :statuses="statuses" :candidates="candidates" :task-item="taskItem" :tabId="id" :isNewTask="false" v-on="$listeners" />
                 </div>
             </template>
         </div>
@@ -48,13 +48,14 @@
 </template>
 
 <script lang="ts">
-import {ITaskNewItem, ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {ITaskItem, ITaskStatus, ITodoTask} from '@/entity/todo/todo.types';
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import TaskInput from './taskInput/TaskInput.vue';
 import {PARENTCLASSES, TODOCOMPONENTS} from '@/constants';
 import {ICandidate} from '../../../entity/candidates';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 import Filters from '../../../entity/filters/filters';
+import {stripLow} from '@rxweb/reactive-forms';
 
 @Component({
     components: { TaskInput },
@@ -70,32 +71,56 @@ export default class DefaultTodoComponent extends Vue {
     taskShowId: number | null = null;
     showTextArea = false;
     checkbox = false;
-    newTask: ITaskNewItem = {
+    taskItem: ITaskItem = {
         name: '',
         checked: false,
         description: '',
         doDate: null,
         imagesLink: [],
         candidateId: null,
-        reminder_time: null
+        // reminder_time: null,
+        candidateName: ''
     };
+
+    @Watch('taskShowId')
+    onChangeId(val: number | null, oldVal: number | null): void {
+      if (val) {
+        const item = this.tasks.find((el) => el.id === this.taskShowId)!;
+        if (item.doDate) {
+          item!.doDate = Number(item!.doDate) * 1000;
+        }
+        this.taskItem = {
+          name: item.name,
+          checked: false,
+          description: item.description,
+          doDate: item.doDate ? item.doDate : null,
+          imagesLink: item.imagesLink,
+          candidateId: item.candidate ? item.candidate.candidate_id : null,
+          candidateName: item.candidate ? item.candidate.candidate_name : '',
+        }
+      } else {
+        this.setTaskToNull();
+      }
+    }
 
     include(className: string): boolean {
       return PARENTCLASSES.includes(className);
     }
 
-    get taskToUpdate(): ITodoTask | null {
-        const item = this.tasks.find((el) => el.id === this.taskShowId);
-        item!.doDate = Number(item!.doDate) * 1000;
-        return item!;
+    setTaskToNull(): void {
+      this.taskItem = {
+        name: '',
+        checked: false,
+        description: '',
+        doDate: null,
+        imagesLink: [],
+        candidateId: null,
+        candidateName: ''
+      };
     }
 
     getIconName(id: number): string {
         return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;
-    }
-
-    setTaskById(id: number): void {
-        this.$emit('setTaskById', id)
     }
 
     setTask(e: any): void {
@@ -104,32 +129,22 @@ export default class DefaultTodoComponent extends Vue {
           const date = Date.now();
 
           const el = {
-            name: this.newTask.name || null,
+            name: this.taskItem.name || null,
             do_date:
                 this.statusItem.categoryId === 2
                     ? date / 1000
-                    : this.newTask.doDate !== null
-                    ? Date.parse(this.newTask.doDate!) / 1000
+                    : this.taskItem.doDate !== null
+                    ? this.taskItem.doDate / 1000
                     : null,
-            description: this.newTask.description || null,
-            category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
-            images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
-            candidate_id: this.newTask.candidateId ? this.newTask.candidateId : null
+            description: this.taskItem.description || null,
+            category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
+            images_link: this.taskItem.imagesLink.length === 0 ? null : this.taskItem.imagesLink,
+            candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null
           };
 
-          this.$emit('createTask', el,  this.newTask.checked);
+          this.$emit('createTask', el,  this.taskItem.checked);
 
           this.showTextArea = false;
-
-          this.newTask = {
-            name: '',
-            checked: false,
-            description: '',
-            doDate: null,
-            imagesLink: [],
-            candidateId: null,
-            reminder_time: null
-          };
         } else {
           this.setTaskShowid(null);
         }
@@ -145,25 +160,23 @@ export default class DefaultTodoComponent extends Vue {
         this.showTextArea = false;
 
         if (this.taskShowId === id || id === null) {
-            if (this.taskToUpdate !== null) {
                  const el = {
-                    name: this.taskToUpdate.name,
-                    description: this.taskToUpdate.description,
-                    category_id:
-                        this.taskToUpdate.checked && this.statusItem.categoryId !== 6
+                    name: this.taskItem.name,
+                    description: this.taskItem.description,
+                   do_date: this.taskItem.doDate ? this.taskItem.doDate / 1000 : null,
+                   category_id:
+                        this.taskItem.checked && this.statusItem.categoryId !== 6
                             ? 6
-                            : this.taskToUpdate.checked && this.statusItem.categoryId === 6
+                            : this.taskItem.checked && this.statusItem.categoryId === 6
                             ? 1
                             : this.statusItem.categoryId,
-                   images_link: this.taskToUpdate.imagesLink,
-                   candidate_id: this.taskToUpdate.candidate ? this.taskToUpdate.candidate.candidate_id : null
+                   images_link: this.taskItem.imagesLink,
+                   candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null
                 };
-                this.$emit('upDateTask', el, this.taskToUpdate.checked, this.taskShowId!);
+                this.$emit('upDateTask', el, this.taskItem.checked, this.taskShowId!);
                 this.taskShowId = null;
-            }
         } else {
             this.taskShowId = id;
-            this.setTaskById(id);
         }
     }
 

@@ -5,7 +5,7 @@ export class TodoTask implements ITodoTask {
     createdAt: string;
     name: string;
     description: string;
-    doDate: number;
+    doDate: number | null;
     reminderTime: number;
     categoryId: number;
     isDone: boolean;
