@@ -4,23 +4,22 @@
             <svg-icon name="Plans" style="width: 28px; height: 28px" />
             <span class="title-text">Планы</span>
         </div>
-      <div class="add-task">
-        <div class="items-btn-add px-4" @click="showTextArea = true">
-          <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
-          <span class="btn-add-text">Добавить задачу</span>
+        <div class="add-task">
+            <div class="items-btn-add px-4" @click="showTextArea = true">
+                <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
+                <span class="btn-add-text">Добавить задачу</span>
+            </div>
+            <TaskInput
+                v-if="showTextArea"
+                :statuses="statuses"
+                :candidates="candidates"
+                :tabId="id"
+                :new-task="newTask"
+                :isNewTask="true"
+            />
         </div>
-        <TaskInput
-            v-if="showTextArea"
-            :statuses="statuses"
-            :candidates="candidates"
-            :tabId="id"
-            :new-task="newTask"
-            :task-to-update="taskToUpdate"
-            :isNewTask="true"
-        />
-      </div>
         <div v-click-outside="setTask">
-            <div class="plans-items pl-4" v-for="(item, id) in date" :key="id">
+            <div class="plans-items pl-4" v-for="(item, id) in dates" :key="id">
                 <div class="d-flex flex-column plans-item" style="width: 100%">
                     <div class="d-flex align-baseline" style="width: 100%">
                         <div class="plans-items__task-date">{{ getitemTaskText(item.date) }}</div>
@@ -82,13 +81,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import {ITaskNewItem, ITaskStatus, ITaskToDate, ITodoTask} from '@/entity/todo/todo.types';
+import { ITaskNewItem, ITaskStatus, ITaskToDate, ITodoTask } from '@/entity/todo/todo.types';
 import draggable from 'vuedraggable';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
-import {ICandidate} from '../../../entity/candidates';
-import {IStatuses} from '../../../entity/statuses/statuses.types';
-import {MONTHS, PARENTCLASSES} from '@/constants';
+import { ICandidate } from '../../../entity/candidates';
+import { IStatuses } from '../../../entity/statuses/statuses.types';
+import { DAYS_WEEK, MONTHS, PARENTCLASSES } from '@/constants';
 
 @Component({
     components: { TaskInput, draggable },
@@ -98,9 +97,9 @@ export default class TodoPlans extends Vue {
     @Prop() readonly id!: number;
     @Prop() readonly taskById!: ITodoTask;
     @Prop() readonly activeTab!: number;
-    @Prop() readonly candidates!: {[p: string]: ICandidate[]};
-  @Prop() readonly statuses!: IStatuses[];
-    array = [...this.tasks];
+    @Prop() readonly candidates!: { [p: string]: ICandidate[] };
+    @Prop() readonly statuses!: IStatuses[];
+    globalDefaultDays: string[] = [];
     taskShowId: number | null = null;
 
     showTextArea = false;
@@ -111,11 +110,12 @@ export default class TodoPlans extends Vue {
         description: '',
         doDate: null,
         imagesLink: [],
-        candidateId: null
+        candidateId: null,
     };
 
-    get date(): ITaskToDate[] {
-        const candidateTodate: ITaskToDate[] = [];
+    get dates(): ITaskToDate[] {
+        const defaultDays: ITaskToDate[] = [];
+        const defaultDaysNumber: string[] = [];
         for (let i = 1; i < 16; i++) {
             const date = Date.now();
             const tom = new Date(date);
@@ -123,39 +123,60 @@ export default class TodoPlans extends Vue {
 
             const key = `${tom.getDate()}.${tom.getMonth() + 1}.${tom.getFullYear()}`;
 
-            candidateTodate.push({
+            defaultDays.push({
                 date: key,
                 tasks: [],
             });
+
+            this.globalDefaultDays.push(key)
+
+            defaultDaysNumber.push(key);
         }
 
         this.tasks.forEach((task) => {
             const tasksDate = new Date(+task.doDate * 1000);
             const taskDateStr = `${tasksDate.getDate()}.${tasksDate.getMonth() + 1}.${tasksDate.getFullYear()}`;
 
-            if(candidateTodate.some(el => el.date == taskDateStr) ) {
-                const item = candidateTodate.find(el => el.date === taskDateStr);
-                const idx = candidateTodate.findIndex(el => el.date === item!.date);
+            if (defaultDaysNumber!.includes(taskDateStr)) {
+                const item = defaultDays.find((el) => el.date === taskDateStr);
+                const idx = defaultDays.findIndex((el) => el.date === item!.date);
 
+                defaultDays[idx].tasks.push(task);
 
-                candidateTodate[idx].tasks.push(task)
+                return;
+            }
+
+            if (defaultDays.some((el) => el.date.split('.')[1] === taskDateStr.split('.')[1]  && !defaultDaysNumber.includes(el.date))) {
+                const item = defaultDays.find((el) => el.date.split('.')[1] === taskDateStr.split('.')[1] && !defaultDaysNumber.includes(el.date));
+
+                const idx = defaultDays.findIndex((el) => el.date === item!.date);
+
+                    
+                
+                defaultDays[idx].tasks.push(task);
+                return;
             }else {
-                if(candidateTodate.some(el => el.date.split('.')[1] === taskDateStr.split('.')[1])) {
-                    const item = candidateTodate.find(el => el.date.split('.')[1] === taskDateStr.split('.')[1]);
-                    const idx = candidateTodate.findIndex(el => el.date.split('.')[1] === item!.date.split('.')[1]);
-
-                    candidateTodate[idx].tasks.push(task);
-                    return
-                }
-                candidateTodate.push({
+                
+                defaultDays.push({
                     date: taskDateStr,
                     tasks: [task],
-                })
-            }
-        })
+                });
 
-        return candidateTodate;
+                return;
+            }
+        });
+
+        return defaultDays
+            .sort((a, b) => {
+                if (a.date.split('.')[1] < b.date.split('.')[1]) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            })
+            .reverse();
     }
+
 
     get tasks(): ITodoTask[] {
         return TodoStore.todoTasks.map((el) => {
@@ -178,25 +199,21 @@ export default class TodoPlans extends Vue {
     }
 
     get taskToUpdate(): ITodoTask | null {
-        const taskToUpdate = {
-            ...this.taskById,
-            checked: false,
-        };
+        const item = this.tasks.find((el) => el.id === this.taskShowId);
+        item!.doDate = Number(item!.doDate) * 1000;
 
-        //@ts-ignore
-        return taskToUpdate;
+        return item!;
     }
 
-  include(className: string): boolean {
-    return PARENTCLASSES.includes(className);
-  }
+    include(className: string): boolean {
+        return PARENTCLASSES.includes(className);
+    }
 
     getitemTaskText(date: string): string {
         const title = date.split('.');
-        const secondsToday = Date.now();
-        const some = new Date(secondsToday).getMonth() + 1;
+        
 
-        return some.toString() === title[1] ? `${title[0]}` : '';
+        return this.globalDefaultDays.includes(date) ? `${title[0]}` : '';
     }
 
     getDayOfWeek(date: string): string {
@@ -213,14 +230,14 @@ export default class TodoPlans extends Vue {
             return 'Завтра';
         }
 
-        let daysWeek = ['Вoскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+        
 
         //@ts-ignore
         const numberDayWeek = new Date(title[2], title[1] - 1 <= 0 ? 0 : title[1] - 1, title[0]).getDay();
 
-        return (todayByRightFormat.getMonth() + 1).toString() === title[1]
-            ? daysWeek[numberDayWeek]
-            : MONTHS.find((el) => el.id.toString() === title[1])!.value;
+        return (todayByRightFormat.getMonth() + 1).toString() === title[1] && this.globalDefaultDays.includes(date) 
+            ? DAYS_WEEK[numberDayWeek]
+            : MONTHS.find((el) => el.id.toString() === title[1])!.defaultValue;
     }
 
     setTaskById(id: number): void {
@@ -228,51 +245,55 @@ export default class TodoPlans extends Vue {
     }
 
     setTask(e: any): void {
-      if (this.include(e.target.classList[0]) && e.target.classList[0] !== 'add-task' && e.target.classList[0] !== 'v-dialog__content' && (this.showTextArea || this.taskShowId)) {
-        if (this.showTextArea === true) {
-          const date = Date.now();
+        if (
+            this.include(e.target.classList[0]) &&
+            e.target.classList[0] !== 'add-task' &&
+            e.target.classList[0] !== 'v-dialog__content' &&
+            (this.showTextArea || this.taskShowId)
+        ) {
+            if (this.showTextArea === true) {
+                const date = Date.now();
 
-          const el = {
-            name: this.newTask.name || null,
-            do_date:
-                this.statusItem.categoryId === 2
-                    ? date / 1000
-                    : this.newTask.doDate !== null
-                    ? Date.parse(this.newTask.doDate!) / 1000
-                    : null,
-            description: this.newTask.description || null,
-            category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
-            images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
-            candidate_id: this.newTask.candidateId ? this.newTask.candidateId : null
-          };
-          this.$emit('createTask', el, this.newTask.checked);
-          this.showTextArea = false;
-          this.newTask = {
-            name: '',
-            checked: false,
-            description: '',
-            doDate: null,
-            imagesLink: [],
-            candidateId: null
-          };
-        } else {
-          this.setTaskShowid(null);
+                const el = {
+                    name: this.newTask.name || null,
+                    do_date:
+                        this.statusItem.categoryId === 2
+                            ? date / 1000
+                            : this.newTask.doDate !== null
+                            ? Date.parse(this.newTask.doDate!) / 1000
+                            : null,
+                    description: this.newTask.description || null,
+                    category_id: this.newTask.checked ? 6 : this.statusItem.categoryId,
+                    images_link: this.newTask.imagesLink.length === 0 ? null : this.newTask.imagesLink,
+                    candidate_id: this.newTask.candidateId ? this.newTask.candidateId : null,
+                };
+                this.$emit('createTask', el, this.newTask.checked);
+                this.showTextArea = false;
+                this.newTask = {
+                    name: '',
+                    checked: false,
+                    description: '',
+                    doDate: null,
+                    imagesLink: [],
+                    candidateId: null,
+                };
+            } else {
+                this.setTaskShowid(null);
+            }
         }
-      }
     }
 
     setTaskShowid(id: number | null): void {
         if (this.taskShowId === id || id === null) {
             if (this.taskToUpdate !== null) {
-                console.log()
                 const el = {
                     name: this.taskToUpdate.name,
                     description: this.taskToUpdate.description,
+                    do_date: this.taskToUpdate.doDate ? Date.parse(this.taskToUpdate.doDate!) / 1000 : null,
                     category_id: this.taskToUpdate.checked ? 6 : this.statusItem.categoryId,
-                  images_link: this.taskToUpdate.imagesLink,
-                  candidate_id: this.taskToUpdate.candidate ? this.taskToUpdate.candidate.candidate_id : null
+                    images_link: this.taskToUpdate.imagesLink,
+                    candidate_id: this.taskToUpdate.candidate ? this.taskToUpdate.candidate.candidate_id : null,
                 };
-                console.log(el);
 
                 this.$emit('upDateTask', el, this.taskToUpdate.checked, this.taskShowId!);
                 this.taskShowId = null;
@@ -303,7 +324,7 @@ export default class TodoPlans extends Vue {
 </script>
 
 
-<style lang="scss" scoped>
+<style lang="scss" scooped>
 .plans-items {
     width: 100%;
     padding-left: 8px;
