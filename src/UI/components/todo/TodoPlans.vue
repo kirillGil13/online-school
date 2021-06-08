@@ -90,7 +90,7 @@ import { ITaskItem, ITaskStatus, ITaskToDate, ITodoTask } from '@/entity/todo/to
 import draggable from 'vuedraggable';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
-import { DAYS_WEEK, MONTHS, PARENTCLASSES, TODOCOMPONENTS } from '@/constants';
+import { DAYS_WEEK, MONTHS, PARENTCLASSES } from '@/constants';
 import {ICandidate} from '../../../entity/candidates';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 import Filters from '../../../entity/filters/filters';
