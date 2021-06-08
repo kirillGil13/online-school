@@ -24,15 +24,13 @@ export class TodoRepository implements ITodoRepository {
         return respData.map((el: TaskStatusResponceType) => new TodoStatus(el));
     }
 
-    async createTask(data: TaskRequestType): Promise<TaskResponseType> {
+    async createTask(data: TaskRequestType): Promise<ITodoTask> {
         const response = await Api.post('candidateTasks', data);
-
-        return response.data as TaskResponseType;
+        return new TodoTask(response.data);
     }
 
-    async getCandidateTask(data: {id: number}): Promise<TodoTask> {
+    async getCandidateTask(data: {id: number}): Promise<ITodoTask> {
         const response = await Api.get(`candidateTasks/${data.id}`);
-
         return new TodoTask(response.data as TaskResponseType);
     }
 

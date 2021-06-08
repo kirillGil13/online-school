@@ -1,4 +1,4 @@
-import {ITodoTask, ITaskCandidate, TaskResponseType, TaskCandidateItemResponseType} from './todo.types';
+import {ITodoTask, ITaskCandidate, TaskResponseType} from './todo.types';
 
 export class TodoTask implements ITodoTask {
     id: number;
@@ -11,6 +11,7 @@ export class TodoTask implements ITodoTask {
     isDone: boolean;
     candidate: ITaskCandidate;
     imagesLink: string[];
+    hide: boolean;
 
     constructor(data: TaskResponseType) {
         this.id = data.id;
@@ -23,6 +24,7 @@ export class TodoTask implements ITodoTask {
         this.isDone = data.is_done;
         this.candidate = data.candidate;
         this.imagesLink = data.images_link ? data.images_link : [];
+        this.hide = false;
     }
 
     getTime(createdAt: number): string {

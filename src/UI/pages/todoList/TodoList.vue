@@ -246,9 +246,9 @@ export default class TodoList extends Vue {
     }
 
 
-    createTask(data: TaskRequestType, checked: boolean): void {
-        TodoStore.createTask({data: data, checked: checked});
-        TodoStore.setTaskCount({id: data.category_id, delete: false});
+    async createTask(data: TaskRequestType, checked: boolean): Promise<void> {
+        await TodoStore.createTask({data: data, checked: checked});
+        await TodoStore.setTaskCount({id: data.category_id, delete: false});
     }
 
   async search(searchBody: string): Promise<void> {
@@ -281,8 +281,8 @@ export default class TodoList extends Vue {
         await this.fetchDatatStatusesTasks();
     }
 
-    async upDateTask(el: TaskRequestType, checked: boolean, route: number): Promise<void> {
-        await TodoStore.updateCandidateTask({data: el, checked: checked, route: route});
+    async upDateTask(el: TaskRequestType, checked: boolean, route: number, newTask?: boolean): Promise<void> {
+        await TodoStore.updateCandidateTask({data: el, checked: checked, route: route, newTask: newTask});
     }
 
     async toJurnalOrIncome(el: TaskRequestType, route: number): Promise<void> {
@@ -324,7 +324,6 @@ export default class TodoList extends Vue {
 
         .items-btn-add {
             padding-left: 8px;
-            margin-top: 36px;
             display: flex;
             align-items: center;
             cursor: pointer;
