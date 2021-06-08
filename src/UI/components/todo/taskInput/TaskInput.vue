@@ -220,6 +220,7 @@ export default class TaskInput extends Vue {
     }
 
     getIconName(id: number): string {
+      console.log(id);
         return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;
     }
 

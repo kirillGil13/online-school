@@ -29,7 +29,7 @@
             <template v-if="activeTab !== 2" >
                 <DefaultTodoComponent
                     :statusItem="tabs[activeTab]"
-                    :id="activeTab"
+                    :id="tabs[activeTab].categoryId"
                     :candidates="candidates"
                     :filters="filters"
                     :tasks="tasks"
@@ -44,7 +44,7 @@
             </template>
             <template v-else>
                 <TodoPlans
-                    :id="activeTab"
+                    :id="tabs[activeTab].categoryId"
                     :statusItem="tabs[activeTab]"
                     :activeTab="activeTab"
                     :candidates="candidates"
@@ -59,12 +59,12 @@
                 />
             </template>
          </div>
-      <Modal :activator="activator" :without-tool-bar="false" tool-bar-title="" :full-screen="true" @activatorChange="activatorChange">
+      <Modal v-if="$adaptive.isMobile" :activator="activator" :without-tool-bar="false" tool-bar-title="" :full-screen="true" @activatorChange="activatorChange">
         <template v-slot:full-screen-content>
           <template v-if="activeTab !== 2" >
             <DefaultTodoComponent
                 :statusItem="tabs[activeTab]"
-                :id="activeTab"
+                :id="tabs[activeTab].categoryId"
                 :candidates="candidates"
                 :filters="filters"
                 :tasks="tasks"
@@ -79,7 +79,7 @@
           </template>
           <template v-else>
             <TodoPlans
-                :id="activeTab"
+                :id="tabs[activeTab].categoryId"
                 :statusItem="tabs[activeTab]"
                 :activeTab="activeTab"
                 :candidates="candidates"
@@ -147,10 +147,8 @@ export default class TodoList extends Vue {
   }
 
     @Watch('activeTab')
-    onChange(): void {
-    if (this.activeTab) {
-      this.fetchData(this.tabs[this.activeTab].categoryId);
-    }
+    async onChange(): Promise<void> {
+        await this.fetchData(this.tabs[this.activeTab!].categoryId);
     }
 
   @Watch('statusesLoaded', {immediate: true})
@@ -269,8 +267,8 @@ export default class TodoList extends Vue {
     }
 
     async created(): Promise<void> {
-        await this.fetchData();
         await this.fetchDatatStatusesTasks();
+        await this.fetchData();
     }
 
     async upDateTask(el: TaskRequestType, checked: boolean, route: number, newTask?: boolean): Promise<void> {
