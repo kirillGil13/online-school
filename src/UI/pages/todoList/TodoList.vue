@@ -104,7 +104,6 @@ import FormGroup from '../../components/common/form/FormGroup.vue';
 import Relation from '../../components/common/Relation.vue';
 import Button from '@/UI/components/common/Button.vue';
 import { TodoStore } from '@/store/modules/Todo';
-import { TodoStatus } from '@/entity/todo/todoStatus';
 import { TODOCOMPONENTS } from '@/constants';
 import {ITaskStatus, ITodoTask, TaskRequestType} from '@/entity/todo/todo.types';
 import DefaultTodoComponent from '@/UI/components/todo/DefaultTodoComponent.vue';
@@ -149,7 +148,9 @@ export default class TodoList extends Vue {
 
     @Watch('activeTab')
     onChange(): void {
-        this.fetchData(this.tabs[this.activeTab].categoryId)
+    if (this.activeTab) {
+      this.fetchData(this.tabs[this.activeTab].categoryId);
+    }
     }
 
   @Watch('statusesLoaded', {immediate: true})
@@ -264,7 +265,7 @@ export default class TodoList extends Vue {
 
     async deleteTask(id: number): Promise<void> {
       await TodoStore.deletedTask({id});
-      await TodoStore.setTaskCount({id: this.tabs[this.activeTab].categoryId, delete: true});
+      await TodoStore.setTaskCount({id: this.tabs[this.activeTab!].categoryId, delete: true});
     }
 
     async created(): Promise<void> {
