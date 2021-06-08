@@ -112,15 +112,15 @@ export default class TodoPlans extends Vue {
     globalDefaultDays: string[] = [];
     showTextArea = false;
     checkbox = false;
-  taskItem: ITaskItem = {
-    name: '',
-    checked: false,
-    description: '',
-    doDate: null,
-    imagesLink: [],
-    candidateId: null,
-    candidateName: ''
-  };
+    taskItem: ITaskItem = {
+        name: '',
+        checked: false,
+        description: '',
+        doDate: null,
+        imagesLink: [],
+        candidateId: null,
+        candidateName: ''
+    };
 
     get dates(): ITaskToDate[] {
         const defaultDays: ITaskToDate[] = [];

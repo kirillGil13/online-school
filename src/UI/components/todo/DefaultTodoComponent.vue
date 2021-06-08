@@ -55,7 +55,6 @@ import {PARENTCLASSES, TODOCOMPONENTS} from '@/constants';
 import {ICandidate} from '../../../entity/candidates';
 import {IStatuses} from '../../../entity/statuses/statuses.types';
 import Filters from '../../../entity/filters/filters';
-import {stripLow} from '@rxweb/reactive-forms';
 
 @Component({
     components: { TaskInput },
@@ -67,7 +66,7 @@ export default class DefaultTodoComponent extends Vue {
     @Prop() readonly taskById!: ITodoTask;
     @Prop() readonly candidates!: {[p: string]: ICandidate[]};
     @Prop() readonly statuses!: IStatuses[];
-  @Prop() readonly filters!: Filters;
+    @Prop() readonly filters!: Filters;
     taskShowId: number | null = null;
     showTextArea = false;
     checkbox = false;
@@ -78,7 +77,7 @@ export default class DefaultTodoComponent extends Vue {
         doDate: null,
         imagesLink: [],
         candidateId: null,
-        // reminder_time: null,
+        reminderTime: null ,
         candidateName: ''
     };
 
@@ -89,12 +88,19 @@ export default class DefaultTodoComponent extends Vue {
         if (item.doDate) {
           item!.doDate = Number(item!.doDate) * 1000;
         }
+
+        if(!item.reminderTime) {
+            item.reminderTime = Number(item!.doDate) * 1000;
+        }
+
+        
         this.taskItem = {
           name: item.name,
           checked: false,
           description: item.description,
           doDate: item.doDate ? item.doDate : null,
           imagesLink: item.imagesLink,
+          reminderTime: item.reminderTime ? item.reminderTime  : null,
           candidateId: item.candidate ? item.candidate.candidate_id : null,
           candidateName: item.candidate ? item.candidate.candidate_name : '',
         }
@@ -115,7 +121,8 @@ export default class DefaultTodoComponent extends Vue {
         doDate: null,
         imagesLink: [],
         candidateId: null,
-        candidateName: ''
+        candidateName: '',
+        reminderTime: null
       };
     }
 
@@ -139,7 +146,8 @@ export default class DefaultTodoComponent extends Vue {
             description: this.taskItem.description || null,
             category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
             images_link: this.taskItem.imagesLink.length === 0 ? null : this.taskItem.imagesLink,
-            candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null
+            candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
+            reminder_time: this.taskItem.reminderTime ? ((this.taskItem.reminderTime as number) / 1000)  : this.taskItem.doDate ? (this.taskItem.doDate / 1000) + (this.taskItem.reminderTime! / 1000) : null
           };
 
           this.$emit('createTask', el,  this.taskItem.checked);
@@ -158,6 +166,8 @@ export default class DefaultTodoComponent extends Vue {
 
     setTaskShowid(id: number | null): void {
         this.showTextArea = false;
+        console.log(this.taskItem);
+        
 
         if (this.taskShowId === id || id === null) {
                  const el = {
@@ -171,6 +181,8 @@ export default class DefaultTodoComponent extends Vue {
                             ? 1
                             : this.statusItem.categoryId,
                    images_link: this.taskItem.imagesLink,
+                //    reminder_time: this.taskItem.reminderTime ? (this.taskItem.reminderTime / 1000)  : this.taskItem.doDate ? (this.taskItem.doDate / 1000) + (this.taskItem.reminderTime! / 1000) : null,
+                    reminder_time: this.taskItem.reminderTime ? ((this.taskItem.reminderTime as number) / 1000)  : null,
                    candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null
                 };
                 this.$emit('upDateTask', el, this.taskItem.checked, this.taskShowId!);
