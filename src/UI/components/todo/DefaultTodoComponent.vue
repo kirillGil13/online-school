@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex todo__items" style="width: 100%">
-        <div class="items-title">
+        <div class="items-title pb-9">
             <svg-icon :name="getIconName(statusItem.categoryId)" style="width: 28px; height: 28px" />
             <span class="title-text">{{ statusItem.categoryName }}</span>
         </div>
@@ -9,12 +9,11 @@
                 <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
                 <span class="btn-add-text">Добавить задачу</span>
             </div>
-            <TaskInput v-if="showTextArea" :filters="filters" :statuses="statuses" :candidates="candidates" :tabId="id" :task-item="taskItem" :isNewTask="true" v-on="$listeners"  />
+            <TaskInput v-if="showTextArea" @setTask="setTask" :filters="filters" :statuses="statuses" :candidates="candidates" :tabId="id" :task-item="taskItem" v-on="$listeners"  />
         </div>
-
-        <div class="items-check-boxes" :style="{marginTop: statusItem.categoryId === 6 && '2rem'}" v-click-outside="setTask">
+        <div class="items-check-boxes" v-click-outside="closeTask">
             <template v-for="item in tasks">
-                <div class="d-flex flex-column mt-2" :key="item.id">
+                <div class="d-flex flex-column mt-2" :key="item.id" v-if="!item.hide">
                     <div class="d-flex align-center justify-space-between task-item-container px-2" v-if="taskShowId !== item.id">
                         <div class="d-flex align-end">
                             <v-checkbox
@@ -40,7 +39,7 @@
                             </v-btn>
                         </div>
                     </div>
-                    <TaskInput v-else :filters="filters" :statuses="statuses" :candidates="candidates" :task-item="taskItem" :tabId="id" :isNewTask="false" v-on="$listeners" />
+                    <TaskInput v-else-if="taskShowId === item.id" @setTask="setTask" :filters="filters" :statuses="statuses" :candidates="candidates" :task-item="taskItem" :tabId="id" v-on="$listeners" />
                 </div>
             </template>
         </div>
@@ -80,6 +79,29 @@ export default class DefaultTodoComponent extends Vue {
         reminderTime: null ,
         candidateName: ''
     };
+    newTask = false;
+
+    @Watch('tasks', {immediate: false})
+    onChangeTasks(val: any, oldVal: any): void {
+      for (let i = 1; i < this.tasks.length; i++) {
+        this.tasks[i].hide = false;
+      }
+      if (val.length > oldVal.length && this.showTextArea) {
+        this.tasks[0].hide = true;
+        this.newTask = true;
+      }
+      if (!this.newTask) {
+        this.tasks[0].hide = false;
+      }
+    }
+
+    @Watch('showTextArea')
+    onChangeShow(): void {
+      if (!this.showTextArea) {
+        this.tasks[0].hide = false;
+        this.newTask = false;
+      }
+    }
 
     @Watch('taskShowId')
     onChangeId(val: number | null, oldVal: number | null): void {
@@ -113,6 +135,26 @@ export default class DefaultTodoComponent extends Vue {
       return PARENTCLASSES.includes(className);
     }
 
+    closeTask(e: any): void {
+      if (this.include(e.target.classList[0]) && e.target.classList[0] !== 'add-task' && e.target.classList[0] !== 'v-dialog__content' && (this.showTextArea || this.taskShowId)) {
+        const empty: number[] = [];
+        for (const taskItemKey in this.taskItem) {
+          //@ts-ignore
+          if (this.taskItem[taskItemKey] === null || this.taskItem[taskItemKey] === '' || this.taskItem[taskItemKey] === false || this.taskItem[taskItemKey].length === 0) {
+           empty.push(1);
+          }
+        }
+        if (empty.length === Object.keys(this.taskItem).length) {
+          this.setTask();
+        }
+        this.showTextArea = false;
+        if (this.taskShowId) {
+          this.taskShowId = null;
+        }
+        this.setTaskToNull();
+      }
+    }
+
     setTaskToNull(): void {
       this.taskItem = {
         name: '',
@@ -130,32 +172,42 @@ export default class DefaultTodoComponent extends Vue {
         return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;
     }
 
-    setTask(e: any): void {
-      if (this.include(e.target.classList[0]) && e.target.classList[0] !== 'add-task' && e.target.classList[0] !== 'v-dialog__content' && (this.showTextArea || this.taskShowId)) {
+    async setTask(): Promise<void> {
         if (this.showTextArea === true) {
-          const date = Date.now();
-
-          const el = {
-            name: this.taskItem.name || null,
-            do_date:
-                this.statusItem.categoryId === 2
-                    ? date / 1000
-                    : this.taskItem.doDate !== null
-                    ? this.taskItem.doDate / 1000
-                    : null,
-            description: this.taskItem.description || null,
-            category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
-            images_link: this.taskItem.imagesLink.length === 0 ? null : this.taskItem.imagesLink,
-            candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
-            reminder_time: this.taskItem.reminderTime ? ((this.taskItem.reminderTime as number) / 1000)  : this.taskItem.doDate ? (this.taskItem.doDate / 1000) + (this.taskItem.reminderTime! / 1000) : null
-          };
-
-          this.$emit('createTask', el,  this.taskItem.checked);
-
-          this.showTextArea = false;
+          if (!this.newTask) {
+            const date = Date.now();
+            const el = {
+              name: this.taskItem.name || null,
+              do_date:
+                  this.statusItem.categoryId === 2
+                      ? date / 1000
+                      : this.taskItem.doDate !== null
+                      ? this.taskItem.doDate / 1000
+                      : null,
+              description: this.taskItem.description || null,
+              category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
+              images_link: this.taskItem.imagesLink.length === 0 ? null : this.taskItem.imagesLink,
+              candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null
+            };
+            this.$emit('createTask', el,  this.taskItem.checked);
+          } else {
+            const el = {
+              name: this.taskItem.name,
+              description: this.taskItem.description,
+              do_date: this.taskItem.doDate ? this.taskItem.doDate / 1000 : null,
+              category_id:
+                  this.taskItem.checked && this.statusItem.categoryId !== 6
+                      ? 6
+                      : this.taskItem.checked && this.statusItem.categoryId === 6
+                      ? 1
+                      : this.statusItem.categoryId,
+              images_link: this.taskItem.imagesLink,
+              candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null
+            };
+            this.$emit('upDateTask', el, this.taskItem.checked, this.tasks[0].id, true);
+          }
         } else {
           this.setTaskShowid(null);
-        }
       }
     }
 
@@ -186,7 +238,6 @@ export default class DefaultTodoComponent extends Vue {
                    candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null
                 };
                 this.$emit('upDateTask', el, this.taskItem.checked, this.taskShowId!);
-                this.taskShowId = null;
         } else {
             this.taskShowId = id;
         }

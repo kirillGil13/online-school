@@ -8,6 +8,7 @@
                         class="ma-0 pa-0"
                         hide-details
                         v-model="taskItem.name"
+                        @change="$emit('setTask')"
                         placeholder="Название задачи"
                     />
                 </div>
@@ -21,6 +22,7 @@
                             rows="5"
                             hide-details
                             type="text"
+                            @change="$emit('setTask')"
                             v-model="taskItem.description"
                         />
                     </div>
@@ -221,7 +223,6 @@ import Search from '../../common/Search.vue';
 })
 export default class TaskInput extends Vue {
     @Prop() readonly taskItem!: ITaskItem;
-    @Prop() readonly isNewTask?: boolean;
     @Prop() readonly tabId?: number;
     @Prop() readonly candidates!: { [p: string]: ICandidate[] };
     @Prop() readonly statuses!: IStatuses[];
@@ -273,15 +274,24 @@ export default class TaskInput extends Vue {
 
     activatorImagesChange(act: boolean): void {
         this.activatorImages = act;
+        if (!act) {
+          this.$emit('setTask');
+        }
     }
 
     activatorChangeDate(act: boolean): void {
         this.activatorDate = act;
+
+         if (!act) {
+        this.$emit('setTask');
+      }
     }
 
     activatorChangeTime(act: boolean): void {
         this.activatorTime = act;
+
     }
+
 
     activatorCandidatesChange(act: boolean): void {
         this.activatorCandidates = act;
@@ -299,6 +309,7 @@ export default class TaskInput extends Vue {
             .flat()
             .find((el) => el.id === id)!.name;
         this.activatorCandidates = false;
+        this.$emit('setTask');
     }
 
     async handleImage(e: any): Promise<void> {

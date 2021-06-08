@@ -10,6 +10,7 @@ export interface ITodoTask {
     candidate: ITaskCandidate;
     imagesLink: string[];
     checked?: boolean;
+    hide: boolean;
 }
 
 export interface ITaskCandidate  {
