@@ -215,7 +215,7 @@ import FilterComponent from '../../filter/FilterComponent.vue';
 import Filters from '../../../../entity/filters/filters';
 import { MONTHS, SHORT_DAYS_WEEK, TODOCOMPONENTS } from '@/constants';
 import Search from '../../common/Search.vue';
-import { stripLow } from '@rxweb/reactive-forms';
+
 @Component({
     components: { FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime, Search },
 })

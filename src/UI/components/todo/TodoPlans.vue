@@ -119,7 +119,8 @@ export default class TodoPlans extends Vue {
         doDate: null,
         imagesLink: [],
         candidateId: null,
-        candidateName: ''
+        candidateName: '',
+        reminderTime: null
     };
 
     get dates(): ITaskToDate[] {
