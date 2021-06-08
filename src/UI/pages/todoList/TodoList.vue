@@ -367,6 +367,7 @@ export default class TodoList extends Vue {
     min-height: max-content !important;
     .v-list-item__title {
       font-size: 16px !important;
+      line-height: 120% !important;
     }
   }
   .active-todo {
