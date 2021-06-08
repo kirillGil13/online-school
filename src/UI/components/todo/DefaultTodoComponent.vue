@@ -218,8 +218,12 @@ export default class DefaultTodoComponent extends Vue {
 
     setTaskShowid(id: number | null): void {
         this.showTextArea = false;
-        console.log(this.taskItem);
-        
+        // console.log(moment!.duration({
+        //     hourse: this.taskItem.reminderTime.split(':')[0],
+        //     minutes: this.taskItem.reminderTime.split(':')[1]
+        // }))
+        // const time = new Date(this.taskItem.reminderTime).toISOString();
+        console.log(time)
 
         if (this.taskShowId === id || id === null) {
                  const el = {
@@ -233,10 +237,10 @@ export default class DefaultTodoComponent extends Vue {
                             ? 1
                             : this.statusItem.categoryId,
                    images_link: this.taskItem.imagesLink,
-                //    reminder_time: this.taskItem.reminderTime ? (this.taskItem.reminderTime / 1000)  : this.taskItem.doDate ? (this.taskItem.doDate / 1000) + (this.taskItem.reminderTime! / 1000) : null,
-                    reminder_time: this.taskItem.reminderTime ? ((this.taskItem.reminderTime as number) / 1000)  : null,
+                    reminder_time: this.taskItem.reminderTime && this.taskItem.reminderTime !== this.taskItem.doDate ? ((this.taskItem.reminderTime as number) / 1000 ) - (this.taskItem.doDate! / 1000) : null,
                    candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null
                 };
+                console.log(el)
                 this.$emit('upDateTask', el, this.taskItem.checked, this.taskShowId!);
         } else {
             this.taskShowId = id;

@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { ITaskItem, ITaskStatus, ITaskToDate, ITodoTask } from '@/entity/todo/todo.types';
 import draggable from 'vuedraggable';
 import TaskInput from './taskInput/TaskInput.vue';
@@ -102,7 +102,6 @@ export default class TodoPlans extends Vue {
     @Prop() readonly statusItem!: ITaskStatus;
     @Prop() readonly id!: number;
     @Prop() readonly taskById!: ITodoTask;
-    @Prop() readonly activeTab!: number;
     @Prop() readonly candidates!: { [p: string]: ICandidate[] };
     @Prop() readonly statuses!: IStatuses[];
     @Prop() readonly filters!: Filters;
@@ -122,6 +121,58 @@ export default class TodoPlans extends Vue {
         candidateName: '',
         reminderTime: null
     };
+     newTask = false;
+    
+
+    @Watch('tasks', {immediate: false})
+    onChangeTasks(val: any, oldVal: any): void {
+      for (let i = 1; i < this.tasks.length; i++) {
+        this.tasks[i].hide = false;
+      }
+      if (val.length > oldVal.length && this.showTextArea) {
+        this.tasks[0].hide = true;
+        this.newTask = true;
+      }
+      if (!this.newTask) {
+        this.tasks[0].hide = false;
+      }
+    }
+
+    @Watch('showTextArea')
+    onChangeShow(): void {
+      if (!this.showTextArea) {
+        this.tasks[0].hide = false;
+        this.newTask = false;
+      }
+    }
+
+    @Watch('taskShowId')
+    onChangeId(val: number | null, oldVal: number | null): void {
+      if (val) {
+        const item = this.tasks.find((el) => el.id === this.taskShowId)!;
+        if (item.doDate) {
+          item!.doDate = Number(item!.doDate) * 1000;
+        }
+
+        if(!item.reminderTime) {
+            item.reminderTime = Number(item!.doDate) * 1000;
+        }
+
+        
+        this.taskItem = {
+          name: item.name,
+          checked: false,
+          description: item.description,
+          doDate: item.doDate ? item.doDate : null,
+          imagesLink: item.imagesLink,
+          reminderTime: item.reminderTime ? item.reminderTime  : null,
+          candidateId: item.candidate ? item.candidate.candidate_id : null,
+          candidateName: item.candidate ? item.candidate.candidate_name : '',
+        }
+      } else {
+        this.setTaskToNull();
+      }
+    }
 
     get dates(): ITaskToDate[] {
         const defaultDays: ITaskToDate[] = [];
@@ -190,7 +241,7 @@ export default class TodoPlans extends Vue {
 
     get tasks(): ITodoTask[] {
         return TodoStore.todoTasks.map((el) => {
-            if (this.activeTab !== 6) {
+            if (this.id !== 6) {
                 return {
                     ...el,
                     checked: false,

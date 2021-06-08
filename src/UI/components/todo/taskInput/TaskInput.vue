@@ -28,7 +28,7 @@
                     </div>
                     <div class="items-add-place-text__like-dislike d-flex pa-3">
                         <div
-                            v-if="![1, 4, 5].includes(tabId)"
+                            v-if="![1, 4, 5,6].includes(tabId)"
                             class="d-flex align-center"
                             style="width: 100%; justify-self: flex-start"
                         >
@@ -42,13 +42,13 @@
                                         style="cursor: pointer"
                                     />
                                 </div>
-                                <div class="d-flex align-center">
+                                <div class="d-flex align-center" v-if="tabId === 3">
                                     {{ shortDaysOfWeek(taskItem.doDate) }}
                                 </div>
                             </div>
                             <div class="d-flex align-center ml-2" @click="activatorTime = true">Напомнить</div>
                         </div>
-                        <div v-if="![1, 4, 5].includes(tabId)" class="d-flex">
+                        <div v-if="![1, 4, 5,6].includes(tabId)" class="d-flex">
                             <svg-icon
                                 name="Calendar_Icon"
                                 class="menu__icon"
@@ -104,7 +104,7 @@
             :activator="activatorTime"
         >
             <template v-slot:content>
-                <v-time-picker v-model="taskTime.reminder_time" format="24hr" />
+                <v-time-picker v-model="taskItem.reminderTime" format="24hr" />
             </template>
         </Modal>
 
@@ -243,22 +243,16 @@ export default class TaskInput extends Vue {
 
     set taskDate(date: string) {
         this.taskItem.doDate = Date.parse(date);
+        
     }
 
-    get taskTime(): string | number{
-        return  new Date(this.taskItem.reminderTime!).toISOString().substr(0, 10);
-    }
-
-    set taskTime(date: string |number) {
-        this.taskItem.reminderTime = date;
-    }
 
     getIconName(id: number): string {
         return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;
     }
 
     shortDaysOfWeek(date: string): string {
-      console.log(date)
+      
         const dateFormat = new Date(date!).toISOString().substr(0, 10);
         const title: string[] = dateFormat.split('-');
         const day = new Date(
