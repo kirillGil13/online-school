@@ -9,7 +9,7 @@
                 <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
                 <span class="btn-add-text">Добавить задачу</span>
             </div>
-            <TaskInput v-if="showTextArea" @setTask="setTask" :filters="filters" :statuses="statuses" :candidates="candidates" :tabId="id" :task-item="taskItem" v-on="$listeners"  />
+            <TaskInput v-if="showTextArea" @setTask="setTask" :filters="filters" :statuses="statuses" :candidates="candidates" :tabId="statusItem.categoryId" :task-item="taskItem" v-on="$listeners"  />
         </div>
         <div class="items-check-boxes" v-click-outside="closeTask">
             <template v-for="item in tasks">
@@ -39,7 +39,7 @@
                             </v-btn>
                         </div>
                     </div>
-                    <TaskInput v-else-if="taskShowId === item.id" @setTask="setTask" :filters="filters" :statuses="statuses" :candidates="candidates" :task-item="taskItem" :tabId="id" v-on="$listeners" />
+                    <TaskInput v-else-if="taskShowId === item.id" @setTask="setTask" :filters="filters" :statuses="statuses" :candidates="candidates" :task-item="taskItem" :tabId="statusItem.categoryId" v-on="$listeners" />
                 </div>
             </template>
         </div>
@@ -60,9 +60,7 @@ import Filters from '../../../entity/filters/filters';
 })
 export default class DefaultTodoComponent extends Vue {
     @Prop() readonly tasks!: ITodoTask[];
-    @Prop() readonly id!: number;
     @Prop() readonly statusItem!: ITaskStatus;
-    @Prop() readonly taskById!: ITodoTask;
     @Prop() readonly candidates!: {[p: string]: ICandidate[]};
     @Prop() readonly statuses!: IStatuses[];
     @Prop() readonly filters!: Filters;
@@ -81,17 +79,26 @@ export default class DefaultTodoComponent extends Vue {
     };
     newTask = false;
 
+    @Watch('statusItem.categoryId')
+    onChange(): void {
+      this.showTextArea = false;
+      this.taskShowId = null;
+      this.setTaskToNull();
+    }
+
     @Watch('tasks', {immediate: false})
     onChangeTasks(val: any, oldVal: any): void {
-      for (let i = 1; i < this.tasks.length; i++) {
-        this.tasks[i].hide = false;
-      }
-      if (val.length > oldVal.length && this.showTextArea) {
-        this.tasks[0].hide = true;
-        this.newTask = true;
-      }
-      if (!this.newTask) {
-        this.tasks[0].hide = false;
+      if (this.tasks.length !== 0) {
+        for (let i = 1; i < this.tasks.length; i++) {
+          this.tasks[i].hide = false;
+        }
+        if (val.length > oldVal.length && this.showTextArea) {
+          this.tasks[0].hide = true;
+          this.newTask = true;
+        }
+        if (!this.newTask) {
+          this.tasks[0].hide = false;
+        }
       }
     }
 

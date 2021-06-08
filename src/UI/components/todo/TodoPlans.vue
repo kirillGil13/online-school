@@ -102,6 +102,7 @@ export default class TodoPlans extends Vue {
     @Prop() readonly statusItem!: ITaskStatus;
     @Prop() readonly id!: number;
     @Prop() readonly taskById!: ITodoTask;
+    @Prop() readonly activeTab!: number;
     @Prop() readonly candidates!: { [p: string]: ICandidate[] };
     @Prop() readonly statuses!: IStatuses[];
     @Prop() readonly filters!: Filters;
