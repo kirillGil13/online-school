@@ -1,7 +1,7 @@
 <template>
     <div class="todo">
-        <div class="todo__menu mr-12">
-            <v-list :collapse-transition="false" v-model="componentId" style="background: none" width="300" nav dense>
+        <div class="todo__menu" :class="[!$adaptive.isMobile && 'mr-12']" :style="{width: $adaptive.isMobile && '100%'}">
+            <v-list :collapse-transition="false" style="background: none" :width="$adaptive.isMobile ? '100%' : 300" nav dense>
               <v-list-item-group
                   v-model="activeTab"
                   color="#426df6"
@@ -11,7 +11,7 @@
                       :id="item.categoryName"
                       :key="item.categoryName"
                       :ripple="!$adaptive.isMobile"
-                      @click="setComponent(item)"
+                      @click="setComponent"
                       exact
                       active-class="active-todo"
                       class="todo-list-item py-2 pl-3 pr-2"
@@ -29,11 +29,10 @@
             <template v-if="activeTab !== 2" >
                 <DefaultTodoComponent
                     :statusItem="tabs[activeTab]"
-                    :id="componentId"
+                    :id="activeTab"
                     :candidates="candidates"
                     :filters="filters"
                     :tasks="tasks"
-                    :taskById="taskById"
                     @createTask="createTask"
                     @deleteTask="deleteTask"
                     @upDateTask="upDateTask"
@@ -45,10 +44,9 @@
             </template>
             <template v-else>
                 <TodoPlans
-                    :id="componentId"
+                    :id="activeTab"
                     :statusItem="tabs[activeTab]"
                     :activeTab="activeTab"
-                    :taskById="taskById"
                     :candidates="candidates"
                     :filters="filters"
                     @createTask="createTask"
@@ -66,11 +64,10 @@
           <template v-if="activeTab !== 2" >
             <DefaultTodoComponent
                 :statusItem="tabs[activeTab]"
-                :id="componentId"
+                :id="activeTab"
                 :candidates="candidates"
                 :filters="filters"
                 :tasks="tasks"
-                :taskById="taskById"
                 @createTask="createTask"
                 @deleteTask="deleteTask"
                 @upDateTask="upDateTask"
@@ -82,9 +79,9 @@
           </template>
           <template v-else>
             <TodoPlans
+                :id="activeTab"
                 :statusItem="tabs[activeTab]"
                 :activeTab="activeTab"
-                :taskById="taskById"
                 :candidates="candidates"
                 :filters="filters"
                 @createTask="createTask"
@@ -136,8 +133,7 @@ import Modal from '../../components/common/Modal.vue';
 })
 export default class TodoList extends Vue {
     showTextArea = false;
-    componentId= 2;
-    activeTab = 0;
+    activeTab = this.$adaptive.isMobile ? null : 0;
     filters: Filters;
     activator = false;
     searchBody = '';
@@ -185,10 +181,6 @@ export default class TodoList extends Vue {
     return StatusesStore.statusesLoaded;
   }
 
-    get taskById(): ITodoTask | null {
-        return TodoStore.taskById;
-    }
-
     get tabs(): ITaskStatus[] {
         return TodoStore.tasksStatuses;
     }
@@ -226,8 +218,7 @@ export default class TodoList extends Vue {
     }
 
 
-    setComponent(component: TodoStatus): void {
-        this.componentId = component.categoryId;
+    setComponent(): void {
         if (this.$adaptive.isMobile) {
           this.activator = true;
         }

@@ -62,7 +62,6 @@ export default class DefaultTodoComponent extends Vue {
     @Prop() readonly tasks!: ITodoTask[];
     @Prop() readonly id!: number;
     @Prop() readonly statusItem!: ITaskStatus;
-    @Prop() readonly taskById!: ITodoTask;
     @Prop() readonly candidates!: {[p: string]: ICandidate[]};
     @Prop() readonly statuses!: IStatuses[];
   @Prop() readonly filters!: Filters;
@@ -79,6 +78,13 @@ export default class DefaultTodoComponent extends Vue {
         candidateName: ''
     };
     newTask = false;
+
+    @Watch('id')
+    onChange(): void {
+      this.showTextArea = false;
+      this.taskShowId = null;
+      this.setTaskToNull();
+    }
 
     @Watch('tasks', {immediate: false})
     onChangeTasks(val: any, oldVal: any): void {

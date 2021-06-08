@@ -101,7 +101,6 @@ import Filters from '../../../entity/filters/filters';
 export default class TodoPlans extends Vue {
     @Prop() readonly statusItem!: ITaskStatus;
     @Prop() readonly id!: number;
-    @Prop() readonly taskById!: ITodoTask;
     @Prop() readonly activeTab!: number;
     @Prop() readonly candidates!: { [p: string]: ICandidate[] };
     @Prop() readonly statuses!: IStatuses[];
