@@ -31,7 +31,7 @@ export const TODOCOMPONENTS = [
     {id: 6, iconName: 'Archive', component: 'TodoJournal', value: 'Журнал'},
 ]
 
-export const PARENTCLASSES = ['content-main','todo__menu','container','v-main__wrap', 'items-title']
+export const PARENTCLASSES = ['content-main','todo__menu','container','v-main__wrap', 'items-title', 'title-text']
 
 
 export const DAYS_WEEK = ['Вoскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];

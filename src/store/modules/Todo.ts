@@ -44,7 +44,6 @@ class TodoModule extends VuexModule {
         let todoTasksLoaded = false;
         const todoTasks = await store.$repository.todo.fetchAll(data);
         todoTasksLoaded = true;
-        console.log(todoTasksLoaded)
         return {todoTasks, todoTasksLoaded};
     }
 
@@ -61,7 +60,7 @@ class TodoModule extends VuexModule {
         //@ts-ignore
         const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]
         if(!data.checked) {
-            todoTasks.unshift(new TodoTask(task))
+            todoTasks.unshift(task)
         }
         return {todoTasks};
     }
@@ -87,7 +86,7 @@ class TodoModule extends VuexModule {
     }
 
     @MutationAction
-    async updateCandidateTask(data: {data: TaskRequestType; checked: boolean; route: number}): Promise<{todoTasks: ITodoTask[]}> {
+    async updateCandidateTask(data: {data: TaskRequestType; checked: boolean; route: number; newTask?: boolean}): Promise<{todoTasks: ITodoTask[]}> {
         const upDateTask = await store.$repository.todo.updateCandidateTask({data: data.data, route: data.route});
           //@ts-ignore
         const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]
@@ -95,9 +94,11 @@ class TodoModule extends VuexModule {
         todoTasks[idx] = {
             ...upDateTask
         }
-
         if(data.checked) {
             todoTasks.splice(idx, 1);
+        }
+        if (data.newTask !== undefined) {
+            todoTasks[0].hide = true;
         }
         return {todoTasks}
     }
