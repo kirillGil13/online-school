@@ -25,7 +25,7 @@
       >
         <v-toolbar-title>{{toolBarTitle}}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <div @click.stop="activatorChange = false" style="cursor: pointer">
+        <div @click.stop="activatorChange = false; $emit('close')" style="cursor: pointer">
           <v-icon>mdi-close</v-icon>
         </div>
       </v-toolbar>
