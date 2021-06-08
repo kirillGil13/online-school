@@ -5,7 +5,7 @@
     <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
-          <Sidebar :userInfo="user" :userId="user.id" :unReadMessages="unReadMessages" @proceed="proceed"/>
+          <Sidebar :userInfo="user" :userId="user.id" :unReadMessages="unReadMessages" @proceed="proceed" @open="activatorTask = true"/>
           <Banner v-if="user.subscription.isActual === null" @show="activator = true"/>
         </div>
         <div class="content-main pt-0 mb-16">
@@ -33,6 +33,11 @@
         <template v-slot:content>
           <CandidateFormComponent :form="candidateForm" v-if="destroy" :statuses="statuses" :info-packs="infoPackages"
                                   :account-id="user.id" @close="close" @add="add"/>
+        </template>
+      </Modal>
+      <Modal :activator="activatorTask" :full-screen="$adaptive.isMobile" @activatorChange="activatorTaskChange">
+        <template v-slot:content>
+         <h1>flvlfdhjhvjkdfhv</h1>
         </template>
       </Modal>
     </v-main>
@@ -72,11 +77,13 @@ import {eventBus} from '../../main';
 import BottomBar from '../components/common/BottomBar.vue';
 import { MessagesStore } from '@/store/modules/Messages';
 import { IMessages } from '@/entity/messages/messages.types';
+import TaskInput from '../components/todo/taskInput/TaskInput.vue';
 
 
 
 @Component({
   components: {
+    TaskInput,
     BottomBar,
     CandidateFormComponent,
     Footer,
@@ -96,6 +103,7 @@ export default class MainLayout extends Vue {
   text = '';
   activator = false;
   activatorCandidate = false;
+  activatorTask = false;
   show = true;
   alertType = AlertTypeEnum;
   destroy = true;
@@ -243,6 +251,10 @@ export default class MainLayout extends Vue {
 
   activatorChange(act: boolean): void {
     this.activator = act;
+  }
+
+  activatorTaskChange(act: boolean): void {
+    this.activatorTask = act;
   }
 
   async add(): Promise<void> {
