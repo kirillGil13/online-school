@@ -1174,6 +1174,7 @@ iframe {
   button:enabled {
     background: white !important
   };
+}
 .custom-checkbox>input:not(:disabled):not(:checked)+span:hover::before {
   border-color: #b3d7ff;
 }
