@@ -270,6 +270,8 @@ export default class TaskInput extends Vue {
     activatorImagesChange(act: boolean): void {
         this.activatorImages = act;
         if (!act) {
+          console.log(1);
+          
           this.$emit('setTask');
         }
     }
@@ -278,12 +280,18 @@ export default class TaskInput extends Vue {
         this.activatorDate = act;
 
          if (!act) {
+           console.log(2);
         this.$emit('setTask');
       }
     }
 
     activatorChangeTime(act: boolean): void {
         this.activatorTime = act;
+
+        if (!act) {
+          console.log(3);
+        this.$emit('setTask');
+      }
 
     }
 

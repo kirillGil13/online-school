@@ -4,7 +4,7 @@ export interface ITodoTask {
     name: string;
     description: string;
     doDate: number | null;
-    reminderTime: number | null;
+    reminderTime: number |string | null;
     categoryId: number;
     isDone: boolean;
     candidate: ITaskCandidate;
