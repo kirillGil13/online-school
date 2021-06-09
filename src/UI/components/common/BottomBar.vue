@@ -29,6 +29,10 @@
             <svg-icon name="Candidates_Mobile" class="svg-28 mr-3"></svg-icon>
             <div>Добавить кандидата</div>
           </div>
+          <div class="d-flex flex-row mt-3" @click="addTask">
+            <svg-icon name="Todo_list" class="svg-28 mr-3"></svg-icon>
+            <div>Добавить заметку</div>
+          </div>
         </div>
       </template>
     </Modal>
@@ -61,6 +65,11 @@ export default class BottomBar extends Vue {
   addCandidate(): void {
     this.activator = false;
     this.$emit('addCandidate');
+  }
+
+  addTask(): void {
+    this.activator = false;
+    this.$emit('addTask');
   }
 
   handle(item: IMainMenu): void {
