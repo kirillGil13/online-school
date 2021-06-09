@@ -110,26 +110,22 @@
 
         <Modal
             :activator="activatorImages"
-            :without-tool-bar="!$adaptive.isMobile"
+            :without-tool-bar="false"
             tool-bar-title=""
-            :full-screen="$adaptive.isMobile"
+            :full-screen="true"
             @activatorChange="activatorImagesChange"
         >
-            <template v-slot:full-screen-content v-if="$adaptive.isMobile">
-                <TodoTaskImages
-                    v-if="activatorImages"
-                    :images="taskItem.imagesLink"
-                    @handleImage="handleImage"
-                    @deleteImage="deleteImage"
-                />
-            </template>
-            <template v-slot:content v-else>
-                <TodoTaskImages
-                    v-if="activatorImages"
-                    :images="taskItem.imagesLink"
-                    @handleImage="handleImage"
-                    @deleteImage="deleteImage"
-                />
+            <template v-slot:full-screen-content>
+              <v-row justify="center">
+                <v-col :class="$adaptive.isMobile && 'px-3'" style="max-width: 1000px; width: 100%">
+                  <TodoTaskImages
+                      v-if="activatorImages"
+                      :images="taskItem.imagesLink"
+                      @handleImage="handleImage"
+                      @deleteImage="deleteImage"
+                  />
+                </v-col>
+              </v-row>
             </template>
         </Modal>
         <Modal
