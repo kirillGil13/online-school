@@ -1,7 +1,7 @@
 <template>
   <v-app class="main-view">
     <MobileBar v-if="$adaptive.isMobile" :userId="user.id" :user-info="user"/>
-    <BottomBar v-if="$adaptive.isMobile" @addCandidate="addCandidate"/>
+    <BottomBar v-if="$adaptive.isMobile" @addCandidate="addCandidate" @addTask="activatorTask = true"/>
     <v-main class="main-view__container pt-4">
       <v-container class="fluid-container" fluid>
         <div class="aside-view mr-7" v-if="!$adaptive.isMobile">
@@ -37,7 +37,7 @@
       </Modal>
       <Modal :activator="activatorTask" :full-screen="$adaptive.isMobile" @activatorChange="activatorTaskChange">
         <template v-slot:content>
-         <h1>flvlfdhjhvjkdfhv</h1>
+          <AddTask v-if="activatorTask" @close="closeTask"/>
         </template>
       </Modal>
     </v-main>
@@ -78,11 +78,13 @@ import BottomBar from '../components/common/BottomBar.vue';
 import { MessagesStore } from '@/store/modules/Messages';
 import { IMessages } from '@/entity/messages/messages.types';
 import TaskInput from '../components/todo/taskInput/TaskInput.vue';
+import AddTask from '../components/todo/addTask/AddTask.vue';
 
 
 
 @Component({
   components: {
+    AddTask,
     TaskInput,
     BottomBar,
     CandidateFormComponent,
@@ -127,6 +129,10 @@ export default class MainLayout extends Vue {
 
   showAlertTempAction(show: boolean): void {
     this.showAlertTemp = show;
+  }
+
+  closeTask(): void {
+    this.activatorTask = false;
   }
 
 
