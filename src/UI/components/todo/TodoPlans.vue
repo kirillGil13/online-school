@@ -4,22 +4,22 @@
             <svg-icon name="Plans" style="width: 28px; height: 28px" />
             <span class="title-text">Планы</span>
         </div>
-      <div class="add-task">
-        <div class="items-btn-add" style="padding-left: 10px" @click="showTextArea = true">
-          <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
-          <span class="btn-add-text">Добавить задачу</span>
+        <div class="add-task">
+            <div class="items-btn-add" style="padding-left: 10px" @click="showTextArea = true">
+                <v-icon class="items-icon-plus" small color="#426DF6">mdi-plus</v-icon>
+                <span class="btn-add-text">Добавить задачу</span>
+            </div>
+            <TaskInput
+                v-if="showTextArea"
+                :statuses="statuses"
+                :candidates="candidates"
+                :filters="filters"
+                :tabId="3"
+                :task-item="taskItem"
+                :isNewTask="true"
+                v-on="$listeners"
+            />
         </div>
-        <TaskInput
-            v-if="showTextArea"
-            :statuses="statuses"
-            :candidates="candidates"
-            :filters="filters"
-            :tabId="3"
-            :task-item="taskItem"
-            :isNewTask="true"
-            v-on="$listeners"
-        />
-      </div>
         <div v-click-outside="setTask">
             <div class="plans-items pl-4" v-for="(item, id) in dates" :key="id">
                 <div class="d-flex flex-column plans-item" style="width: 100%">
@@ -32,7 +32,14 @@
                             <template v-for="(item, key) in item.tasks">
                                 <div class="d-flex flex-column mt-2" :key="key">
                                     <div
-                                        class="d-flex align-center justify-space-between handle task-item-container px-2"
+                                        class="
+                                            d-flex
+                                            align-center
+                                            justify-space-between
+                                            handle
+                                            task-item-container
+                                            px-2
+                                        "
                                         v-if="taskShowId !== item.id"
                                     >
                                         <div class="d-flex align-end">
@@ -85,14 +92,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { ITaskItem, ITaskStatus, ITaskToDate, ITodoTask } from '@/entity/todo/todo.types';
 import draggable from 'vuedraggable';
 import TaskInput from './taskInput/TaskInput.vue';
 import { TodoStore } from '@/store/modules/Todo';
-import { DAYS_WEEK, MONTHS, PARENTCLASSES, TODOCOMPONENTS } from '@/constants';
-import {ICandidate} from '../../../entity/candidates';
-import {IStatuses} from '../../../entity/statuses/statuses.types';
+import { DAYS_WEEK, MONTHS, PARENTCLASSES } from '@/constants';
+import { ICandidate } from '../../../entity/candidates';
+import { IStatuses } from '../../../entity/statuses/statuses.types';
 import Filters from '../../../entity/filters/filters';
 
 @Component({
@@ -101,6 +108,7 @@ import Filters from '../../../entity/filters/filters';
 export default class TodoPlans extends Vue {
     @Prop() readonly statusItem!: ITaskStatus;
     @Prop() readonly id!: number;
+    @Prop() readonly taskById!: ITodoTask;
     @Prop() readonly activeTab!: number;
     @Prop() readonly candidates!: { [p: string]: ICandidate[] };
     @Prop() readonly statuses!: IStatuses[];
@@ -111,15 +119,69 @@ export default class TodoPlans extends Vue {
     globalDefaultDays: string[] = [];
     showTextArea = false;
     checkbox = false;
-  taskItem: ITaskItem = {
-    name: '',
-    checked: false,
-    description: '',
-    doDate: null,
-    imagesLink: [],
-    candidateId: null,
-    candidateName: ''
-  };
+    taskItem: ITaskItem = {
+        name: '',
+        checked: false,
+        description: '',
+        doDate: null,
+        imagesLink: [],
+        candidateId: null,
+        candidateName: '',
+        reminderTime: null,
+    };
+    newTask = false;
+
+    @Watch('tasks', { immediate: false })
+    onChangeTasks(val: any, oldVal: any): void {
+        for (let i = 1; i < this.tasks.length; i++) {
+            this.tasks[i].hide = false;
+        }
+        if (val.length > oldVal.length && this.showTextArea) {
+            this.tasks[0].hide = true;
+            this.newTask = true;
+        }
+        if (!this.newTask) {
+            this.tasks[0].hide = false;
+        }
+    }
+
+    @Watch('showTextArea')
+    onChangeShow(): void {
+        if (!this.showTextArea) {
+            this.tasks[0].hide = false;
+            this.newTask = false;
+        }
+    }
+
+    @Watch('taskShowId')
+    onChangeId(val: number | null, oldVal: number | null): void {
+        if (val) {
+            const item = this.tasks.find((el) => el.id === this.taskShowId)!;
+            if (item.doDate) {
+                item!.doDate = Number(item!.doDate) * 1000;
+            }
+
+            if (!item.reminderTime) {
+                const hours = Math.floor((item.reminderTime as number) / 60 / 60);
+                const minuts = Math.floor((item.reminderTime as number) / 60) - hours * 60;
+                item.reminderTime = `${hours}:${minuts}`;
+                
+            }
+
+            this.taskItem = {
+                name: item.name,
+                checked: false,
+                description: item.description,
+                doDate: item.doDate ? item.doDate : null,
+                imagesLink: item.imagesLink,
+                reminderTime: item.reminderTime ? item.reminderTime : null,
+                candidateId: item.candidate ? item.candidate.candidate_id : null,
+                candidateName: item.candidate ? item.candidate.candidate_name : '',
+            };
+        } else {
+            this.setTaskToNull();
+        }
+    }
 
     get dates(): ITaskToDate[] {
         const defaultDays: ITaskToDate[] = [];
@@ -136,7 +198,7 @@ export default class TodoPlans extends Vue {
                 tasks: [],
             });
 
-            this.globalDefaultDays.push(key)
+            this.globalDefaultDays.push(key);
 
             defaultDaysNumber.push(key);
         }
@@ -144,6 +206,14 @@ export default class TodoPlans extends Vue {
         this.tasks.forEach((task) => {
             const tasksDate = new Date(+task.doDate! * 1000);
             const taskDateStr = `${tasksDate.getDate()}.${tasksDate.getMonth() + 1}.${tasksDate.getFullYear()}`;
+            
+            
+            if (task.reminderTime) {
+                const hours = Math.floor((task.reminderTime as number) / 60 / 60);
+                const minuts = Math.floor((task.reminderTime as number) / 60) - hours * 60;
+                task.reminderTime = `${hours}:${minuts}`;
+            }
+
 
             if (defaultDaysNumber!.includes(taskDateStr)) {
                 const item = defaultDays.find((el) => el.date === taskDateStr);
@@ -154,17 +224,20 @@ export default class TodoPlans extends Vue {
                 return;
             }
 
-            if (defaultDays.some((el) => el.date.split('.')[1] === taskDateStr.split('.')[1]  && !defaultDaysNumber.includes(el.date))) {
-                const item = defaultDays.find((el) => el.date.split('.')[1] === taskDateStr.split('.')[1] && !defaultDaysNumber.includes(el.date));
+            if (
+                defaultDays.some(
+                    (el) => el.date.split('.')[1] === taskDateStr.split('.')[1] && !defaultDaysNumber.includes(el.date)
+                )
+            ) {
+                const item = defaultDays.find(
+                    (el) => el.date.split('.')[1] === taskDateStr.split('.')[1] && !defaultDaysNumber.includes(el.date)
+                );
 
                 const idx = defaultDays.findIndex((el) => el.date === item!.date);
 
-
-
                 defaultDays[idx].tasks.push(task);
                 return;
-            }else {
-
+            } else {
                 defaultDays.push({
                     date: taskDateStr,
                     tasks: [task],
@@ -185,10 +258,9 @@ export default class TodoPlans extends Vue {
             .reverse();
     }
 
-
     get tasks(): ITodoTask[] {
         return TodoStore.todoTasks.map((el) => {
-            if (this.activeTab !== 6) {
+            if (this.id !== 6) {
                 return {
                     ...el,
                     checked: false,
@@ -206,17 +278,17 @@ export default class TodoPlans extends Vue {
         TodoStore.setDraggableTasks(value);
     }
 
-  setTaskToNull(): void {
-    this.taskItem = {
-      name: '',
-      checked: false,
-      description: '',
-      doDate: null,
-      imagesLink: [],
-      candidateId: null,
-      candidateName: ''
-    };
-  }
+    setTaskToNull(): void {
+        this.taskItem = {
+            name: '',
+            checked: false,
+            description: '',
+            doDate: null,
+            imagesLink: [],
+            candidateId: null,
+            candidateName: '',
+        };
+    }
 
     include(className: string): boolean {
         return PARENTCLASSES.includes(className);
@@ -224,7 +296,6 @@ export default class TodoPlans extends Vue {
 
     getitemTaskText(date: string): string {
         const title = date.split('.');
-
 
         return this.globalDefaultDays.includes(date) ? `${title[0]}` : '';
     }
@@ -242,8 +313,6 @@ export default class TodoPlans extends Vue {
         if (checkToday) {
             return 'Завтра';
         }
-
-
 
         //@ts-ignore
         const numberDayWeek = new Date(title[2], title[1] - 1 <= 0 ? 0 : title[1] - 1, title[0]).getDay();
@@ -265,18 +334,19 @@ export default class TodoPlans extends Vue {
             (this.showTextArea || this.taskShowId)
         ) {
             if (this.showTextArea === true) {
-                const date = Date.now();
+                let time = null;
+
+                if( this.taskItem.reminderTime &&  (typeof this.taskItem.reminderTime) !== 'number') {
+                    time = Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 + Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+                }
+
 
                 const el = {
                     name: this.taskItem.name || null,
-                    do_date:
-                        this.statusItem.categoryId === 2
-                            ? date / 1000
-                            : this.taskItem.doDate !== null
-                            ? this.taskItem.doDate / 1000
-                            : null,
+                    do_date: this.taskItem.doDate  ? Math.floor(this.taskItem.doDate / 1000): null,
                     description: this.taskItem.description || null,
                     category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
+                    reminder_time: this.taskItem.reminderTime ? time : null,
                     images_link: this.taskItem.imagesLink.length === 0 ? null : this.taskItem.imagesLink,
                     candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
                 };
@@ -292,14 +362,23 @@ export default class TodoPlans extends Vue {
     setTaskShowid(id: number | null): void {
         if (this.taskShowId === id || id === null) {
             if (this.taskItem !== null) {
+                let time = null;
+                
+
+                if( this.taskItem.reminderTime &&  (typeof this.taskItem.reminderTime) !== 'number') {
+                    time = Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 + Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+                }
+
                 const el = {
                     name: this.taskItem.name,
                     description: this.taskItem.description,
-                    do_date: this.taskItem.doDate ? this.taskItem.doDate / 1000 : null,
+                    do_date: this.taskItem.doDate ? Math.floor(this.taskItem.doDate / 1000) : null,
                     category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
                     images_link: this.taskItem.imagesLink,
                     candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
+                    reminder_time: this.taskItem.reminderTime ? time : null,
                 };
+                
 
                 this.$emit('upDateTask', el, this.taskItem.checked, this.taskShowId!);
                 this.taskShowId = null;
@@ -330,7 +409,7 @@ export default class TodoPlans extends Vue {
 </script>
 
 
-<style lang="scss" scooped>
+<style lang="scss" scoped>
 .plans-items {
     width: 100%;
     padding-left: 8px;
@@ -376,7 +455,7 @@ export default class TodoPlans extends Vue {
     }
 }
 .task-item-container:hover {
-  background: #f2f2f2;
-  border-radius: 12px;
+    background: #f2f2f2;
+    border-radius: 12px;
 }
 </style>

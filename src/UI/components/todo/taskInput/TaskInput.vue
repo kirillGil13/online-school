@@ -28,11 +28,11 @@
                     </div>
                     <div class="items-add-place-text__like-dislike d-flex pa-3">
                         <div
-                            v-if="taskItem.doDate"
+                            v-if="![1, 4, 5,6].includes(tabId)"
                             class="d-flex align-center"
                             style="width: 100%; justify-self: flex-start"
                         >
-                            <div class="d-flex align-center shortDate" @click="activatorCallTime = true">
+                            <div class="d-flex align-center shortDate" @click="activatorDate = true">
                                 <div class="d-flex align-center mr-3">
                                     <svg-icon
                                         :name="getIconName(tabId)"
@@ -42,20 +42,20 @@
                                         style="cursor: pointer"
                                     />
                                 </div>
-                                <div class="d-flex align-center">
+                                <div class="d-flex align-center" v-if="tabId === 3">
                                     {{ shortDaysOfWeek(taskItem.doDate) }}
                                 </div>
                             </div>
-                            <div class="d-flex align-center ml-2">Напомнить</div>
+                            <div class="d-flex align-center ml-2" @click="activatorTime = true">{{taskItem.reminderTime !== null && taskItem.reminderTime !== '0:0' ? taskItem.reminderTime : 'Напомнить'}}</div>
                         </div>
-                        <div v-if="![1, 4, 5].includes(tabId)" class="d-flex">
+                        <div v-if="![1, 4, 5,6].includes(tabId)" class="d-flex">
                             <svg-icon
                                 name="Calendar_Icon"
                                 class="menu__icon"
                                 height="27"
                                 width="27"
                                 style="cursor: pointer"
-                                @click="activatorCallTime = true"
+                                @click="activatorDate = true"
                             />
                         </div>
                         <div
@@ -66,20 +66,13 @@
                             <svg-icon
                                 name="Picture_outline"
                                 class="menu__icon"
-                                :class="[
-                                   taskItem.imagesLink.length !== 0 &&
-                                        taskItem.imagesLink &&
-                                        'active-icon mr-2',
-                                ]"
+                                :class="[taskItem.imagesLink.length !== 0 && taskItem.imagesLink && 'active-icon mr-2']"
                                 height="24"
                                 width="24"
                             />
                             <div
                                 style="margin-top: 3px; white-space: nowrap"
-                                v-if="
-                                    taskItem.imagesLink.length !== 0 &&
-                                    taskItem.imagesLink
-                                "
+                                v-if="taskItem.imagesLink.length !== 0 && taskItem.imagesLink"
                             >
                                 {{ 'Вложения: ' + taskItem.imagesLink.length }}
                             </div>
@@ -104,11 +97,17 @@
                 </div>
             </div>
         </div>
-<!--        <Modal>-->
-<!--            <template>-->
-<!--                <v-time-picker v-model="picker" ampm-in-title></v-time-picker>-->
-<!--            </template>-->
-<!--        </Modal>-->
+        <Modal
+            :width="'max-content'"
+            :full-screen="$adaptive.isMobile"
+            @activatorChange="activatorChangeTime"
+            :activator="activatorTime"
+        >
+            <template v-slot:content>
+                <v-time-picker v-model="taskItem.reminderTime" format="24hr" />
+            </template>
+        </Modal>
+
         <Modal
             :activator="activatorImages"
             :without-tool-bar="false"
@@ -130,15 +129,20 @@
             </template>
         </Modal>
         <Modal
-            :activator="activatorCallTime"
+            :width="'max-content'"
+            :activator="activatorDate"
             :full-screen="$adaptive.isMobile"
-            @activatorChange="activatorChangeCallTime"
+            @activatorChange="activatorChangeDate"
         >
             <template v-slot:content>
                 <v-date-picker
+                    header-color="#426df6"
+                    color="#426df6"
                     v-model="taskDate"
-                    class="mt-4"
                     full-width
+                    flat
+                    show-adjacent-months
+                    elevation="15"
                     min="2016-06-15"
                     max="2023-03-20"
                     year-icon="mdi-calendar-blank"
@@ -147,29 +151,50 @@
                 ></v-date-picker>
             </template>
         </Modal>
-      <Modal :activator="activatorCandidates" :without-tool-bar="false" tool-bar-title="Выберите исполнителя" :full-screen="true" @activatorChange="activatorCandidatesChange">
-        <template v-slot:full-screen-content v-if="activatorCandidates">
-          <div>
-            <v-row justify="center" :no-gutters="$adaptive.isMobile">
-              <v-col class="mt-6" :class="$adaptive.isMobile && 'px-3'" style="max-width: 1600px; width: 100%">
-                <FilterComponent :isCandidates="false" :isOnRight="!$adaptive.isMobile" :is-archive="false" :button="false" :search="true" :count-element="$adaptive.isMobile ? [1,2] : [2]"
-                                 :filters="filters" v-on="$listeners">
-                  <template v-slot:search>
-                    <Search v-on="$listeners"/>
-                  </template>
-                </FilterComponent>
-              </v-col>
-            </v-row>
-            <v-row class="mt-3" justify="center" no-gutters>
-              <div class="mb-6 px-3" style="max-width: 1600px; width: 100%">
-                <TableCandidates task :candidates="candidates" :statuses="statuses"
-                                 @choseCandidate="chooseCandidate"/>
-              </div>
-            </v-row>
-          </div>
-
-        </template>
-      </Modal>
+        <Modal
+            :activator="activatorCandidates"
+            :without-tool-bar="false"
+            tool-bar-title="Выберите исполнителя"
+            :full-screen="true"
+            @activatorChange="activatorCandidatesChange"
+        >
+            <template v-slot:full-screen-content v-if="activatorCandidates">
+                <div>
+                    <v-row justify="center" :no-gutters="$adaptive.isMobile">
+                        <v-col
+                            class="mt-6"
+                            :class="$adaptive.isMobile && 'px-3'"
+                            style="max-width: 1600px; width: 100%"
+                        >
+                            <FilterComponent
+                                :isCandidates="false"
+                                :isOnRight="!$adaptive.isMobile"
+                                :is-archive="false"
+                                :button="false"
+                                :search="true"
+                                :count-element="$adaptive.isMobile ? [1, 2] : [2]"
+                                :filters="filters"
+                                v-on="$listeners"
+                            >
+                                <template v-slot:search>
+                                    <Search v-on="$listeners" />
+                                </template>
+                            </FilterComponent>
+                        </v-col>
+                    </v-row>
+                    <v-row class="mt-3" justify="center" no-gutters>
+                        <div class="mb-6 px-3" style="max-width: 1600px; width: 100%">
+                            <TableCandidates
+                                task
+                                :candidates="candidates"
+                                :statuses="statuses"
+                                @choseCandidate="chooseCandidate"
+                            />
+                        </div>
+                    </v-row>
+                </div>
+            </template>
+        </Modal>
     </div>
 </template>
 
@@ -188,6 +213,7 @@ import FilterComponent from '../../filter/FilterComponent.vue';
 import Filters from '../../../../entity/filters/filters';
 import { MONTHS, SHORT_DAYS_WEEK, TODOCOMPONENTS } from '@/constants';
 import Search from '../../common/Search.vue';
+
 @Component({
     components: { FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime, Search },
 })
@@ -199,12 +225,27 @@ export default class TaskInput extends Vue {
     @Prop() readonly filters!: Filters;
     activatorImages = false;
     activatorCandidates = false;
-    activatorCallTime = false;
+    activatorDate = false;
     activatorTime = false;
+    picker = null;
 
     @Watch('activatorImages')
     onActImChange(): void {
       if (!this.activatorImages) {
+        this.$emit('setTask');
+      }
+    }
+
+    @Watch('activatorDate')
+    onActDateChange(): void {
+      if (!this.activatorDate) {
+        this.$emit('setTask');
+      }
+    }
+
+    @Watch('activatorTime')
+    onActTimeChange(): void {
+      if (!this.activatorTime) {
         this.$emit('setTask');
       }
     }
@@ -214,18 +255,21 @@ export default class TaskInput extends Vue {
     }
 
     get taskDate(): string {
-      return (new Date(this.taskItem.doDate!)).toISOString().substr(0, 10);
+        return new Date(this.taskItem.doDate!).toISOString().substr(0, 10);
     }
 
     set taskDate(date: string) {
-      this.taskItem.doDate = Date.parse(date);
+        this.taskItem.doDate = Date.parse(date);
+        
     }
+
 
     getIconName(id: number): string {
         return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;
     }
 
     shortDaysOfWeek(date: string): string {
+      
         const dateFormat = new Date(date!).toISOString().substr(0, 10);
         const title: string[] = dateFormat.split('-');
         const day = new Date(
@@ -243,31 +287,31 @@ export default class TaskInput extends Vue {
         this.activatorImages = act;
     }
 
-    activatorChangeCallTime(act: boolean): void {
-        this.activatorCallTime = act;
-      // if (!act) {
-      //   this.$emit('setTask');
-      // }
+    activatorChangeDate(act: boolean): void {
+        this.activatorDate = act;
     }
+
+    activatorChangeTime(act: boolean): void {
+        this.activatorTime = act;
+
+    }
+
 
     activatorCandidatesChange(act: boolean): void {
         this.activatorCandidates = act;
     }
 
     deleteImage(image: string): void {
-        this.taskItem.imagesLink.splice(
-            this.taskItem.imagesLink.findIndex((item: string) => item === image)!,
-            1
-        );
+        this.taskItem.imagesLink.splice(this.taskItem.imagesLink.findIndex((item: string) => item === image)!, 1);
     }
 
     chooseCandidate(id: number): void {
-      this.taskItem.candidateId = Object.values(this.candidates)
-                .flat()
-                .find((el) => el.id === id)!.id;
-      this.taskItem.candidateName = Object.values(this.candidates)
-          .flat()
-          .find((el) => el.id === id)!.name;
+        this.taskItem.candidateId = Object.values(this.candidates)
+            .flat()
+            .find((el) => el.id === id)!.id;
+        this.taskItem.candidateName = Object.values(this.candidates)
+            .flat()
+            .find((el) => el.id === id)!.name;
         this.activatorCandidates = false;
         this.$emit('setTask');
     }
@@ -284,7 +328,7 @@ export default class TaskInput extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .items-add-place {
     margin-top: 12px;
     background: #ffffff;
