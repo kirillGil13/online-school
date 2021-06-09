@@ -7,8 +7,10 @@
                  <svg-icon :name="item.iconName" class="menu__icon" height="24" width="24" />
                 </v-list-item-icon>
                 <v-list-item-title v-text="item.title" />
+                <v-list-item-action v-if="item.extraAction">
+                  <svg-icon @click.stop.prevent="$emit('open')" width="20" height="20" name="Universal"></svg-icon>
+                </v-list-item-action>
                 <span class="count-unread-message">{{item.title === 'Чат' &&  $route.name !== $routeRules.Chat &&  $route.name !== $routeRules.ChatMain && unReadMessages !== 0 ? unReadMessages : ''}}</span>
-
             </v-list-item>
 
             <v-list-group v-else no-action :key="item.title">

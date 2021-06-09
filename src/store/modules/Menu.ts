@@ -19,6 +19,7 @@ class MenuModule extends VuexModule {
         {
             title: 'Задачи',
             iconName: 'Todo_list',
+            extraAction: true,
             route: RouterNameEnum.TodoList,
         },
         {

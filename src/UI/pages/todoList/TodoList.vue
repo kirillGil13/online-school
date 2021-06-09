@@ -59,8 +59,8 @@
                 />
             </template>
          </div>
-      <Modal v-if="$adaptive.isMobile" :activator="activator" :without-tool-bar="false" tool-bar-title="" :full-screen="true" @activatorChange="activatorChange">
-        <template v-slot:full-screen-content>
+      <Modal v-if="$adaptive.isMobile" :activator="activator" @close="closeModal" :without-tool-bar="false" tool-bar-title="" :full-screen="true" @activatorChange="activatorChange">
+        <template v-slot:full-screen-content v-if="activeTab || activeTab === 0">
           <template v-if="activeTab !== 2" >
             <DefaultTodoComponent
                 :statusItem="tabs[activeTab]"
@@ -74,7 +74,7 @@
                 @filter="onFilter"
                 @search="search"
                 @toJurnalOrIncome="toJurnalOrIncome"
-                style="margin-right: 2px; margin-left: 2px;"
+                :style="{marginRight: !$adaptive.isMobile && '2px', marginLeft: !$adaptive.isMobile && '2px'}"
             />
           </template>
           <template v-else>
@@ -90,7 +90,7 @@
                 @filter="onFilter"
                 @search="search"
                 @toJurnalOrIncome="toJurnalOrIncome"
-                style="margin-right: 2px; margin-left: 2px;"
+                :style="{marginRight: !$adaptive.isMobile && '2px', marginLeft: !$adaptive.isMobile && '2px'}"
             />
           </template>
         </template>
@@ -147,8 +147,14 @@ export default class TodoList extends Vue {
   }
 
     @Watch('activeTab')
-    async onChange(): Promise<void> {
-        await this.fetchData(this.tabs[this.activeTab!].categoryId);
+    async onChange(val: number | null): Promise<void> {
+        if (this.$adaptive.isMobile) {
+          if (val || val === 0) {
+            await this.fetchData(this.tabs[val!].categoryId);
+          }
+        } else {
+          await this.fetchData(this.tabs[val!].categoryId);
+        }
     }
 
   @Watch('statusesLoaded', {immediate: true})
@@ -223,6 +229,10 @@ export default class TodoList extends Vue {
         }
     }
 
+  closeModal(): void {
+    this.activeTab = null;
+  }
+
 
     fetchData(id = 1): void {
         TodoStore.fetchAllTask({id});
@@ -238,7 +248,11 @@ export default class TodoList extends Vue {
 
     async createTask(data: TaskRequestType, checked: boolean): Promise<void> {
         await TodoStore.createTask({data: data, checked: checked});
-        await TodoStore.setTaskCount({id: data.category_id, delete: false});
+        if (checked) {
+          await TodoStore.setTaskCount({id: 6, delete: false});
+        } else {
+          await TodoStore.setTaskCount({id: data.category_id, delete: false});
+        }
     }
 
   async search(searchBody: string): Promise<void> {
@@ -251,7 +265,6 @@ export default class TodoList extends Vue {
   }
 
   async filtration(): Promise<void> {
-    console.log(this.searchBody);
     await CandidatesStore.fetchAll({data: {
         statusId: this.filters.default[0],
         infoPackId: this.filters.default[2],
@@ -354,6 +367,7 @@ export default class TodoList extends Vue {
     min-height: max-content !important;
     .v-list-item__title {
       font-size: 16px !important;
+      line-height: 120% !important;
     }
   }
   .active-todo {

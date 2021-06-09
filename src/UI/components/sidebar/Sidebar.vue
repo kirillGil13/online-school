@@ -2,7 +2,7 @@
   <div class="sidebar">
     <Logo width="150px" id="step-0"/>
     <account-badge :userInfo="userInfo" :userId="userId" v-on="$listeners"/>
-    <Menu :unReadMessages="unReadMessages"/>
+    <Menu :unReadMessages="unReadMessages" v-on="$listeners"/>
   </div>
 </template>
 

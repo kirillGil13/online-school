@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex todo__items" style="width: 100%">
-        <div class="items-title pb-9">
+        <div class="items-title pb-9" :class="[$adaptive.isMobile && 'pl-2']">
             <svg-icon :name="getIconName(statusItem.categoryId)" style="width: 28px; height: 28px" />
             <span class="title-text">{{ statusItem.categoryName }}</span>
         </div>
@@ -223,6 +223,13 @@ export default class DefaultTodoComponent extends Vue {
                     candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
                 };
                 this.$emit('createTask', el, this.taskItem.checked);
+
+                if (this.taskItem.checked) {
+                    this.showTextArea = false;
+                    this.newTask = false;
+                    this.setTaskToNull();
+                }
+                
             } else {
                 const time =
                     Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +

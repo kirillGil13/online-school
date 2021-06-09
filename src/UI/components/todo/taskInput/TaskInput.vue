@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div :class="[$adaptive.isMobile && 'px-1']">
         <div class="items-add-place">
             <div class="items-add-place-text">
                 <div class="items-add-place-text__title d-flex">
-                    <v-checkbox class="ma-0 pa-0" hide-details v-model="taskItem.checked" />
+                    <v-checkbox class="ma-0 pa-0" hide-details v-model="taskItem.checked" @change="$emit('setTask')" />
                     <v-text-field
                         class="ma-0 pa-0"
                         hide-details
@@ -19,7 +19,7 @@
                             no-resize
                             id="message"
                             placeholder="Заметки"
-                            rows="5"
+                            :rows="$adaptive.isMobile ? 2 : 5"
                             hide-details
                             type="text"
                             @change="$emit('setTask')"
@@ -203,7 +203,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
 import { ITaskItem } from '../../../../entity/todo/todo.types';
 import TodoTaskImages from '../todoTaskImages/TodoTaskImages.vue';
 import Modal from '../../common/Modal.vue';
@@ -233,6 +233,13 @@ export default class TaskInput extends Vue {
     activatorTime = false;
     picker = null;
 
+    @Watch('activatorImages')
+    onActImChange(): void {
+      if (!this.activatorImages) {
+        this.$emit('setTask');
+      }
+    }
+
     get picture(): IPictureUpload | null {
         return PictureUploadStore.pictureUpload;
     }
@@ -248,7 +255,6 @@ export default class TaskInput extends Vue {
 
 
     getIconName(id: number): string {
-      console.log(id);
         return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;
     }
 
@@ -389,5 +395,8 @@ export default class TaskInput extends Vue {
             border-radius: 5px;
         }
     }
+  .v-text-field > .v-input__control > .v-input__slot:before, .v-text-field > .v-input__control > .v-input__slot:after {
+    content: none !important;
+  }
 }
 </style>
