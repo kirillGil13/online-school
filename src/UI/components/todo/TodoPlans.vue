@@ -162,7 +162,10 @@ export default class TodoPlans extends Vue {
             }
 
             if (!item.reminderTime) {
-                item.reminderTime = Number(item!.doDate) * 1000;
+                const hours = Math.floor((item.reminderTime as number) / 60 / 60);
+                const minuts = Math.floor((item.reminderTime as number) / 60) - hours * 60;
+                item.reminderTime = `${hours}:${minuts}`;
+                
             }
 
             this.taskItem = {
@@ -204,11 +207,13 @@ export default class TodoPlans extends Vue {
             const tasksDate = new Date(+task.doDate! * 1000);
             const taskDateStr = `${tasksDate.getDate()}.${tasksDate.getMonth() + 1}.${tasksDate.getFullYear()}`;
             
+            
             if (task.reminderTime) {
                 const hours = Math.floor((task.reminderTime as number) / 60 / 60);
                 const minuts = Math.floor((task.reminderTime as number) / 60) - hours * 60;
                 task.reminderTime = `${hours}:${minuts}`;
             }
+
 
             if (defaultDaysNumber!.includes(taskDateStr)) {
                 const item = defaultDays.find((el) => el.date === taskDateStr);
@@ -329,20 +334,16 @@ export default class TodoPlans extends Vue {
             (this.showTextArea || this.taskShowId)
         ) {
             if (this.showTextArea === true) {
-                const date = Date.now();
-                const time =
-                    Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
-                    Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+                let time = null;
+
+                if( this.taskItem.reminderTime &&  (typeof this.taskItem.reminderTime) !== 'number') {
+                    time = Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 + Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+                }
 
 
                 const el = {
                     name: this.taskItem.name || null,
-                    do_date:
-                        this.statusItem.categoryId === 2
-                            ? date / 1000
-                            : this.taskItem.doDate !== null
-                            ? this.taskItem.doDate / 1000
-                            : null,
+                    do_date: this.taskItem.doDate  ? Math.floor(this.taskItem.doDate / 1000): null,
                     description: this.taskItem.description || null,
                     category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
                     reminder_time: this.taskItem.reminderTime ? time : null,
@@ -361,19 +362,23 @@ export default class TodoPlans extends Vue {
     setTaskShowid(id: number | null): void {
         if (this.taskShowId === id || id === null) {
             if (this.taskItem !== null) {
-                const time =
-                    Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
-                    Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+                let time = null;
+                
+
+                if( this.taskItem.reminderTime &&  (typeof this.taskItem.reminderTime) !== 'number') {
+                    time = Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 + Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+                }
 
                 const el = {
                     name: this.taskItem.name,
                     description: this.taskItem.description,
-                    do_date: this.taskItem.doDate ? this.taskItem.doDate / 1000 : null,
+                    do_date: this.taskItem.doDate ? Math.floor(this.taskItem.doDate / 1000) : null,
                     category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
                     images_link: this.taskItem.imagesLink,
                     candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
                     reminder_time: this.taskItem.reminderTime ? time : null,
                 };
+                
 
                 this.$emit('upDateTask', el, this.taskItem.checked, this.taskShowId!);
                 this.taskShowId = null;

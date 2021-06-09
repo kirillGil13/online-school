@@ -46,7 +46,7 @@
                                     {{ shortDaysOfWeek(taskItem.doDate) }}
                                 </div>
                             </div>
-                            <div class="d-flex align-center ml-2" @click="activatorTime = true">Напомнить</div>
+                            <div class="d-flex align-center ml-2" @click="activatorTime = true">{{taskItem.reminderTime !== null && taskItem.reminderTime !== '0:0' ? taskItem.reminderTime : 'Напомнить'}}</div>
                         </div>
                         <div v-if="![1, 4, 5,6].includes(tabId)" class="d-flex">
                             <svg-icon
@@ -240,6 +240,20 @@ export default class TaskInput extends Vue {
       }
     }
 
+    @Watch('activatorDate')
+    onActDateChange(): void {
+      if (!this.activatorDate) {
+        this.$emit('setTask');
+      }
+    }
+
+    @Watch('activatorTime')
+    onActTimeChange(): void {
+      if (!this.activatorTime) {
+        this.$emit('setTask');
+      }
+    }
+
     get picture(): IPictureUpload | null {
         return PictureUploadStore.pictureUpload;
     }
@@ -275,29 +289,14 @@ export default class TaskInput extends Vue {
 
     activatorImagesChange(act: boolean): void {
         this.activatorImages = act;
-        if (!act) {
-          console.log(1);
-          
-          this.$emit('setTask');
-        }
     }
 
     activatorChangeDate(act: boolean): void {
         this.activatorDate = act;
-
-         if (!act) {
-           console.log(2);
-        this.$emit('setTask');
-      }
     }
 
     activatorChangeTime(act: boolean): void {
         this.activatorTime = act;
-
-        if (!act) {
-          console.log(3);
-        this.$emit('setTask');
-      }
 
     }
 

@@ -134,8 +134,8 @@ export default class DefaultTodoComponent extends Vue {
 
             if (item.reminderTime) {
                 const hours = Math.floor((item.reminderTime as number) / 60 / 60);
-                const minuts = Math.floor((item.reminderTime as number)/60) - (hours * 60);
-                item.reminderTime = `${hours}:${minuts}`
+                const minuts = Math.floor((item.reminderTime as number) / 60) - hours * 60;
+                item.reminderTime = `${hours}:${minuts}`;
             }
 
             this.taskItem = {
@@ -167,8 +167,7 @@ export default class DefaultTodoComponent extends Vue {
             const empty: number[] = [];
             for (const taskItemKey in this.taskItem) {
                 //@ts-ignore
-                if (this.taskItem[taskItemKey] === null || this.taskItem[taskItemKey] === '' ||this.taskItem[taskItemKey] === false ||this.taskItem[taskItemKey].length === 0
-                ) {
+                if (this.taskItem[taskItemKey] === null ||this.taskItem[taskItemKey] === '' ||this.taskItem[taskItemKey] === false ||this.taskItem[taskItemKey].length === 0 ) {
                     empty.push(1);
                 }
             }
@@ -203,18 +202,24 @@ export default class DefaultTodoComponent extends Vue {
     async setTask(): Promise<void> {
         if (this.showTextArea === true) {
             if (!this.newTask) {
-                const date = Date.now();
-                const time =
-                    Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
-                    Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+                const date = Math.floor(Date.now() / 1000);
+                let time = null;
+
+                if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
+                    time =
+                        Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
+                        Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+                }
+
+                
 
                 const el = {
                     name: this.taskItem.name || null,
                     do_date:
-                        this.statusItem.categoryId === 2
-                            ? date / 1000
+                        this.statusItem.categoryId === 2 && !this.taskItem.doDate
+                            ? date
                             : this.taskItem.doDate !== null
-                            ? this.taskItem.doDate / 1000
+                            ? Math.floor(this.taskItem.doDate / 1000)
                             : null,
                     reminder_time: this.taskItem.reminderTime ? time : null,
                     description: this.taskItem.description || null,
@@ -222,6 +227,7 @@ export default class DefaultTodoComponent extends Vue {
                     images_link: this.taskItem.imagesLink.length === 0 ? null : this.taskItem.imagesLink,
                     candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
                 };
+                
                 this.$emit('createTask', el, this.taskItem.checked);
 
                 if (this.taskItem.checked) {
@@ -229,16 +235,22 @@ export default class DefaultTodoComponent extends Vue {
                     this.newTask = false;
                     this.setTaskToNull();
                 }
-                
+
+              
             } else {
-                const time =
-                    Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
-                    Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+                const date = Math.floor(Date.now() / 1000);
+                let time = null;
+
+                if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
+                    time =
+                        Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
+                        Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+                }
 
                 const el = {
                     name: this.taskItem.name,
                     description: this.taskItem.description,
-                    do_date: this.taskItem.doDate ? this.taskItem.doDate / 1000 : null,
+                    do_date: this.taskItem.doDate ? Math.floor(this.taskItem.doDate /1000) : null,
                     category_id:
                         this.taskItem.checked && this.statusItem.categoryId !== 6
                             ? 6
@@ -249,6 +261,7 @@ export default class DefaultTodoComponent extends Vue {
                     reminder_time: this.taskItem.reminderTime ? time : null,
                     candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
                 };
+
                 this.$emit('upDateTask', el, this.taskItem.checked, this.tasks[0].id, true);
             }
         } else {
@@ -265,13 +278,19 @@ export default class DefaultTodoComponent extends Vue {
         this.showTextArea = false;
 
         if (this.taskShowId === id || id === null) {
-            const time =
+            const date = Math.floor(Date.now() / 1000);
+            
+            let time = null;
+
+            if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
+                time =
                     Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
                     Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+            }
             const el = {
                 name: this.taskItem.name,
                 description: this.taskItem.description,
-                do_date: this.taskItem.doDate ? this.taskItem.doDate / 1000 : null,
+                do_date: this.taskItem.doDate ? Math.floor(this.taskItem.doDate/ 1000) : null,
                 category_id:
                     this.taskItem.checked && this.statusItem.categoryId !== 6
                         ? 6
@@ -282,7 +301,7 @@ export default class DefaultTodoComponent extends Vue {
                 reminder_time: this.taskItem.reminderTime ? time : null,
                 candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
             };
-            console.log(el);
+            
             this.$emit('upDateTask', el, this.taskItem.checked, this.taskShowId!);
         } else {
             this.taskShowId = id;

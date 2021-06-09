@@ -2,6 +2,7 @@ import {getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-modu
 import store from '@/store';
 import { TodoTask } from '@/entity/todo/todo';
 import {ITaskStatus, ITodoTask, TaskRequestType} from '@/entity/todo/todo.types';
+import { date } from '@rxweb/reactive-forms';
 
 @Module({
     namespaced: true,
@@ -59,12 +60,17 @@ class TodoModule extends VuexModule {
         const task = await store.$repository.todo.createTask(data.data);
         //@ts-ignore
         const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]
-        if(!data.checked) {
-            todoTasks.unshift(task)
+        const date = new Date(Date.now()).toISOString().substr(0, 10);
+        const itemDate = new Date(data.data.do_date! * 1000).toISOString().substr(0, 10)
+
+        if (!(data.data.category_id === 2 && date !== itemDate) && !(data.data.category_id === 3 && date === itemDate)) {
+            if(!data.checked) {
+                todoTasks.unshift(task);
+            }
         }
+        
         return {todoTasks};
     }
-
 
     @MutationAction
     async getCandidateTask(data: {id: number}): Promise<{taskById: ITodoTask | null }> {
@@ -87,12 +93,35 @@ class TodoModule extends VuexModule {
 
     @MutationAction
     async updateCandidateTask(data: {data: TaskRequestType; checked: boolean; route: number; newTask?: boolean}): Promise<{todoTasks: ITodoTask[]}> {
+        const date = new Date(Date.now()).toISOString().substr(0, 10);
+        const itemDate = new Date(data.data.do_date! * 1000).toISOString().substr(0, 10)
+        const id = data.data.category_id;
+        
+
+        if(data.data.category_id === 3 && date === itemDate) {
+            data.data.category_id = 2;
+        }
+
+        if(data.data.category_id === 2 && date !== itemDate) {
+            data.data.category_id = 3;
+        }
+        
         const upDateTask = await store.$repository.todo.updateCandidateTask({data: data.data, route: data.route});
           //@ts-ignore
         const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]
         const idx = todoTasks.findIndex(el => el.id === data.route);
         todoTasks[idx] = {
             ...upDateTask
+        }
+        
+        
+
+        if(id === 3 &&  date === itemDate) {
+            todoTasks.splice(idx, 1);
+        }
+
+        if(id === 2 &&  date !== itemDate ) {
+            todoTasks.splice(idx, 1);
         }
         if(data.checked) {
             todoTasks.splice(idx, 1);
