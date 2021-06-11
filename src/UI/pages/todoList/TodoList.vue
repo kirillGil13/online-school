@@ -248,11 +248,12 @@ export default class TodoList extends Vue {
 
     async createTask(data: TaskRequestType, checked: boolean): Promise<void> {
         await TodoStore.createTask({data: data, checked: checked});
-        if (checked) {
-          await TodoStore.setTaskCount({id: 6, delete: false});
-        } else {
-          await TodoStore.setTaskCount({id: data.category_id, delete: false});
-        }
+        await TodoStore.setTaskCount({id: data.category_id, delete: false});
+        // if (checked) {
+        //   await TodoStore.setTaskCount({id: 6, delete: false});
+        // } else {
+        //   await TodoStore.setTaskCount({id: data.category_id, delete: false});
+        // }
     }
 
   async search(searchBody: string): Promise<void> {
@@ -285,7 +286,19 @@ export default class TodoList extends Vue {
     }
 
     async upDateTask(el: TaskRequestType, checked: boolean, route: number, newTask?: boolean): Promise<void> {
-        await TodoStore.updateCandidateTask({data: el, checked: checked, route: route, newTask: newTask});
+      const date = new Date(Date.now()).toISOString().substr(0, 10);
+      const itemDate = new Date(el.do_date! * 1000).toISOString().substr(0, 10)
+      const id = el.category_id;
+      if(el.category_id === 3 && date === itemDate) {
+        await TodoStore.setTaskCount({id: 3, delete: true});
+        await TodoStore.setTaskCount({id: el.category_id, delete: false});
+      }
+      if(el.category_id === 2 && date !== itemDate) {
+        console.log(3134)
+        await TodoStore.setTaskCount({id: 2, delete: true});
+        await TodoStore.setTaskCount({id: el.category_id, delete: false});
+      }
+      await TodoStore.updateCandidateTask({data: el, checked: checked, route: route, newTask: newTask});
     }
 
     async toJurnalOrIncome(el: TaskRequestType, route: number): Promise<void> {

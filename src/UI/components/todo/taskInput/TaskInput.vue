@@ -43,7 +43,7 @@
                                     />
                                 </div>
                                 <div class="d-flex align-center ml-2" style="font-weight: 600; margin-top: 2px">
-                                    {{tabId === 3 ? shortDaysOfWeek(taskItem.doDate): tabId === 2 && 'Cегодня' }}
+                                    {{taskItem.doDate ? shortDaysOfWeek(taskItem.doDate): tabId === 2 && 'Cегодня' }}
                                 </div>
                             </div>
                             <div class="d-flex align-center ml-2 task-time" style="color: #426df6; margin-top: 2px" @click="activatorTime = true">{{taskItem.reminderTime !== null && taskItem.reminderTime !== '0:0' ? taskItem.reminderTime : 'Напомнить'}}</div>
@@ -239,7 +239,7 @@ export default class TaskInput extends Vue {
     @Watch('activatorDate')
     onActDateChange(): void {
       console.log(this.activatorDate);
-      
+
       if (!this.activatorDate) {
         this.$emit('setTask');
       }
@@ -271,18 +271,22 @@ export default class TaskInput extends Vue {
     }
 
     shortDaysOfWeek(date: string): string {
-
         const dateFormat = new Date(date!).toISOString().substr(0, 10);
-        const title: string[] = dateFormat.split('-');
-        const day = new Date(
-            Number(title[0]),
-            Number(title[1]) - 1 <= 0 ? 0 : Number(title[1]) - 1,
-            Number(title[2])
-        ).getDay();
-        const dateStr = `${SHORT_DAYS_WEEK[day]}, ${title[2]} ${
-            MONTHS.find((el) => title[1].includes(el.id.toString()))!.value
-        }`;
-        return dateStr;
+        const now = new Date(Date.now()).toISOString().substr(0, 10);
+        if (now  === dateFormat) {
+          return 'Сегодня';
+        } else {
+          const title: string[] = dateFormat.split('-');
+          const day = new Date(
+              Number(title[0]),
+              Number(title[1]) - 1 <= 0 ? 0 : Number(title[1]) - 1,
+              Number(title[2])
+          ).getDay();
+          const dateStr = `${SHORT_DAYS_WEEK[day]}, ${title[2]} ${
+              MONTHS.find((el) => title[1].includes(el.id.toString()))!.value
+          }`;
+          return dateStr;
+        }
     }
 
     activatorImagesChange(act: boolean): void {
@@ -384,12 +388,12 @@ export default class TaskInput extends Vue {
         padding: 1px;
         transition: all .3s ease;
         padding: 5px;
-        
+
 
         &:hover {
             box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
             border-radius: 5px;
-            
+
         }
     }
   .v-text-field > .v-input__control > .v-input__slot:before, .v-text-field > .v-input__control > .v-input__slot:after {

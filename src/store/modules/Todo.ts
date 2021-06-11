@@ -1,6 +1,7 @@
 import {getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
 import {ITaskStatus, ITodoTask, TaskRequestType} from '@/entity/todo/todo.types';
+import Vue from 'vue';
 
 @Module({
     namespaced: true,
@@ -11,6 +12,7 @@ import {ITaskStatus, ITodoTask, TaskRequestType} from '@/entity/todo/todo.types'
 class TodoModule extends VuexModule {
     todoTasks: ITodoTask[] = [];
     tasksStatuses: ITaskStatus[] = [];
+    updatedTaskId: number | null = null;
     todoTasksLoaded = false;
     taskById: ITodoTask | null = null;
 
@@ -22,11 +24,12 @@ class TodoModule extends VuexModule {
 
     @Mutation
     setTaskCount(data: {id: number; delete: boolean}): void {
+        console.log(324);
         const index = this.tasksStatuses.findIndex(item => item.categoryId === data.id);
         if (data.delete) {
-            this.tasksStatuses[index].taskCount -= 1;
+            Vue.set(this.tasksStatuses[index], this.tasksStatuses[index].taskCount, this.tasksStatuses[index].taskCount -= 1);
         } else {
-            this.tasksStatuses[index].taskCount += 1;
+            Vue.set(this.tasksStatuses[index], this.tasksStatuses[index].taskCount, this.tasksStatuses[index].taskCount += 1);
         }
     }
 
@@ -54,7 +57,7 @@ class TodoModule extends VuexModule {
     }
 
     @MutationAction
-    async createTask(data: {data: TaskRequestType; checked: boolean}): Promise<{todoTasks: ITodoTask[]}> {
+    async createTask(data: {data: TaskRequestType; checked: boolean}): Promise<{todoTasks: ITodoTask[]; updatedTaskId: number | null}> {
         const task = await store.$repository.todo.createTask(data.data);
         //@ts-ignore
         const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]
@@ -66,8 +69,9 @@ class TodoModule extends VuexModule {
                 todoTasks.unshift(task);
             }
         }
-        
-        return {todoTasks};
+        task.hide = true;
+        const updatedTaskId = task.id;
+        return {todoTasks, updatedTaskId};
     }
 
     @MutationAction
@@ -94,26 +98,22 @@ class TodoModule extends VuexModule {
         const date = new Date(Date.now()).toISOString().substr(0, 10);
         const itemDate = new Date(data.data.do_date! * 1000).toISOString().substr(0, 10)
         const id = data.data.category_id;
-        
-
         if(data.data.category_id === 3 && date === itemDate) {
             data.data.category_id = 2;
         }
-
         if(data.data.category_id === 2 && date !== itemDate) {
             data.data.category_id = 3;
         }
-        
         const upDateTask = await store.$repository.todo.updateCandidateTask({data: data.data, route: data.route});
           //@ts-ignore
         const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]
         const idx = todoTasks.findIndex(el => el.id === data.route);
+        if (data.newTask) {
+            upDateTask.hide = true;
+        }
         todoTasks[idx] = {
             ...upDateTask
         }
-        
-        
-
         if(id === 3 &&  date === itemDate) {
             todoTasks.splice(idx, 1);
         }
@@ -123,9 +123,6 @@ class TodoModule extends VuexModule {
         }
         if(data.checked) {
             todoTasks.splice(idx, 1);
-        }
-        if (data.newTask !== undefined) {
-            todoTasks[0].hide = true;
         }
         return {todoTasks}
     }

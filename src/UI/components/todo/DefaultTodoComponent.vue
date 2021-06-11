@@ -75,6 +75,8 @@ import { PARENTCLASSES, TODOCOMPONENTS } from '@/constants';
 import { ICandidate } from '../../../entity/candidates';
 import { IStatuses } from '../../../entity/statuses/statuses.types';
 import Filters from '../../../entity/filters/filters';
+import {LoginForm} from '../../../form/login';
+import {TodoStore} from '../../../store/modules/Todo';
 
 @Component({
     components: { TaskInput },
@@ -102,18 +104,20 @@ export default class DefaultTodoComponent extends Vue {
     };
     newTask = false;
 
+    @Watch('id')
+    onChangeComponent(): void {
+      this.showTextArea = false;
+      if (this.taskShowId) {
+        this.taskShowId = null;
+      }
+      this.setTaskToNull();
+    }
+
     @Watch('tasks', { immediate: false })
     onChangeTasks(val: any, oldVal: any): void {
       if (this.tasks.length !== 0) {
-        for (let i = 1; i < this.tasks.length; i++) {
-          this.tasks[i].hide = false;
-        }
         if (val.length > oldVal.length && this.showTextArea) {
-          this.tasks[0].hide = true;
           this.newTask = true;
-        }
-        if (!this.newTask) {
-          this.tasks[0].hide = false;
         }
       }
     }
@@ -155,6 +159,10 @@ export default class DefaultTodoComponent extends Vue {
         }
     }
 
+    get updatedTaskId(): number | null {
+      return TodoStore.updatedTaskId;
+    }
+
     include(className: string): boolean {
         return PARENTCLASSES.includes(className);
     }
@@ -166,16 +174,6 @@ export default class DefaultTodoComponent extends Vue {
             e.target.classList[0] !== 'v-dialog__content' &&
             (this.showTextArea || this.taskShowId)
         ) {
-            const empty: number[] = [];
-            for (const taskItemKey in this.taskItem) {
-                //@ts-ignore
-                if (this.taskItem[taskItemKey] === null ||this.taskItem[taskItemKey] === '' ||this.taskItem[taskItemKey] === false ||this.taskItem[taskItemKey].length === 0 ) {
-                    empty.push(1);
-                }
-            }
-            if (empty.length === Object.keys(this.taskItem).length) {
-                this.setTask();
-            }
             this.showTextArea = false;
             if (this.taskShowId) {
                 this.taskShowId = null;
@@ -201,145 +199,95 @@ export default class DefaultTodoComponent extends Vue {
         return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;
     }
 
-    async setTask(): Promise<void> {
+  deleteTask(id: number): void {
+    this.$emit('deleteTask', id);
+  }
+
+  setToJurnal(id: number): void {
+    const item = this.tasks.find((el) => el.id === id);
+    const el = {
+      name: item!.name,
+      description: item!.description,
+      category_id: 6,
+    };
+
+    this.$emit('toJurnalOrIncome', el, id);
+    this.taskShowId = null;
+  }
+
+  setToIncome(id: number): void {
+    const item = this.tasks.find((el) => el.id === id);
+    const el = {
+      name: item!.name,
+      description: item!.description,
+      category_id: 1,
+    };
+
+    this.$emit('toJurnalOrIncome', el, id);
+    this.taskShowId = null;
+  }
+
+    setTask(): void {
         if (this.showTextArea === true) {
-
-            if (!this.newTask) {
-                const date = Math.floor(Date.now() / 1000);
-                let time = null;
-
-                if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
-                    time =
-                        Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
-                        Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
-                }
-
-
-
-                const el = {
-                    name: this.taskItem.name || null,
-                    do_date:
-                        this.statusItem.categoryId === 2 && !this.taskItem.doDate
-                            ? date
-                            : this.taskItem.doDate !== null
-                            ? Math.floor((this.taskItem.doDate as number) / 1000)
-                            : null,
-                    reminder_time: this.taskItem.reminderTime ? time : null,
-                    description: this.taskItem.description || null,
-                    category_id: this.taskItem.checked ? 6 : this.statusItem.categoryId,
-                    images_link: this.taskItem.imagesLink.length === 0 ? null : this.taskItem.imagesLink,
-                    candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
-                };
-
-                this.$emit('createTask', el, this.taskItem.checked);
-
-                if (this.taskItem.checked) {
-                    this.showTextArea = false;
-                    this.newTask = false;
-                    this.setTaskToNull();
-                }
-
-
-            } else {
-                const date = Math.floor(Date.now() / 1000);
-                let time = null;
-
-                if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
-                    time =
-                        Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
-                        Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
-                }
-
-                const el = {
-                    name: this.taskItem.name,
-                    description: this.taskItem.description,
-                    do_date: this.taskItem.doDate ? Math.floor((this.taskItem.doDate as number) /1000) : null,
-                    category_id:
-                        this.taskItem.checked && this.statusItem.categoryId !== 6
-                            ? 6
-                            : this.taskItem.checked && this.statusItem.categoryId === 6
-                            ? 1
-                            : this.statusItem.categoryId,
-                    images_link: this.taskItem.imagesLink,
-                    reminder_time: this.taskItem.reminderTime ? time : null,
-                    candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
-                };
-
-                this.$emit('upDateTask', el, this.taskItem.checked, this.tasks[0].id, true);
-            }
+          this.updateTask(this.updatedTaskId!);
         } else {
-            this.setTaskShowid(null);
+          this.setTaskShowid(null);
         }
     }
 
+  setTaskShowid(id: number | null): void {
+    this.showTextArea = false;
+    if (this.taskShowId === id || id === null) {
+      this.updateTask(this.taskShowId!);
+    } else {
+      this.taskShowId = id;
+    }
+  }
 
     openCardToCreateTask(): void {
         this.taskShowId = null;
-        this.showTextArea = this.showTextArea ? false : true;
-    }
-
-    setTaskShowid(id: number | null): void {
-        this.showTextArea = false;
-
-        if (this.taskShowId === id || id === null) {
-            // const date = Math.floor(Date.now() / 1000);
-            //
-            //
-            let time = null;
-
-            if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
-                time =
-                    Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
-                    Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
-            }
-            const el = {
-                name: this.taskItem.name,
-                description: this.taskItem.description,
-                do_date: this.taskItem.doDate ? Math.floor((this.taskItem.doDate as number)/ 1000) : null,
-                category_id:
-                    this.taskItem.checked && this.statusItem.categoryId !== 6
-                        ? 6
-                        : this.taskItem.checked && this.statusItem.categoryId === 6
-                        ? 1
-                        : this.statusItem.categoryId,
-                images_link: this.taskItem.imagesLink,
-                reminder_time: this.taskItem.reminderTime ? time : null,
-                candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
-            };
-
-            this.$emit('upDateTask', el, this.taskItem.checked, this.taskShowId!);
-        } else {
-            this.taskShowId = id;
+        this.showTextArea = !this.showTextArea;
+        if (this.showTextArea) {
+          const date = Math.floor(Date.now() / 1000);
+          const el = {
+            name: null,
+            do_date: this.statusItem.categoryId === 2 ? date : null,
+            reminder_time: null,
+            description: null,
+            category_id: this.statusItem.categoryId,
+            images_link: null,
+            candidate_id: null,
+          };
+          this.$emit('createTask', el, false);
         }
     }
 
-    deleteTask(id: number): void {
-        this.$emit('deleteTask', id);
+  updateTask(id: number): void {
+    let time = null;
+    if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
+      time =
+          Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
+          Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
     }
-
-    setToJurnal(id: number): void {
-        const item = this.tasks.find((el) => el.id === id);
-        const el = {
-            name: item!.name,
-            description: item!.description,
-            category_id: 6,
-        };
-
-        this.$emit('toJurnalOrIncome', el, id);
-        this.taskShowId = null;
+    const el = {
+      name: this.taskItem.name,
+      description: this.taskItem.description,
+      do_date: this.taskItem.doDate ? Math.floor((this.taskItem.doDate as number)/ 1000) : null,
+      category_id:
+          this.taskItem.checked && this.statusItem.categoryId !== 6
+              ? 6
+              : this.taskItem.checked && this.statusItem.categoryId === 6
+              ? 1
+              : this.statusItem.categoryId,
+      images_link: this.taskItem.imagesLink,
+      reminder_time: this.taskItem.reminderTime ? time : null,
+      candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
+    };
+    if (this.statusItem.categoryId === 2 && this.taskItem.doDate === null) {
+      el.do_date = Math.floor(Date.now() / 1000);
     }
-
-    setToIncome(id: number): void {
-        const item = this.tasks.find((el) => el.id === id);
-        const el = {
-            name: item!.name,
-            description: item!.description,
-            category_id: 1,
-        };
-
-        this.$emit('toJurnalOrIncome', el, id);
-        this.taskShowId = null;
-    }
+    this.$emit('upDateTask', el, this.taskItem.checked, id, this.newTask);
+  }
 }
 </script>
 

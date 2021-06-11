@@ -320,7 +320,7 @@ export default class TodoPlans extends Vue {
         };
 
         console.log(el);
-        
+
 
         this.$emit('upDateTask', el, this.taskItem.checked, currentEl?.id);
     }
@@ -421,13 +421,11 @@ export default class TodoPlans extends Vue {
         if (this.taskShowId === id || id === null) {
             if (this.taskItem !== null) {
                 let time = null;
-
                 if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
                     time =
                         Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
                         Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
                 }
-
                 const el = {
                     name: this.taskItem.name,
                     description: this.taskItem.description,
