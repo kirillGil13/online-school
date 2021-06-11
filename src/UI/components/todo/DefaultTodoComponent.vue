@@ -135,7 +135,9 @@ export default class DefaultTodoComponent extends Vue {
             if (item.reminderTime) {
                 const hours = Math.floor((item.reminderTime as number) / 60 / 60);
                 const minuts = Math.floor((item.reminderTime as number) / 60) - hours * 60;
-                item.reminderTime = `${hours}:${minuts}`;
+                console.log(minuts);
+                
+                item.reminderTime = `${hours}:${minuts < 10 ? `0${minuts}` : minuts}`;
             }
 
             this.taskItem = {

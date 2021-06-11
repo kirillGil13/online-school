@@ -307,6 +307,11 @@ export default class TaskInput extends Vue {
         this.taskItem.imagesLink.splice(this.taskItem.imagesLink.findIndex((item: string) => item === image)!, 1);
     }
 
+    showReminderTime(el: string): string {
+      console.log(el)
+      return 'hello'
+    }
+
     chooseCandidate(id: number): void {
         this.taskItem.candidateId = Object.values(this.candidates)
             .flat()
