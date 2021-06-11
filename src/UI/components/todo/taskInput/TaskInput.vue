@@ -238,7 +238,7 @@ export default class TaskInput extends Vue {
 
     @Watch('activatorDate')
     onActDateChange(): void {
-      console.log(this.activatorDate);
+
       
       if (!this.activatorDate) {
         this.$emit('setTask');
@@ -305,6 +305,11 @@ export default class TaskInput extends Vue {
 
     deleteImage(image: string): void {
         this.taskItem.imagesLink.splice(this.taskItem.imagesLink.findIndex((item: string) => item === image)!, 1);
+    }
+
+    showReminderTime(el: string): string {
+      console.log(el)
+      return 'hello'
     }
 
     chooseCandidate(id: number): void {
