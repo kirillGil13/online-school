@@ -145,5 +145,8 @@ export default class AddTask extends Vue {
     margin-top: 0 !important;
     box-shadow: none !important;
   }
+  .v-text-field > .v-input__control > .v-input__slot:before, .v-text-field > .v-input__control > .v-input__slot:after {
+    content: none !important;
+  }
 }
 </style>

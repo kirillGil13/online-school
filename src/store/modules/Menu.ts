@@ -13,7 +13,7 @@ class MenuModule extends VuexModule {
     items: IMainMenu[] = [
         {
             title: 'Обучение',
-            iconName: 'Education',
+            iconName: 'Education_Mobile',
             route: RouterNameEnum.TrainingMain,
         },
         {
@@ -24,27 +24,27 @@ class MenuModule extends VuexModule {
         },
         {
             title: 'Кандидаты',
-            iconName: 'Users',
+            iconName: 'Candidates_Mobile',
             route: RouterNameEnum.Candidates,
         },
         {
             title: 'Инфопакеты',
-            iconName: 'Add_User',
+            iconName: 'InfoPack_Mobile',
             route: RouterNameEnum.InfoPackages,
         },
         {
             title: 'Чат',
-            iconName: 'Chat',
+            iconName: 'Chat_Mobile',
             route: RouterNameEnum.Chat
         },
         {
             title: 'Избранное',
-            iconName: 'Chosen',
+            iconName: 'Chosen_Outline',
             route: RouterNameEnum.Chosen,
         },
         {
             title: 'Кабинет лидера',
-            iconName: 'Cabinet',
+            iconName: 'Cabinet_Outline',
             route: RouterNameEnum.Cabinet,
         },
     ];
