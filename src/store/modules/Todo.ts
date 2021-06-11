@@ -1,8 +1,6 @@
 import {getModule, Module, Mutation, MutationAction, VuexModule} from 'vuex-module-decorators';
 import store from '@/store';
-import { TodoTask } from '@/entity/todo/todo';
 import {ITaskStatus, ITodoTask, TaskRequestType} from '@/entity/todo/todo.types';
-import { date } from '@rxweb/reactive-forms';
 
 @Module({
     namespaced: true,
