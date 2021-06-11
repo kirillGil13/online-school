@@ -4,7 +4,7 @@
         <template v-for="(item, index) in items">
             <v-list-item v-if="!item.subMenu" :id="`step-${index + 1}`" color="" v-show="handleMenuItem(item)" :key="item.title" :ripple="!$adaptive.isMobile" exact exact-active-class="active-menu" :to="{name: proceed(item.route)}">
                 <v-list-item-icon>
-                 <svg-icon :name="item.iconName" class="menu__icon" height="24" width="24" />
+                 <svg-icon :class="[item.iconName === 'Chosen_Outline' && 'fill-transparent']" :name="item.iconName" class="menu__icon" height="24" width="24" />
                 </v-list-item-icon>
                 <v-list-item-title v-text="item.title" />
                 <v-list-item-action v-if="item.extraAction">
@@ -67,25 +67,30 @@ export default class MenuComponent extends Vue {
 
 }
 </script>
-<style lang="scss" scoped>
-
-.v-list-item--active {
-  .v-list-item__icon {
-    .svg-icon {
-      fill: #4F79FF !important;
-      path {
-        fill: #4F79FF !important;
-      }
-    }
-  }
-}
-
+<style lang="scss">
 .main-menu {
   .v-list-item {
     .v-list-item__title {
       font-size: 16px !important;
     }
   }
+  .v-list-item--active {
+    .v-list-item__icon {
+      .svg-icon {
+        fill: #4F79FF ;
+        path {
+          fill: #4F79FF ;
+        }
+        &.fill-transparent {
+          path {
+            stroke: #4F79FF;
+            fill: transparent !important;
+          }
+        }
+      }
+    }
+  }
+
 }
 
 .count-unread-message {

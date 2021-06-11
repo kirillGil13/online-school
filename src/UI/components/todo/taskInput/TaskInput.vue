@@ -260,7 +260,7 @@ export default class TaskInput extends Vue {
 
     set taskDate(date: string) {
         this.taskItem.doDate = Date.parse(date);
-        
+
     }
 
 
@@ -269,7 +269,7 @@ export default class TaskInput extends Vue {
     }
 
     shortDaysOfWeek(date: string): string {
-      
+
         const dateFormat = new Date(date!).toISOString().substr(0, 10);
         const title: string[] = dateFormat.split('-');
         const day = new Date(
@@ -328,7 +328,7 @@ export default class TaskInput extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .items-add-place {
     margin-top: 12px;
     background: #ffffff;
@@ -343,20 +343,12 @@ export default class TaskInput extends Vue {
         display: flex;
         align-items: center;
         color: #828282;
-        .v-input {
-            .v-input__control {
-                .v-input__slot {
-                    .v-text-field__slot {
                         input {
                             font-size: 16px !important;
                             &::placeholder {
-                                font-size: 16px;
+                                font-size: 16px !important;
                             }
                         }
-                    }
-                }
-            }
-        }
         .v-input--selection-controls__input {
             input {
                 border-radius: 6px !important;

@@ -6,6 +6,7 @@ import {PresentationTabsNameEnum} from '@/entity/tabs/presentationTabs.types';
 import {OrganizationTabsNameEnum} from '@/entity/tabs/organizationTabs.types';
 import {ProfileTabsNameEnum} from '@/entity/tabs/profileTabs.types';
 import {TodoTabsNameEnum} from '@/entity/tabs/todoTabs.types';
+import {CandidateTabsNameEnum} from '@/entity/tabs/candidateTabs.types';
 
 
 @Module({
@@ -39,6 +40,21 @@ class TabsModule extends VuexModule {
             title: 'Лидеры',
             filter: true,
             component: TrainingTabsNameEnum.Leaders,
+        },
+    ];
+
+    candidateTabs: ITabs[] = [
+        {
+            id: 0,
+            title: 'Кандидаты',
+            filter: false,
+            component: CandidateTabsNameEnum.Candidates,
+        },
+        {
+            id: 1,
+            title: 'Заметки',
+            filter: false,
+            component: CandidateTabsNameEnum.Notes,
         },
     ];
 

@@ -3,4 +3,5 @@ export enum LessonsTypesEnum {
     DONE = 'watched',
     LOCKED = 'unavailable',
     UN_DONE = 'unwatched',
+    UN_BOUGHT='unbought'
 }

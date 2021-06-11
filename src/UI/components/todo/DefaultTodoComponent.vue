@@ -104,16 +104,18 @@ export default class DefaultTodoComponent extends Vue {
 
     @Watch('tasks', { immediate: false })
     onChangeTasks(val: any, oldVal: any): void {
+      if (this.tasks.length !== 0) {
         for (let i = 1; i < this.tasks.length; i++) {
-            this.tasks[i].hide = false;
+          this.tasks[i].hide = false;
         }
         if (val.length > oldVal.length && this.showTextArea) {
-            this.tasks[0].hide = true;
-            this.newTask = true;
+          this.tasks[0].hide = true;
+          this.newTask = true;
         }
         if (!this.newTask) {
-            this.tasks[0].hide = false;
+          this.tasks[0].hide = false;
         }
+      }
     }
 
     @Watch('showTextArea')
@@ -211,7 +213,7 @@ export default class DefaultTodoComponent extends Vue {
                         Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
                 }
 
-                
+
 
                 const el = {
                     name: this.taskItem.name || null,
@@ -227,7 +229,7 @@ export default class DefaultTodoComponent extends Vue {
                     images_link: this.taskItem.imagesLink.length === 0 ? null : this.taskItem.imagesLink,
                     candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
                 };
-                
+
                 this.$emit('createTask', el, this.taskItem.checked);
 
                 if (this.taskItem.checked) {
@@ -236,7 +238,7 @@ export default class DefaultTodoComponent extends Vue {
                     this.setTaskToNull();
                 }
 
-              
+
             } else {
                 const date = Math.floor(Date.now() / 1000);
                 let time = null;
@@ -279,7 +281,7 @@ export default class DefaultTodoComponent extends Vue {
 
         if (this.taskShowId === id || id === null) {
             const date = Math.floor(Date.now() / 1000);
-            
+
             let time = null;
 
             if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
@@ -301,7 +303,7 @@ export default class DefaultTodoComponent extends Vue {
                 reminder_time: this.taskItem.reminderTime ? time : null,
                 candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
             };
-            
+
             this.$emit('upDateTask', el, this.taskItem.checked, this.taskShowId!);
         } else {
             this.taskShowId = id;

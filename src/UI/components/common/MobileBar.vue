@@ -9,6 +9,7 @@
         <Logo width="120" class="mb-0 ml-0 justify-center"/>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <svg-icon name="Chat_Mobile" width="24" height="24" class="mr-3" @click="$router.push({name: $routeRules.Chat})"></svg-icon>
       <div @click="goTo">
         <avatar
             :imageSource="userInfo.photoLink"
