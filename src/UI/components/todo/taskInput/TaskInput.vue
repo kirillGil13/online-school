@@ -26,14 +26,14 @@
                             v-model="taskItem.description"
                         />
                     </div>
-                    <div class="items-add-place-text__like-dislike d-flex pa-3">
+                    <div class="items-add-place-text__like-dislike d-flex pl-6 py-3 pr-3">
                         <div
                             v-if="![1, 4, 5,6].includes(tabId)"
                             class="d-flex align-center"
                             style="width: 100%; justify-self: flex-start"
                         >
-                            <div class="d-flex align-center shortDate" @click="activatorDate = true">
-                                <div class="d-flex align-center mr-3">
+                            <div class="d-flex align-center shortDate " @click="activatorDate = true">
+                                <div class="d-flex align-center">
                                     <svg-icon
                                         :name="getIconName(tabId)"
                                         class="menu__icon"
@@ -42,11 +42,11 @@
                                         style="cursor: pointer"
                                     />
                                 </div>
-                                <div class="d-flex align-center" v-if="tabId === 3">
-                                    {{ shortDaysOfWeek(taskItem.doDate) }}
+                                <div class="d-flex align-center ml-2" style="font-weight: 600; margin-top: 2px">
+                                    {{tabId === 3 ? shortDaysOfWeek(taskItem.doDate): tabId === 2 && 'Cегодня' }}
                                 </div>
                             </div>
-                            <div class="d-flex align-center ml-2" @click="activatorTime = true">{{taskItem.reminderTime !== null && taskItem.reminderTime !== '0:0' ? taskItem.reminderTime : 'Напомнить'}}</div>
+                            <div class="d-flex align-center ml-2 task-time" style="color: #426df6; margin-top: 2px" @click="activatorTime = true">{{taskItem.reminderTime !== null && taskItem.reminderTime !== '0:0' ? taskItem.reminderTime : 'Напомнить'}}</div>
                         </div>
                         <div v-if="![1, 4, 5,6].includes(tabId)" class="d-flex">
                             <svg-icon
@@ -238,6 +238,8 @@ export default class TaskInput extends Vue {
 
     @Watch('activatorDate')
     onActDateChange(): void {
+      console.log(this.activatorDate);
+      
       if (!this.activatorDate) {
         this.$emit('setTask');
       }
@@ -381,13 +383,21 @@ export default class TaskInput extends Vue {
         }
     }
 
+    .task-time {
+      cursor: pointer;
+    }
+
     .shortDate {
         cursor: pointer;
         padding: 1px;
+        transition: all .3s ease;
+        padding: 5px;
+        
 
         &:hover {
-            border: 1px solid black;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
             border-radius: 5px;
+            
         }
     }
   .v-text-field > .v-input__control > .v-input__slot:before, .v-text-field > .v-input__control > .v-input__slot:after {

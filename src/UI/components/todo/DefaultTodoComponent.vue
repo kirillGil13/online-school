@@ -201,6 +201,7 @@ export default class DefaultTodoComponent extends Vue {
 
     async setTask(): Promise<void> {
         if (this.showTextArea === true) {
+            
             if (!this.newTask) {
                 const date = Math.floor(Date.now() / 1000);
                 let time = null;
@@ -219,7 +220,7 @@ export default class DefaultTodoComponent extends Vue {
                         this.statusItem.categoryId === 2 && !this.taskItem.doDate
                             ? date
                             : this.taskItem.doDate !== null
-                            ? Math.floor(this.taskItem.doDate / 1000)
+                            ? Math.floor((this.taskItem.doDate as number) / 1000)
                             : null,
                     reminder_time: this.taskItem.reminderTime ? time : null,
                     description: this.taskItem.description || null,
@@ -250,7 +251,7 @@ export default class DefaultTodoComponent extends Vue {
                 const el = {
                     name: this.taskItem.name,
                     description: this.taskItem.description,
-                    do_date: this.taskItem.doDate ? Math.floor(this.taskItem.doDate /1000) : null,
+                    do_date: this.taskItem.doDate ? Math.floor((this.taskItem.doDate as number) /1000) : null,
                     category_id:
                         this.taskItem.checked && this.statusItem.categoryId !== 6
                             ? 6
@@ -268,6 +269,7 @@ export default class DefaultTodoComponent extends Vue {
             this.setTaskShowid(null);
         }
     }
+    
 
     openCardToCreateTask(): void {
         this.taskShowId = null;
@@ -278,7 +280,6 @@ export default class DefaultTodoComponent extends Vue {
         this.showTextArea = false;
 
         if (this.taskShowId === id || id === null) {
-            const date = Math.floor(Date.now() / 1000);
             
             let time = null;
 
@@ -290,7 +291,7 @@ export default class DefaultTodoComponent extends Vue {
             const el = {
                 name: this.taskItem.name,
                 description: this.taskItem.description,
-                do_date: this.taskItem.doDate ? Math.floor(this.taskItem.doDate/ 1000) : null,
+                do_date: this.taskItem.doDate ? Math.floor((this.taskItem.doDate as number)/ 1000) : null,
                 category_id:
                     this.taskItem.checked && this.statusItem.categoryId !== 6
                         ? 6

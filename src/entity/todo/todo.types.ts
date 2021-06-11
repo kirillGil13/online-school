@@ -35,7 +35,7 @@ export interface ITaskItem {
     name: string;
     checked: boolean;
     description: string;
-    doDate: number | null;
+    doDate: number | null|string;
     imagesLink: string[];
     candidateId: number | null;
     reminderTime?: number | string | null;
