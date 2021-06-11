@@ -238,7 +238,7 @@ export default class TaskInput extends Vue {
 
     @Watch('activatorDate')
     onActDateChange(): void {
-      console.log(this.activatorDate);
+
       
       if (!this.activatorDate) {
         this.$emit('setTask');

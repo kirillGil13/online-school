@@ -94,7 +94,7 @@ export default class DefaultTodoComponent extends Vue {
         name: '',
         checked: false,
         description: '',
-        doDate: null,
+        doDate: this.currentDay,
         imagesLink: [],
         candidateId: null,
         reminderTime: null,
@@ -153,6 +153,16 @@ export default class DefaultTodoComponent extends Vue {
         }
     }
 
+    get currentDay(): string {
+        const day = new Date(Date.now());
+
+        const nextDay = new Date(day);
+       
+        
+
+        return nextDay.toISOString().substr(0, 10);
+    }
+
     include(className: string): boolean {
         return PARENTCLASSES.includes(className);
     }
@@ -167,7 +177,7 @@ export default class DefaultTodoComponent extends Vue {
             const empty: number[] = [];
             for (const taskItemKey in this.taskItem) {
                 //@ts-ignore
-                if (this.taskItem[taskItemKey] === null ||this.taskItem[taskItemKey] === '' ||this.taskItem[taskItemKey] === false ||this.taskItem[taskItemKey].length === 0 ) {
+                if (this.taskItem[taskItemKey] === null ||this.taskItem[taskItemKey] === this.currentDay ||this.taskItem[taskItemKey] === '' ||this.taskItem[taskItemKey] === false ||this.taskItem[taskItemKey].length === 0 ) {
                     empty.push(1);
                 }
             }
@@ -187,7 +197,7 @@ export default class DefaultTodoComponent extends Vue {
             name: '',
             checked: false,
             description: '',
-            doDate: null,
+            doDate: this.currentDay,
             imagesLink: [],
             candidateId: null,
             candidateName: '',
@@ -220,7 +230,7 @@ export default class DefaultTodoComponent extends Vue {
                         this.statusItem.categoryId === 2 && !this.taskItem.doDate
                             ? date
                             : this.taskItem.doDate !== null
-                            ? Math.floor((this.taskItem.doDate as number) / 1000)
+                            ? Math.floor((Date.parse(this.taskItem.doDate as string)) / 1000)
                             : null,
                     reminder_time: this.taskItem.reminderTime ? time : null,
                     description: this.taskItem.description || null,
@@ -251,7 +261,7 @@ export default class DefaultTodoComponent extends Vue {
                 const el = {
                     name: this.taskItem.name,
                     description: this.taskItem.description,
-                    do_date: this.taskItem.doDate ? Math.floor((this.taskItem.doDate as number) /1000) : null,
+                    do_date: this.taskItem.doDate ? Math.floor(Date.parse(this.taskItem.doDate as string) /1000) : null,
                     category_id:
                         this.taskItem.checked && this.statusItem.categoryId !== 6
                             ? 6
