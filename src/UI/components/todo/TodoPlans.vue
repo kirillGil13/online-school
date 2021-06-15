@@ -133,25 +133,30 @@ export default class TodoPlans extends Vue {
         name: '',
         checked: false,
         description: '',
-        doDate: this.currentDay,
+        doDate: new Date().getTime(),
         imagesLink: [],
         candidateId: null,
-        candidateName: '',
         reminderTime: null,
+        candidateName: '',
     };
     newTask = false;
 
+    @Watch('id')
+    onChangeComponent(): void {
+        this.showTextArea = false;
+        if (this.taskShowId) {
+            this.taskShowId = null;
+        }
+        this.setTaskToNull();
+    }
+
+
     @Watch('tasks', { immediate: false })
     onChangeTasks(val: any, oldVal: any): void {
-        for (let i = 1; i < this.tasks.length; i++) {
-            this.tasks[i].hide = false;
-        }
-        if (val.length > oldVal.length && this.showTextArea) {
-            this.tasks[0].hide = true;
-            this.newTask = true;
-        }
-        if (!this.newTask) {
-            this.tasks[0].hide = false;
+        if (this.tasks.length !== 0) {
+            if (val.length > oldVal.length && this.showTextArea) {
+                this.newTask = true;
+            }
         }
     }
 
@@ -164,26 +169,31 @@ export default class TodoPlans extends Vue {
     }
 
     @Watch('taskShowId')
-    onChangeId(val: number | null, oldVal: number | null): void {
+    async onChangeId(val: number | null, oldVal: number | null): Promise<void> {
         if (val) {
-            const item = this.tasks.find((el) => el.id === this.taskShowId)!;
-            if (item.doDate) {
-                item!.doDate = Number(item!.doDate) * 1000;
+            const item =  this.tasks.find((el) => el.id === this.taskShowId)!;
+            let doDate = this.tasks.find((el) => el.id === this.taskShowId)!.doDate;
+            let time = this.tasks.find((el) => el.id === this.taskShowId)!.reminderTime;
+            if (time) {
+                const hours = Math.floor((time as number) / 60 / 60);
+                const minuts = Math.floor((time as number) / 60) - hours * 60;
+                time = `${hours}:${minuts < 10 ? `0${minuts}` : minuts}`;
             }
-
-            if (!item.reminderTime) {
-                const hours = Math.floor((item.reminderTime as number) / 60 / 60);
-                const minuts = Math.floor((item.reminderTime as number) / 60) - hours * 60;
-                item.reminderTime = `${hours}:${minuts}`;
+            if (doDate) {
+                doDate = Number(doDate * 1000);
             }
-
+            if (oldVal) {
+                if (this.taskItem.doDate) {
+                    await TodoStore.handleTasks({date: +this.taskItem.doDate!, category: this.statusItem.categoryId, checked: this.taskItem.checked, id: oldVal});
+                }
+            }
             this.taskItem = {
                 name: item.name,
                 checked: false,
                 description: item.description,
-                doDate: item.doDate ? item.doDate : null,
+                doDate: doDate ? doDate : null,
                 imagesLink: item.imagesLink,
-                reminderTime: item.reminderTime ? item.reminderTime : null,
+                reminderTime: time ? time : null,
                 candidateId: item.candidate ? item.candidate.candidate_id : null,
                 candidateName: item.candidate ? item.candidate.candidate_name : '',
             };
@@ -191,13 +201,10 @@ export default class TodoPlans extends Vue {
             this.setTaskToNull();
         }
     }
+
+
     get currentDay(): string {
-        const day = new Date(Date.now());
-
-        const nextDay = new Date(day);
-        nextDay.setDate(day.getDate() + 1);
-
-        return nextDay.toISOString().substr(0, 10);
+        return new Date().toISOString().substr(0, 10);
     }
 
     get dates(): ITaskToDate[] {
@@ -293,11 +300,10 @@ export default class TodoPlans extends Vue {
         TodoStore.setDraggableTasks(value);
     }
 
-    log(e: any) {
+    log(e: any): void {
         const id = e.to.id;
         const dateArr = this.dates[id].date.split('.');
         const currentEl = this.tasks.find((el) => el.name === e.item.innerText);
-        console.log(currentEl);
         const strDate = `${dateArr[2]}-${Number(dateArr[1]) < 10 ? `0${dateArr[1]}` : dateArr[1]}-${dateArr[0]}`;
         const date = Date.parse(strDate) / 1000;
         let time = null;
@@ -318,10 +324,6 @@ export default class TodoPlans extends Vue {
             candidate_id: currentEl!.candidate ? currentEl?.candidate.candidate_id : null,
             reminder_time: currentEl!.reminderTime ? time: null,
         };
-
-        console.log(el);
-
-
         this.$emit('upDateTask', el, this.taskItem.checked, currentEl?.id);
     }
 
@@ -460,6 +462,43 @@ export default class TodoPlans extends Vue {
         };
         this.$emit('toJurnalOrIncome', el, id);
         this.taskShowId = null;
+    }
+    updateTask(id: number): void {
+        let time = null;
+        if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
+            time =
+                Number((this.taskItem.reminderTime! as string).split(':')[0]) * 3600 +
+                Number((this.taskItem.reminderTime! as string).split(':')[1]) * 60;
+        }
+        const el = {
+            name: this.taskItem.name,
+            description: this.taskItem.description,
+            do_date: this.taskItem.doDate ? Math.floor((this.taskItem.doDate as number) / 1000) : null,
+            category_id: this.statusItem.categoryId,
+            images_link: this.taskItem.imagesLink,
+            reminder_time: this.taskItem.reminderTime ? time : null,
+            candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
+        };
+        if (this.statusItem.categoryId !== 2) {
+            el.do_date = null;
+        }
+        this.$emit('upDateTask', el, this.taskItem.checked, id, this.newTask);
+    }
+
+    closeTask(e: any): void {
+        if (
+            this.include(e.target.classList[0]) &&
+            e.target.classList[0] !== 'add-task' &&
+            e.target.classList[0] !== 'v-dialog__content' &&
+            (this.showTextArea || this.taskShowId)
+        ) {
+            this.showTextArea = false;
+            if (this.taskShowId) {
+                TodoStore.handleTasks({date: +this.taskItem.doDate!, category: this.statusItem.categoryId, checked: this.taskItem.checked, id: this.taskShowId!});
+                this.taskShowId = null;
+            }
+            this.setTaskToNull();
+        }
     }
 }
 </script>

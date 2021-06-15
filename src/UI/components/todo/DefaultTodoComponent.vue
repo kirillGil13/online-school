@@ -96,7 +96,7 @@ export default class DefaultTodoComponent extends Vue {
         name: '',
         checked: false,
         description: '',
-        doDate: this.currentDay,
+        doDate: null,
         imagesLink: [],
         candidateId: null,
         reminderTime: null,
@@ -125,34 +125,35 @@ export default class DefaultTodoComponent extends Vue {
     @Watch('showTextArea')
     onChangeShow(): void {
         if (!this.showTextArea) {
-            this.tasks[0].hide = false;
+            for (let i = 0; i < this.tasks.length; i++) {
+                this.tasks[i].hide = false;
+            }
             this.newTask = false;
         }
     }
 
     @Watch('taskShowId')
-    onChangeId(val: number | null, oldVal: number | null): void {
+    async onChangeId(val: number | null, oldVal: number | null): Promise<void> {
         if (val) {
-            const item = this.tasks.find((el) => el.id === this.taskShowId)!;
-            if (item.doDate) {
-                item!.doDate = Number(item!.doDate) * 1000;
+            const item =  this.tasks.find((el) => el.id === this.taskShowId)!;
+            let doDate = this.tasks.find((el) => el.id === this.taskShowId)!.doDate;
+            let time = this.tasks.find((el) => el.id === this.taskShowId)!.reminderTime;
+            if (time) {
+                const hours = Math.floor((time as number) / 60 / 60);
+                const minuts = Math.floor((time as number) / 60) - hours * 60;
+                time = `${hours}:${minuts < 10 ? `0${minuts}` : minuts}`;
             }
-
-            if (item.reminderTime) {
-                const hours = Math.floor((item.reminderTime as number) / 60 / 60);
-                const minuts = Math.floor((item.reminderTime as number) / 60) - hours * 60;
-                console.log(minuts);
-
-                item.reminderTime = `${hours}:${minuts < 10 ? `0${minuts}` : minuts}`;
+            if (doDate) {
+                doDate = Number(doDate * 1000);
             }
-
+            await TodoStore.handleTasks({date: +this.taskItem.doDate!, category: this.statusItem.categoryId, checked: this.taskItem.checked, id: oldVal});
             this.taskItem = {
                 name: item.name,
-                checked: false,
+                checked: item.checked!,
                 description: item.description,
-                doDate: item.doDate ? item.doDate : null,
+                doDate: doDate ? doDate : null,
                 imagesLink: item.imagesLink,
-                reminderTime: item.reminderTime ? item.reminderTime : null,
+                reminderTime: time ? time : null,
                 candidateId: item.candidate ? item.candidate.candidate_id : null,
                 candidateName: item.candidate ? item.candidate.candidate_name : '',
             };
@@ -166,9 +167,7 @@ export default class DefaultTodoComponent extends Vue {
     }
 
   get currentDay(): string {
-    const day = new Date(Date.now());
-    const nextDay = new Date(day);
-    return nextDay.toISOString().substr(0, 10);
+    return new Date().toISOString().substr(0, 10);
   }
 
     include(className: string): boolean {
@@ -184,6 +183,7 @@ export default class DefaultTodoComponent extends Vue {
         ) {
             this.showTextArea = false;
             if (this.taskShowId) {
+                TodoStore.handleTasks({date: +this.taskItem.doDate!, category: this.statusItem.categoryId, checked: this.taskItem.checked, id: this.taskShowId!});
                 this.taskShowId = null;
             }
             this.setTaskToNull();
@@ -195,7 +195,7 @@ export default class DefaultTodoComponent extends Vue {
             name: '',
             checked: false,
             description: '',
-            doDate: this.currentDay,
+            doDate: null,
             imagesLink: [],
             candidateId: null,
             candidateName: '',
@@ -255,9 +255,8 @@ export default class DefaultTodoComponent extends Vue {
     openCardToCreateTask(): void {
         this.taskShowId = null;
         this.showTextArea = !this.showTextArea;
-        if (this.showTextArea) {
-          const date = Math.floor(Date.now() / 1000);
-          const el = {
+        const date = Math.floor(Date.now() / 1000);
+        const el = {
             name: null,
             do_date: this.statusItem.categoryId === 2 ? date : null,
             reminder_time: null,
@@ -265,7 +264,9 @@ export default class DefaultTodoComponent extends Vue {
             category_id: this.statusItem.categoryId,
             images_link: null,
             candidate_id: null,
-          };
+        };
+        this.taskItem.doDate = date;
+        if (this.showTextArea) {
           this.$emit('createTask', el, false);
         }
     }
@@ -280,19 +281,14 @@ export default class DefaultTodoComponent extends Vue {
     const el = {
       name: this.taskItem.name,
       description: this.taskItem.description,
-      do_date: this.taskItem.doDate ? Math.floor((this.taskItem.doDate as number)/ 1000) : null,
-      category_id:
-          this.taskItem.checked && this.statusItem.categoryId !== 6
-              ? 6
-              : this.taskItem.checked && this.statusItem.categoryId === 6
-              ? 1
-              : this.statusItem.categoryId,
+      do_date: this.taskItem.doDate ? Math.floor((this.taskItem.doDate as number) / 1000) : null,
+      category_id: this.statusItem.categoryId,
       images_link: this.taskItem.imagesLink,
       reminder_time: this.taskItem.reminderTime ? time : null,
       candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
     };
-    if (this.statusItem.categoryId === 2 && this.taskItem.doDate === null) {
-      el.do_date = Math.floor(Date.now() / 1000);
+    if (this.statusItem.categoryId !== 2) {
+        el.do_date = null;
     }
     this.$emit('upDateTask', el, this.taskItem.checked, id, this.newTask);
   }
