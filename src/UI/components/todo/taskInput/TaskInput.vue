@@ -35,15 +35,16 @@
                             <div class="d-flex align-center shortDate " @click="activatorDate = true">
                                 <div class="d-flex align-center">
                                     <svg-icon
-                                        :name="getIconName(tabId)"
+                                        :name="taskDate !== dateNow ? getIconName(3) : getIconName(tabId)"
                                         class="menu__icon"
                                         height="24"
                                         width="24"
                                         style="cursor: pointer"
                                     />
                                 </div>
+
                                 <div class="d-flex align-center ml-2" style="font-weight: 600; margin-top: 2px">
-                                    {{taskItem.doDate ? shortDaysOfWeek(taskItem.doDate): tabId === 2 && 'Cегодня' }}
+                                    {{taskItem.doDate ? shortDaysOfWeek(taskItem.doDate * 1000): tabId === 2 && 'Cегодня' }}
                                 </div>
                             </div>
                             <div class="d-flex align-center ml-2 task-time" style="color: #426df6; margin-top: 2px" @click="activatorTime = true">{{taskItem.reminderTime !== null && taskItem.reminderTime !== '0:0' ? taskItem.reminderTime : 'Напомнить'}}</div>
@@ -143,7 +144,7 @@
                     flat
                     show-adjacent-months
                     elevation="15"
-                    min="2016-06-15"
+                    :min="dateNow"
                     max="2023-03-20"
                     year-icon="mdi-calendar-blank"
                     prev-icon="mdi-skip-previous"
@@ -255,14 +256,16 @@ export default class TaskInput extends Vue {
     }
 
     get taskDate(): string {
-        return new Date(this.taskItem.doDate!).toISOString().substr(0, 10);
+        return new Date((this.taskItem.doDate! as number)).toISOString().substr(0, 10);
     }
 
     set taskDate(date: string) {
         this.taskItem.doDate = Date.parse(date);
-
     }
 
+    get dateNow(): string {
+        return (new Date()).toISOString().slice(0,10);
+    }
 
     getIconName(id: number): string {
         return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;

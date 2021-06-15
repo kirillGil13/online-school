@@ -140,7 +140,6 @@ export default class Landing extends Vue {
   }
 
   activatorMainVideoChange(act: boolean): void {
-    console.log(1);
     this.activatorMainVideo = act;
   }
 

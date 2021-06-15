@@ -60,7 +60,6 @@ export default class FilterComponent extends Vue {
   @Prop() readonly countElement!: number[];
 
   mounted(): void {
-    console.log()
     if (this.countElement.length !== 0) {
       for (let i = 0; i < this.countElement.length; i++) {
         document.getElementsByClassName('select_item')[this.countElement[i]].classList.add('no-margin');
