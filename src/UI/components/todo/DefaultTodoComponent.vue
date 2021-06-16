@@ -26,21 +26,22 @@
                     <div
                         class="d-flex align-center justify-space-between task-item-container px-2"
                         v-if="taskShowId !== item.id"
+                        @click.self="setTaskShowid(item.id)" style="cursor: pointer"
                     >
                         <div class="d-flex align-end">
                             <v-checkbox
                                 hide-details
                                 class="mt-0 pt-0"
-                                @click="statusItem.categoryId !== 6 ? setToJurnal(item.id) : setToIncome(item.id)"
+                                @click.stop="statusItem.categoryId !== 6 ? setToJurnal(item.id) : setToIncome(item.id)"
                                 v-model="item.checked"
                             />
-                            <span class="item-text" @click.self="setTaskShowid(item.id)">{{
+                            <span class="item-text">{{
                                 item.name ? `${item.name}` : 'Новая задача'
                             }}</span>
                         </div>
                         <div class="d-flex align-center">
                             <v-btn
-                                @click="deleteTask(item.id)"
+                                @click.stop="deleteTask(item.id)"
                                 style="background: none"
                                 class="mt-0"
                                 text
@@ -166,10 +167,6 @@ export default class DefaultTodoComponent extends Vue {
       return TodoStore.updatedTaskId;
     }
 
-  get currentDay(): string {
-    return new Date().toISOString().substr(0, 10);
-  }
-
     include(className: string): boolean {
         return PARENTCLASSES.includes(className);
     }
@@ -185,6 +182,8 @@ export default class DefaultTodoComponent extends Vue {
             if (this.taskShowId) {
                 TodoStore.handleTasks({date: +this.taskItem.doDate!, category: this.statusItem.categoryId, checked: this.taskItem.checked, id: this.taskShowId!});
                 this.taskShowId = null;
+            } else if (!this.showTextArea) {
+                TodoStore.handleTasks({date: +this.taskItem.doDate!, category: this.statusItem.categoryId, checked: this.taskItem.checked, id: this.updatedTaskId!});
             }
             this.setTaskToNull();
         }
@@ -255,7 +254,7 @@ export default class DefaultTodoComponent extends Vue {
     openCardToCreateTask(): void {
         this.taskShowId = null;
         this.showTextArea = !this.showTextArea;
-        const date = Math.floor(Date.now() / 1000);
+        const date = Math.floor(new Date().getTime() / 1000);
         const el = {
             name: null,
             do_date: this.statusItem.categoryId === 2 ? date : null,
@@ -265,7 +264,7 @@ export default class DefaultTodoComponent extends Vue {
             images_link: null,
             candidate_id: null,
         };
-        this.taskItem.doDate = date;
+        this.taskItem.doDate = date * 1000;
         if (this.showTextArea) {
           this.$emit('createTask', el, false);
         }
