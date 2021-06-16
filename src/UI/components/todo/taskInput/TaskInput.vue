@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div class="d-flex align-center ml-2" style="font-weight: 600; margin-top: 2px">
-                                    {{taskItem.doDate ? shortDaysOfWeek(taskItem.doDate * 1000): tabId === 2 && 'Cегодня' }}
+                                    {{taskItem.doDate ? shortDaysOfWeek(taskItem.doDate): tabId === 2 && 'Cегодня' }}
                                 </div>
                             </div>
                             <div class="d-flex align-center ml-2 task-time" style="color: #426df6; margin-top: 2px" @click="activatorTime = true">{{taskItem.reminderTime !== null && taskItem.reminderTime !== '0:0' ? taskItem.reminderTime : 'Напомнить'}}</div>
@@ -144,8 +144,8 @@
                     flat
                     show-adjacent-months
                     elevation="15"
-                    :min="dateNow"
-                    max="2023-03-20"
+                    :min="tabId === 3 ? dateTomorrow : dateNow"
+                    :max="maxDate"
                     year-icon="mdi-calendar-blank"
                     prev-icon="mdi-skip-previous"
                     next-icon="mdi-skip-next"
@@ -214,6 +214,7 @@ import FilterComponent from '../../filter/FilterComponent.vue';
 import Filters from '../../../../entity/filters/filters';
 import { MONTHS, SHORT_DAYS_WEEK, TODOCOMPONENTS } from '@/constants';
 import Search from '../../common/Search.vue';
+import { date } from '@rxweb/reactive-forms';
 
 @Component({
     components: { FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime, Search },
@@ -265,6 +266,20 @@ export default class TaskInput extends Vue {
 
     get dateNow(): string {
         return (new Date()).toISOString().slice(0,10);
+    }
+
+    get dateTomorrow(): string {
+        const date = new Date();
+        date.setDate(date.getDate() + 1);
+        const temp = new Date(date);
+        return temp.toISOString().slice(0,10);
+    }
+
+    get maxDate(): string {
+        const date = new Date();
+        date.setDate(date.getDate() + 14);
+        const temp = new Date(date);
+        return temp.toISOString().slice(0,10);
     }
 
     getIconName(id: number): string {

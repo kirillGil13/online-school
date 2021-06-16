@@ -4,6 +4,7 @@
             <v-list :collapse-transition="false" style="background: none" :width="$adaptive.isMobile ? '100%' : 300" nav dense>
               <v-list-item-group
                   v-model="activeTab"
+                  :mandatory="!$adaptive.isMobile"
                   color="#426df6"
               >
                   <v-list-item
@@ -147,13 +148,15 @@ export default class TodoList extends Vue {
   }
 
     @Watch('activeTab')
-    async onChange(val: number | null): Promise<void> {
+    async onChange(val: number | null, oldVal: number | null): Promise<void> {
         if (this.$adaptive.isMobile) {
           if (val || val === 0) {
             await this.fetchData(this.tabs[val!].categoryId);
           }
         } else {
-          await this.fetchData(this.tabs[val!].categoryId);
+            if (this.activeTab !== undefined) {
+                await this.fetchData(this.tabs[this.activeTab!].categoryId);
+            }
         }
     }
 
@@ -303,11 +306,12 @@ export default class TodoList extends Vue {
 
     async toJurnalOrIncome(el: TaskRequestType, route: number): Promise<void> {
         await TodoStore.ToJurnalOrIncome({data: el, route: route});
+        console.log(el.category_id);
         if (el.category_id === 1) {
           await TodoStore.setTaskCount({id: 6, delete: true});
           await TodoStore.setTaskCount({id: el.category_id, delete: false});
         } else {
-          await TodoStore.setTaskCount({id: 1, delete: true});
+          await TodoStore.setTaskCount({id: this.tabs[this.activeTab!].categoryId, delete: true});
           await TodoStore.setTaskCount({id: el.category_id, delete: false});
         }
     }
