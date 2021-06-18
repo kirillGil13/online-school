@@ -40,6 +40,7 @@ export interface ITaskItem {
     candidateId: number | null;
     reminderTime?: number | string | null;
     candidateName: string | null;
+    categoryId: number | null;
 }
 
 export type TaskStatusResponceType = {

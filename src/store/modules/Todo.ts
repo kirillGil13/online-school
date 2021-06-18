@@ -23,24 +23,11 @@ class TodoModule extends VuexModule {
     }
 
     @Mutation
-    handleTasks(data: { date: number | null; category: number; checked: boolean; id: number | null}): void {
+    handleTasks(data: { category: number; id: number | null; taskCat: number}): void {
         const idx = this.todoTasks.findIndex(el => el.id === data.id);
-        if (data.date && data.id) {
-            const date = new Date(Date.now()).toISOString().substr(0, 10);
-            const taskDate = new Date(data.date).toISOString().substr(0, 10);
-            if(data.category === 3 && date === taskDate) {
-                this.todoTasks.splice(idx, 1);
-            }
-            if(data.category === 2 &&  date !== taskDate ) {
-                this.todoTasks.splice(idx, 1);
-            }
-        }
-        if(data.checked && data.category !== 6) {
+        console.log(data.category, data.taskCat);
+        if (data.category !== data.taskCat) {
             this.todoTasks.splice(idx, 1);
-        } else {
-            if (!data.checked && data.category === 6) {
-                this.todoTasks.splice(idx, 1);
-            }
         }
     }
 
@@ -120,19 +107,6 @@ class TodoModule extends VuexModule {
 
     @MutationAction
     async updateCandidateTask(data: {data: TaskRequestType; checked: boolean; route: number; newTask?: boolean; category: number}): Promise<{todoTasks: ITodoTask[]}> {
-        const date = new Date(Date.now()).toISOString().substr(0, 10);
-        const itemDate = new Date(data.data.do_date! * 1000).toISOString().substr(0, 10);
-        if(data.data.category_id === 3 && date === itemDate) {
-            data.data.category_id = 2;
-        }
-        if(data.data.category_id === 2 && date !== itemDate) {
-            data.data.category_id = 3;
-        }
-        if (data.checked && data.category !== 6) {
-            data.data.category_id = 6;
-        } else if (data.checked && data.category === 6) {
-            data.data.category_id = 1;
-        }
         const upDateTask = await store.$repository.todo.updateCandidateTask({data: data.data, route: data.route});
           //@ts-ignore
         const todoTasks: ITodoTask[] = [...store.state.todoTask.todoTasks]

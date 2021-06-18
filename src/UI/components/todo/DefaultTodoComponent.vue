@@ -12,6 +12,8 @@
             <TaskInput
                 v-if="showTextArea"
                 @setTask="setTask"
+                @setChecked="statusItem.categoryId !== 6 ? setToJurnal(updatedTaskId) : setToIncome(updatedTaskId)"
+                @setDate="setDate"
                 :filters="filters"
                 :statuses="statuses"
                 :candidates="candidates"
@@ -23,45 +25,50 @@
         <div class="items-check-boxes" v-click-outside="closeTask">
             <template v-for="item in tasks">
                 <div class="d-flex flex-column mt-2" :key="item.id" v-if="!item.hide">
-                    <div
-                        class="d-flex align-center justify-space-between task-item-container px-2"
-                        v-if="taskShowId !== item.id"
-                        @click.self="setTaskShowid(item.id)" style="cursor: pointer"
-                    >
-                        <div class="d-flex align-end">
-                            <v-checkbox
-                                hide-details
-                                class="mt-0 pt-0"
-                                @click.stop="statusItem.categoryId !== 6 ? setToJurnal(item.id) : setToIncome(item.id)"
-                                v-model="item.checked"
-                            />
-                            <span class="item-text">{{
-                                item.name ? `${item.name}` : 'Новая задача'
-                            }}</span>
+                        <div
+                            class="d-flex align-center justify-space-between task-item-container px-2"
+                            v-if="taskShowId !== item.id"
+                            @click="setTaskShowid(item.id)" style="cursor: pointer"
+                        >
+                            <div class="d-flex align-end">
+                                <v-checkbox
+                                    hide-details
+                                    class="mt-0 pt-0"
+                                    @click.stop="statusItem.categoryId !== 6 ? setToJurnal(item.id) : setToIncome(item.id)"
+                                    v-model="item.checked"
+                                />
+                                <span class="item-text">{{
+                                        item.name ? `${item.name}` : 'Новая задача'
+                                    }}</span>
+                            </div>
+                                <div class="d-flex align-center delete-task" :style="{opacity: $adaptive.isMobile && '1', visibility: $adaptive.isMobile && 'visible'}">
+                                    <v-btn
+                                        @click.stop="deleteTask(item.id)"
+                                        style="background: none"
+                                        class="mt-0"
+                                        text
+                                        icon
+                                        color="red lighten-2"
+                                    >
+                                        <svg-icon name="Todo_delete" class="ml-1 mr-1 menu__icon" height="20" width="24" />
+                                    </v-btn>
+                                </div>
+
                         </div>
-                        <div class="d-flex align-center">
-                            <v-btn
-                                @click.stop="deleteTask(item.id)"
-                                style="background: none"
-                                class="mt-0"
-                                text
-                                icon
-                                color="red lighten-2"
-                            >
-                                <svg-icon name="Todo_delete" class="ml-1 mr-1 menu__icon" height="20" width="24" />
-                            </v-btn>
-                        </div>
-                    </div>
-                    <TaskInput
-                        v-else-if="taskShowId === item.id"
-                        @setTask="setTask"
-                        :filters="filters"
-                        :statuses="statuses"
-                        :candidates="candidates"
-                        :task-item="taskItem"
-                        :tabId="id"
-                        v-on="$listeners"
-                    />
+                    <v-scale-transition leave-absolute>
+                        <TaskInput
+                            v-if="taskShowId === item.id && openInput"
+                            @setChecked="statusItem.categoryId !== 6 ? setToJurnal(item.id) : setToIncome(item.id)"
+                            @setDate="setDate"
+                            @setTask="setTask"
+                            :filters="filters"
+                            :statuses="statuses"
+                            :candidates="candidates"
+                            :task-item="taskItem"
+                            :tabId="id"
+                            v-on="$listeners"
+                        />
+                    </v-scale-transition>
                 </div>
             </template>
         </div>
@@ -76,7 +83,6 @@ import { PARENTCLASSES, TODOCOMPONENTS } from '@/constants';
 import { ICandidate } from '../../../entity/candidates';
 import { IStatuses } from '../../../entity/statuses/statuses.types';
 import Filters from '../../../entity/filters/filters';
-import {LoginForm} from '../../../form/login';
 import {TodoStore} from '../../../store/modules/Todo';
 
 @Component({
@@ -92,7 +98,8 @@ export default class DefaultTodoComponent extends Vue {
     @Prop() readonly filters!: Filters;
     taskShowId: number | null = null;
     showTextArea = false;
-    checkbox = false;
+    showDelete = false;
+    openInput = false;
     taskItem: ITaskItem = {
         name: '',
         checked: false,
@@ -102,6 +109,7 @@ export default class DefaultTodoComponent extends Vue {
         candidateId: null,
         reminderTime: null,
         candidateName: '',
+        categoryId: this.statusItem.categoryId
     };
     newTask = false;
 
@@ -147,7 +155,7 @@ export default class DefaultTodoComponent extends Vue {
             if (doDate) {
                 doDate = Number(doDate * 1000);
             }
-            await TodoStore.handleTasks({date: +this.taskItem.doDate!, category: this.statusItem.categoryId, checked: this.taskItem.checked, id: oldVal});
+            await TodoStore.handleTasks({category: this.statusItem.categoryId, id: oldVal, taskCat: this.taskItem.categoryId!});
             this.taskItem = {
                 name: item.name,
                 checked: item.checked!,
@@ -157,7 +165,9 @@ export default class DefaultTodoComponent extends Vue {
                 reminderTime: time ? time : null,
                 candidateId: item.candidate ? item.candidate.candidate_id : null,
                 candidateName: item.candidate ? item.candidate.candidate_name : '',
+                categoryId: item.categoryId
             };
+            this.openInput = true;
         } else {
             this.setTaskToNull();
         }
@@ -180,10 +190,11 @@ export default class DefaultTodoComponent extends Vue {
         ) {
             this.showTextArea = false;
             if (this.taskShowId) {
-                TodoStore.handleTasks({date: +this.taskItem.doDate!, category: this.statusItem.categoryId, checked: this.taskItem.checked, id: this.taskShowId!});
+                TodoStore.handleTasks({ category: this.statusItem.categoryId, id: this.taskShowId!, taskCat: this.taskItem.categoryId!});
                 this.taskShowId = null;
+                this.openInput = false;
             } else if (!this.showTextArea) {
-                TodoStore.handleTasks({date: +this.taskItem.doDate!, category: this.statusItem.categoryId, checked: this.taskItem.checked, id: this.updatedTaskId!});
+                TodoStore.handleTasks({category: this.statusItem.categoryId, id: this.updatedTaskId!, taskCat: this.taskItem.categoryId!});
             }
             this.setTaskToNull();
         }
@@ -199,6 +210,7 @@ export default class DefaultTodoComponent extends Vue {
             candidateId: null,
             candidateName: '',
             reminderTime: null,
+            categoryId: this.statusItem.categoryId
         };
     }
 
@@ -234,26 +246,48 @@ export default class DefaultTodoComponent extends Vue {
     this.taskShowId = null;
   }
 
-    setTask(): void {
+    setTask(cat?: number): void {
         if (this.showTextArea === true) {
-          this.updateTask(this.updatedTaskId!);
+          this.updateTask(this.updatedTaskId!, cat !== undefined ? cat : this.taskItem.categoryId!);
         } else {
-          this.setTaskShowid(null);
+          this.setTaskShowid(null, cat);
         }
     }
 
-  setTaskShowid(id: number | null): void {
+    setDate(deleteDate?: boolean): void {
+        const date = new Date(Date.now()).toISOString().substr(0, 10);
+        let cat = this.statusItem.categoryId;
+        let itemDate = '';
+        this.taskItem.checked = false;
+        if (this.taskItem.doDate) {
+            itemDate = new Date(this.taskItem.doDate).toISOString().substr(0, 10);
+        }
+        if (itemDate) {
+            if (itemDate === date) {
+                cat = 2;
+            } else {
+                cat = 3;
+            }
+        } else {
+            if (deleteDate) {
+                cat = 1;
+            }
+        }
+        this.setTask(cat);
+    }
+
+  setTaskShowid(id: number | null, cat?: number): void {
     this.showTextArea = false;
     if (this.taskShowId === id || id === null) {
-      this.updateTask(this.taskShowId!);
+      this.updateTask(this.taskShowId!, cat !== undefined ? cat : this.taskItem.categoryId!);
     } else {
+        this.openInput = false;
       this.taskShowId = id;
     }
   }
 
     openCardToCreateTask(): void {
         this.taskShowId = null;
-        this.showTextArea = !this.showTextArea;
         const date = Math.floor(new Date().getTime() / 1000);
         const el = {
             name: null,
@@ -264,13 +298,17 @@ export default class DefaultTodoComponent extends Vue {
             images_link: null,
             candidate_id: null,
         };
-        this.taskItem.doDate = date * 1000;
+        this.taskItem.categoryId = this.statusItem.categoryId;
+        this.taskItem.doDate = this.statusItem.categoryId === 2 ? date * 1000 : null;
+        this.openInput = false;
+        this.showTextArea = !this.showTextArea;
         if (this.showTextArea) {
           this.$emit('createTask', el, false);
         }
     }
 
-  updateTask(id: number): void {
+  updateTask(id: number, cat: number): void {
+      console.log(cat);
     let time = null;
     if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
       time =
@@ -281,15 +319,14 @@ export default class DefaultTodoComponent extends Vue {
       name: this.taskItem.name,
       description: this.taskItem.description,
       do_date: this.taskItem.doDate ? Math.floor((this.taskItem.doDate as number) / 1000) : null,
-      category_id: this.statusItem.categoryId,
+      category_id: cat,
       images_link: this.taskItem.imagesLink,
       reminder_time: this.taskItem.reminderTime ? time : null,
       candidate_id: this.taskItem.candidateId ? this.taskItem.candidateId : null,
     };
-    if (this.statusItem.categoryId !== 2) {
-        el.do_date = null;
-    }
-    this.$emit('upDateTask', el, this.taskItem.checked, id, this.newTask);
+      console.log('checked ' + this.taskItem.checked);
+      this.$emit('upDateTask', el, this.taskItem.checked, id, this.newTask, this.taskItem.categoryId);
+      this.taskItem.categoryId = el.category_id;
   }
 }
 </script>
@@ -307,9 +344,21 @@ export default class DefaultTodoComponent extends Vue {
     color: #101010;
     cursor: pointer;
 }
-
-.task-item-container:hover {
-    background: #f2f2f2;
-    border-radius: 12px;
+.task-item-container {
+    .delete-task {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity ease 200ms, visibility ease 200ms;
+    }
+}
+.task-item-container{
+    &:hover {
+        background: #f2f2f2;
+        border-radius: 12px;
+        .delete-task{
+            opacity: 1;
+            visibility: visible;
+        }
+    }
 }
 </style>
