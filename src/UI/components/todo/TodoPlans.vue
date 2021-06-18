@@ -254,7 +254,7 @@ export default class TodoPlans extends Vue {
             const tasksDate = new Date(+task.doDate! * 1000);
             const taskDateStr = `${tasksDate.getDate()}.${tasksDate.getMonth() + 1}.${tasksDate.getFullYear()}`;
 
-            if (defaultDaysNumber!.includes(taskDateStr)) {
+            if (defaultDaysNumber!.indexOf(taskDateStr) !== -1) {
                 const item = defaultDays.find((el) => el.date === taskDateStr);
                 const idx = defaultDays.findIndex((el) => el.date === item!.date);
 
@@ -265,11 +265,11 @@ export default class TodoPlans extends Vue {
 
             if (
                 defaultDays.some(
-                    (el) => el.date.split('.')[1] === taskDateStr.split('.')[1] && !defaultDaysNumber.includes(el.date)
+                    (el) => el.date.split('.')[1] === taskDateStr.split('.')[1] && defaultDaysNumber.indexOf(el.date) === -1
                 )
             ) {
                 const item = defaultDays.find(
-                    (el) => el.date.split('.')[1] === taskDateStr.split('.')[1] && !defaultDaysNumber.includes(el.date)
+                    (el) => el.date.split('.')[1] === taskDateStr.split('.')[1] && defaultDaysNumber.indexOf(el.date) === -1
                 );
 
                 const idx = defaultDays.findIndex((el) => el.date === item!.date);
@@ -370,7 +370,7 @@ export default class TodoPlans extends Vue {
     getitemTaskText(date: string): string {
         const title = date.split('.');
 
-        return this.globalDefaultDays.includes(date) ? `${title[0]}` : '';
+        return this.globalDefaultDays.indexOf(date) !== -1 ? `${title[0]}` : '';
     }
 
     getDayOfWeek(date: string): string {
@@ -397,7 +397,7 @@ export default class TodoPlans extends Vue {
         //@ts-ignore
         const numberDayWeek = new Date(title[2], title[1] - 1 <= 0 ? 0 : title[1] - 1, title[0]).getDay();
 
-        return (todayByRightFormat.getMonth() + 1).toString() === title[1] && this.globalDefaultDays.includes(date)
+        return (todayByRightFormat.getMonth() + 1).toString() === title[1] && this.globalDefaultDays.indexOf(date) !== -1
             ? DAYS_WEEK[numberDayWeek]
             : MONTHS.find((el) => el.id.toString() === title[1])!.defaultValue;
     }
@@ -529,7 +529,11 @@ export default class TodoPlans extends Vue {
             } else if (!this.showTextArea) {
                 TodoStore.handleTasks({category: this.statusItem.categoryId, id: this.updatedTaskId!, taskCat: this.taskItem.categoryId!});
             }
+            this.newTask = false;
             this.setTaskToNull();
+            for (let i = 0; i < this.tasks.length; i++) {
+                this.tasks[i].hide = false;
+            }
         }
     }
 }

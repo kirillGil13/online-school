@@ -1166,13 +1166,13 @@ iframe {
     color: #E64646;
   }
 }
-.v-picker__body {
+.v-picker__body{
   button {
     color: #000000 !important;
   }
 
   button:enabled {
-    background: white !important
+    background: transparent !important
   };
 }
 .custom-checkbox>input:not(:disabled):not(:checked)+span:hover::before {

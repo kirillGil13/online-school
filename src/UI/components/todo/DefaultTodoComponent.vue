@@ -43,7 +43,7 @@
                             </div>
                                 <div class="d-flex align-center delete-task" :style="{opacity: $adaptive.isMobile && '1', visibility: $adaptive.isMobile && 'visible'}">
                                     <v-btn
-                                        @click.stop="deleteTask(item.id)"
+                                        @click.stop="openModal(item.id)"
                                         style="background: none"
                                         class="mt-0"
                                         text
@@ -72,6 +72,22 @@
                 </div>
             </template>
         </div>
+        <Modal
+            :width="'max-content'"
+            :activator="activatorDelete"
+            :full-screen="$adaptive.isMobile"
+            @activatorChange="activatorDeleteChange"
+        >
+            <template v-slot:content>
+                <div class="pa-6">
+                    <h2 class="text-center">Вы действительно хотите удалить задачу ?</h2>
+                    <div class="d-flex" :class="[$adaptive.isMobile ? '' : 'flex-row']">
+                        <Button small full-width class="secondary_blue" :class="[$adaptive.isMobile ? '' : 'mr-2']" @submit="abort">Отмена</Button>
+                        <Button small full-width @submit="deleteTask">Продолжить</Button>
+                    </div>
+                </div>
+            </template>
+        </Modal>
     </div>
 </template>
 
@@ -84,9 +100,11 @@ import { ICandidate } from '../../../entity/candidates';
 import { IStatuses } from '../../../entity/statuses/statuses.types';
 import Filters from '../../../entity/filters/filters';
 import {TodoStore} from '../../../store/modules/Todo';
+import Button from '../common/Button.vue';
+import Modal from '../common/Modal.vue';
 
 @Component({
-    components: { TaskInput },
+    components: { Modal, Button, TaskInput },
 })
 export default class DefaultTodoComponent extends Vue {
     @Prop() readonly tasks!: ITodoTask[];
@@ -96,6 +114,8 @@ export default class DefaultTodoComponent extends Vue {
     @Prop() readonly candidates!: { [p: string]: ICandidate[] };
     @Prop() readonly statuses!: IStatuses[];
     @Prop() readonly filters!: Filters;
+    activatorDelete = false;
+    taskToDelete = 0;
     taskShowId: number | null = null;
     showTextArea = false;
     showDelete = false;
@@ -177,6 +197,19 @@ export default class DefaultTodoComponent extends Vue {
       return TodoStore.updatedTaskId;
     }
 
+    abort(): void {
+        this.activatorDelete = false;
+    }
+
+    openModal(id: number): void {
+        this.taskToDelete = id;
+        this.activatorDelete = true;
+    }
+
+    activatorDeleteChange(act: boolean): void {
+        this.activatorDelete = act;
+    }
+
     include(className: string): boolean {
         return PARENTCLASSES.includes(className);
     }
@@ -196,7 +229,11 @@ export default class DefaultTodoComponent extends Vue {
             } else if (!this.showTextArea) {
                 TodoStore.handleTasks({category: this.statusItem.categoryId, id: this.updatedTaskId!, taskCat: this.taskItem.categoryId!});
             }
+            this.newTask = false;
             this.setTaskToNull();
+            for (let i = 0; i < this.tasks.length; i++) {
+                this.tasks[i].hide = false;
+            }
         }
     }
 
@@ -218,8 +255,9 @@ export default class DefaultTodoComponent extends Vue {
         return TODOCOMPONENTS.find((el) => el.id === id)!.iconName;
     }
 
-  deleteTask(id: number): void {
-    this.$emit('deleteTask', id);
+  deleteTask(): void {
+        this.activatorDelete = false;
+    this.$emit('deleteTask', this.taskToDelete);
   }
 
   setToJurnal(id: number): void {
@@ -308,7 +346,6 @@ export default class DefaultTodoComponent extends Vue {
     }
 
   updateTask(id: number, cat: number): void {
-      console.log(cat);
     let time = null;
     if (this.taskItem.reminderTime && typeof this.taskItem.reminderTime !== 'number') {
       time =
