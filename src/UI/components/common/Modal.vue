@@ -25,9 +25,12 @@
       >
         <v-toolbar-title>{{toolBarTitle}}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <div @click.stop="activatorChange = false; $emit('close')" style="cursor: pointer">
+        <div v-if="!customIcon" @click.stop="activatorChange = false; $emit('close')" style="cursor: pointer">
           <v-icon>mdi-close</v-icon>
         </div>
+          <div v-else @click.stop="!disabled ? $emit('close') : ''" style="cursor: pointer;">
+              <v-icon size="32" :color="disabled ? 'rgba(255,255,255,0.45)' : '#ffffff'">{{customIcon}}</v-icon>
+          </div>
       </v-toolbar>
       <v-card>
         <slot name="full-screen-content"/>
@@ -45,7 +48,9 @@ export default class Modal extends Vue {
   @Prop({default: false, type: Boolean}) readonly fullScreen!: boolean;
   @Prop({default: false, type: Boolean}) readonly fromBottom!: boolean;
   @Prop({default: true, type: Boolean}) readonly withoutToolBar!: boolean;
-  @Prop({default: 'Ответ пользователю'}) readonly toolBarTitle!: boolean;
+  @Prop({default: 'Ответ пользователю'}) readonly toolBarTitle!: string;
+  @Prop({default: ''}) readonly customIcon!: string;
+  @Prop({default: false}) readonly disabled!: boolean;
   @Prop() readonly modalClass!: string;
   @Prop() readonly videoModal!: boolean;
   @Prop() readonly origin!: string;

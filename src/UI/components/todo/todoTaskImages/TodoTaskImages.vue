@@ -12,8 +12,20 @@
       <div class="task-images-item pa-0"
            :class="[$adaptive.isMobile && 'mobile-image-item', index > 1 && 'mt-2', index > 0 && $adaptive.isMobile && 'mt-2']"
            v-for="(item, index) in images" :key="index">
-        <v-img style="cursor: pointer" :src="item" height="200" width="100%" @click="showImg(index)">
+        <v-img style="cursor: pointer; background-color: rgba(189,189,189,0.12)" :src="item" height="200" width="100%" @click="showImg(index)">
           <v-icon small style="border-radius: 50%; position: absolute; right: 2px; top: 2px;" class="pa-1 mt-0" @click.stop="$emit('deleteImage', item)">mdi-close</v-icon>
+            <template v-slot:placeholder>
+                <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                >
+                    <v-progress-circular
+                        indeterminate
+                        color="blue lighten-3"
+                    ></v-progress-circular>
+                </v-row>
+            </template>
         </v-img>
       </div>
     </div>

@@ -283,24 +283,11 @@ export default class TodoList extends Vue {
         await this.fetchData();
     }
 
-    async upDateTask(el: TaskRequestType, checked: boolean, route: number, newTask?: boolean): Promise<void> {
-      const date = new Date(Date.now()).toISOString().substr(0, 10);
-      const itemDate = new Date(el.do_date! * 1000).toISOString().substr(0, 10);
-      if(el.category_id === 2 && date !== itemDate && this.tabs[this.activeTab!].categoryId === 2) {
-        await TodoStore.setTaskCount({id: 3, delete: false});
-        await TodoStore.setTaskCount({id: el.category_id, delete: true});
-      }
-      if(el.category_id === 3 && date === itemDate && this.tabs[this.activeTab!].categoryId === 3) {
-        await TodoStore.setTaskCount({id: 2, delete: false});
-        await TodoStore.setTaskCount({id: el.category_id, delete: true});
-      }
-      if (this.tabs[this.activeTab!].categoryId !== 6 && checked) {
-          await TodoStore.setTaskCount({id: el.category_id, delete: true});
-          await TodoStore.setTaskCount({id: 6, delete: false});
-      } else if (this.tabs[this.activeTab!].categoryId === 6 && !checked) {
-          await TodoStore.setTaskCount({id: 6, delete: true});
-          await TodoStore.setTaskCount({id: 1, delete: false});
-      }
+    async upDateTask(el: TaskRequestType, checked: boolean, route: number, newTask?: boolean, from?: number): Promise<void> {
+        console.log('updated');
+        console.log('from ' + from, 'to ' + el.category_id  );
+        await TodoStore.setTaskCount({id: from!, delete: true});
+        await TodoStore.setTaskCount({id: el.category_id, delete: false});
       await TodoStore.updateCandidateTask({data: el, checked: checked, route: route, newTask: newTask, category: this.tabs[this.activeTab!].categoryId});
     }
 

@@ -39,7 +39,8 @@ export default class AddTask extends Vue {
     doDate: null,
     imagesLink: [],
     candidateId: null,
-    candidateName: ''
+    candidateName: '',
+      categoryId: null
   };
   alertType = AlertTypeEnum;
   filters: Filters;

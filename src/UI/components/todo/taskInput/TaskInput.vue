@@ -3,7 +3,7 @@
         <div class="items-add-place">
             <div class="items-add-place-text">
                 <div class="items-add-place-text__title d-flex">
-                    <v-checkbox class="ma-0 pa-0" hide-details v-model="taskItem.checked" @change="$emit('setTask')" />
+                    <v-checkbox class="ma-0 pa-0" hide-details v-model="taskItem.checked" @change="$emit('setChecked')" />
                     <v-text-field
                         class="ma-0 pa-0"
                         hide-details
@@ -18,6 +18,7 @@
                             ref="contentTextArea"
                             no-resize
                             id="message"
+                            auto-grow
                             placeholder="Заметки"
                             :rows="$adaptive.isMobile ? 2 : 5"
                             hide-details
@@ -26,72 +27,83 @@
                             v-model="taskItem.description"
                         />
                     </div>
-                    <div class="items-add-place-text__like-dislike d-flex pl-6 py-3 pr-3">
-                        <div
-                            v-if="![1, 4, 5,6].includes(tabId)"
-                            class="d-flex align-center"
-                            style="width: 100%; justify-self: flex-start"
-                        >
-                            <div class="d-flex align-center shortDate " @click="activatorDate = true">
-                                <div class="d-flex align-center">
-                                    <svg-icon
-                                        :name="taskDate !== dateNow ? getIconName(3) : getIconName(tabId)"
-                                        class="menu__icon"
-                                        height="24"
-                                        width="24"
-                                        style="cursor: pointer"
-                                    />
-                                </div>
+                    <div class="items-add-place-text__like-dislike d-flex align-end pl-5 py-3 pr-3" v-if="taskItem.categoryId !== 6">
+                        <div class="d-flex flex-column">
+                            <div v-if="taskItem.doDate" class="d-flex align-center" style="width: 100%;">
+                                <div class="d-flex action" @click="activatorDate = true">
+                                        <svg-icon
+                                            :name="taskDate !== dateNow ? getIconName(3) : getIconName(2)"
+                                            class="menu__icon"
+                                            height="20"
+                                            width="24"
+                                            style="cursor: pointer"
+                                        />
 
-                                <div class="d-flex align-center ml-2" style="font-weight: 600; margin-top: 2px">
-                                    {{taskItem.doDate ? shortDaysOfWeek(taskItem.doDate): tabId === 2 && 'Cегодня' }}
+                                    <div class="d-flex align-center ml-2" style="font-weight: 600;">
+                                        {{taskItem.doDate ? shortDaysOfWeek(datePicker): tabId === 2 && 'Cегодня' }}
+                                    </div>
+                                    <div class="d-flex align-center destroy ml-2" :style="{opacity: $adaptive.isMobile && '1'}" @click.stop="refactorDate">
+                                        <v-icon size="16">mdi-close</v-icon>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-center ml-2 task-time" style="color: #426df6;" @click="activatorTime = true">{{taskItem.reminderTime !== null && taskItem.reminderTime !== '0:0' ? taskItem.reminderTime : 'Напомнить'}}</div>
+                            </div>
+                            <div class="d-flex justify-start flex-row action" style="cursor: pointer;" @click="activatorImages = true" v-if="taskItem.imagesLink.length !== 0 && taskItem.imagesLink">
+                                <svg-icon
+                                    name="Picture_outline"
+                                    class="menu__icon active-icon mr-2"
+                                    height="20"
+                                    width="24"
+                                />
+                                <div style="white-space: nowrap">
+                                    {{ 'Вложения: ' + taskItem.imagesLink.length }}
+                                </div>
+                                <div class="destroy ml-2" :style="{opacity: $adaptive.isMobile && '1'}" @click.stop="refactorImage">
+                                    <v-icon size="16">mdi-close</v-icon>
                                 </div>
                             </div>
-                            <div class="d-flex align-center ml-2 task-time" style="color: #426df6; margin-top: 2px" @click="activatorTime = true">{{taskItem.reminderTime !== null && taskItem.reminderTime !== '0:0' ? taskItem.reminderTime : 'Напомнить'}}</div>
-                        </div>
-                        <div v-if="![1, 4, 5,6].includes(tabId)" class="d-flex">
-                            <svg-icon
-                                name="Calendar_Icon"
-                                class="menu__icon"
-                                height="27"
-                                width="27"
-                                style="cursor: pointer"
-                                @click="activatorDate = true"
-                            />
-                        </div>
-                        <div
-                            class="ml-4 d-flex align-center flex-row"
-                            style="cursor: pointer"
-                            @click="activatorImages = true"
-                        >
-                            <svg-icon
-                                name="Picture_outline"
-                                class="menu__icon"
-                                :class="[taskItem.imagesLink.length !== 0 && taskItem.imagesLink && 'active-icon mr-2']"
-                                height="24"
-                                width="24"
-                            />
-                            <div
-                                style="margin-top: 3px; white-space: nowrap"
-                                v-if="taskItem.imagesLink.length !== 0 && taskItem.imagesLink"
-                            >
-                                {{ 'Вложения: ' + taskItem.imagesLink.length }}
+                            <div class="d-flex flex-row action" style="cursor: pointer; white-space: nowrap" @click="activatorCandidates = true" v-if="taskItem.candidateId">
+                                <svg-icon
+                                    name="Users_outline"
+                                    class="menu__icon active-icon mr-2"
+                                    height="20"
+                                    width="24"
+                                />
+                                <div style="margin-top: 2px" >
+                                    {{ taskItem.candidateName }}
+                                </div>
+                                <div class="destroy ml-2" :style="{opacity: $adaptive.isMobile && '1'}" @click.stop="refactorCand">
+                                    <v-icon size="16">mdi-close</v-icon>
+                                </div>
                             </div>
                         </div>
-                        <div
-                            class="ml-4 d-flex flex-row align-center"
-                            style="cursor: pointer; white-space: nowrap"
-                            @click="activatorCandidates = true"
-                        >
-                            <svg-icon
-                                name="Users_outline"
-                                class="menu__icon"
-                                :class="[taskItem.candidateId && 'active-icon mr-2']"
-                                height="24"
-                                width="28"
-                            />
-                            <div style="margin-top: 2px" v-if="taskItem.candidateId">
-                                {{ taskItem.candidateName }}
+                        <v-spacer></v-spacer>
+                        <div class="d-flex flex-row">
+                            <div  v-if="!taskItem.doDate">
+                                <svg-icon
+                                    name="Calendar_Icon"
+                                    class="menu__icon"
+                                    height="27"
+                                    width="27"
+                                    style="cursor: pointer"
+                                    @click="activatorDate = true"
+                                />
+                            </div>
+                            <div class="ml-4" style="cursor: pointer" @click="activatorImages = true" v-if="taskItem.imagesLink.length === 0 || !taskItem.imagesLink">
+                                <svg-icon
+                                    name="Picture_outline"
+                                    class="menu__icon"
+                                    height="24"
+                                    width="24"
+                                />
+                            </div>
+                            <div class="ml-4" style="cursor: pointer; white-space: nowrap" @click="activatorCandidates = true" v-if="!taskItem.candidateId">
+                                <svg-icon
+                                    name="Users_outline"
+                                    class="menu__icon"
+                                    height="24"
+                                    width="28"
+                                />
                             </div>
                         </div>
                     </div>
@@ -114,11 +126,14 @@
             :without-tool-bar="false"
             tool-bar-title=""
             :full-screen="true"
+            custom-icon="mdi-check"
             @activatorChange="activatorImagesChange"
+            :disabled="disabled"
+            @close="closeImageModal"
         >
             <template v-slot:full-screen-content>
-              <v-row justify="center">
-                <v-col :class="$adaptive.isMobile && 'px-3'" style="max-width: 1000px; width: 100%">
+              <v-row justify="center" no-gutters>
+                <v-col :class="['pt-0']" style="max-width: 1000px; width: 100%">
                   <TodoTaskImages
                       v-if="activatorImages"
                       :images="taskItem.imagesLink"
@@ -144,7 +159,7 @@
                     flat
                     show-adjacent-months
                     elevation="15"
-                    :min="tabId === 3 ? dateTomorrow : dateNow"
+                    :min="dateNow"
                     :max="maxDate"
                     year-icon="mdi-calendar-blank"
                     prev-icon="mdi-skip-previous"
@@ -161,7 +176,7 @@
         >
             <template v-slot:full-screen-content v-if="activatorCandidates">
                 <div>
-                    <v-row justify="center" :no-gutters="$adaptive.isMobile">
+                    <v-row justify="center" no-gutters>
                         <v-col
                             class="mt-6"
                             :class="$adaptive.isMobile && 'px-3'"
@@ -184,7 +199,7 @@
                         </v-col>
                     </v-row>
                     <v-row class="mt-3" justify="center" no-gutters>
-                        <div class="mb-6 px-3" style="max-width: 1600px; width: 100%">
+                        <div class="mb-6" :class="[$adaptive.isMobile && 'px-3']" style="max-width: 1600px; width: 100%">
                             <TableCandidates
                                 task
                                 :candidates="candidates"
@@ -193,6 +208,22 @@
                             />
                         </div>
                     </v-row>
+                </div>
+            </template>
+        </Modal>
+        <Modal
+            :width="'max-content'"
+            :activator="activatorPlan"
+            :full-screen="$adaptive.isMobile"
+            @activatorChange="activatorPlanChangeDate"
+        >
+            <template v-slot:content>
+                <div class="pa-6">
+                    <h2 class="text-center">Задача переместится во входящие</h2>
+                    <div class="d-flex" :class="[$adaptive.isMobile ? '' : 'flex-row']">
+                        <Button small full-width class="secondary_blue" :class="[$adaptive.isMobile ? '' : 'mr-2']" @submit="abort">Отмена</Button>
+                        <Button small full-width @submit="changeTask">Продолжить</Button>
+                    </div>
                 </div>
             </template>
         </Modal>
@@ -214,14 +245,14 @@ import FilterComponent from '../../filter/FilterComponent.vue';
 import Filters from '../../../../entity/filters/filters';
 import { MONTHS, SHORT_DAYS_WEEK, TODOCOMPONENTS } from '@/constants';
 import Search from '../../common/Search.vue';
-import { date } from '@rxweb/reactive-forms';
+import Button from '../../common/Button.vue';
 
 @Component({
-    components: { FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime, Search },
+    components: { Button, FilterComponent, TableCandidates, Modal, TodoTaskImages, Datetime, Search },
 })
 export default class TaskInput extends Vue {
     @Prop() readonly taskItem!: ITaskItem;
-    @Prop() readonly tabId?: number;
+    @Prop() readonly tabId!: number;
     @Prop() readonly candidates!: { [p: string]: ICandidate[] };
     @Prop() readonly statuses!: IStatuses[];
     @Prop() readonly filters!: Filters;
@@ -229,7 +260,18 @@ export default class TaskInput extends Vue {
     activatorCandidates = false;
     activatorDate = false;
     activatorTime = false;
+    activatorPlan = false;
     picker = null;
+    disabled = false;
+    datePicker: string | number | null = null;
+
+    constructor() {
+        super();
+        this.datePicker = this.taskItem.doDate;
+        if ([1,4,5,6].indexOf(this.tabId) !== -1) {
+            this.datePicker = Math.floor(new Date().getTime());
+        }
+    }
 
     @Watch('activatorImages')
     onActImChange(): void {
@@ -241,7 +283,8 @@ export default class TaskInput extends Vue {
     @Watch('activatorDate')
     onActDateChange(): void {
       if (!this.activatorDate) {
-        this.$emit('setTask');
+        this.taskItem.doDate = this.datePicker;
+        this.$emit('setDate');
       }
     }
 
@@ -257,11 +300,11 @@ export default class TaskInput extends Vue {
     }
 
     get taskDate(): string {
-        return new Date((this.taskItem.doDate! as number)).toISOString().substr(0, 10);
+        return new Date((this.datePicker as number)).toISOString().substr(0, 10);
     }
 
     set taskDate(date: string) {
-        this.taskItem.doDate = Date.parse(date);
+        this.datePicker = Date.parse(date);
     }
 
     get dateNow(): string {
@@ -280,6 +323,20 @@ export default class TaskInput extends Vue {
         date.setDate(date.getDate() + 14);
         const temp = new Date(date);
         return temp.toISOString().slice(0,10);
+    }
+
+    abort(): void {
+        this.activatorPlan = false;
+    }
+
+    changeTask(): void {
+        this.taskItem.doDate = null;
+        this.$emit('changeTask');
+    }
+
+
+    closeImageModal(): void {
+        this.activatorImages = false;
     }
 
     getIconName(id: number): string {
@@ -317,7 +374,10 @@ export default class TaskInput extends Vue {
         this.activatorTime = act;
 
     }
+    activatorPlanChangeDate(act: boolean): void {
+        this.activatorPlan = act;
 
+    }
 
     activatorCandidatesChange(act: boolean): void {
         this.activatorCandidates = act;
@@ -332,6 +392,25 @@ export default class TaskInput extends Vue {
       return 'hello'
     }
 
+    refactorDate(): void {
+        if (this.tabId !== 3) {
+            this.taskItem.doDate = null;
+            this.$emit('setDate', true);
+        }else {
+            this.activatorPlan = true;
+        }
+    }
+
+    refactorCand(): void {
+        this.taskItem.candidateId = null;
+        this.$emit('setTask');
+    }
+
+    refactorImage(): void {
+        this.taskItem.imagesLink = [];
+        this.$emit('setTask');
+    }
+
     chooseCandidate(id: number): void {
         this.taskItem.candidateId = Object.values(this.candidates)
             .flat()
@@ -344,12 +423,19 @@ export default class TaskInput extends Vue {
     }
 
     async handleImage(e: any): Promise<void> {
+        this.disabled = true;
         const selectedImages = e.target.files;
+        for (let i = 0; i < selectedImages.length; i++) {
+            this.taskItem.imagesLink.push('');
+        }
         for (let i = 0; i < selectedImages.length; i++) {
             await PictureUploadStore.set({ file: selectedImages[i] });
             if (this.picture) {
+                this.taskItem.imagesLink.splice(this.taskItem.imagesLink.indexOf(''), 1);
                 this.taskItem.imagesLink.push(this.picture.fullLink);
             }
+            if (i + 1 === selectedImages.length)
+                this.disabled = false;
         }
     }
 }
@@ -391,8 +477,6 @@ export default class TaskInput extends Vue {
     }
 
     .items-add-place-text__like-dislike {
-        justify-content: flex-end;
-        align-items: end;
     }
     #message {
         &::placeholder {
@@ -404,17 +488,21 @@ export default class TaskInput extends Vue {
       cursor: pointer;
     }
 
-    .shortDate {
+    .action {
         cursor: pointer;
-        padding: 1px;
         transition: all .3s ease;
-        padding: 5px;
-
-
+        width: max-content !important;
+        padding: 6px 12px;
+        .destroy {
+            opacity: 0;
+            transition: opacity ease 200ms, visibility ease 200ms;
+        }
         &:hover {
-            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-            border-radius: 5px;
-
+            background: #F2F2F2;
+            border-radius: 6px;
+            .destroy {
+                opacity: 1;
+            }
         }
     }
   .v-text-field > .v-input__control > .v-input__slot:before, .v-text-field > .v-input__control > .v-input__slot:after {
