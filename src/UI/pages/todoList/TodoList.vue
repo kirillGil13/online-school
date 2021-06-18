@@ -293,7 +293,6 @@ export default class TodoList extends Vue {
 
     async toJurnalOrIncome(el: TaskRequestType, route: number): Promise<void> {
         await TodoStore.ToJurnalOrIncome({data: el, route: route});
-        console.log(el.category_id);
         if (el.category_id === 1) {
           await TodoStore.setTaskCount({id: 6, delete: true});
           await TodoStore.setTaskCount({id: el.category_id, delete: false});

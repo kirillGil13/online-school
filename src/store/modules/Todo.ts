@@ -28,6 +28,7 @@ class TodoModule extends VuexModule {
         console.log(data.category, data.taskCat);
         if (data.category !== data.taskCat) {
             this.todoTasks.splice(idx, 1);
+            console.log('deleted');
         }
     }
 
